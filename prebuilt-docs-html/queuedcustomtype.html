@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- queuedcustomtype.qdoc -->
+  <title>Cascades : Queued Custom Type Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt Cascades Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li>Queued Custom Type Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-block-class">The Block Class</a></li>
+<li class="level1"><a href="#the-renderer-class">The Renderer Class</a></li>
+<li class="level1"><a href="#the-renderthread-class">The RenderThread Class</a></li>
+<li class="level1"><a href="#registering-the-type">Registering the Type</a></li>
+<li class="level1"><a href="#further-reading">Further Reading</a></li>
+</ul>
+</div>
+<h1 class="title">Queued Custom Type Example</h1>
+<span class="subtitle"></span>
+<!-- $$$queuedcustomtype-description -->
+<div class="descr"> <a name="details"></a>
+<p>The Queued Custom Type example shows how to send custom types between threads with queued signals and slots.</p>
+<p class="centerAlign"><img src="images/queuedcustomtype-example-rim.png" /></p><p>Contents:</p>
+<a name="overview"></a>
+<h2>Overview</h2>
+<p>In the <a href="http://qt.nokia.com/doc/4.7/tools-customtypesending.html">Custom Type Sending Example</a>, we showed how to use a custom type with signal-slot communication within the same thread.</p>
+<p>In this example, we create a new value class, <tt>Block</tt>, and register it with the meta-object system to enable us to send instances of it between threads using queued signals and slots.</p>
+<a name="the-block-class"></a>
+<h2>The Block Class</h2>
+<p>The <tt>Block</tt> class is similar to the <tt>Message</tt> class described in the <a href="http://qt.nokia.com/doc/4.7/tools-customtype.html">Custom Type Example</a>. It provides the default constructor, copy constructor and destructor in the public section of the class that the meta-object system requires. It describes a colored rectangle.</p>
+<pre class="cpp">    <span class="comment">/**
+     * The Block class is the custom type in this example that is used as
+     * parameter type in a signal/slot connection.
+     * It represents a rectangular area of a certain color.
+     */</span>
+    <span class="keyword">class</span> Block
+    {
+    <span class="keyword">public</span>:
+        Block();
+        Block(<span class="keyword">const</span> Block <span class="operator">&amp;</span>other);
+        <span class="operator">~</span>Block();
+
+        Block(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qrect.html">QRect</a></span> <span class="operator">&amp;</span>rect<span class="operator">,</span> <span class="keyword">const</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color <span class="operator">&amp;</span>color);
+
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Color color() <span class="keyword">const</span>;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qrect.html">QRect</a></span> rect() <span class="keyword">const</span>;
+
+    <span class="keyword">private</span>:
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qrect.html">QRect</a></span> m_rect;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Color m_color;
+    };
+
+    <span class="comment">/**
+     * The Q_DECLARE_METATYPE macro is the important part here.
+     * It makes our custom Block class known to the Qt meta type system.
+     * That allows us to store a Block object inside a QVariant.
+     */</span>
+    <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a> (Block);</pre>
+<p>We will still need to register it with the meta-object system at run-time by calling the <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#qRegisterMetaType">qRegisterMetaType</a>() template function before we make any signal-slot connections that use this type. Even though we do not intend to use the type with <a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a> in this example, it is good practice to also declare the new type with <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a>().</p>
+<p>The implementation of the <tt>Block</tt> class is trivial, so we avoid quoting it here.</p>
+<a name="the-renderer-class"></a>
+<h2>The Renderer Class</h2>
+<p>We define a simple <tt>Renderer</tt> class with a private slot that accepts a <tt>Block</tt> object. The rest of the class is concerned with managing the user interface and handling images.</p>
+<pre class="cpp">    <span class="comment">/**
+     * The Renderer class encapsulates business logic of this application.
+     * It transforms an image by spawning off worker threads (RenderThread), retrieves
+     * the result via a signal/slot connection and then 'paints' the result in
+     * the UI by generating a couple of colored Containers inside a canvas Container.
+     */</span>
+    <span class="keyword">class</span> Renderer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// A property that reports whether a worker thread is currently running.</span>
+        Q_PROPERTY(<span class="type">bool</span> active READ active NOTIFY activeChanged)
+
+    <span class="keyword">public</span>:
+        Renderer(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="comment">/**
+         * This method is called to tell the Renderer on which Container the colored
+         * blocks should be positioned.
+         */</span>
+        <span class="type">void</span> setCanvas(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>container);
+
+        <span class="comment">// This method is called whenever the user selects an image in the UI.</span>
+        Q_INVOKABLE <span class="type">void</span> loadImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>name);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is called whenever the user wants to abort the current transformation of an image</span>
+        <span class="type">void</span> stop();
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signal for the active property</span>
+        <span class="type">void</span> activeChanged();
+
+    <span class="keyword">private</span> Q_SLOTS:
+        <span class="comment">// This method is called whenever the RenderThread has finished the calculation of one block.</span>
+        <span class="type">void</span> addBlock(<span class="keyword">const</span> Block <span class="operator">&amp;</span>block);
+
+        <span class="comment">// This method is called whenever the RenderThread has finished the complete transformation of an image</span>
+        <span class="type">void</span> threadFinished();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The accessor method for the active property</span>
+        <span class="type">bool</span> active() <span class="keyword">const</span>;
+
+        <span class="comment">// The canvas container object</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>m_container;
+
+        <span class="comment">// The render thread</span>
+        RenderThread <span class="operator">*</span>m_thread;
+
+        <span class="comment">// The active property</span>
+        <span class="type">bool</span> m_active;
+    };</pre>
+<p>The <tt>Renderer</tt> class also contains a worker thread, provided by a <tt>RenderThread</tt> object. This will emit signals to send <tt>Block</tt> objects to the renderer's <tt>addBlock(Block)</tt> slot.</p>
+<p>The parts of the <tt>Renderer</tt> class that are most relevant are the constructor and the <tt>addBlock(Block)</tt> slot.</p>
+<p>The constructor creates a thread for rendering images.</p>
+<pre class="cpp">    Renderer<span class="operator">::</span>Renderer(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
+    {
+        <span class="comment">/**
+         * We use only one RenderThread object in this example, so only one
+         * image can be transformed at a time.
+         */</span>
+        m_thread <span class="operator">=</span> <span class="keyword">new</span> RenderThread();
+        connect(m_thread<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(threadFinished()));
+        connect(m_thread<span class="operator">,</span> SIGNAL(sendBlock(Block))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(addBlock(Block)));</pre>
+<p>In the last of these connections, we connect a signal in the <tt>RenderThread</tt> object to the <tt>addBlock(Block)</tt> slot in the renderer.</p>
+<p>The <tt>addBlock(Block)</tt> slot receives blocks from the rendering thread via the signal-slot connection set up in the constructor:</p>
+<pre class="cpp">    <span class="type">void</span> Renderer<span class="operator">::</span>addBlock(<span class="keyword">const</span> Block <span class="operator">&amp;</span>block)
+    {
+        <span class="comment">/**
+         * We represent each block by a 'pixel' Container object with the same
+         * geometry and color as the block.
+         * The pixel containers are placed on the canvas container.
+         */</span>
+        Container <span class="operator">*</span>pixel <span class="operator">=</span> <span class="keyword">new</span> Container(m_container);
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setBackground(block<span class="operator">.</span>color());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setPreferredWidth(block<span class="operator">.</span>rect()<span class="operator">.</span>width());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setPreferredHeight(block<span class="operator">.</span>rect()<span class="operator">.</span>height());
+
+        AbsoluteLayoutProperties <span class="operator">*</span>properties <span class="operator">=</span> <span class="keyword">new</span> AbsoluteLayoutProperties;
+        properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionX(block<span class="operator">.</span>rect()<span class="operator">.</span>x());
+        properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionY(block<span class="operator">.</span>rect()<span class="operator">.</span>y());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setLayoutProperties(properties);
+    }</pre>
+<p>We simply create the pixel Container on the canvas container as they arrive.</p>
+<a name="the-renderthread-class"></a>
+<h2>The RenderThread Class</h2>
+<p>The <tt>RenderThread</tt> class processes an image, creating <tt>Block</tt> objects and using the <tt>sendBlock(Block)</tt> signal to send them to other components in the example.</p>
+<pre class="cpp">    <span class="comment">/**
+     * The RenderThread class takes an image as input and transforms it into a list of colored rectangles (blocks)
+     * that depicts the image in a more abstract way.
+     * The transformation is executed in a separated worker thread and the result (the list of blocks) is reported
+     * back to the Renderer as parameter of a signal.
+     */</span>
+    <span class="keyword">class</span> RenderThread : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qthread.html">QThread</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        RenderThread(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="operator">~</span>RenderThread();
+
+        <span class="comment">// This method is called to start the transformation on the given image</span>
+        <span class="type">void</span> processImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> <span class="operator">&amp;</span>image);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is called whenever the user wants to stop the transformation process</span>
+        <span class="type">void</span> stopProcess();
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted whenever a new block has been calculated</span>
+        <span class="type">void</span> sendBlock(<span class="keyword">const</span> Block <span class="operator">&amp;</span>block);
+
+    <span class="keyword">protected</span>:
+        <span class="comment">/**
+         * This method is reimplemented from the QThread class. The content of this
+         * method will be executed in the worker thread.
+         */</span>
+        <span class="type">void</span> run();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// A flag to signal the worker thread that it should terminate itself</span>
+        <span class="type">bool</span> m_abort;
+
+        <span class="comment">// A mutex to serialize the access to the m_abort flag</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qmutex.html">QMutex</a></span> mutex;
+
+        <span class="comment">// The image that should be transformed</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> m_image;
+    };</pre>
+<p>The constructor and destructor are not quoted here. These take care of setting up the thread's internal state and cleaning up when it is destroyed.</p>
+<p>Processing is started with the <tt>processImage()</tt> function, which calls the <tt>RenderThread</tt> class's reimplementation of the <a href="http://qt.nokia.com/doc/4.7/qthread.html#run">QThread::run</a>() function:</p>
+<pre class="cpp">    <span class="type">void</span> RenderThread<span class="operator">::</span>processImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> <span class="operator">&amp;</span>image)
+    {
+        <span class="keyword">if</span> (image<span class="operator">.</span>isNull())
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Store a copy of the image ...</span>
+        m_image <span class="operator">=</span> image;
+
+        <span class="comment">// ... reset the abort flag ...</span>
+        m_abort <span class="operator">=</span> <span class="keyword">false</span>;
+
+        <span class="comment">// ... and start the execution of the worker thread.</span>
+        start();
+    }
+
+    <span class="type">void</span> RenderThread<span class="operator">::</span>run()
+    {
+        <span class="comment">// Note: The content of this method is executed inside the worker thread!</span>
+
+        <span class="comment">// Iterate over the image pixel-by-pixel and calculate the color of the blocks</span>
+        <span class="type">int</span> size <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qMax">qMax</a>(m_image<span class="operator">.</span>width() <span class="operator">/</span> <span class="number">20</span><span class="operator">,</span> m_image<span class="operator">.</span>height() <span class="operator">/</span> <span class="number">20</span>);
+        <span class="keyword">for</span> (<span class="type">int</span> s <span class="operator">=</span> size; s <span class="operator">&gt;</span> <span class="number">10</span>; <span class="operator">-</span><span class="operator">-</span>s) {
+            <span class="keyword">for</span> (<span class="type">int</span> c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> <span class="number">400</span>; <span class="operator">+</span><span class="operator">+</span>c) {</pre>
+<p>Ignoring the details of the way the image is processed, we see that the signal containing a block is emitted in the usual way:</p>
+<pre class="qml">        ...
+                <span class="keyword">if</span> (<a href="http://qt.nokia.com/doc/4.7/qcolor.html#qAlpha">qAlpha</a>(m_image<span class="operator">.</span>pixel(x1<span class="operator">,</span> y1)) <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>) { <span class="comment">// ignore transparent pixels</span>
+                    <span class="comment">// Create a corresponding color object</span>
+                    <span class="keyword">const</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color color <span class="operator">=</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color<span class="operator">::</span>fromRGBA(red <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> green <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> blue <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> <span class="number">1.0</span>);
+
+                    <span class="comment">// Create a block of the current block size</span>
+                    Block block(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qrect.html">QRect</a></span>(x1<span class="operator">,</span> y1<span class="operator">,</span> x2 <span class="operator">-</span> x1 <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> y2 <span class="operator">-</span> y1 <span class="operator">+</span> <span class="number">1</span>)<span class="operator">,</span> color);
+
+                    <span class="comment">// Send the result by emitting the signal</span>
+                    <span class="keyword">emit</span> sendBlock(block);
+                }
+
+                <span class="comment">/**
+                 * If the user requested the abort of the worker thread, we simply return from the run() method,
+                 * which will cause the termination of the worker thread.
+                 */</span>
+                <span class="keyword">if</span> (m_abort)
+                    <span class="keyword">return</span>;
+
+                msleep(<span class="number">10</span>);
+            }
+        }
+    }</pre>
+<p>Each signal that is emitted will be queued and delivered later to the renderer's <tt>addBlock(Block)</tt> slot.</p>
+<a name="registering-the-type"></a>
+<h2>Registering the Type</h2>
+<p>In the example's <tt>main()</tt> function, we perform the registration of the <tt>Block</tt> class as a custom type with the meta-object system by calling the <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#qRegisterMetaType">qRegisterMetaType</a>() template function:</p>
+<pre class="cpp">    <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+    {
+        <span class="comment">/**
+         * We have to call qRegisterMetaType() on our custom class if we want to use
+         * it as parameter type for a cross-thread signal/slot connection.
+         * Using only Q_DECLARE_METATYPE is not enough in that case.
+         */</span>
+        <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#qRegisterMetaType">qRegisterMetaType</a><span class="operator">&lt;</span>Block<span class="operator">&gt;</span>();
+
+        Application app(argc<span class="operator">,</span> argv);
+
+        Renderer renderer;
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
+            <span class="comment">// Make the Renderer object available as context property</span>
+            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_renderer&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>renderer);
+            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+            <span class="keyword">if</span> (appPage) {
+                Application<span class="operator">::</span>setScene(appPage);
+                <span class="comment">// Tell the Renderer object which control it should use for 'painting'</span>
+                renderer<span class="operator">.</span>setCanvas(appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Container<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;canvas&quot;</span>));
+            }
+        }
+        <span class="keyword">return</span> Application<span class="operator">::</span>exec();
+    }</pre>
+<p>This call is placed here to ensure that the type is registered before any signal-slot connections are made that use it.</p>
+<a name="further-reading"></a>
+<h2>Further Reading</h2>
+<p>This example showed how a custom type can be registered with the meta-object system so that it can be used with signal-slot connections between threads. For ordinary communication involving direct signals and slots, it is enough to simply declare the type in the way described in the <a href="http://qt.nokia.com/doc/4.7/tools-customtypesending.html">Custom Type Sending Example</a>.</p>
+<p>In practice, both the <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a>() macro and the <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#qRegisterMetaType">qRegisterMetaType</a>() template function can be used to register custom types, but <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#qRegisterMetaType">qRegisterMetaType</a>() is only required if you need to perform signal-slot communication or need to create and destroy objects of the custom type at run-time.</p>
+<p>More information on using custom types with Qt can be found in the <a href="http://qt.nokia.com/doc/4.7/custom-types.html">Creating Custom Qt Types</a> document.</p>
+</div>
+<!-- @@@queuedcustomtype -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

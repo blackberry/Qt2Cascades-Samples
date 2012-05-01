@@ -1,0 +1,123 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page streambookmarks
+    \title QXmlStream Bookmarks Example
+
+    The QXmlStream Bookmarks example provides a reader for XML Bookmark
+    Exchange Language (XBEL) files using Qt's QXmlStreamReader class
+    for reading, and QXmlStreamWriter class for writing the files.
+
+    \image streambookmarks-example-rim.png
+
+    \section1 XbelWriter Class Definition
+
+    The \c XbelWriter class contains a private instance of QXmlStreamWriter,
+    which provides an XML writer with a streaming API. \c XbelWriter also
+    has a reference to the Container instance where the bookmark hierarchy
+    is stored.
+
+    \snippet xml/streambookmarks/src/xbelwriter.hpp 0
+
+    \section1 XbelWriter Class Implementation
+
+    The \c XbelWriter constructor accepts a \a treeContainer to initialize within
+    its definition. We enable \l{QXmlStreamWriter}'s auto-formatting property
+    to ensure line-breaks and indentations are added automatically to empty
+    sections between elements, increasing readability as the data is split into
+    several lines.
+
+    \snippet xml/streambookmarks/src/xbelwriter.cpp 0
+
+    The \c writeFile() function accepts a QIODevice object and sets it using
+    \c setDevice(). This function then writes the document type
+    definition(DTD), the start element, the version, and \c{treeContainer}'s
+    top-level items.
+
+    \snippet xml/streambookmarks/src/xbelwriter.cpp 1
+
+    The \c writeItem() function accepts a Control object and writes it
+    to the stream, depending on its \c tagName, which can either be a "folder",
+    "bookmark", or "separator".
+
+    \snippet xml/streambookmarks/src/xbelwriter.cpp 2
+
+    \section1 XbelReader Class Definition
+
+    The \c XbelReader contains a private instance of QXmlStreamReader, the
+    companion class to QXmlStreamWriter. \c XbelReader also contains a
+    reference to the Container that is used to group the bookmarks according
+    to their hierarchy.
+
+    \snippet xml/streambookmarks/src/xbelreader.hpp 0
+
+    \section1 XbelReader Class Implementation
+
+    The \c XbelReader constructor accepts a Container to initialize the
+    \c treeWidget within its definition.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 0
+
+    The \c read() function accepts a QIODevice and sets it using
+    \l{QXmlStreamReader::}{setDevice()}. The actual process of reading only
+    takes place if the file is a valid XBEL 1.0 file. Note that the XML input
+    needs to be well-formed to be accepted by QXmlStreamReader. Otherwise, the
+    \l{QXmlStreamReader::}{raiseError()} function is used to display an error
+    message. Since the XBEL reader is only concerned with reading XML elements,
+    it makes extensive use of the \l{QXmlStreamReader::}{readNextStartElement()}
+    convenience function.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 1
+
+    The \c errorString() function is used if an error occurred, in order to
+    obtain a description of the error complete with line and column number
+    information.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 2
+
+    The \c readXBEL() function reads the name of a startElement and calls
+    the appropriate function to read it, depending on whether if its a
+    "folder", "bookmark" or "separator". Otherwise, it calls
+    \l{QXmlStreamReader::}{skipCurrentElement()}. The Q_ASSERT() macro is used
+    to provide a pre-condition for the function.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 3
+
+    The \c readTitle() function reads the bookmark's title.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 4
+
+    The \c readSeparator() function creates a separator. The element
+    is then skipped using \l{QXmlStreamReader::}{skipCurrentElement()}.
+
+    \snippet xml/streambookmarks/src/xbelreader.cpp 5
+
+    See the \l{http://pyxml.sourceforge.net/topics/xbel/}
+    {XML Bookmark Exchange Language Resource Page} for more information
+    about XBEL files.
+*/

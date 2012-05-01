@@ -1,0 +1,62 @@
+/****************************************************************************
+**
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page htmlinfo
+    \title XML HTML Info Example
+
+    The XML HTML Info example provides statistics about the content of HTML files.
+
+    \image htmlinfo-example-rim.png
+
+    The files are parsed using a QXmlStreamReader object. If the file does
+    not contain a well-formed XML document, a description of the error is
+    reported.
+
+    \section1 Basic Operation
+
+    Reading XML is handled by an instance of the QXmlStreamReader class, which
+    operates on the input file object:
+
+    \snippet xml/htmlinfo/src/htmlinfo.cpp 0
+
+    The work of parsing and the XML and extracting statistics is done in a
+    while loop, and is driven by input from the reader:
+
+    \snippet xml/htmlinfo/src/htmlinfo.cpp 1
+
+    If more input is available, the next token from the input file is read
+    and parsed. The program then looks for the specific element types,
+    "title", "a", and "p", and stores information about them.
+
+    When there is no more input, the loop terminates. If an error occurred,
+    it is reported to the UI:
+
+    \snippet xml/htmlinfo/src/htmlinfo.cpp 2
+
+    If no error occurred, the example makes the statistics available to the UI.
+*/

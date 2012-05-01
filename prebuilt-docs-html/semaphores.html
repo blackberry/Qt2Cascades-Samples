@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- semaphores.qdoc -->
+  <title>Cascades : Semaphores Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt Cascades Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li>Semaphores Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#global-variables">Global Variables</a></li>
+<li class="level1"><a href="#producer-class">Producer Class</a></li>
+<li class="level1"><a href="#consumer-class">Consumer Class</a></li>
+<li class="level1"><a href="#the-main-function">The main() Function</a></li>
+</ul>
+</div>
+<h1 class="title">Semaphores Example</h1>
+<span class="subtitle"></span>
+<!-- $$$semaphores-description -->
+<div class="descr"> <a name="details"></a>
+<p>The Semaphores example shows how to use <a href="http://qt.nokia.com/doc/4.7/qsemaphore.html">QSemaphore</a> to control access to a circular buffer shared by a producer thread and a consumer thread.</p>
+<p class="centerAlign"><img src="images/semaphores-example.png" /></p><p>The producer writes data to the buffer until it reaches the end of the buffer, at which point it restarts from the beginning, overwriting existing data. The consumer thread reads the data as it is produced and writes it to screen.</p>
+<p>Semaphores make it possible to have a higher level of concurrency than mutexes. If accesses to the buffer were guarded by a <a href="http://qt.nokia.com/doc/4.7/qmutex.html">QMutex</a>, the consumer thread couldn't access the buffer at the same time as the producer thread. Yet, there is no harm in having both threads working on <i>different parts</i> of the buffer at the same time.</p>
+<p>The example comprises two classes: <tt>Producer</tt> and <tt>Consumer</tt>. Both inherit from <a href="http://qt.nokia.com/doc/4.7/qthread.html">QThread</a>. The circular buffer used for communicating between these two classes and the semaphores that protect it are global variables.</p>
+<p>An alternative to using <a href="http://qt.nokia.com/doc/4.7/qsemaphore.html">QSemaphore</a> to solve the producer-consumer problem is to use <a href="http://qt.nokia.com/doc/4.7/qwaitcondition.html">QWaitCondition</a> and <a href="http://qt.nokia.com/doc/4.7/qmutex.html">QMutex</a>. This is what the <a href="waitconditions.html">Wait Conditions</a> example does.</p>
+<a name="global-variables"></a>
+<h2>Global Variables</h2>
+<p>Let's start by reviewing the circular buffer and the associated semaphores:</p>
+<pre class="cpp">    <span class="comment">// The total number of bytes that will be produced and consumed</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> DataSize <span class="operator">=</span> <span class="number">100000</span>;
+
+    <span class="comment">// The size of the buffer that is used to deliver data from the producer to the consumer</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> BufferSize <span class="operator">=</span> <span class="number">1900</span>;
+
+    <span class="comment">// The buffer that is used to deliver data from the producer to the consumer</span>
+    <span class="keyword">static</span> <span class="type">char</span> buffer<span class="operator">[</span>BufferSize<span class="operator">]</span>;
+
+    <span class="comment">// The two semaphores that are used to synchronize the access between producer and consumer to the shared buffer</span>
+    <span class="keyword">static</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qsemaphore.html">QSemaphore</a></span> freeBytes(BufferSize);
+    <span class="keyword">static</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qsemaphore.html">QSemaphore</a></span> usedBytes;</pre>
+<p><tt>DataSize</tt> is the amout of data that the producer will generate. To keep the example as simple as possible, we make it a constant. <tt>BufferSize</tt> is the size of the circular buffer. It is less than <tt>DataSize</tt>, meaning that at some point the producer will reach the end of the buffer and restart from the beginning.</p>
+<p>To synchronize the producer and the consumer, we need two semaphores. The <tt>freeBytes</tt> semaphore controls the &quot;free&quot; area of the buffer (the area that the producer hasn't filled with data yet or that the consumer has already read). The <tt>usedBytes</tt> semaphore controls the &quot;used&quot; area of the buffer (the area that the producer has filled but that the consumer hasn't read yet).</p>
+<p>Together, the semaphores ensure that the producer is never more than <tt>BufferSize</tt> bytes ahead of the consumer, and that the consumer never reads data that the producer hasn't generated yet.</p>
+<p>The <tt>freeBytes</tt> semaphore is initialized with <tt>BufferSize</tt>, because initially the entire buffer is empty. The <tt>usedBytes</tt> semaphore is initialized to 0 (the default value if none is specified).</p>
+<a name="producer-class"></a>
+<h2>Producer Class</h2>
+<p>Let's review the code for the <tt>Producer</tt> class:</p>
+<pre class="cpp">    <span class="comment">/**
+     * The Producer fills the shared buffer with data in a separated worker thread.
+     */</span>
+    <span class="keyword">class</span> Producer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qthread.html">QThread</a></span>
+    {
+    <span class="keyword">public</span>:
+        <span class="type">void</span> run()
+        {
+            <span class="comment">// This code is executed in the worker thread</span>
+
+            <span class="comment">// Initialize the random number generator</span>
+            qsrand(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtime.html">QTime</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span>)<span class="operator">.</span>secsTo(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtime.html">QTime</a></span><span class="operator">::</span>currentTime()));
+
+            <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> DataSize; <span class="operator">+</span><span class="operator">+</span>i) {
+                <span class="comment">// Decrement the 'counter' of free bytes. This will block this thread if no free bytes are available</span>
+                freeBytes<span class="operator">.</span>acquire();
+
+                <span class="comment">// Write a random character to the buffer</span>
+                buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span> <span class="operator">=</span> <span class="string">&quot;ACGT&quot;</span><span class="operator">[</span>(<span class="type">int</span>) qrand() <span class="operator">%</span> <span class="number">4</span><span class="operator">]</span>;
+
+                <span class="comment">// Increament the 'counter' of used bytes. This will unblock the Consumer if it was waiting for reading new data</span>
+                usedBytes<span class="operator">.</span>release();
+            }
+        }
+    };</pre>
+<p>The producer generates <tt>DataSize</tt> bytes of data. Before it writes a byte to the circular buffer, it must acquire a &quot;free&quot; byte using the <tt>freeBytes</tt> semaphore. The <a href="http://qt.nokia.com/doc/4.7/qsemaphore.html#acquire">QSemaphore::acquire</a>() call might block if the consumer hasn't kept up the pace with the producer.</p>
+<p>At the end, the producer releases a byte using the <tt>usedBytes</tt> semaphore. The &quot;free&quot; byte has successfully been transformed into a &quot;used&quot; byte, ready to be read by the consumer.</p>
+<a name="consumer-class"></a>
+<h2>Consumer Class</h2>
+<p>Let's now turn to the <tt>Consumer</tt> class:</p>
+<pre class="cpp">    <span class="comment">/**
+     * The Consumer reads the data from the shared buffer in a separated worker thread and
+     * publishes the read data to the UI.
+     */</span>
+    <span class="keyword">class</span> Consumer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qthread.html">QThread</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        <span class="type">void</span> run()
+        {
+            <span class="comment">// This code is executed in the worker thread</span>
+
+            <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> DataSize; <span class="operator">+</span><span class="operator">+</span>i) {
+                <span class="comment">// Decrement the 'counter' of used bytes. This will block this thread if no used bytes are available</span>
+                usedBytes<span class="operator">.</span>acquire();
+
+                <span class="comment">// Read out one byte from the shared buffer</span>
+                <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> text(buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span>);
+
+                <span class="comment">// Increment the 'counter' of free bytes. This will unblock the Producer if it was waiting for writing new data</span>
+                freeBytes<span class="operator">.</span>release();
+
+                <span class="comment">// Publish the result to the UI</span>
+                <span class="keyword">emit</span> stringConsumed(text);
+            }
+
+            <span class="comment">// Tell the UI that we have transferred all data</span>
+            <span class="keyword">emit</span> stringConsumed(<span class="string">&quot;\n\nFinished&quot;</span>);
+        }
+
+    Q_SIGNALS:
+        <span class="type">void</span> stringConsumed(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>text);
+    };</pre>
+<p>The code is very similar to the producer, except that this time we acquire a &quot;used&quot; byte and release a &quot;free&quot; byte, instead of the opposite.</p>
+<a name="the-main-function"></a>
+<h2>The main() Function</h2>
+<pre class="cpp">    <span class="comment">/**
+     * This sample application shows how to solve the producer-consumer problem (http://en.wikipedia.org/wiki/Producer-consumer_problem)
+     * with semaphores under Qt.
+     */</span>
+    <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+    {
+        Application app(argc<span class="operator">,</span> argv);
+
+        <span class="comment">// Create the producer and consumer objects</span>
+        Producer producer;
+        Consumer consumer;
+
+        <span class="comment">// Create the TextBuffer object</span>
+        TextBuffer textBuffer;
+
+        <span class="comment">// Append the new data to the TextBuffer whenever the Consumer has consumed some data</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>consumer<span class="operator">,</span> SIGNAL(stringConsumed(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">&amp;</span>))<span class="operator">,</span>
+                         <span class="operator">&amp;</span>textBuffer<span class="operator">,</span> SLOT(appendText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">&amp;</span>))<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qt.html">Qt</a></span><span class="operator">::</span>BlockingQueuedConnection);
+
+        QmlDocument <span class="operator">*</span> <span class="keyword">const</span> qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
+            <span class="comment">// Make the TextBuffer available to the UI as context property</span>
+            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_textBuffer&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>textBuffer);
+            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+            <span class="keyword">if</span> (appPage) {
+                Application<span class="operator">::</span>setScene(appPage);
+
+                <span class="comment">// Start the producer and consumer thread</span>
+                producer<span class="operator">.</span>start();
+                consumer<span class="operator">.</span>start();
+            }
+        }
+        <span class="keyword">return</span> Application<span class="operator">::</span>exec();
+    }</pre>
+<p>So what happens when we run the program? Initially, the producer thread is the only one that can do anything; the consumer is blocked waiting for the <tt>usedBytes</tt> semaphore to be released (its initial <a href="http://qt.nokia.com/doc/4.7/qsemaphore.html#available">available()</a> count is 0). Once the producer has put one byte in the buffer, <tt>freeBytes.available()</tt> is <tt>BufferSize</tt> - 1 and <tt>usedBytes.available()</tt> is 1. At that point, two things can happen: Either the consumer thread takes over and reads that byte, or the consumer gets to produce a second byte.</p>
+<p>The producer-consumer model presented in this example makes it possible to write highly concurrent multithreaded applications. On a multiprocessor machine, the program is potentially up to twice as fast as the equivalent mutex-based program, since the two threads can be active at the same time on different parts of the buffer.</p>
+<p>Be aware though that these benefits aren't always realized. Acquiring and releasing a <a href="http://qt.nokia.com/doc/4.7/qsemaphore.html">QSemaphore</a> has a cost. In practice, it would probably be worthwhile to divide the buffer into chunks and to operate on chunks instead of individual bytes. The buffer size is also a parameter that must be selected carefully, based on experimentation.</p>
+<p>To visualize the result, the data the <tt>Consumer</tt> processes is also appended to a <tt>TextBuffer</tt>, which is exported to QML and displayed there.</p>
+</div>
+<!-- @@@semaphores -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

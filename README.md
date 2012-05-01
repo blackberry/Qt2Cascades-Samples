@@ -1,6 +1,7 @@
-Qt-Cascades-Samples
-===================
+Adaptations of the well-known [Qt example projects][1] to the BB10
+platform, which uses the alternative Cascades UI framework.
 
-Port of Qt Samples to use Cascades.
+Prebuilt HTML documentation can be browsed.  It's in the
+prebuilt-docs-html/ directory.
 
-This is based on but different to the collaboration repo that currently exists!
+[1]: http://doc.qt.nokia.com/4.7-snapshot/all-examples.html

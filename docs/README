@@ -1,0 +1,7 @@
+To build, type
+    qmake
+followed by
+    make docs
+
+For this to work, the 'qdoc3' tool needs to be in the $PATH, and the Qt documentation index
+needs to exist at $QTDIR/doc/html/qt.index.
