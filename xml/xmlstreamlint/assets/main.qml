@@ -43,86 +43,110 @@
 
 import bb.cascades 1.0
 
-// Page shows different HTML file selections in a ListView that will be parsed using a xml stream
-// reader and validates it for proper xml syntax
+
+// Page shows different HTML file selections in a ListView that will be parsed using a xml
+// reader and statistics about the file will be displayed
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        Container {
-            layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+
+        ScrollView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
             }
-            
-            // Container for giving the ListView a background Color
-            Container {
-                background: Color.create ("#150790")
-                
-                // The standard ListView holding the HTML file selections
-                ListView {
-                    objectName: "listView"
-                    leftMargin: 10
-                    topMargin: 10
-                    bottomMargin: 10
-                    dataModel: _model
-                    listItemManager: _itemManager
-                    preferredWidth: 380
-                    
-                    // Set and parse the HTML file on selection
-                    onSelectionChanged: _app.setFileName (indexPath)
-                }
+
+            scrollViewProperties {
+                scrollMode: ScrollMode.Vertical
             }
+
             Container {
-                layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Fill
-                    horizontalAlignment: HorizontalAlignment.Fill
+                layout: StackLayout {
+                    topPadding: 150
+                    leftPadding: 30
+                    rightPadding: 30
                 }
-                Container {
-                    background: Color.create ("#7b9812")
-                    
-                    // A standard TextArea for displaying any xml parse errors
-                    TextArea {
-                        leftMargin: 10
-                        preferredWidth: 900
-                        preferredHeight: 145
-                        editable: false
-                        
-                        layoutProperties: StackLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                        }
-                        
-                        text: _xmlStreamLint.result
-                        
-                        // Defines text style
-                        textStyle {
-                            base: SystemDefaults.TextStyles.SmallText
-                            color: Color.Black
-                        }
+
+                // A standard TextArea for displaying the result
+                TextArea {
+                    preferredWidth: 700
+                    minHeight: 150
+                    backgroundVisible: false
+                    editable: false
+
+                    text: _xmlStreamLint.result
+
+                    // Defines text style
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
+                        color: Color.White
                     }
                 }
-                
-                Container {
-                    background: Color.create ("#e7f6b1")
-                    
-                    // A standard TextArea for displaying the HTML source
-                    TextArea {
-                        leftMargin: 10
-                        editable: false
-                        preferredWidth: 900
-                        preferredHeight: 600
-                        layoutProperties: StackLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                        }
-                        
-                        text: _xmlStreamLint.output
-                        textStyle {
-                            base: SystemDefaults.TextStyles.SmallText
-                            color: Color.DarkBlue
-                        }
-                        
+
+                // A divider line
+                ImageView {
+                    imageSource: "asset:///images/divider.png"
+                }
+
+                // A standard TextArea for displaying the output
+                TextArea {
+                    preferredWidth: 700
+                    minHeight: 300
+                    backgroundVisible: false
+                    editable: false
+
+                    text: _xmlStreamLint.output
+
+                    // Defines text style
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
+                        color: Color.White
                     }
                 }
             }
+        }
+
+        SlideoutPanel {
+            layoutProperties: StackLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+            }
+
+            translationY: -444
+
+            onClicked: {
+                if (translationY == 0)
+                    slideOut.play()
+                else
+                    slideIn.play()
+            }
+
+            animations: [
+                TranslateTransition {
+                    id: slideIn
+                    fromY: -444
+                    toY: 0
+                    easingCurve: StockCurve.BackInOut
+                    duration: 800
+                },
+                TranslateTransition {
+                    id: slideOut
+                    fromY: 0
+                    toY: -444
+                    easingCurve: StockCurve.BackInOut
+                    duration: 800
+                }
+            ]
         }
     }
 }

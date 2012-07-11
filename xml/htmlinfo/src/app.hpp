@@ -43,13 +43,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <QtCore/QMetaType>
 #include <QtCore/QObject>
 
-#include <bb/cascades/Event>
-#include <bb/cascades/Control>
-#include <bb/cascades/QListDataModel>
-#include <bb/cascades/UiObject>
+#include <bb/cascades/GroupDataModel>
 
 class HtmlInfo;
 
@@ -64,18 +60,31 @@ class App : public QObject
 {
     Q_OBJECT
 
+    // This property makes the title of the currently selected file accessible to the UI
+    Q_PROPERTY(QString fileTitle READ fileTitle NOTIFY fileTitleChanged)
+
 public:
     App();
 
     // This method is called when the user has selected an XHTML document in the ListView
     Q_INVOKABLE void setFileName(const QVariantList &indexPath);
 
+Q_SIGNALS:
+    // The change notification signal for the file title property
+    void fileTitleChanged();
+
 private:
+    // The accessor method for the file title property
+    QString fileTitle() const;
+
     // The object that extracts the information from the XHTML document
     HtmlInfo *m_htmlInfo;
 
     // The model of available XML documents to process
-    bb::cascades::QListDataModel<QString> m_model;
+    bb::cascades::GroupDataModel m_model;
+
+    // Contains the title of the currently selected file
+    QString m_fileTitle;
 };
 
 #endif

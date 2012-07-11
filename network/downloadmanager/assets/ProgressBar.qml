@@ -47,7 +47,7 @@ import bb.cascades 1.0
 Container {
     
     // The total progress bar value
-    property int total: -1
+    property int total: 0
     
     // The current progress
     property int value: 0
@@ -58,27 +58,33 @@ Container {
     
     layout: DockLayout {
     }
-    
+
     // Container for the progress bar identifying the Layout
     Container {
         layoutProperties: DockLayoutProperties {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
         }
-        layout: AbsoluteLayout {
-        }
+
+        layout: AbsoluteLayout {}
         
         // Container representing the size and color of the bar
         Container {
             background: Color.Blue
             
             // Bar width changing depending on the current value
-            preferredWidth: root.value * root.preferredWidth / root.total
-            preferredHeight: 30
+            preferredWidth: root.total == 0 ? 0 : root.value * root.preferredWidth / root.total
+            preferredHeight: 40
             
             layoutProperties: AbsoluteLayoutProperties {
                 positionX: 0
                 positionY: 0
+            }
+
+            // Disable animation of preferredWidth property
+            attachedObjects: ImplicitAnimationController {
+                propertyName: "preferredWidth"
+                enabled: false
             }
         }
     }
@@ -90,5 +96,7 @@ Container {
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
         }
+
+        textStyle.color: Color.White
     }
 }

@@ -57,10 +57,10 @@
 /*
  Constructs an RSSListing object and connects the needed signals.
  */
-
+//! [0]
 RSSListing::RSSListing(QObject *parent)
     : QObject(parent)
-    , m_url("http://labs.qt.nokia.com/blogs/feed")
+    , m_url("http://feeds.feedburner.com/blackberry/CAxx")
     , m_active(false)
     , m_currentReply(0)
 {
@@ -68,10 +68,12 @@ RSSListing::RSSListing(QObject *parent)
     connect(&m_manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(finished(QNetworkReply*)));
 }
+//! [0]
 
 /*
  Starts the network request and connects the needed signals
  */
+//! [1]
 void RSSListing::get(const QUrl &url)
 {
     QNetworkRequest request(url);
@@ -86,6 +88,7 @@ void RSSListing::get(const QUrl &url)
     connect(m_currentReply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(error(QNetworkReply::NetworkError)));
 }
+//! [1]
 
 /*
  Starts fetching data from a news source specified in m_url.
@@ -124,18 +127,19 @@ void RSSListing::metaDataChanged()
  Reads data received from the RDF source.
 
  We read all the available data, and pass it to the XML
- stream reader. Then we call the XML parsing function.
+ stream reader.
  */
 
+//! [2]
 void RSSListing::readyRead()
 {
     const int statusCode = m_currentReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (statusCode >= 200 && statusCode < 300) {
         const QByteArray data = m_currentReply->readAll();
         m_xml.addData(data);
-        parseXml();
     }
 }
+//! [2]
 
 /*
  Finishes processing an HTTP request.
@@ -151,6 +155,8 @@ void RSSListing::readyRead()
 void RSSListing::finished(QNetworkReply *reply)
 {
     Q_UNUSED(reply);
+
+    parseXml();
 
     m_active = false;
     emit activeChanged();
@@ -183,6 +189,7 @@ bool RSSListing::active() const
 /*
  Parses the XML data and fill feeds string accordingly.
  */
+//! [3]
 void RSSListing::parseXml()
 {
     m_feeds.clear();
@@ -221,6 +228,7 @@ void RSSListing::parseXml()
 
     emit feedsChanged();
 }
+//! [3]
 
 void RSSListing::error(QNetworkReply::NetworkError)
 {

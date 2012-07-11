@@ -43,37 +43,43 @@
 
 import bb.cascades 1.0
 
+//! [0]
 // Container for the visual representation of a XBEL folder element
 Container {
     property string tagName: "folder"
     property alias title: titleField.text
     topMargin: 20
-    leftMargin: 20
+
+    layout: StackLayout {
+        leftPadding: 20
+    }
+
     Container {
         layout: StackLayout {
             layoutDirection: LayoutDirection.LeftToRight
         }
-        
+
         // A standard ImageView
         ImageView {
-            imageSource: "asset:///folder.png"
+            imageSource: "asset:///images/folder.png"
             preferredWidth: 32
             preferredHeight: 32
         }
-        
+
         // A standard Label for the folder title element
         Label {
             id: titleField
             leftMargin: 10
             layoutProperties: StackLayoutProperties {
             }
-            
-            // Defines text style
+
+            // Defines custom text style
             textStyle {
                 base: SystemDefaults.TextStyles.SmallText
                 fontWeight: FontWeight.Bold
-                color: Color.Black
+                color: Color.White
             }
         }
     }
 }
+//! [0]

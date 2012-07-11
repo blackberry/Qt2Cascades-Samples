@@ -63,7 +63,7 @@ App::App()
 
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
         }
     }
 }

@@ -40,15 +40,17 @@
  **
  ****************************************************************************/
 
-
+//! [1]
 import bb.cascades 1.0
 
 // Container for the Downloader visual nodes
 Container {
-    leftMargin: 10
-    topMargin: 10
-    rightMargin: 10
-    bottomMargin: 10
+    layout: StackLayout {
+        leftPadding: 30
+        topPadding: 20
+        rightPadding: 30
+        bottomPadding: 30
+    }
     
     // Container grouping the url label and input
     Container {
@@ -61,15 +63,21 @@ Container {
             rightMargin: 10
             
             text: qsTr ("URL:")
+            textStyle.color: Color.White
             layoutProperties: StackLayoutProperties {
                 verticalAlignment: VerticalAlignment.Center
+                spaceQuota: -1
             }
         }
-        
+// ![0]
         // A standard TextField
         TextField {
             id: urlEdit
-            preferredWidth: 900
+
+            layoutProperties: StackLayoutProperties {
+                verticalAlignment: VerticalAlignment.Center
+                spaceQuota: 1
+            }
             
             // Default url to use
             text: "http://qt-project.org/"
@@ -82,13 +90,18 @@ Container {
             enabled: _downloader.startDownloadPossible
         }
     }
+// ![0]
     
-    // A standard Label for the download status
-    Label {
-        topMargin: 10
+    // A standard TextField for the download status
+    TextField {
+        topMargin: 50
+        preferredHeight: 200
         layoutProperties: StackLayoutProperties {
             horizontalAlignment: HorizontalAlignment.Fill
         }
+
+        enabled: false
+        backgroundVisible: false
         
         text: _downloader.statusText
         textStyle {
@@ -98,7 +111,12 @@ Container {
     
     // Container for the application controls
     Container {
-        topMargin: 10
+        topMargin: 30
+
+        layoutProperties: StackLayoutProperties {
+            horizontalAlignment: HorizontalAlignment.Center
+        }
+
         layout: StackLayout {
             layoutDirection: LayoutDirection.LeftToRight
         }
@@ -114,7 +132,6 @@ Container {
             
             // Start the download on click
             onClicked: _downloader.startDownload (urlEdit.text)
-            
         }
         
         // A standard Button
@@ -126,3 +143,4 @@ Container {
         }
     }
 }
+//! [1]

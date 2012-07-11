@@ -46,69 +46,98 @@ import bb.cascades 1.0
 // Page that displays news items from RDF news sources
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
-        // Container to give the main view a certain Color
+
         Container {
-            background: Color.create ("#e7dfe8")
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
             layout: StackLayout {
+                topPadding: 140
             }
-            
-            // Container to create the application header with a certain Color
-            Container {
-                background: Color.create ("#a71818")
+
+//! [0]
+            // A standard TextArea for displaying items
+            TextArea {
+                editable: false
+
+                text: _rssListing.feeds
+                textStyle {
+                    base: SystemDefaults.TextStyles.SmallText
+                }
+            }
+//! [0]
+        }
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+            }
+
+            imageSource: "asset:///images/overlay.png"
+        }
+
+        // Container to create the application header with a certain Color
+        Container {
+            layoutProperties: StackLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+            }
+
+            layout: StackLayout {
+                layoutDirection: LayoutDirection.LeftToRight
+                leftPadding: 20
+                rightPadding: 20
+                topPadding: 20
+                bottomPadding: 20
+            }
+
+//! [1]
+            // A standard TextField for the RSS url
+            TextField {
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Center
+                    spaceQuota: 1
                 }
-                layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    leftPadding: 20
-                    rightPadding: 20
-                    topPadding: 20
-                }
-                
-                // A standard TextField for the RSS url
-                TextField {
-                    preferredWidth: 800
-                    enabled: ! _rssListing.active
-                    
-                    text: _rssListing.url
-                    
-                    // Save url on input
-                    onTextChanging: _rssListing.url = text
-                }
-                
-                // A standard Button
-                Button {
-                    leftMargin: 10
-                    enabled: ! _rssListing.active
-                    
-                    text: qsTr ("Fetch")
-                    
-                    // Fetch news items on click
-                    onClicked: _rssListing.fetch ()
-                }
+
+                enabled: ! _rssListing.active
+
+                text: _rssListing.url
+
+                // Save url on input
+                onTextChanging: _rssListing.url = text
             }
-            
-            // Container for displaying news items
-            Container {
-                maxHeight: 600
-                minHeight: maxHeight
-                
-                // A standard TextArea for displaying items
-                TextArea {
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                    }
-                    editable: false
-                    
-                    text: _rssListing.feeds
-                    textStyle {
-                        base: SystemDefaults.TextStyles.SmallText
-                    }
+//! [1]
+
+//! [2]
+            // A standard Button
+            Button {
+                layoutProperties: StackLayoutProperties {
+                    verticalAlignment: VerticalAlignment.Center
+                    spaceQuota: -1
                 }
+
+                leftMargin: 10
+                enabled: ! _rssListing.active
+
+                text: qsTr ("Fetch")
+
+                // Fetch news items on click
+                onClicked: _rssListing.fetch ()
             }
+//! [2]
         }
     }
 }

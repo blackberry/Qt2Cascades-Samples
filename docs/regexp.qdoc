@@ -27,15 +27,95 @@
 
 /*!
     \page regexp
+    \example tools/regexp
     \title Regular Expressions Example
+
+    \section1 Description
 
     The Regular Expressions (RegExp) example shows how regular expressions in Qt are
     applied to text by providing an environment in which new regular expressions can be
     created and tested on custom text strings.
 
     \div {class="centerAlign"}
-    \inlineimage regexp-example-rim.png
-    \inlineimage regexp-example-rim1.png
+    \inlineimage regexp-example.png
+    \inlineimage regexp-example1.png
     \enddiv
 
+    \section1 Overview
+    In this example we'll learn how to use the QRegExp class to find substrings inside
+    a text that matches a given pattern (regular expression).
+
+    \section1 The UI
+    The UI of this sample application consists of two text fields in the 'Inputs' section, where the user can type in the pattern
+    and the text. Additionally there are controls that can be used to configure various properties of the
+    regular expression (e.g. whether the lookup should be case sensitive, which pattern syntax should be used etc.).
+    In the 'Outputs' section there are labels that show at which position the matching substring is located in the text,
+    how long the matching substring is and what the matching substring looks like.
+
+    The business logic of the application is encapsulated in the class RegExp, which is
+    exported to the UI as '_regexp'.
+
+    \snippet tools/regexp/assets/main.qml 0
+
+    The 'text' properties of the pattern text field and source text field are bound against the appropriated properties
+    of the RegExp object, and whenever the user changes the text inside the text fields, the properties of RegExp are updated.
+
+    \snippet tools/regexp/assets/main.qml 1
+
+    The 'text' properties of the output related labels are also bound against the appropriated properties of the RegExp
+    object, so whenever RegExp changes its result, the labels will be updated automatically.
+
+    \section1 RegExp
+    The RegExp class encapsulates the business logic of this application. It's a thin wrapper around QRegExp that
+    provides properties, so that data can be set and read from within the UI.
+
+    All matching substrings (called captures) that the internal QRegExp object finds are stored inside the RegExp
+    class as a list of Capture objects:
+
+    \snippet tools/regexp/src/regexp.hpp 0
+
+    Inside the constructor of RegExp all the member variables are initialized and the 'available' property of all
+    Capture objects is set to 'false' to represent the initial 'pattern is not matching' state.
+
+    \snippet tools/regexp/src/regexp.cpp 0
+
+    The call to refresh() will calculate all matching substrings according to the current configuration of the
+    regular expression.
+
+    \snippet tools/regexp/src/regexp.cpp 3
+
+    Inside the refresh() method the first step is to update the escaped version of the pattern and store it in
+    the 'escapedPattern' property. In the second step we create a QRegExp object with the pattern as it has been
+    typed in by the user.
+    Now we configure the QRegExp object according to the properties of the RegExp object.
+    The call to \l{QRegExp::indexIn()}{indexIn()} does the actual pattern matching against the input text. As a
+    return value we get either '-1' if the text doesn't match the pattern or the offset where the matching substring starts.
+
+    The \l{QRegExp::matchedLength()}{matchedLength()} method of the QRegExp class returns the length of the matching
+    substring, that we simply store in the associated property of the RegExp object.
+
+    To update the captures, we iterate over all Capture objects in the internal list and update them with the
+    values returned by the \l{QRegExp::cap()}{cap()} method of the QRegExp object.
+
+    As last step we emit the regexpChanged() signal to notify the UI that all properties of the RegExp object
+    have been changed.
+
+    The setter methods of all input properties of the RegExp object follow always the same scheme:
+      \list A
+        \o Check whether the new value equals the current value, if so ignore it and return
+        \o Update the current value with the new one
+        \o Call refresh() to calculate the matching substrings
+        \o Emit the change notification signal for this property
+      \endlist
+
+    \snippet tools/regexp/src/regexp.cpp 1
+
+    \bold{Note:} The check whether the new value equals the current value should \bold{always} be done inside a property
+    setter method, to avoid the unnecessary emission of the changed signal. This improves the performance (since property
+    bindings in the UI won't be reevaluated unnecessarily) and avoids possible update loops.
+
+    \snippet tools/regexp/src/regexp.cpp 2
+
+    The getter methods of the properties of the RegExp object simply return the values of the member variables that
+    have been updated inside refresh().
 */

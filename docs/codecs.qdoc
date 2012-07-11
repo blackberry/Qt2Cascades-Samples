@@ -1,0 +1,99 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page codecs
+    \example tools/codecs
+    \title Codecs Example
+
+    \section1 Description
+
+    The Codecs example demonstrates the principles behind importing text
+    using codecs to ensure that characters are encoded properly, avoiding loss of data
+    and retaining the correct symbols used in various scripts.
+
+    \image codecs-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the QTextCodec class to decode raw data from a file
+    and show them on the screen.
+
+    \section1 The UI
+    The sample application provides an UI with two DropDown controls in a row to select a file and a codec
+    and below a TextArea where the decoded content of the selected file is shown.
+    All the business logic is encapsulated in the C++ class CodecController which has been exported to
+    the UI under the name '_codecController'.
+
+    \snippet tools/codecs/assets/main.qml 1
+
+    Whenever the user selects a file or a codec from the DropDown controls, the updateFileContent() slot of
+    the CodecController is invoked to update the content of the TextArea.
+
+    \snippet tools/codecs/assets/main.qml 0
+
+    Since the CodecController is also responsible for filling the DropDown controls with the list of available
+    files and codecs, we have to set the 'fileList' and 'codecList' properties of the CodecController.
+    This is done inside the signal handler for the creationCompleted() signal, which is emitted after the top-level
+    control in main.qml has been created and initialized.
+
+    \snippet tools/codecs/assets/main.qml 2
+
+    The CodecController also provides the property 'fileContent' which contains the content of the currently
+    selected file decoded with the currently selected codec or an empty string if no file has been selected.
+    We simply bind that property against the 'text' property of the TextArea.
+
+    \section1 CodecController
+    When the UI is loaded and the file selection DropDown is assigned to the 'fileList' property of the CodecController,
+    the fillFileList() method is called which fills the provided DropDown with the entries for all available files.
+    As the text of the entries we use the base name of the files and as value the relative path.
+
+    \snippet tools/codecs/src/CodecController.cpp 1
+
+    This list is hard-coded to the list of files that are located in the assets/encodedfiles/ directory in the project folder.
+
+    When the codec selection DropDown is assigned to the 'codecList' property, the fillCodecList() method is called.
+
+    \snippet tools/codecs/src/CodecController.cpp 2
+
+    Here we iterate over the list of available codecs that are provided by Qt on this system and add one entry to the
+    DropDown for each codec.
+    As text for the entry we use the codec name and as value the pointer to the actual QTextCodec object that represents this codec.
+    In addition we preselect the UTF-8 codec.
+
+    When the user selects a file or codec from the DropDown controls, the updateFileContent() slot will be invoked:
+
+    \snippet tools/codecs/src/CodecController.cpp 0
+
+    In this method we first check which file and codec the user has selected in the DropDown controls and extract the file path
+    and the QTextCodec object from the Option objects.
+    Afterwards we try to open the selected file and set a QTextStream on it. The QTextStream allows us to read data from the file
+    and decode them on-the-fly. For that we have to tell QTextStream which codec should be used, which is done by calling \l{QTextStream::setCodec()}{setCodec()}
+    on it.
+
+    Now we read the complete content of the file into the 'fileContent' property and emit the change notification signal,
+    so that the UI will update the content of the TextArea.
+*/

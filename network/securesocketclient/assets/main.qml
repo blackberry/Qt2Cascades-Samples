@@ -46,11 +46,21 @@ import bb.cascades 1.0
 // This Page shows the grouping of different visual nodes and the
 // transitions between visible/non-visible nodes.
 Page {
+//![0]
     // A container is used to gather visual items together.
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         // Main application control view
         MainView {
             layoutProperties: DockLayoutProperties {
@@ -58,7 +68,7 @@ Page {
                 verticalAlignment: VerticalAlignment.Fill
             }
         }
-        
+
         // Displays any ssl errors.
         SslErrorView {
             layoutProperties: DockLayoutProperties {
@@ -67,7 +77,7 @@ Page {
             }
             visible: _sslErrorControl.visible
         }
-        
+
         // Displays certifacte information
         CertificateInfoView {
             layoutProperties: DockLayoutProperties {
@@ -84,4 +94,5 @@ Page {
             visible: false
         }
     }
+//![0]
 }

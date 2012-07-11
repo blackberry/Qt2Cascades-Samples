@@ -27,7 +27,10 @@
 
 /*!
     \page waitconditions
+    \example threads/waitconditions
     \title Wait Conditions Example
+
+    \section1 Description
 
     The Wait Conditions example shows how to use QWaitCondition and
     QMutex to control access to a circular buffer shared by a
@@ -54,7 +57,7 @@
 
     An alternative to using QWaitCondition and QMutex to solve the
     producer-consumer problem is to use QSemaphore. This is what the
-    \l{semaphores}{Semaphores} example does.
+    \l{threads/semaphores}{Semaphores} example does.
 
     \section1 Global Variables
 

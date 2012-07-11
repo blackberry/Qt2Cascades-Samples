@@ -53,9 +53,6 @@ using namespace bb::cascades;
 App::App()
     : m_certificateInfoControl(new CertificateInfoControl(this)), m_sslClient(new SslClient(this))
 {
-    qmlRegisterType<DataModel>();
-    qmlRegisterType<ListItemManager>();
-
     QmlDocument *qml = QmlDocument::create().load("main.qml");
     if (!qml->hasErrors()) {
         // Make the business logic objects available to the UI as context properties
@@ -64,7 +61,7 @@ App::App()
         qml->setContextProperty("_sslErrorControl", m_sslClient->sslErrorControl());
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
             connect(m_sslClient, SIGNAL(viewCertificateChainRequested()), m_certificateInfoControl,
                     SLOT(show()));
             connect(m_sslClient, SIGNAL(certificateChainChanged(QList<QSslCertificate>)),

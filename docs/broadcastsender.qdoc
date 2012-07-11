@@ -27,10 +27,55 @@
 
 /*!
     \page broadcastsender
+    \example network/broadcastsender
     \title Broadcast Sender Example
+
+    \section1 Description
 
     The Broadcast Sender example shows how to broadcast information to multiple clients
     on a local network.
 
-    \image broadcastsender-example-rim.png
+    \image broadcastsender-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the QUdpSocket class to send and receive broadcast messages
+    on the network.
+
+    The example application is splitted in two executables, broadcastsender and \l{network/broadcastreceiver}{broadcastreceiver}.
+    While the broadcastsender allows the user to start the broadcasting of messages on the local network, the \l{network/broadcastreceiver}{broadcastreceiver}
+    will listen on the local network for these messages and display the received ones in the UI.
+
+    \section1 Sender
+    The central class in broadcastsender is Sender, which encapsulates the broadcasting of the single messages
+    and provides a property to display the current progress and status information of the broadcasting.
+
+    Whenever the user clicks the 'Start' button in the UI, the startBroadcasting() slot of the exported Sender object is invoked:
+
+    \snippet network/broadcastsender/assets/main.qml 1
+
+    The 'status' property of the Sender object is bound against a Label control to visualize the current progress and status information
+    of the sender.
+
+    \snippet network/broadcastsender/assets/main.qml 0
+
+    To make it more pretty, the Label will animate its size whenever its content changes.
+
+    Inside the constructor of Sender we initialize the 'status' property, the counter for the number of sent messages
+    and a timer object. This timer object is used to trigger the broadcasting of the messages in an interval of 1 second.
+    Additionally the QUdpSocket object is created, which encapsulates the low-level network access.
+
+    \snippet network/broadcastsender/src/Sender.cpp 0
+
+    The startBroadcasting() method, which is called when the user clicks on the 'Start' button, starts the timer, which will invoke
+    the broadcastDatagram() slot whenever it times out.
+
+    \snippet network/broadcastsender/src/Sender.cpp 1
+
+    Inside broadcastDatagram() the actual work is done. At first the 'status' property is updated with the progress information and
+    its change notification signal is emitted to let the UI update all property bindings where 'status' is involved in.
+    In a second step the datagram content is assembled and afterwards it is broadcasted over the network by calling \l{QUdpSocket::writeDatagram()}{writeDatagram()}
+    on the QUdpSocket object. Additionally to the datagram content and size we also pass the broadcast IP address and the port number, which is
+    hard-coded to 45454 in this example.
+
+    \snippet network/broadcastsender/src/Sender.cpp 2
 */

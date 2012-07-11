@@ -40,7 +40,7 @@
  **
  ****************************************************************************/
 
-#include "Downloadmanager.hpp"
+#include "DownloadManager.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/Page>
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         Page *appPage = qml->createRootNode<Page>();
 
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
         }
     }
 

@@ -43,8 +43,6 @@
 #ifndef CERTIFICATEINFOCONTROL_HPP
 #define CERTIFICATEINFOCONTROL_HPP
 
-#include "CertificateItemManager.hpp"
-
 #include <bb/cascades/QListDataModel>
 
 #include <QtCore/QObject>
@@ -61,9 +59,6 @@ class CertificateInfoControl: public QObject
     // Makes the list of certificates (certificate chain) available as DataModel to the UI
     Q_PROPERTY(bb::cascades::DataModel* model READ model NOTIFY modelChanged)
 
-    // Makes the ListItemManager for the certificate chain available to the UI
-    Q_PROPERTY(bb::cascades::ListItemManager *listItemManager READ listItemManager NOTIFY listItemManagerChanged)
-
     // Makes a textual representation of the selected certificate available to the UI
     Q_PROPERTY(QString certificateInfo READ certificateInfo NOTIFY certificateInfoChanged)
 
@@ -75,7 +70,6 @@ public:
 
     // The accessor methods of the properties
     bb::cascades::DataModel* model() const;
-    bb::cascades::ListItemManager* listItemManager() const;
 
     QString certificateInfo() const;
 
@@ -95,16 +89,12 @@ public Q_SLOTS:
 Q_SIGNALS:
     // The change notification signals of the properties
     void modelChanged();
-    void listItemManagerChanged();
     void certificateInfoChanged();
     void visibleChanged();
 
 private:
     // The certificates of the certificate chain
     QList<QSslCertificate> m_chain;
-
-    // The ListItemManager that is used by the certificate chain ListView
-    CertificateItemManager m_listItemManager;
 
     // The DataModel that provides the certificate chain to the ListView
     bb::cascades::QListDataModel<QString> m_model;

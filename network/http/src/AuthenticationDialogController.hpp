@@ -44,7 +44,7 @@
 #define AUTHENTICATIONDIALOGCONTROLLER_HPP
 
 #include "DialogController.hpp"
-
+//! [0]
 /**
  * The AuthenticationDialogController encapsulates the logic of
  * a password dialog. When executed it will block the execution flow
@@ -93,5 +93,5 @@ private:
     // A flag that stores whether dialog has been canceled
     bool m_result;
 };
-
+//! [0]
 #endif

@@ -54,7 +54,7 @@ using namespace bb::cascades;
 
 FtpDownloader::FtpDownloader(QObject *parent)
     : QObject(parent)
-    , m_url(QLatin1String("ftp.qt.nokia.com"))
+    , m_url(QLatin1String("ftp://ftp.qnx.com/usr/free/Tech_Support_FAQ/other/"))
     , m_ftp(0)
     , m_file(0)
     , m_parentDirectoryAvailable(false)
@@ -239,8 +239,13 @@ void FtpDownloader::connectToFtp()
             m_ftp->login(QUrl::fromPercentEncoding(url.userName().toLatin1()), url.password());
         else
             m_ftp->login();
-        if (!url.path().isEmpty())
-            m_ftp->cd(url.path());
+        if (!url.path().isEmpty()) {
+            m_currentPath = url.path();
+            if (m_currentPath.endsWith('/'))
+                m_currentPath.chop(1);
+
+            m_ftp->cd(m_currentPath);
+        }
     }
 //![2]
 
@@ -406,6 +411,12 @@ void FtpDownloader::ftpCommandFinished(int, bool error)
             m_selectionPossible = false;
             emit selectionPossibleChanged();
         }
+
+        if (!m_currentPath.isEmpty()) {
+            // Update the status property
+            m_parentDirectoryAvailable = true;
+            emit parentDirectoryAvailableChanged();
+        }
     }
 //![9]
 }
@@ -473,6 +484,9 @@ void FtpDownloader::cdToParent()
 {
     // If the user requests to go to the parent directory clear the model ...
     m_model.clear();
+
+    m_currentIndexPath.clear();
+    enableDownloadButton();
 
     // ... extract the path to the parent directory ...
     m_currentPath = m_currentPath.left(m_currentPath.lastIndexOf('/'));

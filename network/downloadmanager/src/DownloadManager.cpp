@@ -48,7 +48,7 @@
 #include <QtNetwork/QNetworkRequest>
 
 DownloadManager::DownloadManager(QObject *parent)
-    : QObject(parent), m_currentDownload(0), m_downloadedCount(0), m_totalCount(0), m_progressTotal(-1), m_progressValue(0)
+    : QObject(parent), m_currentDownload(0), m_downloadedCount(0), m_totalCount(0), m_progressTotal(0), m_progressValue(0)
 {
 }
 
@@ -147,6 +147,7 @@ void DownloadManager::addStatusMessage(const QString &message)
     emit statusMessageChanged();
 }
 
+//! [0]
 void DownloadManager::startNextDownload()
 {
     // If the queue is empty just add a new status message
@@ -188,7 +189,9 @@ void DownloadManager::startNextDownload()
     // Start the timer so that we can calculate the download speed later on
     m_downloadTime.start();
 }
+//! [0]
 
+//! [1]
 void DownloadManager::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     // Update the properties with the new progress values
@@ -214,15 +217,17 @@ void DownloadManager::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
     m_progressMessage = QString("%1 %2").arg(speed, 3, 'f', 1).arg(unit);
     emit progressMessageChanged();
 }
+//! [1]
 
+//! [2]
 void DownloadManager::downloadFinished()
 {
     // Reset the progress information when the download has finished
-    m_progressTotal = -1;
+    m_progressTotal = 0;
     m_progressValue = 0;
     m_progressMessage.clear();
-    emit progressTotalChanged();
     emit progressValueChanged();
+    emit progressTotalChanged();
     emit progressMessageChanged();
 
     // Close the file where the data have been written
@@ -247,9 +252,12 @@ void DownloadManager::downloadFinished()
     // Trigger the execution of the next job
     startNextDownload();
 }
+//! [2]
 
+//! [3]
 void DownloadManager::downloadReadyRead()
 {
     // Whenever new data are available on the network reply, write them out to the result file
     m_output.write(m_currentDownload->readAll());
 }
+//! [3]

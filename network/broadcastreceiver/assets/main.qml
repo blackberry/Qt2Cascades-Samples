@@ -46,35 +46,79 @@ import bb.cascades 1.0
 Page {
     // A container is used to gather visual items together.
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
+
         Container {
             layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Center
             }
 
-            
+
             // Defines a TextStyleDefinition that can be used in each control.
             attachedObjects: [
                 TextStyleDefinition {
                     id: tsd
+                    color: Color.White
                     base: SystemDefaults.TextStyles.BodyText
                     alignment: TextAlignment.Center
                 }
             ]
-            
+
             // A standard Label
             Label {
+                id: title
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+                text: qsTr ("Listening for messages")
+                textStyle.color: Color.White
+                textStyle.base: SystemDefaults.TextStyles.TitleText
+            }
+
+//! [0]
+            // A standard Label
+            Label {
+                id: message
+                layoutProperties: StackLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Center
                 }
                 text: _receiver.status
                 textStyle {
+                    color: Color.White
                     base: tsd.style
+                    fontWeight: FontWeight.Bold
                 }
+                // Scale the label size on incoming data
+                animations: [
+                    SequentialAnimation {
+                        id: animTextSize
+                        ScaleTransition {
+                            toX: 1.4
+                            toY: 1.4
+                            duration: 300
+                        }
+                        ScaleTransition {
+                            toX: 1.0
+                            toY: 1.0
+                            duration: 300
+                        }
+                    }
+                ]
+                // Play animation on changing text
+                onTextChanged: animTextSize.play()
             }
-            
+//! [0]
+
             // A standard Button
             Button {
                 topMargin: 30
@@ -82,7 +126,7 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 text: qsTr ("Quit")
-                
+
                 // Exit application on click
                 onClicked: _app.quit ()
             }

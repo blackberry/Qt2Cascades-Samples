@@ -27,16 +27,19 @@
 
 /*!
     \page factorial
+    \example statemachine/factorial
     \title Factorial States Example
+
+    \section1 Description
 
     The Factorial States example shows how to use \l{The State Machine
     Framework} to calculate the factorial of an integer.
 
-    \image factorial-example-rim.png
+    \image factorial-example.png
 
     The statechart for calculating the factorial looks as follows:
 
-    \image factorial-example.png
+    \image factorial-statechart-example.png
     \omit
     \caption This is a caption
     \endomit

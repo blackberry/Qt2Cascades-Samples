@@ -46,13 +46,16 @@
 
 using namespace bb::cascades;
 
+//! [0]
 XbelHandler::XbelHandler(Container *treeContainer)
     : m_treeContainer(treeContainer)
 {
     m_item = 0;
     m_metXbelTag = false;
 }
+//! [0]
 
+//! [1]
 bool XbelHandler::startElement(const QString & /* namespaceURI */,
                                const QString & /* localName */,
                                const QString &qName,
@@ -86,7 +89,9 @@ bool XbelHandler::startElement(const QString & /* namespaceURI */,
     m_currentText.clear();
     return true;
 }
+//! [1]
 
+//! [2]
 bool XbelHandler::endElement(const QString & /* namespaceURI */,
                              const QString & /* localName */,
                              const QString &qName)
@@ -99,6 +104,7 @@ bool XbelHandler::endElement(const QString & /* namespaceURI */,
     }
     return true;
 }
+//! [2]
 
 bool XbelHandler::characters(const QString &str)
 {
@@ -116,11 +122,14 @@ bool XbelHandler::fatalError(const QXmlParseException &exception)
     return false;
 }
 
+//! [3]
 QString XbelHandler::errorString() const
 {
     return m_errorStr;
 }
+//! [3]
 
+//! [4]
 Container *XbelHandler::createChildItem(const QString &tagName)
 {
     // Use a different QML file depending on the requested XBEL element type
@@ -146,3 +155,4 @@ Container *XbelHandler::createChildItem(const QString &tagName)
 
     return container;
 }
+//! [4]

@@ -27,10 +27,45 @@
 
 /*!
     \page multicastreceiver
+    \example network/multicastreceiver
     \title Multicast Receiver Example
 
-    The Multicast Receiever example shows how to receive information that is
+    \section1 Description
+
+    The Multicast Receiver example shows how to receive information that is
     sent to a multicast group.
 
     \image multicastreceiver-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the QUdpSocket class to send and receive multicast messages
+    on the network.
+
+    The example application is splitted in two executables, \l{network/multicastsender}{multicastsender} and multicastreceiver.
+    While the \l{network/multicastsender}{multicastsender} allows the user to start the multicasting of messages on the local network, the multicastreceiver
+    will listen on the local network for these messages and display the received ones in the UI.
+
+    \section1 Receiver
+    The central class in multicastreceiver is Receiver, which encapsulates the retrieval of the multicasted messages
+    and provides a property to display the content of the received datagrams in the UI.
+
+    \snippet network/multicastreceiver/assets/main.qml 0
+
+    The 'status' property of the exported Receiver object is bound against the 'text' property of a Label control, so
+    that whenever a new datagram arrives, the text is updated automatically on screen.
+
+    \snippet network/multicastreceiver/src/Receiver.cpp 0
+
+    Inside the constructor of the Receiver class, we initialize the 'status' property and create the QUdpSocket object that
+    encapsulates the low-level network communication.
+    By calling \l{QUdpSocket::bind()}{bind()} we let the socket listen on port 45454 for incoming messages.
+    We also have to tell the socket which multicast group we want to join, that's done by calling \l{QUdpSocket::joinMulticastGroup()}{joinMulticastGroup()}.
+    In the next step we connect the \l{QUdpSocket::readyRead()}{readyRead()} signal of the socket, which is emitted whenever
+    a new datagram arrived, against our own slot processPendingDatagrams().
+
+    \snippet network/broadcastreceiver/src/Receiver.cpp 1
+
+    In processPendingDatagrams() we check whether the socket still has pending datagrams and if that's the case, we read the next
+    datagram from the socket and store its content in the 'status' property. By emitting the 'statusChanged()' signal, we trigger
+    the reevaluation of all property bindings in the UI where 'status' is used.
 */

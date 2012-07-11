@@ -41,6 +41,7 @@
  ****************************************************************************/
 
 #include <bb/cascades/Application>
+#include <bb/cascades/Container>
 #include <bb/cascades/Control>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Page>
@@ -52,49 +53,48 @@
 using namespace ::bb::cascades;
 
 /**
- * The TextBuffer is a helper class to make the output of the
- * 'pinger', 'pingTransition' and 'pongTransition' available to the UI.
+ * The BalloonCreator creates the balloon controls in the UI whenever the
+ * 'pinger', 'pingTransition' or 'pongTransition' emit a notification.
  */
-class TextBuffer : public QObject
+class BalloonCreator : public QObject
 {
     Q_OBJECT
 
-    // A property that makes the output text available to the UI
-    Q_PROPERTY(QString text READ text NOTIFY textChanged)
-
 public:
-    explicit TextBuffer(QObject *parent = 0)
+    explicit BalloonCreator(QObject *parent = 0)
         : QObject(parent)
     {
     }
 
-    // The accessor method of the property
-    QString text() const
+    void setBalloonsContainer(Container *container)
     {
-        return m_text;
+        m_balloonsContainer = container;
     }
 
 public Q_SLOTS:
-    // This slot is called whenever new output should be appended to the text buffer
-    void appendText(const QString &text)
+    // This slot is called whenever a new notification from pinger, pingTransition or pongTransition is received
+    void notify(const QString &message)
     {
-        m_text += text + "\n";
+        if (!m_balloonsContainer)
+            return;
 
-        // Limit the text size, too much text makes TextArea slow
-        if (m_text.length() > 100) {
-            m_text.clear();
+        // Show 10 balloons at maximum
+        if (m_balloonsContainer->count() == 10)
+            m_balloonsContainer->removeAll();
+
+        const QString qmlFile = (message == "ping" ? "PingBalloon.qml" : "PongBalloon.qml");
+
+        QmlDocument * const qml = QmlDocument::create().load(qmlFile);
+        if (!qml->hasErrors()) {
+            Control *balloon = qml->createRootNode<Control>();
+            if (balloon)
+                m_balloonsContainer->add(balloon);
         }
-
-        emit textChanged();
     }
 
-Q_SIGNALS:
-    // The change notification signal of the property
-    void textChanged();
-
 private:
-    // The output text
-    QString m_text;
+    // The container where the balloons should be placed in
+    QPointer<Container> m_balloonsContainer;
 };
 
 //! [0]
@@ -156,8 +156,8 @@ protected:
         // Post a PingEvent to the state machine ...
         machine()->postEvent(new PingEvent());
 
-        // ... and add some text to the output on screen.
-        emit notify("ping?");
+        // ... and add balloon to the screen.
+        emit notify("ping");
     }
 };
 //! [1]
@@ -192,8 +192,8 @@ protected:
         // Post a PingEvent to the state machine with a delay of 500ms  ...
         machine()->postDelayedEvent(new PingEvent(), 500);
 
-        // ... and add some text to the output on screen.
-        emit notify("ping?");
+        // ... and add a balloon to the screen.
+        emit notify("ping");
     }
 };
 //! [3]
@@ -228,15 +228,15 @@ protected:
         // Post a PongEvent to the state machine with a delay of 500ms  ...
         machine()->postDelayedEvent(new PongEvent(), 500);
 
-        // ... and add some text to the output on screen.
-        emit notify("    pong!");
+        // ... and add a balloon to the screen.
+        emit notify("pong");
     }
 };
 //! [2]
 
 //! [4]
 /**
- * In this sample application a state machine is used to alternate between two actions (showing 'ping?' and 'pong!' in the UI).
+ * In this sample application a state machine is used to alternate between two actions (showing a 'Ping?' and 'Pong!' balloon in the UI).
  * To trigger the transitions between the two actions, custom events are used instead of signals.
  */
 int main(int argc, char **argv)
@@ -283,28 +283,22 @@ int main(int argc, char **argv)
     // Start the state machine
     machine.start();
 
-    // Create the text buffer ...
-    TextBuffer textBuffer;
+    BalloonCreator balloonCreator;
 
     QmlDocument * const qml = QmlDocument::create().load("main.qml");
     if (!qml->hasErrors()) {
-        // ... and make it available as context property to the UI.
-        qml->setContextProperty("_textBuffer", &textBuffer);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
-            /**
-             * Setup signal/slot connections to append the notification strings from
-             * the 'pinger' and the 'pingTransition' and 'pongTransition' objects to
-             * the text buffer.
-             */
-            QObject::connect(pinger, SIGNAL(notify(QString)), &textBuffer,
-                    SLOT(appendText(QString)));
-            QObject::connect(pingTransition, SIGNAL(notify(QString)), &textBuffer,
-                    SLOT(appendText(QString)));
-            QObject::connect(pongTransition, SIGNAL(notify(QString)), &textBuffer,
-                    SLOT(appendText(QString)));
+            balloonCreator.setBalloonsContainer(appPage->findChild<Container*>("balloonsContainer"));
+
+            QObject::connect(pinger, SIGNAL(notify(QString)),
+                             &balloonCreator, SLOT(notify(QString)));
+            QObject::connect(pingTransition, SIGNAL(notify(QString)),
+                             &balloonCreator, SLOT(notify(QString)));
+            QObject::connect(pongTransition, SIGNAL(notify(QString)),
+                             &balloonCreator, SLOT(notify(QString)));
         }
     }
     return Application::exec();

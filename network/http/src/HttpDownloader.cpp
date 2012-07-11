@@ -93,8 +93,10 @@ AuthenticationDialogController *HttpDownloader::authenticationDialogController()
     return const_cast<AuthenticationDialogController*>(&m_authenticationDialogController);
 }
 
+//! [1]
 void HttpDownloader::startDownload(const QString &url)
 {
+//! [2]
     m_url = url;
 
     // Extract the file name from the URL ...
@@ -104,7 +106,8 @@ void HttpDownloader::startDownload(const QString &url)
     // ... and fall back to 'index.html' if it is empty.
     if (m_fileName.isEmpty())
         m_fileName = "index.html";
-
+//! [2]
+//! [3]
     // Locate the file in the temp directory
     const QString actualFileName = "tmp/" + m_fileName;
 
@@ -122,7 +125,8 @@ void HttpDownloader::startDownload(const QString &url)
         // ... otherwise remove the existing file.
         QFile::remove(actualFileName);
     }
-
+//! [3]
+//! [4]
     // Open the file for writing
     m_file = new QFile(actualFileName);
     if (!m_file->open(QIODevice::WriteOnly)) {
@@ -136,8 +140,10 @@ void HttpDownloader::startDownload(const QString &url)
 
     // Trigger the download
     startRequest();
+//! [4]
 }
-
+//! [1]
+//! [5]
 void HttpDownloader::startRequest()
 {
     // Start the download ...
@@ -147,13 +153,13 @@ void HttpDownloader::startRequest()
     connect(m_reply, SIGNAL(finished()), this, SLOT(httpFinished()));
     connect(m_reply, SIGNAL(readyRead()), this, SLOT(httpReadyRead()));
 }
-
+//! [5]
+//! [6]
 void HttpDownloader::httpFinished()
 {
     // All data have been written to the file, so close it
     m_file->flush();
     m_file->close();
-
     const QVariant redirectionTarget = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
 
     if (m_reply->error()) {
@@ -201,6 +207,7 @@ void HttpDownloader::httpFinished()
     delete m_file;
     m_file = 0;
 }
+//! [6]
 
 void HttpDownloader::httpReadyRead()
 {

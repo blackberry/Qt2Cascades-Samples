@@ -42,7 +42,7 @@
 
 #include <bb/cascades/Application>
 #include <bb/cascades/Control>
-#include <bb/cascades/DataSetModel>
+#include <bb/cascades/QListDataModel>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Page>
 #include <bb/data/SqlDataAccess>
@@ -60,19 +60,16 @@ App::App()
     // Create a SqlDataAccess object for a SQLite database file in the filesystem ...
     SqlDataAccess sqlDataAccess(dbNameWithPath);
 
-    // ... and select all rows from the 'quotes' table
-    sqlDataAccess.setQuery("SELECT * FROM quotes");
+    // Load the result into a QVariantList ...
+    const QVariantList sqlData = sqlDataAccess.execute("SELECT * FROM quotes").value<QVariantList>();
 
-    // Load the result into a QVariant ...
-    const QVariant sqlData = sqlDataAccess.load();
+    // Use the result as data source for a QListDataModel
+    QListDataModel<QVariantMap> *model = new QListDataModel<QVariantMap>();
+    model->append(sqlData);
 
-    // ... and use it as input for a DataSet.
-    DataSet *dataSet = new DataSet(sqlData, this);
-
-    // Use the DataSet as data source for a DataSetModel
-    DataSetModel *model = new DataSetModel(dataSet);
     model->setParent(this);
 
+//! [0]
     // Create a DataControlMapper and let it work on the DataSetModel
     DataControlMapper *mapper = new DataControlMapper(this);
     mapper->setModel(model);
@@ -84,7 +81,7 @@ App::App()
         qml->setContextProperty("_dataMapper", mapper);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Lookup the controls that should contain the content of a row from the SQL data
             Control *firstNameField = appPage->findChild<Control*>("firstNameField");
@@ -97,4 +94,5 @@ App::App()
             mapper->addMapping(quoteField, "quote");
         }
     }
+//! [0]
 }

@@ -61,7 +61,7 @@ Container {
         // A standard Label for the TextArea title
         Label {
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
+                horizontalAlignment: HorizontalAlignment.Center
             }
             
             text: _messageBox.title
@@ -75,7 +75,7 @@ Container {
         TextArea {
             topMargin: 10
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
+                horizontalAlignment: HorizontalAlignment.Center
             }
             
             preferredWidth: 700 // HorizontalAlignment.Fill doesn't seem to work in all cases here

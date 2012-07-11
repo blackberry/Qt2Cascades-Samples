@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         qml->setContextProperty("_rssListing", &rssListing);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
         }
     }
 

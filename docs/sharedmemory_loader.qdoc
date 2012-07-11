@@ -1,0 +1,77 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page sharedmemory_loader
+    \example ipc/sharedmemory_loader
+    \title Shared Memory Loader Example
+
+    \section1 Description
+
+    The Shared Memory Loader example shows how to use the QSharedMemory class
+    to implement inter-process communication using shared memory.
+
+    \image sharedmemory_loader-example.png
+
+    \section1 Overview
+
+    In this example we'll learn how to communicate between multiple processes by writing/reading data
+    to/from a shared memory and how to synchronize the access to the shared memory segment properly.
+
+    The example application is splitted in the two executables, sharedmemory_loader and \l {ipc/sharedmemory}{sharedmemory}.
+    With the sharedmemory_loader the user can load a file from the file system into a shared memory segment from
+    where the \l {ipc/sharedmemory}{sharedmemory} application reads the content of the file and displays it in the UI.
+
+    \section1 FileLoader
+
+    The central class in sharedmemory_loader is FileLoader, which encapsulates the loading of the file, that has
+    been selected by the user, into the shared memory segment. Whenever the user selects a file from the DropDown
+    control inside the UI, the loadFile() slot of the FileLoader is invoked:
+
+    \snippet ipc/sharedmemory_loader/assets/main.qml 0
+
+    Inside this slot we first try to read the complete content of the file whose file name has been passed:
+
+    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 1
+
+    If this was successful, we try to attach to the shared memory segment that has been created by the sharedmemory
+    application. For this we need the key of the shared memory segment which is hard-coded in this example:
+
+    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 0
+
+    After instantiating a QSharedMemory object with the proper key, we try to attach to that segment, which might fail
+    if it doesn't exist (e.g. the sharedmemory application has not created it yet), or we don't have the needed access rights.
+
+    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 2
+
+    However if the \l {QSharedMemory::attach()}{attach()} call was successful, we call \l {QSharedMemory::lock()}{lock()} to gain
+    exclusive access to this shared memory segment. If another process holds the lock already, our process is blocked until the lock
+    is released by the other process.
+    When we gained the access, we copy over the content of the loaded file from the temporary variable into the shared memory.
+
+    Afterwards we release the lock by calling \l {QSharedMemory::unlock()}{unlock()} and \l {QSharedMemory::detach()}{detach} from the shared memory segment.
+ */

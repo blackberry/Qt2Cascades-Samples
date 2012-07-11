@@ -48,6 +48,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 
+//! [0]
 /**
  * The XbelParser is responsible for parsing a XBEL file and generating
  * controls, that represent the bookmark entries, on the tree container.
@@ -78,5 +79,6 @@ private:
     // The textual representation of an error
     QString m_errorString;
 };
+//! [0]
 
 #endif

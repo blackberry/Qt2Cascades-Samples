@@ -48,22 +48,47 @@
 
 #include "app.hpp"
 #include "xmlstreamlint.hpp"
-#include "fileitemmanager.hpp"
 
 using namespace bb::cascades;
 
 App::App()
     : m_xmlStreamLint(new XmlStreamLint(this))
 {
-    qmlRegisterType<DataModel>();
-    qmlRegisterType<ListItemManager>();
-
     // Fill the model with XML files from the assets directory
-    m_model << "apache_org.html";
-    m_model << "nokia_com.html";
-    m_model << "simpleexample.html";
-    m_model << "TAT.html";
-    m_model << "youtube_com.html";
+    {
+        QVariantMap entry;
+        entry["title"] = "Apache";
+        entry["file"] = "apache_org.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "RIM";
+        entry["file"] = "rim_com.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "Simple";
+        entry["file"] = "simpleexample.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "TAT";
+        entry["file"] = "TAT.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "YouTube";
+        entry["file"] = "youtube_com.html";
+        m_model.insert(entry);
+    }
+
+    m_model.setGrouping(ItemGrouping::None);
+    m_model.setSortingKeys(QStringList() << "title");
+    m_model.setSortedAscending(true);
 
     QmlDocument *qml = QmlDocument::create().load("main.qml");
     if (!qml->hasErrors()) {
@@ -71,10 +96,9 @@ App::App()
         qml->setContextProperty("_app", this);
         qml->setContextProperty("_xmlStreamLint", m_xmlStreamLint);
         qml->setContextProperty("_model", &m_model);
-        qml->setContextProperty("_itemManager", new FileItemManager(this));
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Pre-select the first entry in the ListView
             ListView *listView = appPage->findChild<ListView*>("listView");
@@ -87,8 +111,22 @@ App::App()
 void App::setFileName(const QVariantList &indexPath)
 {
     // Extract the name of the selected XML file from the data model ...
-    const QString fileName = m_model.data(indexPath).toString();
+    const QString fileName = m_model.data(indexPath).toMap().value("file").toString();
 
     // ... and let the validator check it
     m_xmlStreamLint->checkXmlFile("app/native/assets/" + fileName);
+
+    // Extract the title of the selected XML file from the data model ...
+    const QString fileTitle = m_model.data(indexPath).toMap().value("title").toString();
+
+    if (m_fileTitle == fileTitle)
+        return;
+
+    m_fileTitle = fileTitle;
+    emit fileTitleChanged();
+}
+
+QString App::fileTitle() const
+{
+    return m_fileTitle;
 }

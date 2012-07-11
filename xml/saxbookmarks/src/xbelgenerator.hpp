@@ -47,6 +47,7 @@
 
 #include <QtCore/QTextStream>
 
+//! [0]
 /**
  * The XbelGenerator is responsible for generating a XBEL document from the
  * controls in the tree container.
@@ -80,5 +81,6 @@ private:
     // The text stream that is used to generate the XBEL document
     QTextStream m_stream;
 };
+//! [0]
 
 #endif

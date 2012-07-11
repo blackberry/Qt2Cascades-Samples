@@ -47,6 +47,7 @@
 
 #include <QtXml/QXmlDefaultHandler>
 
+//! [0]
 /**
  * The XbelHandler is responsible for generating controls, that represent
  * the bookmark entries, on the tree container.
@@ -93,5 +94,6 @@ private:
     // A flag for whether the xbel tag has been found already
     bool m_metXbelTag;
 };
+//! [0]
 
 #endif

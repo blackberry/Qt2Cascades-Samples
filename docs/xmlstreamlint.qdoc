@@ -27,12 +27,15 @@
 
 /*!
     \page xmlstreamlint
+    \example xml/xmlstreamlint
     \title XML Stream Lint Example
+
+    \section1 Description
 
     The XML Stream Lint example provides a simple UI to select an XML file that
     gets validated.
 
-    \image xmlstreamlint-example-rim.png
+    \image xmlstreamlint-example.png
 
     The specified file is parsed using an QXmlStreamReader object and written
     to a QByteArray using an QXmlStreamWriter object. If the file

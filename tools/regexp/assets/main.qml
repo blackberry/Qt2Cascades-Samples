@@ -46,415 +46,444 @@ import bb.cascades 1.0
 // Page displays layout of TextField's, Label's, CheckBox's and DopDown's to run a user
 // defined regular expression on a string and display the detailed matched results
 Page {
-    
+
     // The root container, used to set the background Color
     content: Container {
-        background: Color.create ("#ffffffd0") // Laser Lemon, X
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.TopToBottom
-        }
-        
-        // A standard Label for the application header
-        Label {
-            preferredHeight: 200
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
             }
-            
-            text: "Regular Expression Example"
-            
-            // Defines custom text style
-            textStyle {
-                base: SystemDefaults.TextStyles.TitleText
-                fontWeight: FontWeight.Bold
-                color: Color.Black
-            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         Container {
-            
-            // The TextStyleDefinition's to be used in AbstractTextControl's
-            attachedObjects: [
-                
-                // Defines custom text style definition
-                TextStyleDefinition {
-                    id: tsd
-                    base: SystemDefaults.TextStyles.BodyText
-                    color: Color.Black
-                },
-                
-                // Defines custom text style definition
-                TextStyleDefinition {
-                    id: tsh
-                    base: tsd.style
-                    fontWeight: FontWeight.Bold
-                }
-            ]
-            layout: StackLayout {
-                layoutDirection: LayoutDirection.TopToBottom
-                leftPadding: 20
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
             }
-            
+
+            // A standard Label for the application header
+            Label {
+                preferredHeight: 200
+                layoutProperties: StackLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+
+                text: "Regular Expression Example"
+
+                // Defines custom text style
+                textStyle {
+                    base: SystemDefaults.TextStyles.TitleText
+                    fontWeight: FontWeight.Bold
+                    color: Color.Black
+                }
+            }
+
             // Enable/Disable vertical scroll mode
-            scrollMode: ScrollMode.Vertical
-            
-            // A standard Label
-            Label {
-                text: "Inputs:"
-                textStyle {
-                    base: SystemDefaults.TextStyles.TitleText
-                    fontWeight: FontWeight.Bold
-                    color: Color.Black
+            ScrollView {
+                scrollViewProperties {
+                    scrollMode: ScrollMode.Vertical
                 }
-            }
-            
-            // A standard Label
-            Label {
-                leftMargin: 10
-                topMargin: 10
-                
-                text: "Pattern:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard TextField for the regular expression pattern
-            TextField {
-                leftMargin: 10
-                topMargin: 10
-                preferredWidth: 500
-                text: _regexp.pattern
-                onTextChanging: _regexp.pattern = text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                text: "Escaped Pattern:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                
-                // Displays the regular expression pattern input from above TextField
-                text: _regexp.escapedPattern
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // Drop down for selecting various pattern syntax
-            DropDown {
-                title: "Pattern Syntax:"
-                onSelectedIndexChanged: _app.setPatternSyntax (selectedIndex)
-                Option {
-                    text: "Regular expression v1"
-                    selected: true
-                }
-                Option {
-                    text: "Regular expression v2"
-                }
-                Option {
-                    text: "Wildcard"
-                }
-                Option {
-                    text: "Fixed string"
-                }
-                Option {
-                    text: "W3C Xml Schema 1.1"
-                }
-            }
-            
-            // Container grouping the CheckBox's and their corresponding Label's
-            Container {
-                layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                }
+
                 Container {
-                    topMargin: 10
+
+                    // The TextStyleDefinition's to be used in AbstractTextControl's
+                    attachedObjects: [
+
+                        // Defines custom text style definition
+                        TextStyleDefinition {
+                            id: tsd
+                            base: SystemDefaults.TextStyles.BodyText
+                            color: Color.Black
+                        },
+
+                        // Defines custom text style definition
+                        TextStyleDefinition {
+                            id: tsh
+                            base: tsd.style
+                            fontWeight: FontWeight.Bold
+                        }
+                    ]
+
                     layout: StackLayout {
-                        layoutDirection: LayoutDirection.LeftToRight
+                        layoutDirection: LayoutDirection.TopToBottom
+                        leftPadding: 20
+                        rightPadding: 20
                     }
-                    
-                    // A standard CheckBox
-                    CheckBox {
-                        // Default check
-                        checked: true
-                        
-                        // Save the boolean value upon being checked
-                        onCheckedChanged: _regexp.caseSensitive = checked
+
+                    // A standard Label
+                    Label {
+                        text: "Inputs:"
+                        textStyle {
+                            base: SystemDefaults.TextStyles.TitleText
+                            fontWeight: FontWeight.Bold
+                            color: Color.Black
+                        }
                     }
-                    
-                    // A standard Label for the checkbox
+
+                    // A standard Label
                     Label {
                         leftMargin: 10
-                        
-                        text: "Case Sensitive"
+                        topMargin: 10
+
+                        text: "Pattern:"
                         textStyle {
                             base: tsh.style
                         }
                     }
-                }
-                Container {
-                    topMargin: 10
-                    leftMargin: 25
-                    layout: StackLayout {
-                        layoutDirection: LayoutDirection.LeftToRight
-                    }
-                    
-                    // A standard CheckBox
-                    CheckBox {
-                        
-                        // Save the boolean value upon being checked
-                        onCheckedChanged: _regexp.minimal = checked
-                    }
-                    
-                    // A standard Label for the checkbox
-                    Label {
+
+//! [0]
+                    // A standard TextField for the regular expression pattern
+                    TextField {
                         leftMargin: 10
-                        text: "Minimal"
+                        topMargin: 10
+                        preferredWidth: 500
+                        text: _regexp.pattern
+                        onTextChanging: _regexp.pattern = text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+//! [0]
+
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        text: "Escaped Pattern:"
                         textStyle {
                             base: tsh.style
                         }
                     }
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                text: "Text:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard TextField for the input string to run the regular
-            // expression against
-            TextField {
-                preferredWidth: 500
-                
-                text: _regexp.text
-                textStyle {
-                    base: tsd.style
-                }
-                
-                // Save the text on input
-                onTextChanging: _regexp.text = text
-            }
-            
-            // A standard Label
-            Label {
-                text: "Outputs:"
-                textStyle {
-                    base: SystemDefaults.TextStyles.TitleText
-                    fontWeight: FontWeight.Bold
-                    color: Color.Black
-                }
-            }
-            Container {
-                layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                }
-                
-                // A standard Label
-                Label {
-                    topMargin: 10
-                    
-                    text: "Index of Match:"
-                    textStyle {
-                        base: tsh.style
+
+//! [1]
+                    // A standard Label
+                    Label {
+
+                        // Displays the regular expression pattern input from above TextField
+                        text: _regexp.escapedPattern
+                        textStyle {
+                            base: tsd.style
+                        }
                     }
-                }
-                
-                // A standard Label for the index of match output
-                Label {
-                    text: _regexp.matchIndex + ""
-                    textStyle {
-                        base: tsd.style
+//! [1]
+
+                    // Drop down for selecting various pattern syntax
+                    DropDown {
+                        title: "Pattern Syntax:"
+                        onSelectedIndexChanged: _app.setPatternSyntax (selectedIndex)
+                        Option {
+                            text: "Regular expression v1"
+                            selected: true
+                        }
+                        Option {
+                            text: "Regular expression v2"
+                        }
+                        Option {
+                            text: "Wildcard"
+                        }
+                        Option {
+                            text: "Fixed string"
+                        }
+                        Option {
+                            text: "W3C Xml Schema 1.1"
+                        }
                     }
-                }
-            }
-            Container {
-                layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                }
-                
-                // A standard Label
-                Label {
-                    topMargin: 10
-                    
-                    text: "Matched Length:"
-                    textStyle {
-                        base: tsh.style
+
+                    // Container grouping the CheckBox's and their corresponding Label's
+                    Container {
+                        layout: StackLayout {
+                            layoutDirection: LayoutDirection.LeftToRight
+                        }
+
+                        Container {
+                            topMargin: 10
+                            layout: StackLayout {
+                                layoutDirection: LayoutDirection.LeftToRight
+                            }
+
+                            // A standard CheckBox
+                            CheckBox {
+                                // Default check
+                                checked: true
+
+                                // Save the boolean value upon being checked
+                                onCheckedChanged: _regexp.caseSensitive = checked
+                            }
+
+                            // A standard Label for the checkbox
+                            Label {
+                                leftMargin: 10
+
+                                text: "Case Sensitive"
+                                textStyle {
+                                    base: tsh.style
+                                }
+                            }
+                        }
+
+                        Container {
+                            topMargin: 10
+                            leftMargin: 25
+                            layout: StackLayout {
+                                layoutDirection: LayoutDirection.LeftToRight
+                            }
+
+                            // A standard CheckBox
+                            CheckBox {
+
+                                // Save the boolean value upon being checked
+                                onCheckedChanged: _regexp.minimal = checked
+                            }
+
+                            // A standard Label for the checkbox
+                            Label {
+                                leftMargin: 10
+                                text: "Minimal"
+                                textStyle {
+                                    base: tsh.style
+                                }
+                            }
+                        }
                     }
-                }
-                
-                // A standard Label for the matched length output
-                Label {
-                    text: _regexp.matchLength + ""
-                    textStyle {
-                        base: tsd.style
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        text: "Text:"
+                        textStyle {
+                            base: tsh.style
+                        }
                     }
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture0Available
-                
-                text: "Match:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the match output
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture0Available
-                
-                text: _regexp.capture0Text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture1Available
-                
-                text: "Capture 1:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the capture 1 output
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture1Available
-                
-                text: _regexp.capture1Text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture2Available
-                
-                text: "Capture 2:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the capture 2 output
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture2Available
-                
-                text: _regexp.capture2Text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture3Available
-                
-                text: "Capture 3:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the capture 3 output
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture3Available
-                
-                text: _regexp.capture3Text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture4Available
-                
-                text: "Capture 4:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the capture 4 output
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture4Available
-                
-                text: _regexp.capture4Text
-                textStyle {
-                    base: tsd.style
-                }
-            }
-            
-            // A standard Label
-            Label {
-                topMargin: 10
-                
-                // Enabled if output available
-                enabled: _regexp.capture5Available
-                
-                text: "Capture 5:"
-                textStyle {
-                    base: tsh.style
-                }
-            }
-            
-            // A standard Label for the capture 5 output 
-            Label {
-                
-                // Enabled if output available
-                enabled: _regexp.capture5Available
-                
-                text: _regexp.capture5Text
-                textStyle {
-                    base: tsd.style
+
+                    // A standard TextField for the input string to run the regular
+                    // expression against
+                    TextField {
+                        preferredWidth: 500
+
+                        text: _regexp.text
+                        textStyle {
+                            base: tsd.style
+                        }
+
+                        // Save the text on input
+                        onTextChanging: _regexp.text = text
+                    }
+
+                    // A standard Label
+                    Label {
+                        text: "Outputs:"
+                        textStyle {
+                            base: SystemDefaults.TextStyles.TitleText
+                            fontWeight: FontWeight.Bold
+                            color: Color.Black
+                        }
+                    }
+
+                    Container {
+                        layout: StackLayout {
+                            layoutDirection: LayoutDirection.LeftToRight
+                        }
+
+                        // A standard Label
+                        Label {
+                            topMargin: 10
+
+                            text: "Index of Match:"
+                            textStyle {
+                                base: tsh.style
+                            }
+                        }
+
+                        // A standard Label for the index of match output
+                        Label {
+                            text: _regexp.matchIndex + ""
+                            textStyle {
+                                base: tsd.style
+                            }
+                        }
+                    }
+
+                    Container {
+                        layout: StackLayout {
+                            layoutDirection: LayoutDirection.LeftToRight
+                        }
+
+                        // A standard Label
+                        Label {
+                            topMargin: 10
+
+                            text: "Matched Length:"
+                            textStyle {
+                                base: tsh.style
+                            }
+                        }
+
+                        // A standard Label for the matched length output
+                        Label {
+                            text: _regexp.matchLength + ""
+                            textStyle {
+                                base: tsd.style
+                            }
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture0Available
+
+                        text: "Match:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the match output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture0Available
+
+                        text: _regexp.capture0Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture1Available
+
+                        text: "Capture 1:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the capture 1 output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture1Available
+
+                        text: _regexp.capture1Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture2Available
+
+                        text: "Capture 2:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the capture 2 output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture2Available
+
+                        text: _regexp.capture2Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture3Available
+
+                        text: "Capture 3:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the capture 3 output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture3Available
+
+                        text: _regexp.capture3Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture4Available
+
+                        text: "Capture 4:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the capture 4 output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture4Available
+
+                        text: _regexp.capture4Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
+
+                    // A standard Label
+                    Label {
+                        topMargin: 10
+
+                        // Enabled if output available
+                        enabled: _regexp.capture5Available
+
+                        text: "Capture 5:"
+                        textStyle {
+                            base: tsh.style
+                        }
+                    }
+
+                    // A standard Label for the capture 5 output
+                    Label {
+
+                        // Enabled if output available
+                        enabled: _regexp.capture5Available
+
+                        text: _regexp.capture5Text
+                        textStyle {
+                            base: tsd.style
+                        }
+                    }
                 }
             }
         }

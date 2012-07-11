@@ -45,115 +45,140 @@ import bb.cascades 1.0
 
 // This page shows how to layout various standard visual components along with a custom component.
 Page {
-    
+
     // The root Container
     content: Container {
-        layout: StackLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
-        // A Container to group the url TextField with its download Button
+
         Container {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                leftPadding: 30
+                topPadding: 20
+                rightPadding: 30
             }
-            topMargin: 10
-            leftMargin: 10
-            rightMargin: 10
-            
-            // A standard TextField for the url address
-            TextField {
-                id: url
-                hintText: qsTr("Enter URL to download")
-                text: "http://www.winkde.org/pub/kde/ports/win32/installer/kdewin-installer-gui-latest.exe"
-                
-                layoutProperties: StackLayoutProperties {
-                    spaceQuota: 7
+
+            // A Container to group the url TextField with its download Button
+            Container {
+//! [0]
+                // A standard TextField for the url address
+                TextField {
+                    id: url
+                    hintText: qsTr("Enter URL to download")
+                    text: "http://www.winkde.org/pub/kde/ports/win32/installer/kdewin-installer-gui-latest.exe"
+
+                    layoutProperties: StackLayoutProperties {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                    }
+
+                    // Disable the control button upon text input
+                    onTextChanging: {
+                        downloadButton.enabled = (text != "")
+                    }
                 }
-                
-                // Disable the control button upon text input
-                onTextChanging: {
-                    downloadButton.enabled = (text != "")
+//! [0]
+
+//! [1]
+                // A standard button
+                Button {
+                    id: downloadButton
+                    topMargin: 50
+                    layoutProperties: StackLayoutProperties {
+                        horizontalAlignment: HorizontalAlignment.Center
+                    }
+
+                    text: qsTr("Download")
+
+                    // Start download from url on click
+                    onClicked: _manager.downloadUrl (url.text)
                 }
+//! [1]
             }
-            
-            // A standard button
-            Button {
-                id: downloadButton
+
+//! [2]
+            // Custom Container for displaying download progress as a bar
+            ProgressBar {
+                total: _manager.progressTotal
+                value: _manager.progressValue
+                message: _manager.progressMessage
+                topMargin: 10
                 leftMargin: 10
-                rightMargin: 10
-                layoutProperties: StackLayoutProperties {
-                    spaceQuota: 2
+            }
+//! [2]
+
+//! [3]
+            // A standard Label
+            Label {
+                text: qsTr("Active Downloads: ") + (_manager.activeDownloads == 0 ? "none" : _manager.activeDownloads)
+                topMargin: 10
+                leftMargin: 10
+            }
+//! [3]
+
+            // A standard Label
+            Label {
+                text: qsTr("Status:")
+                topMargin: 10
+                leftMargin: 10
+            }
+
+//! [4]
+            // A standard TextArea for the download status output
+            TextArea {
+                preferredWidth: 900
+                preferredHeight: 145
+
+                backgroundVisible: false
+                editable: false
+
+                text: _manager.statusMessage
+
+                // Defines text style with custom Color
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.create("#ff509d4c")
                 }
-                
-                text: qsTr("Download")
-                
-                // Start download from url on click
-                onClicked: _manager.downloadUrl (url.text)
             }
-        }
-        
-        // Custom Container for displaying download progress as a bar
-        ProgressBar {
-            total: _manager.progressTotal
-            value: _manager.progressValue
-            message: _manager.progressMessage
-            topMargin: 10
-            leftMargin: 10
-        }
-        
-        // A standard Label
-        Label {
-            text: qsTr("Active Downloads: ") + (_manager.activeDownloads == 0 ? "none" : _manager.activeDownloads)
-            topMargin: 10
-            leftMargin: 10
-        }
-        
-        // A standard Label
-        Label {
-            text: qsTr("Status:")
-            topMargin: 10
-            leftMargin: 10
-        }
-        
-        // A standard TextArea for the download status output
-        TextArea {
-            preferredWidth: 900
-            preferredHeight: 145
-            
-            backgroundVisible: false
-            editable: false
-            
-            text: _manager.statusMessage
-            
-            // Defines text style with custom Color
-            textStyle {
-                base: SystemDefaults.TextStyles.BodyText
-                color: Color.Green
+//! [4]
+
+            // A standard Label
+            Label {
+                text: "Errors:"
+                leftMargin: 10
             }
-        }
-        
-        // A standard Label
-        Label {
-            text: "Errors:"
-            leftMargin: 10
-        }
-        
-        // A standard TextArea for displaying error output
-        TextArea {
-            leftMargin: 10
-            preferredWidth: 900
-            preferredHeight: 125
-            
-            backgroundVisible: false
-            editable: false
-            
-            text: _manager.errorMessage
-            
-            // Defines a text style with custom Color
-            textStyle {
-                base: SystemDefaults.TextStyles.SmallText
-                color: Color.Red
+
+//! [5]
+            // A standard TextArea for displaying error output
+            TextArea {
+                leftMargin: 10
+                preferredWidth: 900
+                preferredHeight: 125
+
+                backgroundVisible: false
+                editable: false
+
+                text: _manager.errorMessage
+
+                // Defines a text style with custom Color
+                textStyle {
+                    base: SystemDefaults.TextStyles.SmallText
+                    color: Color.create("#ffbc3434")
+                }
             }
+//! [5]
         }
     }
 }

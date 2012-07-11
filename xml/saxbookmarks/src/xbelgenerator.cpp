@@ -44,11 +44,14 @@
 
 using namespace bb::cascades;
 
+//! [0]
 XbelGenerator::XbelGenerator(Container *treeContainer)
     : m_treeContainer(treeContainer)
 {
 }
+//! [0]
 
+//! [1]
 bool XbelGenerator::write(QIODevice *device)
 {
     // Set the output device on the stream
@@ -69,6 +72,7 @@ bool XbelGenerator::write(QIODevice *device)
 
     return true;
 }
+//! [1]
 
 QString XbelGenerator::indent(int depth)
 {
@@ -94,6 +98,7 @@ QString XbelGenerator::escapedAttribute(const QString &str)
     return result;
 }
 
+//! [2]
 void XbelGenerator::generateItem(Control *control, int depth)
 {
     /**
@@ -130,3 +135,4 @@ void XbelGenerator::generateItem(Control *control, int depth)
         m_stream << indent(depth) << "<separator/>\n";
     }
 }
+//! [2]

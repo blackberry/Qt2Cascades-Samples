@@ -48,10 +48,10 @@
 #include <QtCore/QStringList>
 
 #include "app.hpp"
-#include "languageitemmanager.hpp"
 
 using namespace bb::cascades;
 
+//! [0]
 /**
  * These static string literals will be used later on.
  * We use QT_TRANSLATE_NOOP here to just mark them as 'must-be-translated'
@@ -63,23 +63,21 @@ static const char * const listEntries[] = {
     QT_TRANSLATE_NOOP("MainView", "Third"),
     0
 };
+//! [0]
 
+//! [1]
 App::App()
     : m_translator(0)
 {
-    qmlRegisterType<DataModel>();
-    qmlRegisterType<ListItemManager>();
-
     setupLanguageModel();
 
     QmlDocument *qml = QmlDocument::create().load("main.qml");
     if (!qml->hasErrors()) {
         /**
-         * Make the language Model and ItemManager available as context properties,
-         * they are used by the ListView in the UI.
+         * Make the language model available as context properties,
+         * it is used by the ListView in the UI.
          */
         qml->setContextProperty("_model", &m_model);
-        qml->setContextProperty("_itemManager", new LanguageItemManager(this));
 
         /**
          * Make the App object available to the UI as well, so that its setCurrentLanguage()
@@ -89,7 +87,7 @@ App::App()
 
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             /**
              * Lookup the main view and text area controls in the QML tree and store them
@@ -105,7 +103,9 @@ App::App()
         }
     }
 }
+//! [1]
 
+//! [2]
 void App::setCurrentLanguage(const QVariantList &indexPath)
 {
     // Retrieve the currently selected language
@@ -144,7 +144,9 @@ void App::setCurrentLanguage(const QVariantList &indexPath)
         m_textArea->setText(text);
     }
 }
+//! [2]
 
+//! [3]
 void App::setupLanguageModel()
 {
     // Retrieve a list of all available translation catalog files ...
@@ -160,6 +162,7 @@ void App::setupLanguageModel()
         m_model << language;
     }
 }
+//! [3]
 
 QStringList App::findQmFiles() const
 {

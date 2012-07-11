@@ -80,7 +80,12 @@ Container {
             }
             
             dataModel: _certificateInfoControl.model
-            listItemManager: _certificateInfoControl.listItemManager
+
+            listItemComponents: ListItemComponent {
+                StandardListItem {
+                    title: ListItem.data
+                }
+            }
             
             // Display selected ceritificate information on selection
             onSelectionChanged: _certificateInfoControl.setCurrentCertificate (indexPath)

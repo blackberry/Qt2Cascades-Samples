@@ -94,7 +94,7 @@ private:
     ImageView *m_itemImage;
     Label *m_itemTitle;
     Label *m_itemDescription;
-    Container *m_highlighContainer;
+    ImageView *m_highlighContainer;
 };
 
 #endif // ifndef _FTPLISTITEM_H_

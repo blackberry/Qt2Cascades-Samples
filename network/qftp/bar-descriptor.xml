@@ -58,8 +58,7 @@
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
 
     <initialWindow>
-        <systemChrome>none</systemChrome>
-        <transparent>false</transparent>
+        <aspectRatio>portrait</aspectRatio>>       <transparent>false</transparent>
     </initialWindow>
 
     <!--  The category where the application appears. Either core.games or core.media. -->

@@ -27,13 +27,88 @@
 
 /*!
     \page downloadmanager
+    \example network/downloadmanager
     \title Network Download Manager Example
+
+    \section1 Description
 
     The Network Download example shows how to implement a queue for multiple
     downloads using the QNetworkAccessManager class.
 
     \image downloadmanager-example.png
 
-    See the \l{Network Download Example} for a simpler version of this example
-    that obtains multiple files in parallel.
+    \section1 Overview
+    In this example we'll learn how to use the QNetworkAccessManager class to download
+    a file over the network and how to monitor the progress and the status of the operation
+    via a QNetworkReply.
+
+    \section1 UI
+    The UI of this sample application consists of a text field where the user can enter the URL
+    of the file to download, a button that can be clicked to start the download, a progress bar
+    that shows the current progress of the operation and a status and error label that show status
+    and error messages.
+
+    The business logic of the application is encapsulated in the DownloadManager class that is exported
+    as '_manager' to the UI.
+
+    \snippet network/downloadmanager/assets/main.qml 0
+
+    The text field is initialized with an URL and whenever the user changes the text, the state of the
+    'Download' button is adapted to disable it whenever the text field is empty.
+
+    \snippet network/downloadmanager/assets/main.qml 1
+
+    When the user clicks the 'Download' button, the downloadUrl() slot of the DownloadManager object is invoked
+    with the URL from the text field as parameter.
+
+    \snippet network/downloadmanager/assets/main.qml 3
+    \snippet network/downloadmanager/assets/main.qml 4
+    \snippet network/downloadmanager/assets/main.qml 5
+
+    The 'text' properties of the status and error labels are bound against the status and error properties of
+    the DownloadManager object, so that the UI is updated automatically as soon as the DonwloadManager changes
+    its state.
+
+    \snippet network/downloadmanager/assets/main.qml 2
+
+    The properties of the progress bar (implemented in ProgressBar.qml) are bound against the appropriated properties
+    of the DownloadManager object as well, so that the progress of the download operation can be visualized.
+
+    \section1 DownloadManager
+    The DownloadManager is the central class in this sample application which contains all the business logic.
+    It is responsible for downloading the requested URL, storing the data on the local file system and publishing
+    the current progress and state via properties.
+
+    The DownloadManager can handle multiple download requests, by holding them in an internal queue and processing
+    them one after another.
+    Whenever the user clicks the 'Download' button in the UI, the downloadUrl() slot of the DownloadManager is invoked, which
+    will add the passed URL to the internal queue and triggers the processing of the next queue entry by calling startNextDownload()
+
+    \snippet network/downloadmanager/src/DownloadManager.cpp 0
+
+    This method will dequeue the first URL from the internal queue and assemble the target file name on the local file system by calling
+    saveFileName(). Then it tries to open the target file, so that the downloaded data can be saved there.
+
+    In the next step a QNetworkRequest object is created with the dequeued URL as parameter. The QNetworkRequest encapsulates all data
+    that describe the resource to download. Additionally to the URL it could also take authentication credentials, cookie information etc.
+    Calling \l{QNetworkAccessManager::get()}{get()} on the QNetworkAccessManager returns a QNetworkReply object that can be used to monitor
+    the progress and state of the download operation.
+    Therefor we connect the signals of the reply object to the private slots of the DownloadManager object.
+
+    Whenever new data arrive over the network now, the downloadReadyRead() slot is invoked, which writes all retrieved data to the target file.
+
+    \snippet network/downloadmanager/src/DownloadManager.cpp 3
+
+    Additionally the downloadProgress() slot is invoked, which calculates the speed and progress of the download operation and updates the
+    properties, so that the progress bar in the UI is updated.
+
+    \snippet network/downloadmanager/src/DownloadManager.cpp 1
+
+    When the download operation is finished, the downloadFinished() slot will be invoked, which resets the progress information, updates the
+    status information (whether an error occurred or download was successfully) and deletes the QNetworkReply object, because we gained the
+    ownership of it when calling \l{QNetworkAccessManager::get()}{QNetworkAccessManager::get()}.
+
+    \snippet network/downloadmanager/src/DownloadManager.cpp 2
+
+    In the last step the downloadFinished() slot calls startNextDownload() to trigger the next download from the internal queue.
 */

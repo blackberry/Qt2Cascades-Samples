@@ -46,7 +46,6 @@
 #include "DialogController.hpp"
 
 #include <QtCore/QObject>
-
 /**
  * The MessageBoxController encapsulates the logic of
  * a message box. It consists of a title, a text and two buttons.
@@ -71,7 +70,7 @@ class MessageBoxController : public DialogController
 
 public:
     explicit MessageBoxController(QObject *parent = 0);
-
+//! [0]
     /**
      * Describes the two buttons of the dialog.
      */
@@ -83,6 +82,7 @@ public:
 
     // Shows the message box with the given title, text and the two buttons
     Result exec(const QString &title, const QString &text, const QString &button1Text, const QString &button2Text);
+//! [0]
 
     // The accessor methods for the properties
     QString title() const;

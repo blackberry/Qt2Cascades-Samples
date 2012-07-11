@@ -46,6 +46,7 @@
 #include <QtCore/QEventLoop>
 #include <QtCore/QObject>
 
+//! [0]
 /**
  * The DialogController is a helper class that is used to implement
  * dialog-like behavior with QML.
@@ -84,5 +85,5 @@ private:
     // The nested event loop
     QEventLoop m_localLoop;
 };
-
+//! [0]
 #endif

@@ -42,7 +42,7 @@
 
     <initialWindow>
         <aspectRatio>landscape</aspectRatio>
-        <autoOrients>true</autoOrients>
+        <autoOrients>false</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>

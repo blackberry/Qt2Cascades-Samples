@@ -1,0 +1,140 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page undoframework
+    \example tools/undoframework
+    \title Undo Framework Example
+
+    \section1 Description
+
+    The Undo Framework example shows how to implement undo/redo functionality
+    with the Qt undo framework.
+
+    \image undoframework-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the QUndoCommand and QUndoStack classes to track user actions and
+    allow to undo and redo them. The user can move gaming pieces on a board, where each move will be tracked,
+    and then undo and redo the single moves by clicking the 'Undo' and 'Redo' buttons.
+
+    \section1 The Undo Framework
+    In the Qt undo framework, all actions that the user performs are
+    implemented in classes that inherit QUndoCommand. An undo command
+    class knows how to both \l{QUndoCommand::}{redo()} - or just do
+    the first time - and \l{QUndoCommand::}{undo()} an action. For
+    each action the user performs, a command is placed on a
+    QUndoStack.  Since the stack contains all commands executed
+    (stacked in chronological order) on the document, it can roll the
+    state of the document backwards and forwards by undoing and redoing
+    its commands. See the \l{Overview of Qt's Undo Framework}{overview
+    document} for a high-level introduction to the undo framework.
+
+    \section1 The UI
+    The UI of this sample application consists of a game board, where the movable gaming pieces are located on, and two buttons, one
+    to undo a move and one to redo a move.
+
+    The business logic of the application is encapsulated in the class UndoManager, which is
+    exported to the UI as '_undoManager'.
+
+    Inside the main.qml the game board is instantiated (the implementation is located in Board.qml)
+
+    \snippet tools/undoframework/assets/main.qml 0
+
+    and the two buttons
+
+    \snippet tools/undoframework/assets/main.qml 1
+
+    Whenever the user clicks the 'Undo' or 'Redo' button, the undo() and redo() slots of the UndoManager object are invoked.
+    The state of the buttons depends on the 'canUndo' and 'canRedo' properties of the UndoManager, which reflect whether there
+    are undo commands located on the internal QUndoStack.
+    The text of the buttons is adapted to the title of the undo command that is currently located on the internal QUndoStack.
+
+    \snippet tools/undoframework/assets/Board.qml 0
+
+    The Board.qml contains a Container with four Stone elements (implemented inside Stone.qml) inside an AbsoluteLayout.
+    The Stone object provides a signal moved() which is emitted whenever the user moves the Stone object on the screen.
+
+    \snippet tools/undoframework/assets/Stone.qml 0
+
+    We implement a signal handler here that invokes the createMoveCommand() slot of the UndoManager object and passes the
+    five parameters
+    \list
+      \o The Stone object that has been moved
+      \o The x coordinate where the move started
+      \o The y coordinate where the move started
+      \o The x coordinate where the move ended
+      \o The y coordinate where the move ended
+    \endlist
+    The UndoManager object uses these information to push a new undo command on the internal QUndoStack.
+
+    \section1 MoveCommand
+    The MoveCommand represents one move action the user has done. It inherits from QUndoCommand and reimplements
+    the virtual methods \l{QUndoCommand::undo()}{undo()} and \l{QUndoCommand::redo()}{redo()}.
+    Additionally it stores the Stone object that should be moved, the title of this action and the source and target position.
+
+    \snippet tools/undoframework/src/MoveCommand.hpp 0
+
+    Inside the constructor of MoveCommand we retrieve the title property of the associated Stone object and set it
+    as the description text for this command.
+
+    \snippet tools/undoframework/src/MoveCommand.cpp 0
+
+    The implementation of the \l{QUndoCommand::undo()}{undo()} method just changes the x and y coordinates of the Stone object
+    back to the source position.
+
+    \snippet tools/undoframework/src/MoveCommand.cpp 2
+
+    The implementation of the \l{QUndoCommand::redo()}{redo()} method changes the x and y coordinates of the Stone object
+    back to the target position.
+
+    \snippet tools/undoframework/src/MoveCommand.cpp 1
+
+    \section1 UndoManager
+    The UndoManager is a thin wrapper around the QUndoStack class. It provides a convenience method to push a new MoveCommand
+    on the stack and it makes all the state information of the stack available to the UI via properties.
+
+    \snippet tools/undoframework/src/UndoManager.cpp 0
+
+    Inside the constructor of UndoManager, the internal QUndoStack object is allocated and the state change notification signals
+    of the stack are forwarded to the change notification signals of the UndoManager's properties.
+
+    \snippet tools/undoframework/src/UndoManager.cpp 1
+
+    The accessor methods of UndoManager's properties just forward the calls to the appropriated methods of QUndoStack
+
+    \snippet tools/undoframework/src/UndoManager.cpp 2
+
+    The undo() and redo() slots of the UndoManager object also just call the \l{QUndoStack::undo()}{undo()} and \l{QUndoStack::redo()}{redo()}
+    methods of the QUndoStack.
+
+    \snippet tools/undoframework/src/UndoManager.cpp 3
+
+    The createMoveCommand() method of the UndoManager creates a new MoveCommand object, passes in the parameters it received from the call
+    in the QML file, and pushes the object onto the QUndoStack.
+    The stack takes ownership of the command and will delete it when it is no longer needed.
+*/

@@ -47,7 +47,6 @@
 #include <bb/cascades/Page>
 
 #include "app.hpp"
-#include "fileitemmanager.hpp"
 #include "htmlinfo.hpp"
 
 using namespace bb::cascades;
@@ -55,16 +54,47 @@ using namespace bb::cascades;
 App::App()
     : m_htmlInfo(new HtmlInfo(this))
 {
-    qmlRegisterType<DataModel>();
-    qmlRegisterType<ListItemManager>();
-
     // Fill the model with XHTML files from the assets directory
-    m_model << "apache_org.html";
-    m_model << "nokia_com.html";
-    m_model << "simpleexample.html";
-    m_model << "trolltech_com.html";
-    m_model << "w3c_org.html";
-    m_model << "youtube_com.html";
+    {
+        QVariantMap entry;
+        entry["title"] = "Apache";
+        entry["file"] = "apache_org.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "RIM";
+        entry["file"] = "rim_com.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "Simple";
+        entry["file"] = "simpleexample.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "Trolltech";
+        entry["file"] = "trolltech_com.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "W3C";
+        entry["file"] = "w3c_org.html";
+        m_model.insert(entry);
+    }
+    {
+        QVariantMap entry;
+        entry["title"] = "YouTube";
+        entry["file"] = "youtube_com.html";
+        m_model.insert(entry);
+    }
+
+    m_model.setGrouping(ItemGrouping::None);
+    m_model.setSortingKeys(QStringList() << "title");
+    m_model.setSortedAscending(true);
 
     QmlDocument *qml = QmlDocument::create().load("main.qml");
     if (!qml->hasErrors()) {
@@ -72,11 +102,10 @@ App::App()
         qml->setContextProperty("_app", this);
         qml->setContextProperty("_htmlInfo", m_htmlInfo);
         qml->setContextProperty("_model", &m_model);
-        qml->setContextProperty("_itemManager", new FileItemManager(this));
 
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Pre-select the first entry in the ListView
             ListView *listView = appPage->findChild<ListView*>("listView");
@@ -88,8 +117,22 @@ App::App()
 void App::setFileName(const QVariantList &indexPath)
 {
     // Extract the name of the selected XHTML file from the data model ...
-    const QString fileName = m_model.data(indexPath).toString();
+    const QString fileName = m_model.data(indexPath).toMap().value("file").toString();
 
     // ... and let the information extractor process it
     m_htmlInfo->parseHtmlFile("app/native/assets/" + fileName);
+
+    // Extract the title of the selected XHTML file from the data model ...
+    const QString fileTitle = m_model.data(indexPath).toMap().value("title").toString();
+
+    if (m_fileTitle == fileTitle)
+        return;
+
+    m_fileTitle = fileTitle;
+    emit fileTitleChanged();
+}
+
+QString App::fileTitle() const
+{
+    return m_fileTitle;
 }

@@ -1,0 +1,90 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page sharedmemory
+    \example ipc/sharedmemory
+    \title Shared Memory Example
+
+    \section1 Description
+
+    The Shared Memory example shows how to use the QSharedMemory class
+    to implement inter-process communication using shared memory.
+
+    \image sharedmemory-example.png
+
+    \section1 Overview
+
+    In this example we'll learn how to communicate between multiple processes by writing/reading data
+    to/from a shared memory and how to synchronize the access to the shared memory segment properly.
+
+    The example application is splitted in the two executables, \l {ipc/sharedmemory_loader}{sharedmemory_loader} and sharedmemory.
+    With the \l {ipc/sharedmemory_loader}{sharedmemory_loader} the user can load a file from the file system into a shared memory segment from
+    where the sharedmemory application reads the content of the file and displays it in the UI.
+
+    \section1 FileLoaderProxy
+
+    The central class in sharedmemory is FileLoaderProxy, which encapsulates the loading of the data from
+    the shared memory segment and provides a property to display the data in the UI.
+    Whenever the user clicks on the 'Load file' button, the loadFile() slot is invoked:
+
+    \snippet ipc/sharedmemory/assets/main.qml 0
+
+    To visualize the loaded data in the UI, the 'fileContent' property of the exported FileLoaderProxy object
+    is bound against the 'text' property of a TextArea control.
+
+    \snippet ipc/sharedmemory/assets/main.qml 1
+
+    The FileLoaderProxy class contains a member variable of type QSharedMemory which encapsulates the creation and access
+    of the shared memory segment.
+
+    Inside the constructor of the FileLoaderProxy the segment is created and initialized
+
+    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 1
+
+    For this the hard-coded key and size are used as defined previously in the file
+
+    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 0
+
+    Since m_sharedMemory is a member variable, it will be deleted as soon as the FileLoaderProxy object is deleted.
+    At this point the destructor of QSharedMemory will delete the associated shared memory segment automatically.
+
+    Whenever the user clicks the 'Load file' button, the loadFile() slot is invoked, which simply emits the
+    change notification signal for the 'fileContent' property.
+
+    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 3
+
+    This signal emission will trigger the reevaluation of all property bindings where the 'fileContent' property is involved.
+    To retrieve the new value for the 'fileContent' property, its getter method fileContent() is invoked:
+
+    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 2
+
+    Inside this method we try to gain the exclusive access to the shared memory segment by calling \l {QSharedMemory::lock()}{lock()}.
+    If another process holds the lock already, our process is blocked until the lock is released by the other process.
+    When we gained the access, we read the data from the shared memory segment into a temporary variable.
+    Afterwards we release the lock by calling \l {QSharedMemory::unlock()}{unlock()} and return the data.
+ */

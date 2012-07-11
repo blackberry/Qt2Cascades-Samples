@@ -27,11 +27,93 @@
 
 /*!
     \page i18n
+    \example tools/i18n
     \title I18N Example
+
+    \section1 Description
 
     The Internationalization (I18N) example demonstrates Qt's support for translated
     text. Developers can write the initial application text in one language, and
     translations can be provided later without any modifications to the code.
 
-    \image i18n-example-rim.png
+    \image i18n-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the internationalization features provided by Qt
+    to switch the texts in the UI between multiple translations. We'll learn how to use QTranslator
+    to load a translation catalog and how to mark user visible texts for translation.
+
+    \section1 UI
+    The sample application consists of a ListView at the bottom where the user can select
+    a language, and a couple of text-containing controls at the top which adapt the
+    translation of their text according to the selected language.
+
+    \snippet tools/i18n/assets/main.qml 0
+
+    The ListView uses a data model '_model' that is exported from C++ to the UI and whenever the
+    user selects a language, the setCurrentLanguage() slot of the application object is invoked.
+
+    \snippet tools/i18n/assets/main.qml 1
+
+    The upper part of the UI is encapsulated in the MainView.qml file, which is instantiated inside
+    main.qml.
+
+    \snippet tools/i18n/assets/MainView.qml 0
+
+    MainView.qml contains a top-level function that translates all user visible texts from its source
+    language (normally english) to their target language by using the \l{qdeclarativei18n.html}{qsTr()} function.
+
+    \section1 App
+    The App class contains all the business logic of the application and is also responsible for initializing
+    the UI.
+
+    \snippet tools/i18n/src/app.cpp 1
+
+    Inside the constructor we load the 'main.qml' file to initialize the UI and we export the data model that contains
+    the languages and the 'App' object to the UI, so that these two objects are accessible from within the 'main.qml' file.
+    After the root node of the UI has been constructed, we lookup the C++ objects that represent the MainView.qml and its contained
+    TextView control. This lookup is done by using the \l{QObject::findChild()}{findChild()} method on the root node and passing
+    the names that have been specified for the 'objectName' properties in the QML file:
+
+    \snippet tools/i18n/assets/MainView.qml 1
+
+    In the last step we pre-select a language by calling the setCurrentLanguage() method with an index path pointing to the
+    second entry in the data model.
+
+    The model itself setup inside the setupLanguageModel() method:
+
+    \snippet tools/i18n/src/app.cpp 3
+
+    We first retrieve the list of all qm files (the translation catalogs, one for each language) that are shipped with this
+    sample application and then we insert them into a map with the language name as key and the path to the qm file as value.
+    The language name is additionally appended to 'm_model', a QListDataModel<QString> that is used as data model by the ListView in the UI.
+
+    Now the application is initialized and the user can start to switch the languages.
+    Whenever the selection of the ListView changes, the setCurrentLanguage() slot of the application object is invoked:
+
+    \snippet tools/i18n/src/app.cpp 2
+
+    With the passed index path we can retrieve the language, the user has selected, from the model. Befor we load the translation
+    catalog for the new language, we remove any previous loaded catalog and delete its associated QTranslator object.
+
+    Since the QTranslator expects the path to the qm file as parameter, we look up the path for the newly selected language in the map
+    we have filled previously in setupLanguageModel().
+
+    Afterwards the new translator object can be installed on the global application object.
+    Unfortunately just installing the translator does not update the texts, that has been wrapped with \l{qdeclarativei18n.html}{qsTr()}
+    inside the QML files, automatically. That is because qsTr() is a function and the translation is only done at the point when the function
+    is invoked.
+    However, as previously seen, our MainView.qml contains a top-level function that calls the qsTr() functions and assigns the results to
+    the 'text' properties of the controls, so we can simply call this top-level function to trigger the retranslation.
+
+    Invoking a JavaScript function from C++ can be done with the \l{QMetaObject::invokeMethod()}{QMetaObject::invokeMethod()} method, which expects
+    the pointer to the C++ object that represents the QML object with the JavaScript function and the name of the JavaScript function.
+
+    It is also possible to translate text that can not be wrapped with qsTr(), for example if the texts are part of a table structure:
+
+    \snippet tools/i18n/src/app.cpp 0
+
+    In this case the QT_TRANSLATE_NOOP() macro can be used to mark text as a candidate for translation.
+    The actual translation is then done by calling \l{QCoreApplication::translate()}{translate()} on the global application object like
+    done in setCurrentLanguage() for the content of the TextArea control.
 */

@@ -43,6 +43,7 @@
 
 import bb.cascades 1.0
 
+//! [0]
 // Container for the visual representation of a XBEL bookmark element
 Container {
     property string tagName: "bookmark"
@@ -50,35 +51,60 @@ Container {
     property alias url: urlField.text
     topMargin: 10
     leftMargin: 20
+
     layout: StackLayout {
-        layoutDirection: LayoutDirection.LeftToRight
         leftPadding: 20
     }
-    
-    // A standard ImageView
-    ImageView {
-        imageSource: "asset:///bookmark.png"
-        preferredWidth: 32
-        preferredHeight: 32
-    }
-    
-    // A standard Label for the bookmark title element
-    Label {
-        id: titleField
-        leftMargin: 10
-        preferredWidth: 480
-        textStyle {
-            base: SystemDefaults.TextStyles.SmallText
+
+    Container {
+        layout: StackLayout {
+            layoutDirection: LayoutDirection.LeftToRight
+        }
+
+        // A standard ImageView
+        ImageView {
+            imageSource: "asset:///images/bookmark.png"
+            minWidth: 82
+            minHeight: 62
+            layoutProperties: StackLayoutProperties {
+                verticalAlignment: VerticalAlignment.Center
+            }
+            scalingMethod: ScalingMethod.AspectFit
+        }
+
+        // A standard Label for the bookmark title element
+        Label {
+            id: titleField
+            leftMargin: 10
+            layoutProperties: StackLayoutProperties {
+                verticalAlignment: VerticalAlignment.Center
+            }
+
+            textStyle {
+                base: SystemDefaults.TextStyles.SmallText
+                color: Color.White
+            }
+
+            onTouch: {
+                if (event.isDown()) {
+                    urlField.visible = !urlField.visible
+                }
+            }
         }
     }
-    
+
     // A standard TextField for the bookmark url attribute value
     TextField {
         id: urlField
         leftMargin: 10
-        preferredWidth: 450
+        visible: false
+        layoutProperties: StackLayoutProperties {
+            verticalAlignment: VerticalAlignment.Center
+        }
+
         textStyle {
             base: SystemDefaults.TextStyles.SmallText
         }
     }
 }
+//! [0]

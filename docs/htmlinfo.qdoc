@@ -27,11 +27,14 @@
 
 /*!
     \page htmlinfo
+    \example xml/htmlinfo
     \title XML HTML Info Example
+
+    \section1 Description
 
     The XML HTML Info example provides statistics about the content of HTML files.
 
-    \image htmlinfo-example-rim.png
+    \image htmlinfo-example.png
 
     The files are parsed using a QXmlStreamReader object. If the file does
     not contain a well-formed XML document, a description of the error is

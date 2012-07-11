@@ -27,16 +27,15 @@
 
 /*!
     \page queuedcustomtype
+    \example threads/queuedcustomtype
     \title Queued Custom Type Example
+
+    \section1 Description
 
     The Queued Custom Type example shows how to send custom types between
     threads with queued signals and slots.
 
-    \image queuedcustomtype-example-rim.png
-
-    Contents:
-
-    \tableofcontents
+    \image queuedcustomtype-example.png
 
     \section1 Overview
 

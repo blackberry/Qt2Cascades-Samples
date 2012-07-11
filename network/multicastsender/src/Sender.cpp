@@ -45,6 +45,7 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QUdpSocket>
 
+//! [0]
 Sender::Sender(QObject *parent)
     : QObject(parent), m_ttl(0)
 {
@@ -75,13 +76,17 @@ Sender::Sender(QObject *parent)
      */
     connect(m_timer, SIGNAL(timeout()), this, SLOT(sendDatagram()));
 }
+//! [0]
 
+//! [1]
 void Sender::startSending()
 {
     // Start the timer with an interval of 1 second
     m_timer->start(1000);
 }
+//! [1]
 
+//! [2]
 void Sender::sendDatagram()
 {
     // Update the status message and signal that it has changed
@@ -97,6 +102,7 @@ void Sender::sendDatagram()
     // Increase the datagram counter, so that the next sent datagram will have a different content
     ++m_messageNo;
 }
+//! [2]
 
 QString Sender::status() const
 {
@@ -108,6 +114,7 @@ QString Sender::ttl() const
     return QString::number(m_ttl);
 }
 
+//! [3]
 void Sender::setTtl(const QString &ttlString)
 {
     bool ok = false;
@@ -127,3 +134,4 @@ void Sender::setTtl(const QString &ttlString)
 
     emit ttlChanged();
 }
+//! [3]

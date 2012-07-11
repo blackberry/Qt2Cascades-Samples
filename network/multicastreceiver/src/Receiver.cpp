@@ -44,6 +44,7 @@
 
 #include <QtNetwork/QUdpSocket>
 
+//! [0]
 Receiver::Receiver(QObject *parent)
     : QObject(parent)
 {
@@ -69,7 +70,9 @@ Receiver::Receiver(QObject *parent)
      */
     connect(m_udpSocket, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
 }
+//! [0]
 
+//! [1]
 void Receiver::processPendingDatagrams()
 {
     // Now read all available datagrams from the socket
@@ -88,6 +91,7 @@ void Receiver::processPendingDatagrams()
         emit statusChanged();
     }
 }
+//! [1]
 
 QString Receiver::status() const
 {

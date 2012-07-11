@@ -47,29 +47,35 @@
 #include <bb/cascades/QmlDocument>
 
 using namespace bb::cascades;
-
+//! [0]
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
     // Create the downloader object
     HttpDownloader downloader;
-
+//! [1]
     QmlDocument *qml = QmlDocument::create().load("main.qml");
+//! [1]
     if (!qml->hasErrors()) {
         // Make the HttpDownloader object and the dialog controllers available to the UI as context properties
+//! [2]
         qml->setContextProperty("_downloader", &downloader);
         qml->setContextProperty("_messageBox", downloader.messageBoxController());
         qml->setContextProperty("_authDialog", downloader.authenticationDialogController());
+//! [2]
+//! [3]
         Page *appPage = qml->createRootNode<Page>();
 
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Quit the application whenever 'Qt.quit()' is called inside the QML document
             QObject::connect(qml->documentContext()->engine(), SIGNAL(quit()), &app, SLOT(quit()));
         }
+//! [3]
     }
 
     return Application::exec();
 }
+//! [0]

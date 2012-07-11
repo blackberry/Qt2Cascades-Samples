@@ -46,61 +46,119 @@ import bb.cascades 1.0
 Page {
     // A container is used to gather visual items together.
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
+
         Container {
             layoutProperties: DockLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
             }
 
-            
             // Defines a TextStyleDefinition that can be used in each control.
             attachedObjects: [
                 TextStyleDefinition {
                     id: tsd
+                    color: Color.White
                     base: SystemDefaults.TextStyles.BodyText
                     alignment: TextAlignment.Center
                 }
             ]
-            
-            // A standard Label
-            Label {
+
+            Container {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
                 }
-                text: _sender.status
-                textStyle {
-                    base: tsd.style
+
+                // A standard Label
+                Label {
+                    id: title
+
+                    layoutProperties: StackLayoutProperties {
+                        horizontalAlignment: HorizontalAlignment.Center
+                    }
+
+                    text: qsTr ("Ready to broadcast datagrams on port 45454")
+                    textStyle {
+                        color: Color.White
+                        base: tsd.style
+                    }
+                }
+
+//! [0]
+                // A standard Label, displays sending data
+                Label {
+                    layoutProperties: StackLayoutProperties {
+                        horizontalAlignment: HorizontalAlignment.Center
+                    }
+
+                    text: _sender.status
+                    textStyle.color: Color.White
+                    textStyle.fontWeight: FontWeight.Bold
+
+                    // Plays scale animation upon sending the data
+                    animations: [
+                        SequentialAnimation {
+                            id: animTextSize
+                            ScaleTransition {
+                                toX: 1.5
+                                toY: 1.5
+                                duration: 300
+                            }
+                            ScaleTransition {
+                                toX: 1.0
+                                toY: 1.0
+                                duration: 300
+                            }
+                        }
+                    ]
+
+                    // Play animation when text changes
+                    onTextChanged: animTextSize.play ()
                 }
             }
-            
+//! [0]
+
             // The control Container, contains the buttons to start and quit application.
             Container {
                 topMargin: 30
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
+
                 layout: StackLayout {
+                    leftPadding: 30
+                    rightPadding: 30
                     layoutDirection: LayoutDirection.LeftToRight
                 }
-                
+
+//! [1]
                 // A standard button
                 Button {
                     text: qsTr ("Start")
-                    
+
                     // Start broadcasting datagrams on click
                     onClicked: {
+                        title.text = qsTr ("Now broadcasting datagram")
                         enabled = false;
                         _sender.startBroadcasting ()
                     }
                 }
-                
+//! [1]
+
                 // A standard button
                 Button {
                     leftMargin: 100
                     text: qsTr ("Quit")
-                    
+
                     // Quit application on click
                     onClicked: _app.quit ()
                 }

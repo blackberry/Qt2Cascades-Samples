@@ -27,7 +27,10 @@
 
 /*!
     \page pingpong
+    \example statemachine/pingpong
     \title Ping Pong States Example
+
+    \section1 Description
 
     The Ping Pong States example shows how to use parallel states together
     with custom events and transitions in \l{The State Machine Framework}.
@@ -92,6 +95,6 @@
     Finally, the group is added to the state machine, the machine is started,
     and the application event loop is entered.
 
-    The \c textBuffer object is used to make the output of the \c pinger, \c pingTransition and \c pongTransition
-    visible in the UI.
+    The \c balloonCreator object is used to create balloon elements in the UI whenever the \c pinger, \c pingTransition or \c pongTransition
+    send a notification.
   */

@@ -45,133 +45,148 @@ import bb.cascades 1.0
 
 // Container grouping all visual nodes for the initial view
 Container {
-    topMargin: 10
-    leftMargin: 10
-    rightMargin: 10
-    bottomMargin: 10
-    
-    // Groups the ftp url TextField and connection control Buttons
-    Container {
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
-        }
-        
-        // A standard Label
-        Label {
-            text: qsTr ("Ftp server:")
-            layoutProperties: StackLayoutProperties {
-                spaceQuota: -1
-            }
-        }
-        
-        // A standard TextField
-        TextField {
-            leftMargin: 5
-            layoutProperties: StackLayoutProperties {
-                spaceQuota: 3
-            }
-            text: _downloader.url
-            preferredWidth: 400
-            
-            // Save ftp url on input
-            onTextChanging: _downloader.url = text
-        }
-        
-        // A standard Button
-        Button {
-            leftMargin: 15
-            layoutProperties: StackLayoutProperties {
-                spaceQuota: 1
-            }
-            text: qsTr ("Up")
-            
-            // Enable control upon successful connection
-            enabled: _downloader.parentDirectoryAvailable
-            
-            // Move up to parent folder in directory tree
-            onClicked: _downloader.cdToParent ()
-        }
-        
-        // A standard Button
-        Button {
-            leftMargin: 15
-            layoutProperties: StackLayoutProperties {
-                spaceQuota: 2
-            }
-            
-            // Button text depends on state of connection (connect/disconnect)
-            text: _downloader.connectLabel
-            enabled: _downloader.connectPossible
-            
-            // Deppending on state, connect/disconnect to/from ftp server
-            onClicked: _downloader.connectOrDisconnect ()
-        }
-    }
-    
-    // Container to change background color of ListView
-    Container {
-        layoutProperties: StackLayoutProperties {
+    layout: DockLayout {}
+
+    ImageView {
+        layoutProperties: DockLayoutProperties {
             horizontalAlignment: HorizontalAlignment.Fill
-            spaceQuota: 3
+            verticalAlignment: VerticalAlignment.Top
         }
-        
+
+        imageSource: "asset:///images/top.png"
+    }
+
+    // Groups the ftp url TextField
+    Container {
+        layoutProperties: DockLayoutProperties {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+        }
+
+        layout: StackLayout {
+            leftPadding: 20
+            rightPadding: 20
+        }
+
+        Container {
+            minHeight: 120
+
+            layout: StackLayout {
+                leftPadding: 30
+                rightPadding: 30
+
+                layoutDirection: LayoutDirection.LeftToRight
+            }
+
+            // A standard TextField
+            TextField {
+                leftMargin: 5
+                layoutProperties: StackLayoutProperties {
+                    verticalAlignment: VerticalAlignment.Center
+                    spaceQuota: 3
+                }
+                text: _downloader.url
+
+                // Save ftp url on input
+                onTextChanging: _downloader.url = text
+            }
+
+            // A standard Button
+            Button {
+                leftMargin: 15
+                layoutProperties: StackLayoutProperties {
+                    verticalAlignment: VerticalAlignment.Center
+                    spaceQuota: 2
+                }
+
+                // Button text depends on state of connection (connect/disconnect)
+                text: _downloader.connectLabel
+                enabled: _downloader.connectPossible
+
+                // Deppending on state, connect/disconnect to/from ftp server
+                onClicked: _downloader.connectOrDisconnect ()
+            }
+        }
+
         // A standard ListView
         ListView {
-            topMargin: 10
+            preferredWidth: 700
+            topMargin: 24
+
+            layoutProperties: StackLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Center
+                spaceQuota: 6
+            }
+
             dataModel: _model
             listItemManager: _itemManager
             enabled: _downloader.selectionPossible
-            
+
             // Open folder or highlight file on selection
             onSelectionChanged: _downloader.processItem (indexPath, selected)
         }
-    }
-    
-    // A standard Label
-    Label {
-        topMargin: 10
-        preferredWidth: 1000
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
-        text: _downloader.statusText
-        
-        // Define custom text color
-        textStyle {
-            base: SystemDefaults.TextStyles.SmallText
-            size: 25
-        }
-    }
-    
-    // Groups the control Buttons
-    Container {
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-            spaceQuota: 1
-        }
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
-        }
-        
-        // A standard Button
-        Button {
-            text: qsTr ("Download")
-            
-            // Enable Button upon successful connection
-            enabled: _downloader.downloadPossible
-            
-            // Download and save on click
-            onClicked: _downloader.downloadFile ()
-        }
-        
-        // A standard Button
-        Button {
-            leftMargin: 25
-            text: qsTr ("Quit")
-            
-            // Quit application on click
-            onClicked: Qt.quit ()
+
+        Container {
+            layoutProperties: StackLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                spaceQuota: 1
+            }
+
+            // Groups the connection control Buttons
+            Container {
+                layoutProperties: StackLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+
+                layout: StackLayout {
+                    layoutDirection: LayoutDirection.LeftToRight
+                }
+
+                // A standard Button
+                Button {
+                    layoutProperties: StackLayoutProperties {
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                    text: qsTr ("Up")
+
+                    // Enable control upon successful connection
+                    enabled: _downloader.parentDirectoryAvailable
+
+                    // Move up to parent folder in directory tree
+                    onClicked: _downloader.cdToParent ()
+                }
+
+                // A standard Button
+                Button {
+                    layoutProperties: StackLayoutProperties {
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                    text: qsTr ("Download")
+
+                    // Enable Button upon successful connection
+                    enabled: _downloader.downloadPossible
+
+                    // Download and save on click
+                    onClicked: _downloader.downloadFile ()
+                }
+            }
+
+            // A standard Label
+            Label {
+                topMargin: 10
+                layoutProperties: StackLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Fill
+                }
+
+                text: _downloader.statusText
+
+                // Define custom text color
+                textStyle {
+                    base: SystemDefaults.TextStyles.SmallText
+                    color: Color.Black
+                    size: 25
+                }
+            }
         }
     }
 }

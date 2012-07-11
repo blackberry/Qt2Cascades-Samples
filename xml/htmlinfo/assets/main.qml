@@ -48,47 +48,47 @@ import bb.cascades 1.0
 // reader and statistics about the file will be displayed
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        Container {
-            layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+
+
+        ScrollView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
             }
-            
-            // Container for giving the ListView a background Color
-            Container {
-                background: Color.create ("#150790")
-                
-                // The standard ListView holding the HTML file selections
-                ListView {
-                    preferredWidth: 380
-                    objectName: "listView"
-                    dataModel: _model
-                    listItemManager: _itemManager
-                    
-                    // Set and parse the HTML file on selection
-                    onSelectionChanged: _app.setFileName (indexPath)
-                }
+
+            scrollViewProperties {
+                scrollMode: ScrollMode.Vertical
             }
+
             Container {
-                background: Color.create ("#eaefb8")
                 layout: StackLayout {
+                    topPadding: 150
+                    leftPadding: 30
+                    rightPadding: 30
                 }
-                layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Fill
-                }
-                
+
                 // A standard TextArea for displaying any parse errors
                 TextArea {
                     preferredWidth: 680
                     preferredHeight: 360
                     editable: false
-                    
+
                     // Make this Container visible only if there are errors
                     visible: _htmlInfo.error != ""
-                    
+
                     text: _htmlInfo.error
-                    
+
                     // Defines custom text style
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
@@ -96,145 +96,183 @@ Page {
                         alignment: TextAlignment.Center
                     }
                 }
+
                 Container {
                     // Container grouping HTML parsed output only visible if there were no errors
                     visible: _htmlInfo.error == ""
-                    Container {
-                        background: Color.create ("#7b9812")
-                        layout: StackLayout {
-                        }
-                        layoutProperties: StackLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                            verticalAlignment: VerticalAlignment.Fill
-                        }
-                        
-                        // A standard TextArea for displaying the HTML head title
-                        TextArea {
-                            preferredWidth: 900
-                            preferredHeight: 125
-                            backgroundVisible: false
-                            
-                            text: _htmlInfo.title
-                            
-                            // Defines text style
-                            textStyle {
-                                base: SystemDefaults.TextStyles.SmallText
-                                fontWeight: FontWeight.Bold
-                            }
+
+                    // A standard TextArea for displaying the HTML head title
+                    TextArea {
+                        preferredWidth: 700
+                        backgroundVisible: false
+
+                        text: _htmlInfo.title
+
+                        // Defines text style
+                        textStyle {
+                            base: SystemDefaults.TextStyles.TitleText
+                            color: Color.White
+                            alignment: TextAlignment.Center
                         }
                     }
-                    
+
+                    // A divider line
+                    ImageView {
+                        imageSource: "asset:///images/divider.png"
+                    }
+
                     // Container grouping the Label and the corresponding output
                     Container {
-                        background: Color.create ("#b0b38b")
-                        layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
-                            leftPadding: 10
-                        }
                         layoutProperties: StackLayoutProperties {
                             horizontalAlignment: HorizontalAlignment.Fill
                         }
-                        
+
+                        layout: StackLayout {
+                            layoutDirection: LayoutDirection.LeftToRight
+                            leftPadding: 30
+                            rightPadding: 30
+                        }
+
                         // A standard Label
                         Label {
-                            maxWidth: 300
-                            minWidth: maxWidth
-                            
-                            text: qsTr ("Number of paragraphs:")
+                            layoutProperties: StackLayoutProperties {
+                                spaceQuota: 1
+                            }
+
+                            text: qsTr ("Number of paragraphs")
+
                             textStyle {
                                 base: SystemDefaults.TextStyles.SmallText
-                                color: Color.Black
+                                color: Color.White
                             }
                         }
-                        
+
                         // A standard Label displaying paragraphs output
                         Label {
+                            layoutProperties: StackLayoutProperties {
+                                spaceQuota: 1
+                            }
+
                             text: _htmlInfo.paragraphs
+
                             textStyle {
+                                alignment: TextAlignment.ForceRight
                                 base: SystemDefaults.TextStyles.SmallText
-                                color: Color.Black
+                                color: Color.White
                             }
                         }
                     }
-                    
+
+                    // A divider line
+                    ImageView {
+                        imageSource: "asset:///images/divider.png"
+                    }
+
                     // Container grouping the Label and the corresponding output
                     Container {
-                        background: Color.create ("#c7cb9e")
-                        layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
-                            leftPadding: 10
-                        }
                         layoutProperties: StackLayoutProperties {
                             horizontalAlignment: HorizontalAlignment.Fill
-                            verticalAlignment: VerticalAlignment.Fill
                         }
-                        
+
+                        layout: StackLayout {
+                            layoutDirection: LayoutDirection.LeftToRight
+                            leftPadding: 30
+                            rightPadding: 30
+                        }
+
                         // A standard Label
                         Label {
-                            maxWidth: 300
-                            minWidth: maxWidth
-                            
+                            layoutProperties: StackLayoutProperties {
+                                spaceQuota: 1
+                            }
+
                             text: qsTr ("Number of links:")
-                            
-                            // Defines text style
+
                             textStyle {
                                 base: SystemDefaults.TextStyles.SmallText
-                                color: Color.Black
+                                color: Color.White
                             }
                         }
-                        
+
                         // A standard Label displaying number of links output
                         Label {
+                            layoutProperties: StackLayoutProperties {
+                                spaceQuota: 1
+                            }
+
                             text: _htmlInfo.links
-                            
-                            // Defines text style
+
                             textStyle {
+                                alignment: TextAlignment.ForceRight
                                 base: SystemDefaults.TextStyles.SmallText
-                                color: Color.Black
+                                color: Color.White
                             }
                         }
                     }
-                    
+
+                    // A divider line
+                    ImageView {
+                        imageSource: "asset:///images/divider.png"
+                    }
+
+                    ////////////
+
                     // Container grouping the Label and the corresponding output
                     Container {
-                        background: Color.create ("#eaefb8")
                         layout: StackLayout {
-                            leftPadding: 10
+                            leftPadding: 30
+                            rightPadding: 30
                         }
-                        layoutProperties: DockLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                        }
-                        
-                        // A standard Label
-                        Label {
-                            text: qsTr ("Available links:")
+
+                        // A standard TextArea displaying link url's
+                        TextArea {
+                            preferredWidth: 850
+                            editable: false
+
+                            text: _htmlInfo.linksContent
+
+                            // Defines text style
                             textStyle {
                                 base: SystemDefaults.TextStyles.SmallText
-                                color: Color.Black
-                            }
-                        }
-                        Container {
-                            layout: StackLayout {
-                                leftPadding: 30
-                            }
-                            
-                            // A standard TextArea displaying link url's
-                            TextArea {
-                                preferredWidth: 850
-                                preferredHeight: 500
-                                editable: false
-                                
-                                text: _htmlInfo.linksContent
-                                
-                                // Defines text style
-                                textStyle {
-                                    base: SystemDefaults.TextStyles.SmallText
-                                }
+                                color: Color.Gray
                             }
                         }
                     }
                 }
             }
+        }
+
+        SlideoutPanel {
+            layoutProperties: StackLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+            }
+
+            translationY: -444
+
+            onClicked: {
+                if (translationY == 0)
+                    slideOut.play()
+                else
+                    slideIn.play()
+            }
+
+            animations: [
+                TranslateTransition {
+                    id: slideIn
+                    fromY: -444
+                    toY: 0
+                    easingCurve: StockCurve.BackInOut
+                    duration: 800
+                },
+                TranslateTransition {
+                    id: slideOut
+                    fromY: 0
+                    toY: -444
+                    easingCurve: StockCurve.BackInOut
+                    duration: 800
+                }
+            ]
         }
     }
 }

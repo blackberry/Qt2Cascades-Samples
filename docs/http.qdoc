@@ -27,10 +27,104 @@
 
 /*!
     \page http
+    \example network/http
     \title HTTP Example
+
+    \section1 Description
 
     The HTTP example demonstrates a simple HTTP client that shows how to fetch files
     specified by URLs from remote hosts.
 
     \image http-example.png
+
+    The application describes how to create a widget behaving like a dialog in cascades
+    and how to use \c QNetworkAccessManager to handle HTTP requests.
+
+    The UI setup is straight forward and split into three parts, the Downloader, which handles
+    user input and the two dialogs to handle errors and authentication.
+    \snippet network/http/assets/main.qml 0
+
+    The downloader UI just contains an input field for the URL, a download and a close button and
+    a status label. The download button and the label are linked to the C++ side with a property binding
+    to exported objects. For easier readability the exported objects start with "_":
+
+    \snippet network/http/assets/Downloader.qml 0
+
+    \section1 The HttpDownloader
+
+    The C++ backend is located in HttpDownloader.h/cpp. It is a QObject with
+    the two properties that our UI is bound to: statusText and startDownloadPossible. Note that the properties have
+    a NOTIFY parameter, this is needed to have a working property binding on the qml side.
+
+    \snippet network/http/src/HttpDownloader.hpp 1
+
+    To give the button the ability to start the download, we expose the startDownload() method
+    by making it \c Q_INVOKABLE.
+
+    \snippet network/http/src/HttpDownloader.hpp 2
+
+    This method does some preparation before asking the \c QNetworkAccessManager to download the file.
+    The first step is checking if the given URL contains a filename, if not it adds an index.html to the URL path:
+
+    \snippet network/http/src/HttpDownloader.cpp 2
+
+    Check if the file is already stored on the device and ask the user if the file should be overridden. This is done by
+    using the \l{The MessageBoxController}{MessageBoxController}.
+
+    \snippet network/http/src/HttpDownloader.cpp 3
+
+    Finally we open the file, disable the download button, to avoid a double download and ask the \c QNetworkAccessManager to
+    download the file.
+
+    \snippet network/http/src/HttpDownloader.cpp 4
+
+    The \c QNetworkAccessManager has a very simple api, a network request for the requested URL is created
+    and it returns a \c QNetworkReply which emits two signals: readyRead() which signals that data can be read from it
+    and finished() which indicates the download was completed. The \c QNetworkAccessManager can handle more than HTTP of course,
+    so entering an FTP URL for example is fine too.
+
+    \snippet network/http/src/HttpDownloader.cpp 5
+
+    Finishing the download is just closing the file and check if the download succeeded, but there is one case left, the HTTP redirect. The \c QNetworkAccessManager
+    makes the handling of this case easy. We just ask the \c QNetworkReply if the \c RedirectionTargetAttribute was set and start the process again if the user approves
+    the redirect.
+
+    \snippet network/http/src/HttpDownloader.cpp 6
+
+    \section1 The MessageBoxController
+
+    The messagebox UI only shows a label and two buttons all logic is handled by accessing the exported _messageBox object.
+    The dialog logic of the \c MessageBoxController is located in the \c DialogController, which acts like a modal dialog in qml.
+    Its implementation is very simple, it just makes the dialog visible and starts a local event loop on exec which catches
+    all events. If the dialog is closed the UI is hidden again and the local event loop gives control back to the parent event
+    loop.
+
+    \snippet network/http/src/DialogController.hpp 0
+    \codeline
+    \snippet network/http/src/DialogController.cpp 0
+
+    The \c MessageBoxController only adds an overloaded version of exec. That version provides the ability to set the names of the
+    dialogs and returns which button was pressed by the user.
+
+    \snippet network/http/src/MessageBoxController.hpp 0
+
+    \section1 The AuthenticationDialog
+
+    The \c AuthenticationDialogController works very similar to the \c MessageBoxController, with the only difference that the
+    \c AuthenticationDialogController asks for username and password and stores them.
+
+    \snippet network/http/src/AuthenticationDialogController.hpp 0
+
+    \section1 Integration
+
+    In the end we put it all together starting with the qml document setup:
+    \snippet network/http/src/main.cpp 1
+
+    The next needed step is to export our C++ backend classes, the Downloader and the two dialogs:
+
+    \snippet network/http/src/main.cpp 2
+
+    Setup the application object and execute it.
+
+    \snippet network/http/src/main.cpp 3
 */

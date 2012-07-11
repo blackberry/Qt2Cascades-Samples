@@ -46,23 +46,30 @@ import bb.cascades 1.0
 // This page shows Layout of TextArea
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
+
+        // The container that hosts the balloons
         Container {
-            preferredWidth: 1024
-            preferredHeight: 600
-            
-            // A standard TextArea for printing out current statemachine event text
-            TextArea {
-                preferredHeight: 600
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Fill
-                }
-                
-                text: _textBuffer.text
-                editable: false
-                
+            objectName: "balloonsContainer"
+
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            layout: StackLayout {
+                leftPadding: 30
+                topPadding: 30
+                rightPadding: 30
             }
         }
     }

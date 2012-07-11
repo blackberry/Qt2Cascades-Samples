@@ -59,8 +59,6 @@ using namespace bb::cascades;
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
-    qmlRegisterType<DataModel>();
-    qmlRegisterType<ListItemManager>();
 
     QmlDocument *qml = QmlDocument::create().load("main.qml");
 
@@ -80,7 +78,7 @@ int main(int argc, char **argv)
         Page *appPage = qml->createRootNode<Page>();
 
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Quit the application if 'Qt.quit()' is called in the UI
             QObject::connect(qml->documentContext()->engine(), SIGNAL(quit()), &app, SLOT(quit()));

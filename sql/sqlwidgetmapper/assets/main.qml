@@ -46,19 +46,31 @@ import bb.cascades 1.0
 // Page shows layout of TextField's bound to database data
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
-        // Container mainly for setting the background Color
+
         Container {
-            background: Color.create ("#210a50")
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
             layout: StackLayout {
                 leftPadding: 20
                 rightPadding: 20
                 topPadding: 20
                 bottomPadding: 20
             }
-            
+
             // Groups the label and corresponding TextField
             Container {
                 layout: StackLayout {
@@ -68,40 +80,38 @@ Page {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
                 }
-                
+
                 // A standard Label
                 Label {
                     preferredWidth: 200
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                     }
-                    
+
                     text: qsTr ("First Name")
-                    
+
                     // Defines custom Color
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
-                        color: Color.create ("#e3741a")
+                        color: Color.White
                     }
                 }
-                
-                Container {
-                    
-                    // Standard TextField
-                    TextField {
-                        objectName: "firstNameField"
-                        leftMargin: 10
-                        preferredWidth: 800
-                        
-                        // Defines custom text Color
-                        textStyle {
-                            base: SystemDefaults.TextStyles.SmallText
-                            color: Color.create ("#210a50")
-                        }
+
+                // Standard TextField
+                TextField {
+                    objectName: "firstNameField"
+                    leftMargin: 10
+                    layoutProperties: StackLayoutProperties {
+                        verticalAlignment: VerticalAlignment.Center
+                        spaceQuota: 1
+                    }
+
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
                     }
                 }
             }
-            
+
             // Groups the label and corresponding TextField
             Container {
                 layout: StackLayout {
@@ -111,38 +121,37 @@ Page {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
                 }
-                
+
                 // A standard Label
                 Label {
                     preferredWidth: 200
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                     }
-                                        
+
                     text: qsTr ("Last Name")
-                    
+
                     // Defines custom text Color
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
-                        color: Color.create ("#e3741a")
+                        color: Color.White
                     }
                 }
-                Container {
-                    
-                    // A standard TextField
-                    TextField {
-                        objectName: "lastNameField"
-                        preferredWidth: 800
-                        
-                        // Defines custom text Color
-                        textStyle {
-                            base: SystemDefaults.TextStyles.SmallText
-                            color: Color.create ("#210a50")
-                        }
+
+                // A standard TextField
+                TextField {
+                    objectName: "lastNameField"
+                    layoutProperties: StackLayoutProperties {
+                        verticalAlignment: VerticalAlignment.Center
+                        spaceQuota: 1
+                    }
+
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
                     }
                 }
             }
-            
+
             // Groups the label and corresponding TextArea
             Container {
                 layout: StackLayout {
@@ -152,37 +161,38 @@ Page {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
                 }
-                
+
                 // A standard Label
                 Label {
                     preferredWidth: 200
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                     }
-                    
+
                     text: qsTr ("Quote")
-                    
+
                     // Defines custom text Color
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
-                        color: Color.create ("#e3741a")
+                        color: Color.White
                     }
                 }
-                
+
                 // A standard TextArea
                 TextArea {
                     objectName: "quoteField"
-                    preferredWidth: 800
                     preferredHeight: 350
-                    
-                    // Defines custom text Color
+                    layoutProperties: StackLayoutProperties {
+                        verticalAlignment: VerticalAlignment.Center
+                        spaceQuota: 1
+                    }
+
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
-                        color: Color.create ("#210a50")
                     }
                 }
             }
-            
+
             // Groups the application control Buttons
             Container {
                 layoutProperties: StackLayoutProperties {
@@ -191,55 +201,61 @@ Page {
                 layout: StackLayout {
                     layoutDirection: LayoutDirection.LeftToRight
                 }
-                
+
+//! [0]
                 // A standard Button
                 Button {
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
-                    
-                    text: "Previous"
-                    
+
+                    text: qsTr ("Previous")
+
                     // Go to previous data on click
                     onClicked: _dataMapper.toPrevious ()
-                    
+
                     // Enable Button if there is previous data
                     enabled: _dataMapper.currentIndex != 0
-                    
+
                 }
-                
+//! [0]
+
+//! [1]
                 // A standard Label
                 Label {
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
-                    
-                    text: (_dataMapper.currentIndex + 1) + "/" + _dataMapper.count
-                    
+
+                    text: qsTr ("%1/%2").arg(_dataMapper.currentIndex + 1).arg(_dataMapper.count)
+
                     // Defines custom text Color
                     textStyle {
                         alignment: TextAlignment.Center
-                        color: Color.create ("#e3741a")
+                        color: Color.White
                     }
                 }
-                
+//! [1]
+
+//! [2]
                 // A standard Button
                 Button {
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
-                    text: "Next"
-                    
+                    text: qsTr ("Next")
+
                     // Go to next data on click
                     onClicked: _dataMapper.toNext ()
-                    
+
                     // Enable Button only if there is more data
                     enabled: (_dataMapper.currentIndex < (_dataMapper.count - 1))
-                    
+
                 }
+//! [2]
             }
         }
     }

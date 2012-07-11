@@ -46,9 +46,17 @@ import bb.cascades 1.0
 // Page shows Layout of Label's and Button's
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         // Container mainly for background color and Layout purposes
         Container {
             background: Color.DarkGray

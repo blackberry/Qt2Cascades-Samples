@@ -47,6 +47,7 @@ CertificateInfoControl::CertificateInfoControl(QObject *parent)
 {
 }
 
+//! [0]
 void CertificateInfoControl::setCertificateChain(const QList<QSslCertificate> &chain)
 {
     m_chain = chain;
@@ -66,7 +67,6 @@ void CertificateInfoControl::setCertificateChain(const QList<QSslCertificate> &c
 
     // Notify the UI that the model has changed
     emit modelChanged();
-    emit listItemManagerChanged();
 
     // Pre-select the first certificate in the list
     setCurrentCertificate(QVariantList() << QVariant(0));
@@ -76,11 +76,7 @@ bb::cascades::DataModel* CertificateInfoControl::model() const
 {
     return const_cast<bb::cascades::QListDataModel<QString>*>(&m_model);
 }
-
-bb::cascades::ListItemManager* CertificateInfoControl::listItemManager() const
-{
-    return const_cast<CertificateItemManager*>(&m_listItemManager);
-}
+//! [0]
 
 QString CertificateInfoControl::certificateInfo() const
 {

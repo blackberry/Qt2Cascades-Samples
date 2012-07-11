@@ -48,32 +48,60 @@ import bb.cascades 1.0
 
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
+
         Container {
-            layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
             }
-            
-            // The Container for the ListView of StandardListItem's with custom Color
-            Container {
-                background: Color.create ("#150790")
-                preferredWidth: 550
-                
-                // A standard ListView listing the various language selections
-                ListView {
-                    id: "languageSelector"
-                    dataModel: _model
-                    listItemManager: _itemManager
-                    onSelectionChanged: _app.setCurrentLanguage (indexPath)
-                }
-            }
-            
+
+//! [1]
             // Container contents transformed by selection
             MainView {
-                layoutProperties: StackLayoutProperties {
-                }
+                minHeight: 960
+                maxHeight: 960
             }
+//! [1]
+
+            Container {
+                minHeight: 320
+                maxHeight: 320
+
+                layout: DockLayout {}
+//! [0]
+                // A standard ListView listing the various language selections
+                ListView {
+                    id: languageSelector
+
+                    layoutProperties: DockLayoutProperties {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        verticalAlignment: VerticalAlignment.Bottom
+                    }
+
+                    dataModel: _model
+
+                    listItemComponents: ListItemComponent {
+                        StandardListItem {
+                            description: ListItem.data
+                            reserveImageSpace: false
+                        }
+                    }
+
+                    onSelectionChanged: _app.setCurrentLanguage (indexPath)
+                }
+//! [0]
+            }
+
         }
     }
 }

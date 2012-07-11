@@ -103,7 +103,7 @@ void HtmlInfo::parseHtmlFile(const QString &fileName)
 //! [2]
 
     // Update the properties with the extracted information
-    m_title = title;
+    m_title = title.simplified();
     m_paragraphs = paragraphCount;
     m_links = links.size();
     m_linksContent = links.join("\n");

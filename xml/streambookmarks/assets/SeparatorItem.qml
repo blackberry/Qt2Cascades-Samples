@@ -43,17 +43,23 @@
 
 import bb.cascades 1.0
 
-
+//! [0]
 // Container used to create a separator black visual line
 Container {
     property string tagName: "separator"
     topMargin: 20
-    leftMargin: 40
-    rightMargin: 20
-    background: Color.Black
-    minHeight: 2
-    maxHeight: minHeight
-    layoutProperties: StackLayoutProperties {
-        horizontalAlignment: HorizontalAlignment.Fill
+
+    layout: StackLayout {
+        leftPadding: 40
+        rightPadding: 20
+    }
+
+    ImageView {
+        layoutProperties: StackLayoutProperties {
+            horizontalAlignment: HorizontalAlignment.Fill
+        }
+
+        imageSource: "asset:///images/separator.png"
     }
 }
+//! [0]

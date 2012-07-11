@@ -74,8 +74,10 @@
 
     body
     {
-        margin-left: 0.5em;
-        margin-right: 0.5em;
+        margin-left: 3em;
+        margin-right: 3em;
+        font: normal 13px/1.2 Verdana, sans-serif;
+	width: 50em
     }
     a
     {

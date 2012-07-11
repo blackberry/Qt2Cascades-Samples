@@ -44,11 +44,14 @@
 
 using namespace bb::cascades;
 
+//! [0]
 XbelGenerator::XbelGenerator(Container *treeContainer)
         : m_treeContainer(treeContainer)
 {
 }
+//! [0]
 
+//! [1]
 bool XbelGenerator::write(QIODevice *device)
 {
     // Create a new DOM document
@@ -73,7 +76,9 @@ bool XbelGenerator::write(QIODevice *device)
 
     return true;
 }
+//! [1]
 
+//! [2]
 void XbelGenerator::generateItem(Control *control, QDomElement &parent, QDomDocument &domDocument)
 {
     /**
@@ -117,3 +122,4 @@ void XbelGenerator::generateItem(Control *control, QDomElement &parent, QDomDocu
         parent.appendChild(separatorElement);
     }
 }
+//! [2]

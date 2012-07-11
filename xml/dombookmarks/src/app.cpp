@@ -51,6 +51,7 @@
 
 using namespace bb::cascades;
 
+//! [0]
 App::App()
 {
     // Load the main QML file and make the App object available as context property
@@ -59,14 +60,16 @@ App::App()
         qml->setContextProperty("_app", this);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Retrieve the tree container control from the QML file
             m_treeContainer = appPage->findChild<Container*>("treeContainer");
         }
     }
 }
+//! [0]
 
+//! [1]
 void App::load(const QString &fileName)
 {
     // Do sanity check
@@ -99,7 +102,9 @@ void App::load(const QString &fileName)
 
     emit statusChanged();
 }
+//! [1]
 
+//! [2]
 void App::save()
 {
     // Do sanity check
@@ -128,6 +133,7 @@ void App::save()
 
     emit statusChanged();
 }
+//! [2]
 
 QString App::status() const
 {

@@ -46,37 +46,45 @@ import bb.cascades 1.0
 // Page shows the loading and saving of XBEL files using the streaming parser
 Page {
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
+
         Container {
             id: root
-            background: Color.LightGray
-            layout: StackLayout {
-            }
-            
+
             // Container grouping application Button controls
             Container {
                 id: menuContainer
-                background: Color.DarkGray
                 layout: StackLayout {
                     layoutDirection: LayoutDirection.LeftToRight
+                    leftPadding: 10
                     topPadding: 10
+                    rightPadding: 10
                     bottomPadding: 10
                 }
                 layoutProperties: DockLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VertialAlignment.Top
+                    verticalAlignment: VerticalAlignment.Top
                 }
-                
+
+//! [0]
                 // A standard Button
                 Button {
                     id: frank
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
-                    
-                    text: "Frank"
-                    
+
+                    text: qsTr ("Frank")
+
                     // Load the selected xbel file on click
                     onClicked: {
                         jennifer.opacity = 0.5;
@@ -85,16 +93,17 @@ Page {
                         _app.load ("frank.xbel");
                     }
                 }
-                
+//! [0]
+
                 // A standard Button
                 Button {
                     id: jennifer
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
-                    
-                    text: "Jennifer"
-                    
+
+                    text: qsTr ("Jennifer")
+
                     // Load the selected xbel file on click
                     onClicked: {
                         frank.opacity = 0.5;
@@ -103,16 +112,17 @@ Page {
                         _app.load ("jennifer.xbel");
                     }
                 }
-                
+
+//! [1]
                 // A standard Button
                 Button {
                     id: save
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
-                    
-                    text: "Save"
-                    
+
+                    text: qsTr ("Save")
+
                     // Save the changes to a temporary xbel file in the
                     // application tmp/ directory
                     onClicked: {
@@ -122,42 +132,57 @@ Page {
                         _app.save ();
                     }
                 }
+//! [1]
             }
             Container {
                 background: Color.DarkGray
                 layout: StackLayout {
                     layoutDirection: LayoutDirection.LeftToRight
-                    topPadding: 10
+                    leftPadding: 10
+                    rightPadding: 10
                     bottomPadding: 10
                 }
                 layoutProperties: DockLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VertialAlignment.Top
+                    verticalAlignment: VerticalAlignment.Top
                 }
-                
+
                 // A standard Label for displaying the action status
                 Label {
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
-                    
-                    text: "Status: " + _app.status
+
+                    text: qsTr ("Status: %1").arg(_app.status)
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                         color: Color.Black
                     }
                 }
             }
-            
+
+//! [2]
             // Container for displaying the loaded XBEL output
-            Container {
-                objectName: "treeContainer"
-                scrollMode: ScrollMode.Vertical
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
+            ScrollView {
+                topMargin: 10
+                scrollViewProperties {
+                    scrollMode: ScrollMode.Vertical
+                }
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 1
+                }
+                Container {
+                    objectName: "treeContainer"
+                    layout: StackLayout {
+                        leftPadding: 10
+                        rightPadding: 10
+                        bottomPadding: 10
                     }
+                }
             }
+//! [2]
+
             layoutProperties: DockLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Fill

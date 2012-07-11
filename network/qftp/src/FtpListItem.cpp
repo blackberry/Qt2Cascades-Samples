@@ -38,32 +38,34 @@ FtpListItem::FtpListItem(Container *parent)
 
     // A background Container that will hold a background image and a item content Container.
     Container *backgroundContainer = new Container();
-    backgroundContainer->setPreferredHeight(100);
+    backgroundContainer->setPreferredHeight(141);
     DockLayout *backgroundLayout = new DockLayout();
     backgroundContainer->setLayout(backgroundLayout);
     backgroundContainer->setLayoutProperties(DockLayoutProperties::create().horizontal(HorizontalAlignment::Fill));
 
-    m_highlighContainer = new Container();
-    m_highlighContainer->setBackground(Color::fromARGB(0xff75b5d3));
-    m_highlighContainer->setLayoutProperties(DockLayoutProperties::create().horizontal(HorizontalAlignment::Fill).vertical(VerticalAlignment::Fill));
+    m_highlighContainer = new ImageView();
+    m_highlighContainer->setImage(Image(QUrl("asset:///images/highlighted.png")));
     m_highlighContainer->setOpacity(0.0);
 
     m_itemImage = new ImageView();
     m_itemImage->setLayoutProperties(StackLayoutProperties::create());
-    m_itemImage->setPreferredSize(50.0f, 50.0f);
+    m_itemImage->setMinWidth(128.0f);
+    m_itemImage->setMinHeight(128.0f);
 
-    m_itemTitle = Label::create().text(" ").layoutProperties(StackLayoutProperties::create().vertical(VerticalAlignment::Center).spaceQuota(-1));
-    m_itemTitle->textStyle()->setBase(SystemDefaults::TextStyles::smallText());
-    m_itemTitle->textStyle()->setColor(Color::Green);
+    Container *textContents = new Container();
+    m_itemTitle = Label::create();
+    m_itemTitle->textStyle()->setBase(SystemDefaults::TextStyles::bigText());
+    m_itemTitle->textStyle()->setColor(Color::Black);
 
-    m_itemDescription = Label::create().text(" ").layoutProperties(StackLayoutProperties::create().vertical(VerticalAlignment::Center).spaceQuota(10));
+    m_itemDescription = Label::create();
     m_itemDescription->textStyle()->setBase(SystemDefaults::TextStyles::smallText());
-    m_itemDescription->textStyle()->setColor(Color::White);
+    m_itemDescription->textStyle()->setColor(Color::Black);
     m_itemDescription->textStyle()->setSize(25.0f);
 
     contents->add(m_itemImage);
-    contents->add(m_itemTitle);
-    contents->add(m_itemDescription);
+    contents->add(textContents);
+    textContents->add(m_itemTitle);
+    textContents->add(m_itemDescription);
 
     backgroundContainer->add(m_highlighContainer);
     backgroundContainer->add(contents);
@@ -90,7 +92,7 @@ void FtpListItem::select(bool select)
 {
     // When an item is selected show the colored highlight Container-�,
     if (select) {
-        m_highlighContainer->setOpacity(0.9f);
+        m_highlighContainer->setOpacity(1.0f);
     } else {
         m_highlighContainer->setOpacity(0.0f);
     }

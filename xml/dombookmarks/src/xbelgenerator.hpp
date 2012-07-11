@@ -48,6 +48,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 
+//! [0]
 /**
  * The XbelGenerator is responsible for generating a XBEL document from the
  * controls in the tree container.
@@ -69,5 +70,6 @@ private:
     // The container object the controls are located in
     QPointer<bb::cascades::Container> m_treeContainer;
 };
+//! [0]
 
 #endif

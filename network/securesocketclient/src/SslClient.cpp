@@ -45,6 +45,7 @@
 #include <QtCore/QStringList>
 #include <QtNetwork/QSslCipher>
 
+//! [0]
 SslClient::SslClient(QObject *parent)
     : QObject(parent)
     , m_socket(0)
@@ -60,6 +61,7 @@ SslClient::SslClient(QObject *parent)
     connect(m_sslErrorControl, SIGNAL(viewCertificateChainRequested()),
             this, SIGNAL(viewCertificateChainRequested()));
 }
+//! [0]
 
 void SslClient::setHostName(const QString &hostName)
 {
@@ -126,6 +128,7 @@ void SslClient::updateEnabledState()
     emit sessionActiveChanged();
 }
 
+//! [1]
 void SslClient::secureConnect()
 {
     if (!m_socket) {
@@ -146,7 +149,9 @@ void SslClient::secureConnect()
 
     updateEnabledState();
 }
+//! [1]
 
+//! [2]
 void SslClient::socketStateChanged(QAbstractSocket::SocketState state)
 {
     if (m_sslErrorControl->visible())
@@ -163,7 +168,9 @@ void SslClient::socketStateChanged(QAbstractSocket::SocketState state)
         m_socket = 0;
     }
 }
+//! [2]
 
+//! [3]
 void SslClient::socketEncrypted()
 {
     if (!m_socket)
@@ -185,6 +192,7 @@ void SslClient::socketEncrypted()
     // Tell the CertificateInfoControl about the certificate chain of this connection
     emit certificateChainChanged(m_socket->peerCertificateChain());
 }
+//! [3]
 
 void SslClient::socketReadyRead()
 {

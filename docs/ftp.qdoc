@@ -27,7 +27,10 @@
 
 /*!
     \page ftp
+    \example network/qftp
     \title FTP Example
+
+    \section1 Description
 
     The FTP example demonstrates a simple FTP client that can be used
     to list the available files on an FTP server and download them.

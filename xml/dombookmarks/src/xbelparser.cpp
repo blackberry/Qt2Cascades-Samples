@@ -46,11 +46,14 @@
 
 using namespace bb::cascades;
 
+//! [0]
 XbelParser::XbelParser(Container *treeContainer)
     : m_treeContainer(treeContainer)
 {
 }
+//! [0]
 
+//! [1]
 bool XbelParser::parse(QIODevice *device)
 {
     // Open a DOM document on the XBEL data and report an error if it fails
@@ -88,12 +91,16 @@ bool XbelParser::parse(QIODevice *device)
 
     return true;
 }
+//! [1]
 
+//! [2]
 QString XbelParser::errorString() const
 {
     return m_errorString;
 }
+//! [2]
 
+//! [3]
 void XbelParser::parseFolderElement(const QDomElement &element, Container *parent)
 {
     // Create a container that will contain all the child controls from this <folder> element
@@ -127,7 +134,9 @@ void XbelParser::parseFolderElement(const QDomElement &element, Container *paren
         child = child.nextSiblingElement();
     }
 }
+//! [3]
 
+//! [4]
 Container *XbelParser::createChildItem(const QDomElement &element, Container *parent)
 {
     const QString tagName = element.tagName();
@@ -155,3 +164,4 @@ Container *XbelParser::createChildItem(const QDomElement &element, Container *pa
 
     return container;
 }
+//! [4]

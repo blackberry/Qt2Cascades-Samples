@@ -40,16 +40,24 @@
  **
  ****************************************************************************/
 
-
+//! [0]
 import bb.cascades 1.0
 
 // This page shows transitions between different screens through toggling Container visibility
 Page {
     // A container is used to gather visual items together.
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         // A custom Container for the download screen
         Downloader {
             layoutProperties: DockLayoutProperties {
@@ -77,3 +85,4 @@ Page {
         }
     }
 }
+//![0]

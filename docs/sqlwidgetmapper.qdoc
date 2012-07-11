@@ -27,10 +27,99 @@
 
 /*!
     \page sqlwidgetmapper
+    \example sql/sqlwidgetmapper
     \title SQL Widget Mapper Example
+
+    \section1 Description
 
     The SQL Widget Mapper example shows how to use a DataControlMapper to map information from a
     database to controls in a form.
 
-    \image sqlwidgetmapper-example-rim.png
+    \image sqlwidgetmapper-example.png
+
+    \section1 Overview
+    In this example we'll learn how to access an SQLite database and map the single rows of a SQL table
+    to a set of Cascades controls.
+
+    While the standard way in Cascades of visualizing data from a SQL database is to display them in a ListView,
+    there might be use cases where you want to display and edit one row at a time.
+    Such a functionality can be implemented in a reusable component, which will be done in this sample application.
+
+    \section1 The UI
+    The UI of this example consists of three text fields that show the first name, last name and a quote. These data come
+    from a SQLite database. Additionally the UI provides a 'Previous' and 'Next' button that are used to navigate between
+    the database entries. A status label shows the current and the total number of quotes.
+
+    The business logic of the application is encapsulated in the class DataControlMapper, which is
+    exported to the UI as '_dataMapper'.
+
+    The text fields in the QML file have all the 'objectName' property set, so that they can be referenced from within C++.
+
+    \snippet sql/sqlwidgetmapper/assets/main.qml 0
+
+    Whenever the user clicks the 'Previous' button, the toPrevious() slot of the DataControlMapper object is invoked.
+    The button is only enabled if the current row is not the first one.
+
+    \snippet sql/sqlwidgetmapper/assets/main.qml 2
+
+    Whenever the user clicks the 'Next' button, the toNext() slot of the DataControlMapper object is invoked.
+    The button is only enabled if the current row is not the last one.
+
+    \snippet sql/sqlwidgetmapper/assets/main.qml 1
+
+    The text of the status label is assembled from the 'currentIndex' and 'count' properties of the DataControlMapper.
+
+    \section1 ControlDataMapper
+    The ControlDataMapper is the central class in this application and contains all the business logic of mapping entries
+    from a data model to a set of Cascades controls.
+    It has been designed to be reusable, so any data model can be used, not only one based on a SQLite database.
+
+    The ControlDataMapper has the semantics of a cursor that can be moved between the rows of a data model. It provides
+    methods to jump to the first or last row and methods to go to the next or previous row. The single fields (sections) of a row
+    can be bound against Cascades controls. The ControlDataMapper will update the content of the controls automatically
+    with the data from the current row.
+
+    For this purpose the ControlDataMapper contains a list of mapping objects that have the following structure:
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 0
+
+    The 'control' is a pointer to the Cascades control that is associated with this mapping, the 'section' is the field name in the
+    current row that should be mapped, and the 'propertyName' is the name of the property in 'control' that should be set.
+
+    After we created a new instance of the DataControlMapper in our application, we set the model it should work with.
+    Now we can load the main.qml file, create the UI objects and lookup the text fields that we have marked with the 'objectName' properties.
+
+    In the next step the mappings between the Cascades controls and the section names (in this case the column names of the SQL table) can
+    be configured.
+
+    \snippet sql/sqlwidgetmapper/src/app.cpp 0
+
+    The addMapping() call will determine the type of the Cascades control and call an overloaded addMapping() method with the default
+    property names for the specific control type.
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 3
+
+    The overloaded addMapping() method will check whether a mapping for the given control exists already and updates the mapping information,
+    otherwise it adds a new mapping to the internal list.
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 4
+
+    Whenever the mapping has changed or the current index (cursor) has been changed, the update() method is called.
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 2
+
+    This method retrieves the data of the current index from the data model. The returned value is expected to be a QVariantMap where
+    the keys are the same names as used for the 'section' property in the mappings. For the SQL model that will be the column names of
+    a SQL table.
+    Now the update() method iterates over all available mappings, extracts the value for the mapped section from the data model and sets
+    the value of the specified property on the Cascades control.
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 7
+
+    The navigation methods (e.g. toFirst()) just call the setCurrentIndex() method with the appropriated new index.
+
+    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 6
+
+    Inside setCurrentIndex() we only do some sanity checks to avoid an out-of-range access, update the member variable that
+    contains the current index with the new value and call update() again to update the content of the mapped Cascades controls.
 */

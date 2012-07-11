@@ -215,7 +215,7 @@ int main(int argc, char **argv)
         qml->setContextProperty("_textBuffer", &textBuffer);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
 
             // Start the producer and consumer thread
             producer.start();

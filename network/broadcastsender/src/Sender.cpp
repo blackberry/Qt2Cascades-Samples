@@ -45,24 +45,25 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QUdpSocket>
 
+//! [0]
 Sender::Sender(QObject *parent)
     : QObject(parent)
 {
     /**
-     * Initialize the 'status' property with some data, it will
+     * Initialize the 'status' property with no data, it won't
      * be shown in the UI until the first datagram is sent.
      */
-    m_status = tr("Ready to broadcast datagrams on port 45454");
+    m_status = "";
 
     // Create the timer that triggers the broadcast of the datagrams
     m_timer = new QTimer(this);
-//! [0]
+
     /**
      * Create the UDP socket object.
      * Note: In opposite to a TCP socket we don't have to establish a network connection.
      */
     m_udpSocket = new QUdpSocket(this);
-//! [0]
+
     // Initialize the datagram counter
     m_messageNo = 1;
 
@@ -72,20 +73,23 @@ Sender::Sender(QObject *parent)
      */
     connect(m_timer, SIGNAL(timeout()), this, SLOT(broadcastDatagram()));
 }
+//! [0]
 
+//! [1]
 void Sender::startBroadcasting()
 {
     // Start the timer with an interval of 1 second
     m_timer->start(1000);
 }
+//! [1]
 
+//! [2]
 void Sender::broadcastDatagram()
 {
     // Update the status message and signal that it has changed
-    m_status = tr("Now broadcasting datagram %1").arg(m_messageNo);
+    m_status = tr("%1").arg(m_messageNo);
     emit statusChanged();
 
-//! [1]
     // Assemble the content of the datagram
     const QByteArray datagram = "Broadcast message "
             + QByteArray::number(m_messageNo);
@@ -93,10 +97,11 @@ void Sender::broadcastDatagram()
     // Broadcast a datagram with the given content to port 45454
     m_udpSocket->writeDatagram(datagram.data(), datagram.size(),
             QHostAddress::Broadcast, 45454);
-//! [1]
+
     // Increase the datagram counter, so that the next sent datagram will have a different content
     ++m_messageNo;
 }
+//! [2]
 
 QString Sender::status() const
 {

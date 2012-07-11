@@ -45,93 +45,111 @@ import bb.cascades 1.0
 
 // This page shows how to create control buttons with a dynamically changing label
 Page {
-    
+
     // The root Container
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         // A Container is used to gather visual items together.
         Container {
             layoutProperties: DockLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
             }
-            
+
             preferredWidth: 1000
-            
+
+//! [0]
             // A standard Label
             Label {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                
+
                 text: _sender.status
-                
+
                 // Defines text style with custom font size
                 textStyle {
+                    color: Color.White
                     base: SystemDefaults.TextStyles.SmallText
                     size: 35
                 }
             }
-            
+//! [0]
+
             // A Container for grouping the Label and TextField pair in a different Layout
             Container {
                 topMargin: 30
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                
+
                 layout: StackLayout {
                     layoutDirection: LayoutDirection.LeftToRight
                 }
-                
+
                 // A standard Label
                 Label {
                     text: qsTr ("TTL for multicast datagrams:")
+                    textStyle.color: Color.White
                     layoutProperties: StackLayoutProperties {
                         verticalAlignment: VerticalAlignment.Center
                     }
                 }
-                
+
+//! [1]
                 // A standard TextField
                 TextField {
                     leftMargin: 10
                     preferredWidth: 200
                     text: _sender.ttl
-                    
+
                     // On text input store the text
                     onTextChanging: _sender.ttl = text
                 }
+//! [1]
             }
-            
+
             // A Container for grouping the control Buttons
             Container {
                 topMargin: 30
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                
+
                 layout: StackLayout {
+                    leftPadding: 30
+                    rightPadding: 30
                     layoutDirection: LayoutDirection.LeftToRight
                 }
-                
+
+//! [2]
                 // A standard Button
                 Button {
                     text: qsTr ("Start")
-                    
+
                     // Start the multicast on click
                     onClicked: {
                         enabled = false;
                         _sender.startSending ()
                     }
                 }
-                
+//! [2]
+
                 // A standard Button
                 Button {
                     leftMargin: 100
                     text: qsTr ("Quit")
-                    
+
                     //Quit the application on click
                     onClicked: _app.quit ()
                 }

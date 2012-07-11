@@ -2,6 +2,21 @@
 <!DOCTYPE xbel>
 <xbel version="1.0">
     <folder folded="yes">
+        <title>RIM</title>
+        <bookmark href="http://www.rim.com/">
+            <title>RIM Company</title>
+        </bookmark>
+        <bookmark href="https://developer.blackberry.com/">
+            <title>BlackBerry Developer</title>
+        </bookmark>
+        <bookmark href="http://www.rim.com/newsroom/index.shtml">
+            <title>RIM News</title>
+        </bookmark>
+        <bookmark href="http://www.rim.com/careers/index.shtml">
+            <title>RIM Careers</title>
+        </bookmark>
+    </folder>
+    <folder folded="yes">
         <title>Literate Programming</title>
         <bookmark href="http://www.vivtek.com/litprog.html">
             <title>Synopsis of Literate Programming</title>
@@ -67,21 +82,6 @@
             </bookmark>
             <bookmark href="http://www.cppreference.com/cpp_stl.html">
                 <title>STL Reference</title>
-            </bookmark>
-        </folder>
-        <folder folded="no">
-            <title>Qt</title>
-            <bookmark href="http://qt.nokia.com/doc/2.3/">
-                <title>Qt 2.3 Reference</title>
-            </bookmark>
-            <bookmark href="http://qt.nokia.com/doc/3.3/">
-                <title>Qt 3.3 Reference</title>
-            </bookmark>
-            <bookmark href="http://qt.nokia.com/doc/4.0/">
-                <title>Qt 4.0 Reference</title>
-            </bookmark>
-            <bookmark href="http://qt.nokia.com/">
-                <title>Qt Home Page</title>
             </bookmark>
         </folder>
         <folder folded="yes">

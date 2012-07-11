@@ -51,6 +51,7 @@
 
 class QFile;
 
+//! [1]
 /**
  * The HttpDownloader class contains all the logic to download URLs from
  * the network and store them in a local file.
@@ -64,27 +65,29 @@ class HttpDownloader : public QObject
 
     // Makes the status text available to the UI
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusTextChanged)
-
+//! [1]
 public:
     explicit HttpDownloader(QObject *parent = 0);
     ~HttpDownloader();
-
+//! [2]
     // This method is executed when the user clicks the 'Download' button in the UI
     Q_INVOKABLE void startDownload(const QString &url);
+//! [2]
 
     // The accessor methods for the properties
     bool startDownloadPossible() const;
     QString statusText() const;
-
+//! [3]
     // The accessor methods for the dialog controllers
     MessageBoxController *messageBoxController() const;
     AuthenticationDialogController *authenticationDialogController() const;
+//! [3]
 
 Q_SIGNALS:
     // The change notification signals of the properties
     void startDownloadPossibleChanged();
     void statusTextChanged();
-
+//! [5]
 private Q_SLOTS:
     // This method is called whenever a download job has finished
     void httpFinished();
@@ -97,6 +100,7 @@ private Q_SLOTS:
 
     // This method is called if a error occurred during the initial SSL handshake
     void sslErrors(QNetworkReply*, const QList<QSslError> &errors);
+//! [5]
 
 private:
     // A helper method to change the 'startDownloadPossible' property
@@ -116,12 +120,14 @@ private:
 
     // The target file of the current download
     QFile *m_file;
-
+//! [6]
     // The network access manager
     QNetworkAccessManager m_qnam;
-
+//! [6]
+//! [7]
     // The network reply that represents the current download
     QNetworkReply *m_reply;
+//! [7]
 
     // The file name of the target file
     QString m_fileName;

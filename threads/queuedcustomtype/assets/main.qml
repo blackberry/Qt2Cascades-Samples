@@ -46,18 +46,27 @@ import bb.cascades 1.0
 // Page shows a Layout of ImageView's, Label's and control Button
 Page {
     content: Container {
-        layout: DockLayout {
-        }
-        
-        // Container for the title
-        Container {
-            layout: StackLayout {
-            }
+        preferredWidth: 768
+
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
             layoutProperties: DockLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
             }
-            
+
+            imageSource: "asset:///images/background.png"
+        }
+
+        // Container for the title
+        Container {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Center
+            }
+
             // A standard Label
             Label {
                 topMargin: 20
@@ -65,14 +74,14 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 text: qsTr ("Touch one of the images below to start rendering")
-                
+
                 // Defines custom text Color and style
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
                     color: Color.Black
                 }
             }
-            
+
             // Groups the available ImageView's for rendering
             Container {
                 topMargin: 10
@@ -82,59 +91,59 @@ Page {
                 layout: StackLayout {
                     layoutDirection: LayoutDirection.LeftToRight
                 }
-                
+
                 // A standard ImageView
                 ImageView {
                     preferredWidth: 128
                     preferredHeight: 128
-                    imageSource: "asset:///images/image1.png"
-                    
+                    imageSource: "asset:///images/box.png"
+
                     // Render this image on touch
                     onTouch: {
-                        if (! _renderer.active) _renderer.loadImage ("image1.png")
+                        if (! _renderer.active) _renderer.loadImage ("box.png")
                     }
                 }
-                
+
                 // A standard ImageView
                 ImageView {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
-                    imageSource: "asset:///images/image2.png"
-                    
+                    imageSource: "asset:///images/sphere.png"
+
                     // Render this image on touch
                     onTouch: {
-                        if (! _renderer.active) _renderer.loadImage ("image2.png")
+                        if (! _renderer.active) _renderer.loadImage ("sphere.png")
                     }
                 }
-                
+
                 // A standard ImageView
                 ImageView {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
-                    imageSource: "asset:///images/image3.png"
-                    
+                    imageSource: "asset:///images/cylinder.png"
+
                     // Render this image on touch
                     onTouch: {
-                        if (! _renderer.active) _renderer.loadImage ("image3.png")
+                        if (! _renderer.active) _renderer.loadImage ("cylinder.png")
                     }
                 }
-                
+
                 // A standard ImageView
                 ImageView {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
-                    imageSource: "asset:///images/image4.png"
-                    
+                    imageSource: "asset:///images/pyramid.png"
+
                     // Render this image on touch
                     onTouch: {
-                        if (! _renderer.active) _renderer.loadImage ("image4.png")
+                        if (! _renderer.active) _renderer.loadImage ("pyramid.png")
                     }
                 }
             }
-            
+
             // Container in which the image is rendered
             Container {
                 objectName: "canvas"
@@ -146,7 +155,7 @@ Page {
                 layout: AbsoluteLayout {
                 }
             }
-            
+
             // Container for the app control Button
             Container {
                 preferredWidth: 200
@@ -156,14 +165,14 @@ Page {
                 layoutProperties: StackLayoutProperties {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                
+
                 // A standard Button
                 Button {
                     text: qsTr ("Stop")
-                    
+
                     // Enabled when rendering is active
                     enabled: _renderer.active
-                    
+
                     // Stop rendering on click
                     onClicked: {
                         _renderer.stop ()

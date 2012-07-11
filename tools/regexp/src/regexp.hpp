@@ -137,11 +137,13 @@ private:
     /**
      * A helper structure to store the availability and actual text of a capture.
      */
+//! [0]
     struct Capture
     {
         bool available;
         QString text;
     };
+//! [0]
 
     // The property values
     QString m_pattern;

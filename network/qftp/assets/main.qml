@@ -48,9 +48,18 @@ import bb.cascades 1.0
 Page {
     // A container is used to gather visual items together.
     content: Container {
-        layout: DockLayout {
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        
+
         // Displays the main view and its controls
         Downloader {
             layoutProperties: DockLayoutProperties {
@@ -58,7 +67,7 @@ Page {
                 verticalAlignment: VerticalAlignment.Fill
             }
         }
-        
+
         // Displays the download progress
         ProgressDialog {
             visible: _progressDialog.visible
@@ -67,7 +76,7 @@ Page {
                 verticalAlignment: VerticalAlignment.Fill
             }
         }
-        
+
         // Displays connection status/error messages
         MessageBox {
             visible: _messageBox.visible

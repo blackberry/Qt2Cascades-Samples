@@ -47,6 +47,7 @@ DialogController::DialogController(QObject *parent)
 {
 }
 
+//! [0]
 void DialogController::exec()
 {
     // Mark the dialog as visible
@@ -64,6 +65,7 @@ void DialogController::exec()
     m_visible = false;
     emit visibleChanged();
 }
+//! [0]
 
 void DialogController::close()
 {

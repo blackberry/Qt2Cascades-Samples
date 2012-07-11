@@ -53,12 +53,14 @@ using namespace ::bb::cascades;
 /**
  * A helper structure that represents a mapping of a control to a section.
  */
+//! [0]
 struct Mapping
 {
     QPointer<Control> control;
     QString section;
     QByteArray propertyName;
 };
+//! [0]
 
 /**
  * The private class that contains all private methods and member variables.
@@ -89,6 +91,7 @@ public:
     int m_currentIndex;
 };
 
+//! [1]
 void DataControlMapperPrivate::updateMapping(Mapping &mapping, Control *control, const QString &section, const QByteArray &propertyName)
 {
     mapping.control = control;
@@ -97,7 +100,9 @@ void DataControlMapperPrivate::updateMapping(Mapping &mapping, Control *control,
     // If no property name is given we use the 'text' property as fallback
     mapping.propertyName = (propertyName.isEmpty() ? "text" : propertyName);
 }
+//! [1]
 
+//! [2]
 void DataControlMapperPrivate::update()
 {
     // First some sanity checks
@@ -130,6 +135,7 @@ void DataControlMapperPrivate::update()
         }
     }
 }
+//! [2]
 
 DataControlMapper::DataControlMapper(QObject *parent)
         : QObject(parent), d(new DataControlMapperPrivate())
@@ -141,6 +147,7 @@ DataControlMapper::~DataControlMapper()
     delete d;
 }
 
+//! [3]
 void DataControlMapper::addMapping(bb::cascades::Control *control, const QString &section)
 {
     // If no property name is provided, we use the well-known ones, depending on the control type
@@ -158,7 +165,9 @@ void DataControlMapper::addMapping(bb::cascades::Control *control, const QString
 
     addMapping(control, section, propertyName);
 }
+//! [3]
 
+//! [4]
 void DataControlMapper::addMapping(bb::cascades::Control *control, const QString &section, const QByteArray &propertyName)
 {
     // Check whether we have configured a mapping for this control already ...
@@ -182,6 +191,7 @@ void DataControlMapper::addMapping(bb::cascades::Control *control, const QString
     // ... and trigger an update of the control content.
     d->update();
 }
+//! [4]
 
 void DataControlMapper::clearMapping()
 {
@@ -248,6 +258,7 @@ void DataControlMapper::removeMapping(bb::cascades::Control *control)
     }
 }
 
+//! [5]
 void DataControlMapper::setModel(bb::cascades::DataModel *model)
 {
     d->m_model = model;
@@ -259,6 +270,7 @@ void DataControlMapper::setModel(bb::cascades::DataModel *model)
     d->update();
     emit countChanged();
 }
+//! [5]
 
 void DataControlMapper::revert()
 {
@@ -266,6 +278,7 @@ void DataControlMapper::revert()
     d->update();
 }
 
+//! [6]
 void DataControlMapper::setCurrentIndex(int index)
 {
     // Sanity check
@@ -283,11 +296,14 @@ void DataControlMapper::setCurrentIndex(int index)
     d->update();
     emit currentIndexChanged(d->m_currentIndex);
 }
+//! [6]
 
+//! [7]
 void DataControlMapper::toFirst()
 {
     setCurrentIndex(0);
 }
+//! [7]
 
 void DataControlMapper::toLast()
 {

@@ -27,14 +27,168 @@
 
 /*!
     \page dombookmarks
+    \example xml/dombookmarks
     \title DOM Bookmarks Example
+
+    \section1 Description
 
     The DOM Bookmarks example provides a parser and generator for XML Bookmark Exchange Language (XBEL)
     files that uses Qt's DOM-based XML API to read and parse the files. The SAX Bookmarks
     example provides an alternative way to read this type of file.
 
-    \image dombookmarks-example-rim.png
+    \image dombookmarks-example.png
 
-    See the \l{http://pyxml.sourceforge.net/topics/xbel/}{XML Bookmark Exchange Language
-    Resource Page} for more information about XBEL files.
+    \section1 Overview
+    In this example we'll learn how to use the QDomDocument and QDomElement classes to parse, modify
+    and generate an XML document. Additionally we'll see how to generate UI objects (that are described in a QML
+    file) on-the-fly and how to access and modify their properties.
+
+    \section1 The UI
+    The UI of this sample application consists of three buttons and a container. The first two buttons allow
+    the user to load two different XBEL documents and the third button allows the user to save the currently
+    loaded XBEL document back to file system (including possible changes done to the bookmarks).
+
+    The container is the target location for the tree of controls, that visualize the structure of the XBEL document.
+    The XBEL standard defines the elements
+    \list
+      \o folder
+      \o bookmark
+      \o separator
+    \endlist
+
+    The folder is represented by a \c Container with a folder icon and a title label (FolderItem.qml).
+    It provides a custom property 'tagName' and a property 'title' that is aliased to the 'text' property
+    of the \c titleField label. So whenever the 'title' property is changed, the 'text' property will be updated.
+
+    \snippet xml/dombookmarks/assets/FolderItem.qml 0
+
+    The bookmarks are visualized by a \c Container with a star icon, a title label and a \c TextField that
+    contains the bookmark URL (BookmarkItem.qml). The \c TextField is invisible by default and will be faded in
+    when the user clicks on the title label.
+
+    \snippet xml/dombookmarks/assets/BookmarkItem.qml 0
+
+    A separator is an image of a horizontal line (SeparatorItem.qml).
+
+    \snippet xml/dombookmarks/assets/SeparatorItem.qml 0
+
+    The business logic of the application is encapsulated in the class App, which is
+    exported to the UI as '_app'.
+
+    \snippet xml/dombookmarks/assets/main.qml 0
+
+    Whenever the user clicks one of the load buttons, the \c load() method of the App object is invoked.
+
+    \snippet xml/dombookmarks/assets/main.qml 1
+
+    If the user clicks the 'Save' button, the \c save() method of the App object is invoked.
+
+    \snippet xml/dombookmarks/assets/main.qml 2
+
+    The container has the 'objectName' property set, so that it can be looked up from within C++.
+
+    \section1 App
+    Inside the constructor of \c App we load the main.qml file and retrieve the C++ object that represents
+    the root node of the QML document. With the \l{QObject::}{findChild()} method we look up the \c Container
+    object where we have assigned 'treeContainer' to the 'objectName' property.
+
+    \snippet xml/dombookmarks/src/app.cpp 0
+
+    Whenever the user clicks one of the load buttons, the \c load() method of the App object is invoked with
+    the file name passed as parameter.
+
+    \snippet xml/dombookmarks/src/app.cpp 1
+
+    Inside \c load() we first remove all previously created controls from the \c treeContainer and then
+    use the \c XbelParser class to parse the XML document and generate new controls inside the \c treeContainer.
+
+    If the user clicks the 'Save' button, the \c save() method of the App object is invoked.
+
+    \snippet xml/dombookmarks/src/app.cpp 2
+
+    Inside \c save() we try to open the file 'dombookmarks.xbel' inside the applications temp directory and
+    then we use the \c XbelGenerator class to iterate over the \c treeContainer, generate the XML document and
+    store it to the file.
+
+    \section1 XbelGenerator Class Definition
+
+    The \c XbelGenerator class contains a reference to the Container instance where
+    the bookmark hierarchy is stored. The actual generation of the XML document is done inside the write() method.
+
+    \snippet xml/dombookmarks/src/xbelgenerator.hpp 0
+
+    \section1 XbelGenerator Class Implementation
+
+    The \c XbelGenerator constructor accepts a \a treeContainer to initialize within
+    its definition.
+
+    \snippet xml/dombookmarks/src/xbelgenerator.cpp 0
+
+    The \c write() method creates a QDomDocument instance and adds the processing instructions
+    and top-level element for a valid XBEL document to it.
+
+    Afterwards it iterates recursively over the \c{treeContainer} to generate one DOM element
+    for each child control of the container and append the element to the QDomDocument.
+
+    At the end \c write() creates a QTextStream object on the passed in QIODevice and writes
+    out the assembled DOM document to the stream.
+
+    \snippet xml/dombookmarks/src/xbelgenerator.cpp 1
+
+    The \c generateItem() method accepts a Control object, the parent DOM element and the DOM document.
+    It first extracts the type and the title from the control and then generates
+    a new QDomElement object depending on the \c tagName, which can either be a 'folder',
+    'bookmark', or 'separator'.
+    If the control is a Container it will call itself recursively.
+
+    \snippet xml/dombookmarks/src/xbelgenerator.cpp 2
+
+    \section1 XbelParser Class Definition
+
+    The \c XbelParser contains a reference to the Container that is used to group
+    the bookmarks according to their hierarchy.
+
+    \snippet xml/dombookmarks/src/xbelparser.hpp 0
+
+    \section1 XbelParser Class Implementation
+
+    The \c XbelParser constructor accepts a Container to initialize the
+    \c treeContainer within its definition.
+
+    \snippet xml/dombookmarks/src/xbelparser.cpp 0
+
+    The \c parse() method accepts a QIODevice and passes it to the
+    \l{QDomDocument::}{setContent()} method of the QDomDocument, which
+    will cause the QDomDocument to build up the tree of QDomElement from the XML data.
+
+    We check then whether the XML data are a valid XBEL file by evaluating the tag name
+    of the top-level element and the version number.
+
+    If it is a valid document we start to iterate over the 'folder' elements of the DOM document
+    recursively and call \c parseFolderElement() on each of them.
+
+    \snippet xml/dombookmarks/src/xbelparser.cpp 1
+
+    The \c errorString() function is used if an error occurred, in order to
+    obtain a description of the error complete with line and column number
+    information.
+
+    \snippet xml/dombookmarks/src/xbelparser.cpp 2
+
+    The \c parseFolderElement() method creates new \c Control object by calling the
+    \c createChildItem() method. Afterwards it sets the properties of the control
+    according to the content and attributes of the current DOM element.
+    Then it iterates recursively over the child elements of the folder element.
+
+    \snippet xml/dombookmarks/src/xbelparser.cpp 3
+
+    The \c createChildItem() method loads a QML file and returns the C++ object that
+    represents the root node of the QML file.
+    Depending on the current DOM element, different QML files are loaded.
+
+    \snippet xml/dombookmarks/src/xbelparser.cpp 4
+
+    See the \l{http://pyxml.sourceforge.net/topics/xbel/}
+    {XML Bookmark Exchange Language Resource Page} for more information
+    about XBEL files.
 */

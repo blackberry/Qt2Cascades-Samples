@@ -53,7 +53,7 @@
 using namespace bb::cascades;
 
 FtpItemManager::FtpItemManager(QObject *parent)
-    : ListItemManager(parent), m_fileImage(QUrl("asset:///file.png")), m_folderImage(QUrl("asset:///folder.png"))
+    : ListItemManager(parent), m_fileImage(QUrl("asset:///images/file.png")), m_folderImage(QUrl("asset:///images/folder.png"))
 {
 }
 

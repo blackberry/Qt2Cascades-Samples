@@ -44,6 +44,7 @@
 
 static const int s_capturesCount = 6;
 
+//! [0]
 RegExp::RegExp(QObject *parent)
     : QObject(parent)
     , m_pattern("[A-Za-z_]+([A-Za-z_0-9]*)")
@@ -65,6 +66,7 @@ RegExp::RegExp(QObject *parent)
     // Start initial processing
     refresh();
 }
+//! [0]
 
 void RegExp::setPattern(const QString &pattern)
 {
@@ -128,6 +130,7 @@ bool RegExp::minimal() const
     return m_minimal;
 }
 
+//! [1]
 void RegExp::setText(const QString &text)
 {
     if (m_text == text)
@@ -138,6 +141,7 @@ void RegExp::setText(const QString &text)
 
     emit textChanged();
 }
+//! [1]
 
 QString RegExp::text() const
 {
@@ -154,6 +158,7 @@ int RegExp::matchLength() const
     return m_matchLength;
 }
 
+//! [2]
 bool RegExp::capture0Available() const
 {
     return m_captures.at(0).available;
@@ -163,6 +168,7 @@ QString RegExp::capture0Text() const
 {
     return m_captures.at(0).text;
 }
+//! [2]
 
 bool RegExp::capture1Available() const
 {
@@ -214,6 +220,7 @@ QString RegExp::capture5Text() const
     return m_captures.at(5).text;
 }
 
+//! [3]
 void RegExp::refresh()
 {
     // Create the escaped version of the pattern string ...
@@ -248,3 +255,4 @@ void RegExp::refresh()
     // Notify the UI that the output parameters have changed
     emit regexpChanged();
 }
+//! [3]

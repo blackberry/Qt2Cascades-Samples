@@ -45,14 +45,14 @@ import bb.cascades 1.0
 
 // Groups various visual nodes
 Container {
-    background: Color.create ("#dbe3e4")
     layout: StackLayout {
         leftPadding: 30
         rightPadding: 30
         topPadding: 30
     }
     objectName: "mainView"
-    
+
+//! [0]
     // Function tasked with the setting and translation of the Label's text
     function retranslate () {
         headerLabel.text = qsTr ("Language: %1").arg (qsTr ("English"));
@@ -61,7 +61,8 @@ Container {
         isometricLabel.text = qsTr ("Isometric");
         obliqueLabel.text = qsTr ("Oblique");
     }
-    
+//! [0]
+
     // A standard Label defining the language header
     Label {
         id: headerLabel
@@ -70,10 +71,10 @@ Container {
             color: Color.create ("#e3741a")
         }
     }
-    
+
     // Container used as a visula divider line
     Container {
-        background: Color.Black
+        background: Color.White
         preferredHeight: 2
         topMargin: 10
         bottomMargin: 10
@@ -81,7 +82,7 @@ Container {
             horizontalAlignment: HorizontalAlignment.Fill
         }
     }
-    
+
     // Groups the various Label's that are to be translated to selected language
     Container {
         layout: StackLayout {
@@ -90,7 +91,7 @@ Container {
         layoutProperties: StackLayoutProperties {
             horizontalAlignment: HorizontalAlignment.Fill
         }
-        
+
         // A standard Label
         Label {
             id: viewLabel
@@ -98,16 +99,16 @@ Container {
             layoutProperties: StackLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Fill
             }
-            
+
             // Defines custom text style
             textStyle {
                 base: SystemDefaults.TextStyles.TitleText
                 alignment: TextAlignment.Center
-                color: Color.DarkBlue
+                color: Color.White
                 fontWeight: FontWeight.Bold
             }
         }
-        
+
         // A standard Label
         Label {
             id: perspectiveLabel
@@ -115,7 +116,7 @@ Container {
                 color: Color.create ("#e3741a")
             }
         }
-        
+
         // A standard Label
         Label {
             id: isometricLabel
@@ -123,7 +124,7 @@ Container {
                 color: Color.create ("#e3741a")
             }
         }
-        
+
         // A standard Label
         Label {
             id: obliqueLabel
@@ -132,20 +133,23 @@ Container {
             }
         }
     }
+
     Container {
         layout: StackLayout {
             bottomPadding: 20
         }
-        
+
+//! [1]
         // A standard TextArea
         TextArea {
             id: textArea
             objectName: "textArea"
+//! [1]
             preferredHeight: 200
             layoutProperties: StackLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Fill
             }
-            
+
             // Defines custom text Color
             textStyle {
                 color: Color.create ("#e3741a")

@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         qml->setContextProperty("_renderer", &renderer);
         Page *appPage = qml->createRootNode<Page>();
         if (appPage) {
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
             // Tell the Renderer object which control it should use for 'painting'
             renderer.setCanvas(appPage->findChild<Container*>("canvas"));
         }

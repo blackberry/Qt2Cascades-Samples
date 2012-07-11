@@ -1,0 +1,123 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Nokia.
+**
+**
+**
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page wordcount
+    \example qtconcurrent/wordcount
+    \title Word Count Example
+
+    \section1 Description
+
+    The QtConcurrent Word Count example demonstrates the use of the map-reduce
+    algorithm when applied to the problem of counting words in a collection
+    of files.
+
+    \image wordcount-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the map-reduce algorithm of the QtConcurrent
+    module to execute a parallelizable task distributed over multiple threads to improve
+    the throughput.
+
+    \section1 The UI
+    The UI of this sample application consists of two buttons, one to start a single-threaded
+    calculation and one to start a multi-threaded calculation. Additionally there are two
+    labels, one that shows the number of files that will be used as input for the calculation
+    and one that shows the number of words in these files and the time it took to count them.
+
+    The business logic of the application is encapsulated in the class WordCountApp, which is
+    exported to the UI as '_app'.
+
+    \snippet qtconcurrent/wordcount/assets/main.qml 0
+
+    The first label contains a text with a placeholder that will be substituted with the number
+    of found files as reported by the 'fileCount' property of the WordCountApp object.
+
+    \snippet qtconcurrent/wordcount/assets/main.qml 1
+
+    Whenever the user clicks the 'Single Threaded' or 'Multi Threaded' buttons, the countSingleThreaded() or
+    countMultiThreaded() slots of the WordCountApp object are invoked.
+    The buttons are disabled while a calculation is running.
+
+    \snippet qtconcurrent/wordcount/assets/main.qml 2
+
+    The second label contains a text with placeholders as well, but this time they are substituted with the number
+    of counted words and the elapsed time.
+
+    \section1 WordCountApp
+    The WordCountApp is the central class in this sample application that contains all the business logic.
+    It provides the two slots to count the number of words in a single-threaded or multi-threaded way and properties that
+    make the result available to the UI.
+
+    \section2 Single-Threaded
+    When the user clicks the 'Single Threaded' button, the countSingleThreaded() slot of the WordCountApp object is invoked.
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 4
+
+    Inside this method at first a timer is started to keep track of the duration of the calculation. Then the helper
+    method singleThreadedWordCount() is called with the list of files to process as parameter (the list of files has been
+    assembled inside the constructor of the WordCountApp class).
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 1
+
+    This method iterates over the list of passed file names, opens one after another and counts the number of words by
+    reading the files line by line. The result is stored in a helper structure WordCount which maps the file name to the number
+    of words it contains.
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 0
+
+    After the singleThreadedWordCount() call, countSingleThreaded() sums up the total number of words and updates the
+    properties of WordCountApp accordingly.
+
+    \section2 Multi-Threaded
+    When the user clicks the 'Multi Threaded' button, the countMultiThreaded() slot of the WordCountApp object is invoked.
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 5
+
+    Inside this method a timer is started again to keep track of the duration of the calculation, however this time the
+    \l{QtConcurrent::mappedReduced()}{QtConcurrent::mappedReduced()} method is utilized to distribute the counting of words
+    over multiple threads.
+    The mappedReduced() method expects three parameters
+    \list
+      \o the container that contains the input data
+      \o the map function
+      \o the reduce function
+    \endlist
+
+    As input data the list of files is passed again. The map function is the helper method countWords()
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 2
+
+    This method is similar to singleThreadedWordCount(), just that it counts the words of \bold{one} file only.
+
+    As reduce function we pass the helper method reduce()
+
+    \snippet qtconcurrent/wordcount/src/WordCountApp.cpp 3
+
+    This method is invoked by \l{QtConcurrent::mappedReduced()}{QtConcurrent::mappedReduced()} on the result after all map functions
+    have been executed.
+*/

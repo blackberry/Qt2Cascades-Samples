@@ -46,29 +46,35 @@ import bb.cascades 1.0
 // Page shows a TextArea displaying buffered output
 Page {
     content: Container {
-        layout: DockLayout {
+        preferredWidth: 768
+
+        layout: DockLayout {}
+
+        // The background image
+        ImageView {
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            imageSource: "asset:///images/background.png"
         }
-        Container {
-            preferredWidth: 1024
-            preferredHeight: 600
-            
-            // A standard TextArea
-            TextArea {
-                preferredHeight: 600
-                editable: false
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Fill
-                }
-                
-                // Display text from buffer
-                text: _textBuffer.text
-                
-                // Defines custom text Color and style
-                textStyle {
-                    base: SystemDefaults.TextStyles.SmallText
-                    color: Color.DarkBlue
-                }
+
+        // A standard TextArea
+        TextArea {
+            editable: false
+            layoutProperties: DockLayoutProperties {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+            }
+
+            // Display text from buffer
+            text: _textBuffer.text
+
+            // Defines custom text Color and style
+            textStyle {
+                base: SystemDefaults.TextStyles.SmallText
+                color: Color.White
             }
         }
     }

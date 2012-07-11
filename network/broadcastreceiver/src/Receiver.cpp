@@ -44,34 +44,32 @@
 
 #include <QtNetwork/QUdpSocket>
 
+//! [0]
 Receiver::Receiver(QObject *parent)
     : QObject(parent)
 {
     /**
-     * Initialize the 'status' property with some data, it will
+     * Initialize the 'status' property with no data, it won't
      * be shown in the UI until the first datagram arrives.
      */
-    m_status = tr("Listening for broadcasted messages");
+    m_status = "--";
 
-//! [0]
     // Create a new UDP socket and bind it against port 45454
     m_udpSocket = new QUdpSocket(this);
     m_udpSocket->bind(45454, QUdpSocket::ShareAddress);
-//! [0]
 
-//! [1]
     /**
      * Create signal/slot connection to invoke processPendingDatagrams() whenever
      * a new datagram is received by the socket.
      */
     connect(m_udpSocket, SIGNAL(readyRead()), this,
             SLOT(processPendingDatagrams()));
-//! [1]
 }
+//! [0]
 
+//! [1]
 void Receiver::processPendingDatagrams()
 {
-//! [2]
     // Now read all available datagrams from the socket
     while (m_udpSocket->hasPendingDatagrams()) {
         // Create a temporary buffer ...
@@ -84,11 +82,11 @@ void Receiver::processPendingDatagrams()
         m_udpSocket->readDatagram(datagram.data(), datagram.size());
 
         // Update the 'status' property with the content of the received datagram
-        m_status = tr("Received datagram: \"%1\"").arg(datagram.data());
+        m_status = tr("%1").arg(datagram.data());
         emit statusChanged();
     }
-//! [2]
 }
+//! [1]
 
 QString Receiver::status() const
 {

@@ -27,63 +27,80 @@
 
 /*!
     \page index.html
-    \title Qt Cascades Examples
+    \title Qt with Cascades UI Examples
 
-    The following example projects are more or less straightforward adaptations
-    of the well-known \l
+    The following example projects are adaptations of the well-known \l
     {http://doc.qt.nokia.com/4.7-snapshot/all-examples.html} {Qt example
     projects} to the BB10 platform.  The BB10 platform differs from the Qt
     framework in several areas, and the original Qt examples are adapted to
     those differences.
 
     A major difference of the BB10 platform is the UI framework, which is called
-    Cascades.  Cascades is based on QtQuick, but provides an alternative set of
+    Cascades.  Cascades is based on QtDeclarative, but provides an alternative set of
     UI components.  The following example projects are all based on the BB10
     Cascades UI framework.  Other differences, in non-UI portions of the BB10
     platform, are also reflected in the adaptation of the original Qt example
     projects.
 
     \list
-    \o Multithreading
+    \o \bold {Inter-Process Communication}
       \list
-      \o \l{semaphores}{Semaphores}
-      \o \l{waitconditions}{Wait Conditions}
-      \o \l{queuedcustomtype}{Queued Custom Type}
+      \o \l{ipc/sharedmemory}{Shared Memory}
+      \o \l{ipc/sharedmemory_loader}{Shared Memory Loader}
       \endlist
-    \o Network
+    \o \bold {Multithreading}
       \list
-      \o \l{broadcastreceiver}{Broadcast Receiver}
-      \o \l{broadcastsender}{Broadcast Sender}
-      \o \l{download} {Network Download}
-      \o \l{downloadmanager} {Network Download Manager}
-      \o \l{ftp}{FTP}
-      \o \l{http}{HTTP}
-      \o \l{multicastreceiver}{Multicast Receiver}
-      \o \l{multicastsender}{Multicast Sender}
-      \o \l{securesocketclient}{Secure Socket Client}
+      \o \l{threads/semaphores}{Semaphores}
+      \o \l{threads/waitconditions}{Wait Conditions}
+      \o \l{threads/queuedcustomtype}{Queued Custom Type}
       \endlist
-    \o SQL
+    \o \bold {Network}
       \list
-      \o \l{sqlwidgetmapper}{SQL Widget Mapper}
+      \o \l{network/broadcastreceiver}{Broadcast Receiver}
+      \o \l{network/broadcastsender}{Broadcast Sender}
+      \o \l{network/downloadmanager} {Network Download Manager}
+      \o \l{network/qftp}{FTP}
+      \o \l{network/googlesuggest}{Google Suggest}
+      \o \l{network/http}{HTTP}
+      \o \l{network/multicastreceiver}{Multicast Receiver}
+      \o \l{network/multicastsender}{Multicast Sender}
+      \o \l{network/securesocketclient}{Secure Socket Client}
       \endlist
-    \o State Machine
+    \o \bold {Qt Concurrent (Advanced Multithreading Framework)}
       \list
-      \o \l{factorial}{Factorial}
-      \o \l{pingpong}{Ping Pong States}
+      \o \l{qtconcurrent/progressdialog}{Progress Dialog}
+      \o \l{qtconcurrent/wordcount}{Word Count}
       \endlist
-    \o Tools
+    \o \bold {Qt Script}
       \list
-      \o \l{i18n}{I18N}
-      \o \l{regexp}{Regular Expressions}
+      \o \l{script/scriptgame}{Script Game}
       \endlist
-    \o XML
+    \o \bold {SQL}
       \list
-      \o \l{dombookmarks}{DOM Bookmarks}
-      \o \l{saxbookmarks}{SAX Bookmarks}
-      \o \l{streambookmarks}{QXmlStream Bookmarks}
-      \o \l{rsslisting} {RSS-Listing}
-      \o \l{htmlinfo} {XML HTML Info}
-      \o \l{xmlstreamlint} {XML Stream Lint}
+      \o \l{sql/sqlwidgetmapper}{SQL Widget Mapper}
+      \endlist
+    \o \bold {State Machine}
+      \list
+      \o \l{statemachine/factorial}{Factorial}
+      \o \l{statemachine/pingpong}{Ping Pong States}
+      \o \l{statemachine/trafficlight}{Traffic Light}
+      \endlist
+    \o \bold {Tools}
+      \list
+      \o \l{tools/codecs}{Codecs}
+      \o \l{tools/contiguouscache}{Contiguous Cache}
+      \o \l{tools/i18n}{I18N}
+      \o \l{tools/regexp}{Regular Expressions}
+      \o \l{tools/undoframework}{Undo Framework}
+      \endlist
+    \o \bold {XML}
+      \list
+      \o \l{xml/dombookmarks}{DOM Bookmarks}
+      \o \l{xml/saxbookmarks}{SAX Bookmarks}
+      \o \l{xml/streambookmarks}{QXmlStream Bookmarks}
+      \o \l{xml/rsslisting} {RSS-Listing}
+      \o \l{xml/htmlinfo} {XML HTML Info}
+      \o \l{xml/xmlstreamlint} {XML Stream Lint}
       \endlist
     \endlist
 */
