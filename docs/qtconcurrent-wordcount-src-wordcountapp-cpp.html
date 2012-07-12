@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : WordCountApp.cpp Example File (qtconcurrent/wordcount/src/WordCountApp.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">WordCountApp.cpp Example File</h1>
+<span class="small-subtitle">qtconcurrent/wordcount/src/WordCountApp.cpp</span>
+<!-- $$$qtconcurrent/wordcount/src/WordCountApp.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+
+    <span class="preprocessor">#include &quot;WordCountApp.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;numeric&gt; // for std::accumulate</span>
+
+    <span class="preprocessor">#include &lt;qtconcurrentmap.h&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    <span class="comment">/**
+     * A helper structure that maps the name of a file
+     * to the number of words it contains.
+     */</span>
+    <span class="keyword">typedef</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmap.html">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> WordCount;
+
+    <span class="comment">/**
+     * A function that counts words single threaded
+     * by iterating over the files sequentially.
+     */</span>
+    WordCount singleThreadedWordCount(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>files)
+    {
+        WordCount wordCount;
+
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName<span class="operator">,</span> files) {
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
+            file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly);
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> textStream(<span class="operator">&amp;</span>file);
+            <span class="keyword">while</span> (textStream<span class="operator">.</span>atEnd() <span class="operator">=</span><span class="operator">=</span> <span class="keyword">false</span>) {
+                foreach(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
+                    wordCount<span class="operator">[</span>word<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> <span class="number">1</span>;
+            }
+        }
+
+        <span class="keyword">return</span> wordCount;
+    }
+
+    <span class="comment">/**
+     * A function that counts the words in a single file.
+     * This function is called in parallel by several threads, therefor it
+     * must be thread safe.
+     */</span>
+    WordCount countWords(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+    {
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
+        file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> textStream(<span class="operator">&amp;</span>file);
+        WordCount wordCount;
+
+        <span class="keyword">while</span> (textStream<span class="operator">.</span>atEnd() <span class="operator">=</span><span class="operator">=</span> <span class="keyword">false</span>) {
+            foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
+                wordCount<span class="operator">[</span>word<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> <span class="number">1</span>;
+        }
+
+        <span class="keyword">return</span> wordCount;
+    }
+
+    <span class="comment">/**
+     * A function that adds the results from the map to the final
+     * result. This functor will only be called by one thread at a time.
+     */</span>
+    <span class="type">void</span> reduce(WordCount <span class="operator">&amp;</span>result<span class="operator">,</span> <span class="keyword">const</span> WordCount <span class="operator">&amp;</span>w)
+    {
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmapiterator.html">QMapIterator</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> i(w);
+        <span class="keyword">while</span> (i<span class="operator">.</span>hasNext()) {
+            i<span class="operator">.</span>next();
+            result<span class="operator">[</span>i<span class="operator">.</span>key()<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> i<span class="operator">.</span>value();
+        }
+    }
+
+    WordCountApp<span class="operator">::</span>WordCountApp()
+        : m_wordCount(<span class="number">0</span>)<span class="operator">,</span> m_elapsedTime(<span class="number">0</span>)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
+    {
+        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+
+        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
+            <span class="comment">// Make the WordCountApp object available to the UI as context property</span>
+            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+
+            <span class="comment">// The application Page is created from QML.</span>
+            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+
+            <span class="keyword">if</span> (appPage) {
+                <span class="comment">// Create the application scene.</span>
+                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+            }
+        }
+
+        <span class="comment">// Find a couple of files in the file system</span>
+        m_files <span class="operator">=</span> findFiles(<span class="string">&quot;/usr/photon/&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
+        m_files <span class="operator">+</span><span class="operator">=</span> findFiles(<span class="string">&quot;/scripts/&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
+
+        <span class="keyword">emit</span> fileCountChanged();
+    }
+
+    <span class="type">int</span> WordCountApp<span class="operator">::</span>fileCount() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_files<span class="operator">.</span>count();
+    }
+
+    <span class="type">int</span> WordCountApp<span class="operator">::</span>wordCount() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_wordCount;
+    }
+
+    <span class="type">int</span> WordCountApp<span class="operator">::</span>elapsedTime() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_elapsedTime;
+    }
+
+    <span class="type">bool</span> WordCountApp<span class="operator">::</span>active() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_active;
+    }
+
+    <span class="type">void</span> WordCountApp<span class="operator">::</span>countSingleThreaded()
+    {
+        <span class="comment">// Mark the application as active</span>
+        m_active <span class="operator">=</span> <span class="keyword">true</span>;
+        <span class="keyword">emit</span> activeChanged();
+
+        <span class="comment">// Start to measure the time</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span> time;
+        time<span class="operator">.</span>start();
+
+        <span class="comment">// Count the words single threaded</span>
+        <span class="keyword">const</span> WordCount total <span class="operator">=</span> singleThreadedWordCount(m_files);
+
+        <span class="comment">// Update the measured time</span>
+        m_elapsedTime <span class="operator">=</span> time<span class="operator">.</span>elapsed();
+        <span class="keyword">emit</span> elapsedTimeChanged();
+
+        <span class="comment">// Accumulate the per-file word counts to the total word count</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
+        m_wordCount <span class="operator">=</span> std<span class="operator">::</span>accumulate(counts<span class="operator">.</span>begin()<span class="operator">,</span> counts<span class="operator">.</span>end()<span class="operator">,</span> <span class="number">0</span>);
+        <span class="keyword">emit</span> wordCountChanged();
+
+        <span class="comment">// Mark the application as inactive</span>
+        m_active <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> activeChanged();
+    }
+
+    <span class="type">void</span> WordCountApp<span class="operator">::</span>countMultiThreaded()
+    {
+        <span class="comment">// Mark the application as active</span>
+        m_active <span class="operator">=</span> <span class="keyword">true</span>;
+        <span class="keyword">emit</span> activeChanged();
+
+        <span class="comment">// Start to measure the time</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span> time;
+        time<span class="operator">.</span>start();
+
+        <span class="comment">// Count the words multi-threaded by using QtConcurrent</span>
+        <span class="keyword">const</span> WordCount total <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a></span><span class="operator">::</span>mappedReduced(m_files<span class="operator">,</span> countWords<span class="operator">,</span> reduce);
+
+        <span class="comment">// Update the measured time</span>
+        m_elapsedTime <span class="operator">=</span> time<span class="operator">.</span>elapsed();
+        <span class="keyword">emit</span> elapsedTimeChanged();
+
+        <span class="comment">// Accumulate the per-file word counts to the total word count</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
+        m_wordCount <span class="operator">=</span> std<span class="operator">::</span>accumulate(counts<span class="operator">.</span>begin()<span class="operator">,</span> counts<span class="operator">.</span>end()<span class="operator">,</span> <span class="number">0</span>);
+        <span class="keyword">emit</span> wordCountChanged();
+
+        <span class="comment">// Mark the application as inactive</span>
+        m_active <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> activeChanged();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> WordCountApp<span class="operator">::</span>findFiles(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>startDir<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>filters)
+    {
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> names;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span> dir(startDir);
+
+        <span class="comment">// Collect all files from local dir that match the filter</span>
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>file<span class="operator">,</span> dir<span class="operator">.</span>entryList(filters<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>Files))
+            names <span class="operator">+</span><span class="operator">=</span> startDir <span class="operator">+</span> <span class="string">&quot;/&quot;</span> <span class="operator">+</span> file;
+
+        <span class="comment">// Iterate over sub-directories</span>
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>subdir<span class="operator">,</span> dir<span class="operator">.</span>entryList(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>AllDirs <span class="operator">|</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>NoDotAndDotDot))
+            names <span class="operator">+</span><span class="operator">=</span> findFiles(startDir <span class="operator">+</span> <span class="string">&quot;/&quot;</span> <span class="operator">+</span> subdir<span class="operator">,</span> filters);
+
+        <span class="keyword">return</span> names;
+    }</pre>
+</div>
+<!-- @@@qtconcurrent/wordcount/src/WordCountApp.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sharedmemory.qdoc -->
+  <title>Cascades : Shared Memory Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#fileloaderproxy">FileLoaderProxy</a></li>
+</ul>
+</div>
+<h1 class="title">Shared Memory Example</h1>
+<span class="subtitle"></span>
+<!-- $$$ipc/sharedmemory-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="ipc-sharedmemory-assets-main-qml.html">ipc/sharedmemory/assets/main.qml</a></li>
+<li><a href="ipc-sharedmemory-src-fileloaderproxy-cpp.html">ipc/sharedmemory/src/FileLoaderProxy.cpp</a></li>
+<li><a href="ipc-sharedmemory-src-fileloaderproxy-hpp.html">ipc/sharedmemory/src/FileLoaderProxy.hpp</a></li>
+<li><a href="ipc-sharedmemory-src-sharedmemoryapp-cpp.html">ipc/sharedmemory/src/SharedMemoryApp.cpp</a></li>
+<li><a href="ipc-sharedmemory-src-sharedmemoryapp-hpp.html">ipc/sharedmemory/src/SharedMemoryApp.hpp</a></li>
+<li><a href="ipc-sharedmemory-src-main-cpp.html">ipc/sharedmemory/src/main.cpp</a></li>
+<li><a href="ipc-sharedmemory-sharedmemory-pro.html">ipc/sharedmemory/sharedmemory.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Shared Memory example shows how to use the <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a> class to implement inter-process communication using shared memory.</p>
+<p class="centerAlign"><img src="images/sharedmemory-example.png" alt="" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to communicate between multiple processes by writing/reading data to/from a shared memory and how to synchronize the access to the shared memory segment properly.</p>
+<p>The example application is splitted in the two executables, <a href="ipc-sharedmemory-loader.html">sharedmemory_loader</a> and sharedmemory. With the <a href="ipc-sharedmemory-loader.html">sharedmemory_loader</a> the user can load a file from the file system into a shared memory segment from where the sharedmemory application reads the content of the file and displays it in the UI.</p>
+<a name="fileloaderproxy"></a>
+<h2>FileLoaderProxy</h2>
+<p>The central class in sharedmemory is FileLoaderProxy, which encapsulates the loading of the data from the shared memory segment and provides a property to display the data in the UI. Whenever the user clicks on the 'Load file' button, the loadFile() slot is invoked:</p>
+<pre class="qml">                    <span class="name">onClicked</span>: {
+                        <span class="name">_fileLoaderProxy</span>.<span class="name">loadFile</span>()
+                    }</pre>
+<p>To visualize the loaded data in the UI, the 'fileContent' property of the exported FileLoaderProxy object is bound against the 'text' property of a TextArea control.</p>
+<pre class="qml">                    <span class="name">text</span>: <span class="name">_fileLoaderProxy</span>.<span class="name">fileContent</span></pre>
+<p>The FileLoaderProxy class contains a member variable of type <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a> which encapsulates the creation and access of the shared memory segment.</p>
+<p>Inside the constructor of the FileLoaderProxy the segment is created and initialized</p>
+<pre class="cpp">        <span class="comment">// Define the key that identifies this shared memory segment</span>
+        m_sharedMemory<span class="operator">.</span>setKey(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(s_sharedKey));
+
+        <span class="comment">// Create the shared memory segment with the given size</span>
+        m_sharedMemory<span class="operator">.</span>create(s_memorySize);</pre>
+<p>For this the hard-coded key and size are used as defined previously in the file</p>
+<pre class="cpp">    <span class="comment">// The key that is used for the shared memory segment</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>s_sharedKey <span class="operator">=</span> <span class="string">&quot;fileloader_shm_key&quot;</span>;
+
+    <span class="comment">// The size of the shared memory segment</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> s_memorySize <span class="operator">=</span> <span class="number">10</span> <span class="operator">*</span> <span class="number">1024</span>; <span class="comment">// 10kB</span></pre>
+<p>Since m_sharedMemory is a member variable, it will be deleted as soon as the FileLoaderProxy object is deleted. At this point the destructor of <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a> will delete the associated shared memory segment automatically.</p>
+<p>Whenever the user clicks the 'Load file' button, the loadFile() slot is invoked, which simply emits the change notification signal for the 'fileContent' property.</p>
+<pre class="cpp">    <span class="type">void</span> FileLoaderProxy<span class="operator">::</span>loadFile()
+    {
+        <span class="comment">/**
+         * We expect that the user has started the sharedmemory_loader example and loaded
+         * a file into the shared memory already, so just trigger to read the data from the
+         * shared memory.
+         */</span>
+        <span class="keyword">emit</span> fileContentChanged();
+    }</pre>
+<p>This signal emission will trigger the reevaluation of all property bindings where the 'fileContent' property is involved. To retrieve the new value for the 'fileContent' property, its getter method fileContent() is invoked:</p>
+<pre class="cpp">    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FileLoaderProxy<span class="operator">::</span>fileContent() <span class="keyword">const</span>
+    {
+        <span class="comment">// Before we access the content of the shared memory we should lock it</span>
+        m_sharedMemory<span class="operator">.</span>lock();
+
+        <span class="comment">// Read out all data</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> content <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromUtf8(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(m_sharedMemory<span class="operator">.</span>data()));
+
+        <span class="comment">// Unlock the shared memory again</span>
+        m_sharedMemory<span class="operator">.</span>unlock();
+
+        <span class="keyword">return</span> content;
+    }</pre>
+<p>Inside this method we try to gain the exclusive access to the shared memory segment by calling <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#lock">lock()</a>. If another process holds the lock already, our process is blocked until the lock is released by the other process. When we gained the access, we read the data from the shared memory segment into a temporary variable. Afterwards we release the lock by calling <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#unlock">unlock()</a> and return the data.</p>
+</div>
+<!-- @@@ipc/sharedmemory -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

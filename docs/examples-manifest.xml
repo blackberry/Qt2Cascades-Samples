@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instructionals module="Cascades">
+    <examples>
+        <example name="Broadcast Receiver Example" docUrl="qthelp:////network-broadcastreceiver.html" projectPath="network/broadcastreceiver/broadcastreceiver.pro" imageUrl="qthelp:////images/broadcastreceiver-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>broadcast,receiver</tags>
+            <fileToOpen>network/broadcastreceiver/assets/main.qml</fileToOpen>
+            <fileToOpen>network/broadcastreceiver/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Broadcast Sender Example" docUrl="qthelp:////network-broadcastsender.html" projectPath="network/broadcastsender/broadcastsender.pro" imageUrl="qthelp:////images/broadcastsender-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>broadcast,sender</tags>
+            <fileToOpen>network/broadcastsender/assets/main.qml</fileToOpen>
+            <fileToOpen>network/broadcastsender/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Codecs Example" docUrl="qthelp:////tools-codecs.html" projectPath="tools/codecs/codecs.pro" imageUrl="qthelp:////images/codecs-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>codecs</tags>
+            <fileToOpen>tools/codecs/assets/main.qml</fileToOpen>
+            <fileToOpen>tools/codecs/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Contiguous Cache Example" docUrl="qthelp:////tools-contiguouscache.html" projectPath="tools/contiguouscache/contiguouscache.pro" imageUrl="qthelp:////images/contiguouscache-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>contiguous,cache</tags>
+            <fileToOpen>tools/contiguouscache/assets/main.qml</fileToOpen>
+            <fileToOpen>tools/contiguouscache/src/main.cpp</fileToOpen>
+        </example>
+        <example name="DOM Bookmarks Example" docUrl="qthelp:////xml-dombookmarks.html" projectPath="xml/dombookmarks/dombookmarks.pro" imageUrl="qthelp:////images/dombookmarks-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>dom,bookmarks</tags>
+            <fileToOpen>xml/dombookmarks/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/dombookmarks/src/main.cpp</fileToOpen>
+        </example>
+        <example name="FTP Example" docUrl="qthelp:////network-qftp.html" projectPath="network/qftp/qftp.pro" imageUrl="qthelp:////images/ftp-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>ftp</tags>
+            <fileToOpen>network/qftp/assets/main.qml</fileToOpen>
+            <fileToOpen>network/qftp/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Factorial States Example" docUrl="qthelp:////statemachine-factorial.html" projectPath="statemachine/factorial/factorial.pro" imageUrl="qthelp:////images/factorial-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>factorial,states</tags>
+            <fileToOpen>statemachine/factorial/assets/main.qml</fileToOpen>
+            <fileToOpen>statemachine/factorial/src/factorial.cpp</fileToOpen>
+            <fileToOpen>statemachine/factorial/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Google Suggest Example" docUrl="qthelp:////network-googlesuggest.html" projectPath="network/googlesuggest/googlesuggest.pro" imageUrl="qthelp:////images/googlesuggest-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>google,suggest</tags>
+            <fileToOpen>network/googlesuggest/assets/main.qml</fileToOpen>
+            <fileToOpen>network/googlesuggest/src/googlesuggest.cpp</fileToOpen>
+            <fileToOpen>network/googlesuggest/src/main.cpp</fileToOpen>
+        </example>
+        <example name="HTTP Example" docUrl="qthelp:////network-http.html" projectPath="network/http/http.pro" imageUrl="qthelp:////images/http-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>http</tags>
+            <fileToOpen>network/http/assets/main.qml</fileToOpen>
+            <fileToOpen>network/http/src/main.cpp</fileToOpen>
+        </example>
+        <example name="I18N Example" docUrl="qthelp:////tools-i18n.html" projectPath="tools/i18n/i18n.pro" imageUrl="qthelp:////images/i18n-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>i18n</tags>
+            <fileToOpen>tools/i18n/assets/main.qml</fileToOpen>
+            <fileToOpen>tools/i18n/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Multicast Receiver Example" docUrl="qthelp:////network-multicastreceiver.html" projectPath="network/multicastreceiver/multicastreceiver.pro" imageUrl="qthelp:////images/multicastreceiver-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>multicast,receiver</tags>
+            <fileToOpen>network/multicastreceiver/assets/main.qml</fileToOpen>
+            <fileToOpen>network/multicastreceiver/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Multicast Sender Example" docUrl="qthelp:////network-multicastsender.html" projectPath="network/multicastsender/multicastsender.pro" imageUrl="qthelp:////images/multicastsender-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>multicast,sender</tags>
+            <fileToOpen>network/multicastsender/assets/main.qml</fileToOpen>
+            <fileToOpen>network/multicastsender/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Network Download Manager Example" docUrl="qthelp:////network-downloadmanager.html" projectPath="network/downloadmanager/downloadmanager.pro" imageUrl="qthelp:////images/downloadmanager-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>network,download,manager</tags>
+            <fileToOpen>network/downloadmanager/assets/main.qml</fileToOpen>
+            <fileToOpen>network/downloadmanager/src/DownloadManager.cpp</fileToOpen>
+            <fileToOpen>network/downloadmanager/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Ping Pong States Example" docUrl="qthelp:////statemachine-pingpong.html" projectPath="statemachine/pingpong/pingpong.pro" imageUrl="qthelp:////images/pingpong-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>ping,pong,states</tags>
+            <fileToOpen>statemachine/pingpong/assets/main.qml</fileToOpen>
+            <fileToOpen>statemachine/pingpong/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Progress Dialog Example" docUrl="qthelp:////qtconcurrent-progressdialog.html" projectPath="qtconcurrent/progressdialog/progressdialog.pro" imageUrl="qthelp:////images/progressdialog-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>progress,dialog</tags>
+            <fileToOpen>qtconcurrent/progressdialog/assets/main.qml</fileToOpen>
+            <fileToOpen>qtconcurrent/progressdialog/src/main.cpp</fileToOpen>
+        </example>
+        <example name="QXmlStream Bookmarks Example" docUrl="qthelp:////xml-streambookmarks.html" projectPath="xml/streambookmarks/streambookmarks.pro" imageUrl="qthelp:////images/streambookmarks-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>qxmlstream,bookmarks</tags>
+            <fileToOpen>xml/streambookmarks/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/streambookmarks/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Queued Custom Type Example" docUrl="qthelp:////threads-queuedcustomtype.html" projectPath="threads/queuedcustomtype/queuedcustomtype.pro" imageUrl="qthelp:////images/queuedcustomtype-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>queued,custom,type</tags>
+            <fileToOpen>threads/queuedcustomtype/assets/main.qml</fileToOpen>
+            <fileToOpen>threads/queuedcustomtype/src/main.cpp</fileToOpen>
+        </example>
+        <example name="RSS-Listing Example" docUrl="qthelp:////xml-rsslisting.html" projectPath="xml/rsslisting/rsslisting.pro" imageUrl="qthelp:////images/rsslisting-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>rss-listing</tags>
+            <fileToOpen>xml/rsslisting/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/rsslisting/src/rsslisting.cpp</fileToOpen>
+            <fileToOpen>xml/rsslisting/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Regular Expressions Example" docUrl="qthelp:////tools-regexp.html" projectPath="tools/regexp/regexp.pro" imageUrl="qthelp:////images/regexp-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>regular,expressions</tags>
+            <fileToOpen>tools/regexp/assets/main.qml</fileToOpen>
+            <fileToOpen>tools/regexp/src/regexp.cpp</fileToOpen>
+            <fileToOpen>tools/regexp/src/main.cpp</fileToOpen>
+        </example>
+        <example name="SAX Bookmarks Example" docUrl="qthelp:////xml-saxbookmarks.html" projectPath="xml/saxbookmarks/saxbookmarks.pro" imageUrl="qthelp:////images/saxbookmarks-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>sax,bookmarks</tags>
+            <fileToOpen>xml/saxbookmarks/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/saxbookmarks/src/main.cpp</fileToOpen>
+        </example>
+        <example name="SQL Widget Mapper Example" docUrl="qthelp:////sql-sqlwidgetmapper.html" projectPath="sql/sqlwidgetmapper/sqlwidgetmapper.pro" imageUrl="qthelp:////images/sqlwidgetmapper-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>sql,widget,mapper</tags>
+            <fileToOpen>sql/sqlwidgetmapper/assets/main.qml</fileToOpen>
+            <fileToOpen>sql/sqlwidgetmapper/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Script Game Example" docUrl="qthelp:////script-scriptgame.html" projectPath="script/scriptgame/scriptgame.pro" imageUrl="qthelp:////images/scriptgame-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>script,game</tags>
+            <fileToOpen>script/scriptgame/assets/main.qml</fileToOpen>
+            <fileToOpen>script/scriptgame/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Secure Socket Client Example" docUrl="qthelp:////network-securesocketclient.html" projectPath="network/securesocketclient/securesocketclient.pro" imageUrl="qthelp:////images/securesocketclient-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>secure,socket,client</tags>
+            <fileToOpen>network/securesocketclient/assets/main.qml</fileToOpen>
+            <fileToOpen>network/securesocketclient/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Semaphores Example" docUrl="qthelp:////threads-semaphores.html" projectPath="threads/semaphores/semaphores.pro" imageUrl="qthelp:////images/semaphores-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>semaphores</tags>
+            <fileToOpen>threads/semaphores/assets/main.qml</fileToOpen>
+            <fileToOpen>threads/semaphores/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Shared Memory Example" docUrl="qthelp:////ipc-sharedmemory.html" projectPath="ipc/sharedmemory/sharedmemory.pro" imageUrl="qthelp:////images/sharedmemory-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>shared,memory</tags>
+            <fileToOpen>ipc/sharedmemory/assets/main.qml</fileToOpen>
+            <fileToOpen>ipc/sharedmemory/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Shared Memory Loader Example" docUrl="qthelp:////ipc-sharedmemory-loader.html" projectPath="ipc/sharedmemory_loader/sharedmemory_loader.pro" imageUrl="qthelp:////images/sharedmemory_loader-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>shared,memory,loader</tags>
+            <fileToOpen>ipc/sharedmemory_loader/assets/main.qml</fileToOpen>
+            <fileToOpen>ipc/sharedmemory_loader/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Traffic Light Example" docUrl="qthelp:////statemachine-trafficlight.html" projectPath="statemachine/trafficlight/trafficlight.pro" imageUrl="qthelp:////images/trafficlight-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>traffic,light</tags>
+            <fileToOpen>statemachine/trafficlight/assets/TrafficLight.qml</fileToOpen>
+            <fileToOpen>statemachine/trafficlight/assets/main.qml</fileToOpen>
+            <fileToOpen>statemachine/trafficlight/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Undo Framework Example" docUrl="qthelp:////tools-undoframework.html" projectPath="tools/undoframework/undoframework.pro" imageUrl="qthelp:////images/undoframework-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>undo,framework</tags>
+            <fileToOpen>tools/undoframework/assets/main.qml</fileToOpen>
+            <fileToOpen>tools/undoframework/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Wait Conditions Example" docUrl="qthelp:////threads-waitconditions.html" projectPath="threads/waitconditions/waitconditions.pro" imageUrl="qthelp:////images/waitconditions-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>wait,conditions</tags>
+            <fileToOpen>threads/waitconditions/assets/main.qml</fileToOpen>
+            <fileToOpen>threads/waitconditions/src/main.cpp</fileToOpen>
+        </example>
+        <example name="Word Count Example" docUrl="qthelp:////qtconcurrent-wordcount.html" projectPath="qtconcurrent/wordcount/wordcount.pro" imageUrl="qthelp:////images/wordcount-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>word,count</tags>
+            <fileToOpen>qtconcurrent/wordcount/assets/main.qml</fileToOpen>
+            <fileToOpen>qtconcurrent/wordcount/src/main.cpp</fileToOpen>
+        </example>
+        <example name="XML HTML Info Example" docUrl="qthelp:////xml-htmlinfo.html" projectPath="xml/htmlinfo/htmlinfo.pro" imageUrl="qthelp:////images/htmlinfo-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>xml,html,info</tags>
+            <fileToOpen>xml/htmlinfo/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/htmlinfo/src/htmlinfo.cpp</fileToOpen>
+            <fileToOpen>xml/htmlinfo/src/main.cpp</fileToOpen>
+        </example>
+        <example name="XML Stream Lint Example" docUrl="qthelp:////xml-xmlstreamlint.html" projectPath="xml/xmlstreamlint/xmlstreamlint.pro" imageUrl="qthelp:////images/xmlstreamlint-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>xml,stream,lint</tags>
+            <fileToOpen>xml/xmlstreamlint/assets/main.qml</fileToOpen>
+            <fileToOpen>xml/xmlstreamlint/src/xmlstreamlint.cpp</fileToOpen>
+            <fileToOpen>xml/xmlstreamlint/src/main.cpp</fileToOpen>
+        </example>
+    </examples>
+</instructionals>

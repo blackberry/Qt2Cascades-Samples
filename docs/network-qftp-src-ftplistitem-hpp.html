@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : FtpListItem.hpp Example File (network/qftp/src/FtpListItem.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">FtpListItem.hpp Example File</h1>
+<span class="small-subtitle">network/qftp/src/FtpListItem.hpp</span>
+<!-- $$$network/qftp/src/FtpListItem.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/* Copyright (c) 2012 Research In Motion Limited.
+     *
+     * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     * http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */</span>
+
+    <span class="preprocessor">#ifndef _FTPLISTITEM_H_</span>
+    <span class="preprocessor">#define _FTPLISTITEM_H_</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/CustomControl&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/ListItemListener&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    <span class="keyword">namespace</span> bb {
+    <span class="keyword">namespace</span> cascades {
+    <span class="keyword">class</span> ImageView;
+    <span class="keyword">class</span> Image;
+    <span class="keyword">class</span> Label;
+    <span class="keyword">class</span> Container;
+    }
+    }
+
+    <span class="comment">/**
+     * The FtpListItem class represents one entry in the ListView that shows the FTP directory listing.
+     * Like the StandardListItem it provides a title, a status text and an image, however it uses a different
+     * graphical representation.
+     */</span>
+    <span class="keyword">class</span> FtpListItem : <span class="keyword">public</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>CustomControl<span class="operator">,</span> <span class="keyword">public</span> ListItemListener
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        FtpListItem(Container <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="comment">/**
+         * Sets the new title text on this list item to a passed in string.
+         *
+         *
+         * @param titleText The new title text for this list item.
+         */</span>
+        <span class="type">void</span> setTitleText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>titleText);
+
+        <span class="comment">/**
+         * Sets the new status text on this list item to a passed in string.
+         *
+         *
+         * @param statusText The new status text for this list item.
+         */</span>
+        <span class="type">void</span> setStatusText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>statusText);
+
+        <span class="comment">/**
+         * Sets the new image on this list item.
+         *
+         * @param image The new image for this list item.
+         */</span>
+        <span class="type">void</span> setImage(<span class="keyword">const</span> Image <span class="operator">&amp;</span>image);
+
+        <span class="comment">/**
+         * ListItemListener interface function called when the select state changes.
+         *
+         * @param select true if the item has been selected, false if unselected
+         */</span>
+        <span class="type">void</span> select(<span class="type">bool</span> select);
+
+        <span class="comment">/**
+         * ListItemListener interface function called when an item needs to be reset.
+         * Since items are recycled the reset function is where we have
+         * to make sure that item state, defined by the arguments, is correct.
+         *
+         * @param selected true if the item should appear selected, false if unselected
+         * @param activated true if the item should appear activated, false if deactivated
+         */</span>
+        <span class="type">void</span> reset(<span class="type">bool</span> selected<span class="operator">,</span> <span class="type">bool</span> activated);
+
+        <span class="comment">/**
+         * ListItemListener interface called when an item is activated/deactivated.
+         *
+         * @param activate true if the item has been activated, false if inactive.
+         */</span>
+        <span class="type">void</span> activate(<span class="type">bool</span> activate);
+
+    <span class="keyword">private</span>:
+        <span class="comment">// Item Controls.</span>
+        ImageView <span class="operator">*</span>m_itemImage;
+        Label <span class="operator">*</span>m_itemTitle;
+        Label <span class="operator">*</span>m_itemDescription;
+        ImageView <span class="operator">*</span>m_highlighContainer;
+    };
+
+    <span class="preprocessor">#endif // ifndef _FTPLISTITEM_H_</span></pre>
+</div>
+<!-- @@@network/qftp/src/FtpListItem.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

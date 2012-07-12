@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sharedmemory_loader.qdoc -->
+  <title>Cascades : Shared Memory Loader Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#fileloader">FileLoader</a></li>
+</ul>
+</div>
+<h1 class="title">Shared Memory Loader Example</h1>
+<span class="subtitle"></span>
+<!-- $$$ipc/sharedmemory_loader-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="ipc-sharedmemory-loader-assets-main-qml.html">ipc/sharedmemory_loader/assets/main.qml</a></li>
+<li><a href="ipc-sharedmemory-loader-src-fileloader-cpp.html">ipc/sharedmemory_loader/src/FileLoader.cpp</a></li>
+<li><a href="ipc-sharedmemory-loader-src-fileloader-hpp.html">ipc/sharedmemory_loader/src/FileLoader.hpp</a></li>
+<li><a href="ipc-sharedmemory-loader-src-sharedmemoryloaderapp-cpp.html">ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp</a></li>
+<li><a href="ipc-sharedmemory-loader-src-sharedmemoryloaderapp-hpp.html">ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.hpp</a></li>
+<li><a href="ipc-sharedmemory-loader-src-main-cpp.html">ipc/sharedmemory_loader/src/main.cpp</a></li>
+<li><a href="ipc-sharedmemory-loader-sharedmemory-loader-pro.html">ipc/sharedmemory_loader/sharedmemory_loader.pro</a></li>
+<li><a href="ipc-sharedmemory-loader-translations-sharedmemory-loader-pro.html">ipc/sharedmemory_loader/translations/sharedmemory_loader.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Shared Memory Loader example shows how to use the <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a> class to implement inter-process communication using shared memory.</p>
+<p class="centerAlign"><img src="images/sharedmemory_loader-example.png" alt="" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to communicate between multiple processes by writing/reading data to/from a shared memory and how to synchronize the access to the shared memory segment properly.</p>
+<p>The example application is splitted in the two executables, sharedmemory_loader and <a href="ipc-sharedmemory.html">sharedmemory</a>. With the sharedmemory_loader the user can load a file from the file system into a shared memory segment from where the <a href="ipc-sharedmemory.html">sharedmemory</a> application reads the content of the file and displays it in the UI.</p>
+<a name="fileloader"></a>
+<h2>FileLoader</h2>
+<p>The central class in sharedmemory_loader is FileLoader, which encapsulates the loading of the file, that has been selected by the user, into the shared memory segment. Whenever the user selects a file from the DropDown control inside the UI, the loadFile() slot of the FileLoader is invoked:</p>
+<pre class="qml">                    <span class="name">onSelectedIndexChanged</span>: {
+                        <span class="name">_fileLoader</span>.<span class="name">loadFile</span>(<span class="name">fileSelection</span>.<span class="name">at</span>(<span class="name">selectedIndex</span>).<span class="name">value</span>)
+                    }</pre>
+<p>Inside this slot we first try to read the complete content of the file whose file name has been passed:</p>
+<pre class="cpp">        <span class="comment">// Try to open the file ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/files/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly)) {
+            m_status <span class="operator">=</span> tr(<span class="string">&quot;Unable to open file: %1&quot;</span>)<span class="operator">.</span>arg(file<span class="operator">.</span>errorString());
+            <span class="keyword">emit</span> statusChanged();
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// ... and read its complete content into a temporary variable</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> content <span class="operator">=</span> file<span class="operator">.</span>readAll();
+        file<span class="operator">.</span>close();</pre>
+<p>If this was successful, we try to attach to the shared memory segment that has been created by the sharedmemory application. For this we need the key of the shared memory segment which is hard-coded in this example:</p>
+<pre class="cpp">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>s_sharedKey <span class="operator">=</span> <span class="string">&quot;fileloader_shm_key&quot;</span>;</pre>
+<p>After instantiating a <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a> object with the proper key, we try to attach to that segment, which might fail if it doesn't exist (e.g&#x2e; the sharedmemory application has not created it yet), or we don't have the needed access rights.</p>
+<pre class="cpp">        <span class="comment">// Try to attach to the shared memory segment with the given key</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a></span> sharedMemory(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(s_sharedKey));
+        <span class="keyword">if</span> (<span class="operator">!</span>sharedMemory<span class="operator">.</span>attach()) {
+            m_status <span class="operator">=</span> tr(<span class="string">&quot;Unable to attach to shared memory: %1&quot;</span>)<span class="operator">.</span>arg(sharedMemory<span class="operator">.</span>errorString());
+            <span class="keyword">emit</span> statusChanged();
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Lock the shared memory segment before we do any modifications</span>
+        sharedMemory<span class="operator">.</span>lock();
+
+        <span class="comment">// Copy the file content from the temporary variable into the shared memory segment</span>
+        strncpy(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(sharedMemory<span class="operator">.</span>data())<span class="operator">,</span> content<span class="operator">.</span>constData()<span class="operator">,</span> sharedMemory<span class="operator">.</span>size() <span class="operator">-</span> <span class="number">1</span>);
+
+        <span class="comment">// Unlock the shared memory segment again ...</span>
+        sharedMemory<span class="operator">.</span>unlock();
+
+        <span class="comment">// ... and detach from it</span>
+        sharedMemory<span class="operator">.</span>detach();</pre>
+<p>However if the <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#attach">attach()</a> call was successful, we call <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#lock">lock()</a> to gain exclusive access to this shared memory segment. If another process holds the lock already, our process is blocked until the lock is released by the other process. When we gained the access, we copy over the content of the loaded file from the temporary variable into the shared memory.</p>
+<p>Afterwards we release the lock by calling <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#unlock">unlock()</a> and <a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html#detach">detach</a> from the shared memory segment.</p>
+</div>
+<!-- @@@ipc/sharedmemory_loader -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

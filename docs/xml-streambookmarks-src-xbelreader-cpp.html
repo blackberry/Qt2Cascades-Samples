@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : xbelreader.cpp Example File (xml/streambookmarks/src/xbelreader.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">xbelreader.cpp Example File</h1>
+<span class="small-subtitle">xml/streambookmarks/src/xbelreader.cpp</span>
+<!-- $$$xml/streambookmarks/src/xbelreader.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;xbelreader.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    XbelReader<span class="operator">::</span>XbelReader(Container <span class="operator">*</span>treeContainer)
+        : m_treeContainer(treeContainer)
+    {
+    }
+
+    <span class="type">bool</span> XbelReader<span class="operator">::</span>read(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    {
+        <span class="comment">// Set the XBEL document as input data to the XML stream reader</span>
+        m_xml<span class="operator">.</span>setDevice(device);
+
+        <span class="comment">// Read the first element ...</span>
+        <span class="keyword">if</span> (m_xml<span class="operator">.</span>readNextStartElement()) {
+            <span class="comment">// ... and check whether this is a valid XBEL file in the correct version</span>
+            <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;xbel&quot;</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;version&quot;</span>) <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;1.0&quot;</span>)
+                readXBEL(); <span class="comment">// Start to parse the document</span>
+            <span class="keyword">else</span>
+                m_xml<span class="operator">.</span>raiseError(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;The file is not an XBEL version 1.0 file.&quot;</span>));
+        }
+
+        <span class="keyword">return</span> <span class="operator">!</span>m_xml<span class="operator">.</span>error();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelReader<span class="operator">::</span>errorString() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;%1\nLine %2, column %3&quot;</span>)
+                <span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString())
+                <span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())
+                <span class="operator">.</span>arg(m_xml<span class="operator">.</span>columnNumber());
+    }
+
+    <span class="type">void</span> XbelReader<span class="operator">::</span>readXBEL()
+    {
+        <span class="comment">// Do sanity check</span>
+        Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;xbel&quot;</span>);
+
+        <span class="comment">// Iterate over the child elements</span>
+        <span class="keyword">while</span> (m_xml<span class="operator">.</span>readNextStartElement()) {
+            <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>)
+                readFolder(m_treeContainer);
+            <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>)
+                readBookmark(m_treeContainer);
+            <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span>)
+                readSeparator(m_treeContainer);
+            <span class="keyword">else</span>
+                m_xml<span class="operator">.</span>skipCurrentElement();
+        }
+    }
+
+    <span class="type">void</span> XbelReader<span class="operator">::</span>readTitle(Container <span class="operator">*</span>item)
+    {
+        <span class="comment">// Do sanity check</span>
+        Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>);
+
+        <span class="comment">// Read the title property and set it on the control</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> m_xml<span class="operator">.</span>readElementText();
+        item<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> title);
+    }
+
+    <span class="type">void</span> XbelReader<span class="operator">::</span>readSeparator(Container <span class="operator">*</span>item)
+    {
+        <span class="comment">// Do sanity check</span>
+        Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span>);
+
+        <span class="comment">// Just create the control, no additional properties are set</span>
+        createChildItem(item);
+        m_xml<span class="operator">.</span>skipCurrentElement();
+    }
+
+    <span class="type">void</span> XbelReader<span class="operator">::</span>readFolder(Container <span class="operator">*</span>item)
+    {
+        <span class="comment">// Do sanity check</span>
+        Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>);
+
+        <span class="comment">// Create the control for the folder ...</span>
+        Container <span class="operator">*</span>folder <span class="operator">=</span> createChildItem(item);
+
+        <span class="comment">// ... and iterate over the fild elements</span>
+        <span class="keyword">while</span> (m_xml<span class="operator">.</span>readNextStartElement()) {
+            <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>)
+                readTitle(folder);
+            <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>)
+                readFolder(folder);
+            <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>)
+                readBookmark(folder);
+            <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span>)
+                readSeparator(folder);
+            <span class="keyword">else</span>
+                m_xml<span class="operator">.</span>skipCurrentElement();
+        }
+    }
+
+    <span class="type">void</span> XbelReader<span class="operator">::</span>readBookmark(Container <span class="operator">*</span>item)
+    {
+        <span class="comment">// Do sanity check</span>
+        Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>);
+
+        <span class="comment">// Create the control for the bookmark and set the properties from the element on it</span>
+        Container <span class="operator">*</span>bookmark <span class="operator">=</span> createChildItem(item);
+        bookmark<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;Unknown title&quot;</span>));
+        bookmark<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;url&quot;</span><span class="operator">,</span> m_xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;href&quot;</span>)<span class="operator">.</span>toString());
+
+        <span class="comment">// Read the &lt;title&gt; child element</span>
+        <span class="keyword">while</span> (m_xml<span class="operator">.</span>readNextStartElement()) {
+            <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>)
+                readTitle(bookmark);
+            <span class="keyword">else</span>
+                m_xml<span class="operator">.</span>skipCurrentElement();
+        }
+    }
+
+    Container <span class="operator">*</span>XbelReader<span class="operator">::</span>createChildItem(Container <span class="operator">*</span>parent)
+    {
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> m_xml<span class="operator">.</span>name()<span class="operator">.</span>toString();
+
+        <span class="comment">// Use a different QML file depending on the current XBEL element type</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> qmlFile <span class="operator">=</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span> <span class="operator">?</span> <span class="string">&quot;FolderItem.qml&quot;</span> :
+                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span> <span class="operator">?</span> <span class="string">&quot;BookmarkItem.qml&quot;</span> :
+                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span> <span class="operator">?</span> <span class="string">&quot;SeparatorItem.qml&quot;</span> : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+
+        Container <span class="operator">*</span>container <span class="operator">=</span> <span class="number">0</span>;
+
+        <span class="comment">// Load the QML file ...</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(qmlFile);
+        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
+            <span class="comment">// ... create the top-level control ...</span>
+            container <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Container<span class="operator">&gt;</span>();
+
+            <span class="comment">// ... and add it to the parent container</span>
+            parent<span class="operator">-</span><span class="operator">&gt;</span>add(container);
+        }
+
+        <span class="keyword">return</span> container;
+    }</pre>
+</div>
+<!-- @@@xml/streambookmarks/src/xbelreader.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

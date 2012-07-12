@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : FtpListItem.cpp Example File (network/qftp/src/FtpListItem.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">FtpListItem.cpp Example File</h1>
+<span class="small-subtitle">network/qftp/src/FtpListItem.cpp</span>
+<!-- $$$network/qftp/src/FtpListItem.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/* Copyright (c) 2012 Research In Motion Limited.
+     *
+     * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     * http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */</span>
+
+    <span class="preprocessor">#include &quot;FtpListItem.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/Container&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/DockLayout&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/DockLayoutProperties&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/ImageView&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Image&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Label&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/StackLayout&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/StackLayoutProperties&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/SystemDefaults&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/TextStyle&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    FtpListItem<span class="operator">::</span>FtpListItem(Container <span class="operator">*</span>parent)
+        : CustomControl(parent)
+    {
+        Container <span class="operator">*</span>contents <span class="operator">=</span> <span class="keyword">new</span> Container();
+        StackLayout <span class="operator">*</span>contentsLayout <span class="operator">=</span> <span class="keyword">new</span> StackLayout();
+        contentsLayout<span class="operator">-</span><span class="operator">&gt;</span>setLayoutDirection(LayoutDirection<span class="operator">::</span>LeftToRight);
+        contents<span class="operator">-</span><span class="operator">&gt;</span>setLayout(contentsLayout);
+
+        <span class="comment">// A background Container that will hold a background image and a item content Container.</span>
+        Container <span class="operator">*</span>backgroundContainer <span class="operator">=</span> <span class="keyword">new</span> Container();
+        backgroundContainer<span class="operator">-</span><span class="operator">&gt;</span>setPreferredHeight(<span class="number">141</span>);
+        DockLayout <span class="operator">*</span>backgroundLayout <span class="operator">=</span> <span class="keyword">new</span> DockLayout();
+        backgroundContainer<span class="operator">-</span><span class="operator">&gt;</span>setLayout(backgroundLayout);
+        backgroundContainer<span class="operator">-</span><span class="operator">&gt;</span>setLayoutProperties(DockLayoutProperties<span class="operator">::</span>create()<span class="operator">.</span>horizontal(HorizontalAlignment<span class="operator">::</span>Fill));
+
+        m_highlighContainer <span class="operator">=</span> <span class="keyword">new</span> ImageView();
+        m_highlighContainer<span class="operator">-</span><span class="operator">&gt;</span>setImage(Image(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span>(<span class="string">&quot;asset:///images/highlighted.png&quot;</span>)));
+        m_highlighContainer<span class="operator">-</span><span class="operator">&gt;</span>setOpacity(<span class="number">0.0</span>);
+
+        m_itemImage <span class="operator">=</span> <span class="keyword">new</span> ImageView();
+        m_itemImage<span class="operator">-</span><span class="operator">&gt;</span>setLayoutProperties(StackLayoutProperties<span class="operator">::</span>create());
+        m_itemImage<span class="operator">-</span><span class="operator">&gt;</span>setMinWidth(<span class="number">128.0f</span>);
+        m_itemImage<span class="operator">-</span><span class="operator">&gt;</span>setMinHeight(<span class="number">128.0f</span>);
+
+        Container <span class="operator">*</span>textContents <span class="operator">=</span> <span class="keyword">new</span> Container();
+        m_itemTitle <span class="operator">=</span> Label<span class="operator">::</span>create();
+        m_itemTitle<span class="operator">-</span><span class="operator">&gt;</span>textStyle()<span class="operator">-</span><span class="operator">&gt;</span>setBase(SystemDefaults<span class="operator">::</span>TextStyles<span class="operator">::</span>bigText());
+        m_itemTitle<span class="operator">-</span><span class="operator">&gt;</span>textStyle()<span class="operator">-</span><span class="operator">&gt;</span>setColor(Color<span class="operator">::</span>Black);
+
+        m_itemDescription <span class="operator">=</span> Label<span class="operator">::</span>create();
+        m_itemDescription<span class="operator">-</span><span class="operator">&gt;</span>textStyle()<span class="operator">-</span><span class="operator">&gt;</span>setBase(SystemDefaults<span class="operator">::</span>TextStyles<span class="operator">::</span>smallText());
+        m_itemDescription<span class="operator">-</span><span class="operator">&gt;</span>textStyle()<span class="operator">-</span><span class="operator">&gt;</span>setColor(Color<span class="operator">::</span>Black);
+        m_itemDescription<span class="operator">-</span><span class="operator">&gt;</span>textStyle()<span class="operator">-</span><span class="operator">&gt;</span>setSize(<span class="number">25.0f</span>);
+
+        contents<span class="operator">-</span><span class="operator">&gt;</span>add(m_itemImage);
+        contents<span class="operator">-</span><span class="operator">&gt;</span>add(textContents);
+        textContents<span class="operator">-</span><span class="operator">&gt;</span>add(m_itemTitle);
+        textContents<span class="operator">-</span><span class="operator">&gt;</span>add(m_itemDescription);
+
+        backgroundContainer<span class="operator">-</span><span class="operator">&gt;</span>add(m_highlighContainer);
+        backgroundContainer<span class="operator">-</span><span class="operator">&gt;</span>add(contents);
+
+        setRoot(backgroundContainer);
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span>setImage(<span class="keyword">const</span> Image <span class="operator">&amp;</span>image)
+    {
+        m_itemImage<span class="operator">-</span><span class="operator">&gt;</span>setImageSource(image<span class="operator">.</span>source());
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span>setTitleText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>title)
+    {
+        m_itemTitle<span class="operator">-</span><span class="operator">&gt;</span>setText(title);
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span>setStatusText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>status)
+    {
+        m_itemDescription<span class="operator">-</span><span class="operator">&gt;</span>setText(status);
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span>select(<span class="type">bool</span> select)
+    {
+        <span class="comment">// When an item is selected show the colored highlight Container-?,</span>
+        <span class="keyword">if</span> (select) {
+            m_highlighContainer<span class="operator">-</span><span class="operator">&gt;</span>setOpacity(<span class="number">1.0f</span>);
+        } <span class="keyword">else</span> {
+            m_highlighContainer<span class="operator">-</span><span class="operator">&gt;</span>setOpacity(<span class="number">0.0f</span>);
+        }
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span><a href="http://qt.nokia.com/doc/4.8/qtextstream.html#reset">reset</a>(<span class="type">bool</span> selected<span class="operator">,</span> <span class="type">bool</span> activated)
+    {
+        Q_UNUSED(activated);
+
+        <span class="comment">// Since items are recycled the reset function is where we have</span>
+        <span class="comment">// to make sure that item state, defined by the arguments, is correct.</span>
+        select(selected);
+    }
+
+    <span class="type">void</span> FtpListItem<span class="operator">::</span>activate(<span class="type">bool</span> activate)
+    {
+        <span class="comment">// There is no special activate state, select and activated looks the same.</span>
+        select(activate);
+    }</pre>
+</div>
+<!-- @@@network/qftp/src/FtpListItem.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

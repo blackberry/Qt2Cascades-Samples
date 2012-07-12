@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : SslClient.hpp Example File (network/securesocketclient/src/SslClient.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">SslClient.hpp Example File</h1>
+<span class="small-subtitle">network/securesocketclient/src/SslClient.hpp</span>
+<!-- $$$network/securesocketclient/src/SslClient.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef SSLCLIENT_HPP</span>
+    <span class="preprocessor">#define SSLCLIENT_HPP</span>
+
+    <span class="preprocessor">#include &quot;SslErrorControl.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;QtNetwork/QAbstractSocket&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QSslSocket&gt;</span>
+
+    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslsocket.html">QSslSocket</a></span>;
+
+    <span class="comment">/**
+     * The SslClient encapsulates the business logic of this application.
+     * It handles the low-level communication with the server via QSslSocket and
+     * mediates the input and output with the UI.
+     */</span>
+    <span class="keyword">class</span> SslClient : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// The host name of the server to connect to</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> hostName READ hostName WRITE setHostName NOTIFY hostNameChanged)
+
+        <span class="comment">// The port number of the server to connect to</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> port READ port WRITE setPort NOTIFY portChanged)
+
+        <span class="comment">// Reports whether a SSL session has been established</span>
+        Q_PROPERTY(<span class="type">bool</span> sessionActive READ sessionActive NOTIFY sessionActiveChanged)
+
+        <span class="comment">// The name of the cipher that is used by the SSL connection</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> cipher READ cipher NOTIFY cipherChanged)
+
+        <span class="comment">// The response data that are send by the server</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> response READ response NOTIFY responseChanged)
+
+    <span class="keyword">public</span>:
+        SslClient(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="comment">// The accessor methods of the properties</span>
+        <span class="type">void</span> setHostName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>hostName);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> hostName() <span class="keyword">const</span>;
+
+        <span class="type">void</span> setPort(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>port);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> port() <span class="keyword">const</span>;
+
+        <span class="type">bool</span> sessionActive() <span class="keyword">const</span>;
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> cipher() <span class="keyword">const</span>;
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> response() <span class="keyword">const</span>;
+
+        <span class="comment">// Returns the controller for the SSL error dialog</span>
+        SslErrorControl<span class="operator">*</span> sslErrorControl() <span class="keyword">const</span>;
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is called from the UI to create a secure connection</span>
+        <span class="type">void</span> secureConnect();
+
+        <span class="comment">// This method is called from the UI to send data over the secure connection to the server</span>
+        <span class="type">void</span> sendData(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>data);
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signals of the properties</span>
+        <span class="type">void</span> hostNameChanged();
+        <span class="type">void</span> portChanged();
+        <span class="type">void</span> sessionActiveChanged();
+        <span class="type">void</span> cipherChanged();
+        <span class="type">void</span> responseChanged();
+
+        <span class="comment">// This signal is emitted whenever the server reports the certificate chain that should be used</span>
+        <span class="type">void</span> certificateChainChanged(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain);
+
+        <span class="comment">// This signal is emitted if the user requested to view the certificate chain</span>
+        <span class="type">void</span> viewCertificateChainRequested();
+
+    <span class="keyword">private</span> Q_SLOTS:
+        <span class="type">void</span> updateEnabledState();
+
+        <span class="comment">// This method is called whenever the state of the SSL socket has changed</span>
+        <span class="type">void</span> socketStateChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>SocketState state);
+
+        <span class="comment">// This method is called after an successful SSL-handshake</span>
+        <span class="type">void</span> socketEncrypted();
+
+        <span class="comment">// This method is called when data arrived from the server via the secured connection</span>
+        <span class="type">void</span> socketReadyRead();
+
+        <span class="comment">// This method is called when the SSL socket reports SSL-related errors</span>
+        <span class="type">void</span> sslErrors(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>errors);
+
+        <span class="comment">// This method is called if the user wants to ignore SSL-related errors</span>
+        <span class="type">void</span> ignoreSslErrors();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// This methods adds a response from the server to the response property</span>
+        <span class="type">void</span> appendString(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>line);
+
+        <span class="comment">// The SSL socket that does the low-level communication</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslsocket.html">QSslSocket</a></span> <span class="operator">*</span>m_socket;
+
+        <span class="comment">// The controller for the SSL error dialog</span>
+        SslErrorControl <span class="operator">*</span>m_sslErrorControl;
+
+        <span class="comment">// The property values</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_hostName;
+        <span class="type">int</span> m_port;
+        <span class="type">bool</span> m_sessionActive;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_cipher;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_response;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@network/securesocketclient/src/SslClient.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

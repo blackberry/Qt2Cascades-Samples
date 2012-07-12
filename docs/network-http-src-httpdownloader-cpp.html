@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : HttpDownloader.cpp Example File (network/http/src/HttpDownloader.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">HttpDownloader.cpp Example File</h1>
+<span class="small-subtitle">network/http/src/HttpDownloader.cpp</span>
+<!-- $$$network/http/src/HttpDownloader.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;HttpDownloader.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QDir&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QFile&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QFileInfo&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QAuthenticator&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkReply&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QSslError&gt;</span>
+
+    HttpDownloader<span class="operator">::</span>HttpDownloader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_startDownloadPossible(<span class="keyword">true</span>)<span class="operator">,</span> m_statusText(tr(<span class="string">&quot;Please enter the URL of a file you want to download.&quot;</span>))<span class="operator">,</span> m_file(<span class="number">0</span>)<span class="operator">,</span> m_reply(<span class="number">0</span>)
+    {
+        <span class="comment">// Create signal/slot connections so that we can react to authentication requests and SSL-related errors.</span>
+        connect(<span class="operator">&amp;</span>m_qnam<span class="operator">,</span> SIGNAL(authenticationRequired(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qauthenticator.html">QAuthenticator</a></span><span class="operator">*</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(slotAuthenticationRequired(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qauthenticator.html">QAuthenticator</a></span><span class="operator">*</span>)));
+        connect(<span class="operator">&amp;</span>m_qnam<span class="operator">,</span> SIGNAL(sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span>)));
+    }
+
+    HttpDownloader<span class="operator">::</span><span class="operator">~</span>HttpDownloader()
+    {
+        <span class="keyword">delete</span> m_file;
+        <span class="keyword">delete</span> m_reply;
+    }
+
+    <span class="type">bool</span> HttpDownloader<span class="operator">::</span>startDownloadPossible() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_startDownloadPossible;
+    }
+
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>setStartDownloadPossible(<span class="type">bool</span> possible)
+    {
+        <span class="keyword">if</span> (possible <span class="operator">!</span><span class="operator">=</span> m_startDownloadPossible) {
+            m_startDownloadPossible <span class="operator">=</span> possible;
+            <span class="keyword">emit</span> startDownloadPossibleChanged();
+        }
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> HttpDownloader<span class="operator">::</span>statusText() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_statusText;
+    }
+
+    MessageBoxController<span class="operator">*</span> HttpDownloader<span class="operator">::</span>messageBoxController() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> <span class="keyword">const_cast</span><span class="operator">&lt;</span>MessageBoxController<span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>m_messageBoxController);
+    }
+
+    AuthenticationDialogController <span class="operator">*</span>HttpDownloader<span class="operator">::</span>authenticationDialogController() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> <span class="keyword">const_cast</span><span class="operator">&lt;</span>AuthenticationDialogController<span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>m_authenticationDialogController);
+    }
+
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>startDownload(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url)
+    {
+        m_url <span class="operator">=</span> url;
+
+        <span class="comment">// Extract the file name from the URL ...</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> fileInfo(m_url<span class="operator">.</span>path());
+        m_fileName <span class="operator">=</span> fileInfo<span class="operator">.</span>fileName();
+
+        <span class="comment">// ... and fall back to 'index.html' if it is empty.</span>
+        <span class="keyword">if</span> (m_fileName<span class="operator">.</span>isEmpty())
+            m_fileName <span class="operator">=</span> <span class="string">&quot;index.html&quot;</span>;
+        <span class="comment">// Locate the file in the temp directory</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> actualFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_fileName;
+
+        <span class="comment">// If the file already exists, ask whether it should be overwritten</span>
+        <span class="keyword">if</span> (<span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span><span class="operator">::</span>exists(actualFileName)) {
+            <span class="keyword">const</span> MessageBoxController<span class="operator">::</span>Result result <span class="operator">=</span> m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span>
+                                                                                    tr(<span class="string">&quot;There already exists a file called %1 in &quot;</span>
+                                                                                       <span class="string">&quot;the target directory.\nOverwrite?&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">,</span>
+                                                                                    tr(<span class="string">&quot;Overwrite&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Cancel&quot;</span>));
+            <span class="keyword">if</span> (result <span class="operator">=</span><span class="operator">=</span> MessageBoxController<span class="operator">::</span>Button2) {
+                <span class="comment">// If it shouldn't be overwritten, abort here ...</span>
+                <span class="keyword">return</span>;
+            }
+
+            <span class="comment">// ... otherwise remove the existing file.</span>
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span><span class="operator">::</span>remove(actualFileName);
+        }
+        <span class="comment">// Open the file for writing</span>
+        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span>(actualFileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Unable to save the file %1: %2.&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">.</span>arg(m_file<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+            <span class="keyword">delete</span> m_file;
+            m_file <span class="operator">=</span> <span class="number">0</span>;
+            <span class="keyword">return</span>;
+        }
+
+        setStartDownloadPossible(<span class="keyword">false</span>);
+
+        <span class="comment">// Trigger the download</span>
+        startRequest();
+    }
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>startRequest()
+    {
+        <span class="comment">// Start the download ...</span>
+        m_reply <span class="operator">=</span> m_qnam<span class="operator">.</span>get(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span>(m_url));
+
+        <span class="comment">// ... and create signal/slot connections to get informed about state changes</span>
+        connect(m_reply<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(httpFinished()));
+        connect(m_reply<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(httpReadyRead()));
+    }
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>httpFinished()
+    {
+        <span class="comment">// All data have been written to the file, so close it</span>
+        m_file<span class="operator">-</span><span class="operator">&gt;</span>flush();
+        m_file<span class="operator">-</span><span class="operator">&gt;</span>close();
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> redirectionTarget <span class="operator">=</span> m_reply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span><span class="operator">::</span>RedirectionTargetAttribute);
+
+        <span class="keyword">if</span> (m_reply<span class="operator">-</span><span class="operator">&gt;</span>error()) {
+            <span class="comment">// If there was an error, show an error message in a message box</span>
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Download failed: %1.&quot;</span>)<span class="operator">.</span>arg(m_reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+
+            setStartDownloadPossible(<span class="keyword">true</span>);
+        } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="operator">!</span>redirectionTarget<span class="operator">.</span>isNull()) {
+            <span class="comment">// If we got a redirect response (3XX), retrieve the redirect URL ...</span>
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> newUrl <span class="operator">=</span> m_url<span class="operator">.</span>resolved(redirectionTarget<span class="operator">.</span>toUrl());
+
+            <span class="comment">// ... and ask the user whether the redirected page should be downloaded instead</span>
+            <span class="keyword">const</span> MessageBoxController<span class="operator">::</span>Result result <span class="operator">=</span> m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Redirect to %1 ?&quot;</span>)<span class="operator">.</span>arg(newUrl<span class="operator">.</span>toString())<span class="operator">,</span> tr(<span class="string">&quot;Yes&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;No&quot;</span>));
+
+            <span class="keyword">if</span> (result <span class="operator">=</span><span class="operator">=</span> MessageBoxController<span class="operator">::</span>Button1) {
+                <span class="comment">// If the redirected page should be downloaded, reset the URL ...</span>
+                m_url <span class="operator">=</span> newUrl;
+
+                <span class="comment">// ... delete the old network reply object ...</span>
+                m_reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+
+                <span class="comment">// ... reset the target file ...</span>
+                m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly);
+                m_file<span class="operator">-</span><span class="operator">&gt;</span>resize(<span class="number">0</span>);
+
+                <span class="comment">// ... and trigger a new download request with the new URL.</span>
+                startRequest();
+                <span class="keyword">return</span>;
+            } <span class="keyword">else</span> {
+                setStartDownloadPossible(<span class="keyword">true</span>);
+            }
+        } <span class="keyword">else</span> {
+            <span class="comment">// If the download was successful, update the status message</span>
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> actualDir(<span class="operator">*</span>m_file);
+            m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Downloaded %1 to %2.&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">.</span>arg(actualDir<span class="operator">.</span>absolutePath());
+            <span class="keyword">emit</span> statusTextChanged();
+            setStartDownloadPossible(<span class="keyword">true</span>);
+        }
+
+        <span class="comment">// Delete the network reply object</span>
+        m_reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+        m_reply <span class="operator">=</span> <span class="number">0</span>;
+
+        <span class="comment">// Clean up the target file object</span>
+        <span class="keyword">delete</span> m_file;
+        m_file <span class="operator">=</span> <span class="number">0</span>;
+    }
+
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>httpReadyRead()
+    {
+        <span class="comment">/**
+         * This slot gets called every time the QNetworkReply has new data.
+         * We read all of its new data and write it into the file.
+         * That way we use less RAM than when reading it at the finished()
+         * signal of the QNetworkReply
+         */</span>
+        <span class="keyword">if</span> (m_file) {
+            m_file<span class="operator">-</span><span class="operator">&gt;</span>write(m_reply<span class="operator">-</span><span class="operator">&gt;</span>readAll());
+        }
+    }
+
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>slotAuthenticationRequired(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qauthenticator.html">QAuthenticator</a></span> <span class="operator">*</span>authenticator)
+    {
+        <span class="comment">/**
+         * This method is called by the QNetworkAccessManager if an authentication is required.
+         *
+         * In this case we bring up a password dialog to ask the user for user name and password.
+         * If the user entered data and clicked 'Ok' (exec() returns 'true'), we set the data on the
+         * QAuthenticator object and the QNetworkAccessManager will try to re-authenticate at the server
+         * with the new credentials. Otherwise the download will be aborted.
+         */</span>
+
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> siteString <span class="operator">=</span> tr(<span class="string">&quot;%1 at %2&quot;</span>)<span class="operator">.</span>arg(authenticator<span class="operator">-</span><span class="operator">&gt;</span>realm())<span class="operator">.</span>arg(m_url<span class="operator">.</span>host());
+        <span class="keyword">if</span> (m_authenticationDialogController<span class="operator">.</span>exec(siteString<span class="operator">,</span> m_url<span class="operator">.</span>userName()<span class="operator">,</span> m_url<span class="operator">.</span>password())) {
+            authenticator<span class="operator">-</span><span class="operator">&gt;</span>setUser(m_authenticationDialogController<span class="operator">.</span>user());
+            authenticator<span class="operator">-</span><span class="operator">&gt;</span>setPassword(m_authenticationDialogController<span class="operator">.</span>password());
+        }
+    }
+
+    <span class="type">void</span> HttpDownloader<span class="operator">::</span>sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>errors)
+    {
+        <span class="comment">/**
+         * This method is called by the QNetworkAccessManager if an SSL-related error occurred
+         * (e.g. validity of server certificates couldn't be verified).
+         *
+         * In this case we bring up a message box to ask the user to ignore the errors or abort the
+         * download. If the errors should be ignored (exec() returns Button1) we call ignoreSslErrors()
+         * to tell the QNetworkAccessManager that it should ignore this error.
+         */</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorString;
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span> <span class="operator">&amp;</span>error<span class="operator">,</span> errors) {
+            <span class="keyword">if</span> (<span class="operator">!</span>errorString<span class="operator">.</span>isEmpty())
+                errorString <span class="operator">+</span><span class="operator">=</span> <span class="string">&quot;\n&quot;</span>;
+            errorString <span class="operator">+</span><span class="operator">=</span> <span class="string">&quot;  &quot;</span> <span class="operator">+</span> error<span class="operator">.</span>errorString();
+        }
+
+        <span class="keyword">const</span> MessageBoxController<span class="operator">::</span>Result result <span class="operator">=</span> m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span>
+                                                                                tr(<span class="string">&quot;One or more SSL errors have occurred:\n%1&quot;</span>)<span class="operator">.</span>arg(errorString)<span class="operator">,</span>
+                                                                                tr(<span class="string">&quot;Ignore&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Abort&quot;</span>));
+        <span class="keyword">if</span> (result <span class="operator">=</span><span class="operator">=</span> MessageBoxController<span class="operator">::</span>Button1) {
+            m_reply<span class="operator">-</span><span class="operator">&gt;</span>ignoreSslErrors();
+        }
+    }</pre>
+</div>
+<!-- @@@network/http/src/HttpDownloader.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

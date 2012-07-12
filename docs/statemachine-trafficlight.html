@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- trafficlight.qdoc -->
+  <title>Cascades : Traffic Light Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-ui">The UI</a></li>
+<li class="level1"><a href="#trafficlightcontroller">TrafficLightController</a></li>
+</ul>
+</div>
+<h1 class="title">Traffic Light Example</h1>
+<span class="subtitle"></span>
+<!-- $$$statemachine/trafficlight-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="statemachine-trafficlight-assets-trafficlight-qml.html">statemachine/trafficlight/assets/TrafficLight.qml</a></li>
+<li><a href="statemachine-trafficlight-assets-main-qml.html">statemachine/trafficlight/assets/main.qml</a></li>
+<li><a href="statemachine-trafficlight-src-trafficlightapp-cpp.html">statemachine/trafficlight/src/TrafficLightApp.cpp</a></li>
+<li><a href="statemachine-trafficlight-src-trafficlightapp-hpp.html">statemachine/trafficlight/src/TrafficLightApp.hpp</a></li>
+<li><a href="statemachine-trafficlight-src-trafficlightcontroller-cpp.html">statemachine/trafficlight/src/TrafficLightController.cpp</a></li>
+<li><a href="statemachine-trafficlight-src-trafficlightcontroller-hpp.html">statemachine/trafficlight/src/TrafficLightController.hpp</a></li>
+<li><a href="statemachine-trafficlight-src-main-cpp.html">statemachine/trafficlight/src/main.cpp</a></li>
+<li><a href="statemachine-trafficlight-trafficlight-pro.html">statemachine/trafficlight/trafficlight.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Traffic Light example shows how to use <a href="http://qt.nokia.com/doc/4.8/statemachine-api.html">The State Machine Framework</a> to implement the control flow of a traffic light.</p>
+<p class="centerAlign"><img src="images/trafficlight-example.png" alt="" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a>, <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> and <a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a> classes to model our business logic with a state machine.</p>
+<p>The state chart that describes the business logic looks like the following:</p>
+<p class="centerAlign"><img src="images/trafficlight-statechart-example.png" alt="" /></p><p>We have the two top-level states 'runningState' and 'pausedState' and the user can switch between them by clicking the 'Pause' button. The 'runningState' has four child states: 'stopState', 'waitState', 'driveState' and 'slowState' which represent the four possible phases of a traffic light. The transition between these four states is triggered via the <tt>timeout()</tt> signal of a <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a>. The history state, that is entered when coming back from the 'pausedState', ensures that the state will be activated which has been active when the 'runningState' was left before.</p>
+<a name="the-ui"></a>
+<h2>The UI</h2>
+<p>The UI of this sample application consists of a traffic light, a 'Pause' and a 'Quit' button.</p>
+<p>The business logic of the application is encapsulated in the class TrafficLightController, which is exported to the UI as '<a href="#trafficlightcontroller">_trafficLightController</a>'.</p>
+<p>If the user clicks the 'Pause' button, the <tt>pause()</tt> slot of the TrafficLightController object is invoked and if the user clicks on the 'Quit' button, the <tt>quit()</tt> slot of the Application object is invoked.</p>
+<pre class="qml">                        <span class="type">Button</span> {
+                            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Pause&quot;</span>)
+
+                            <span class="name">onClicked</span>: {
+                                <span class="name">_trafficLightController</span>.<span class="name">pause</span>();
+                            }
+                        }
+
+                        <span class="type">Button</span> {
+                            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Quit&quot;</span>)
+
+                            <span class="name">onClicked</span>: {
+                                <span class="name">_app</span>.<span class="name">quit</span>();
+                            }
+                        }</pre>
+<p>The traffic light is implemented in TrafficLight.qml and instantiated inside main.qml</p>
+<pre class="qml">                    <span class="type">TrafficLight</span> {
+                        <span class="name">id</span>: <span class="name">trafficLight</span>
+                        <span class="name">controller</span>: <span class="name">_trafficLightController</span>
+                        <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
+                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                        }
+                    }</pre>
+<p>The TrafficLight object has a custom property 'controller' which points to the TrafficLightController object. All three colors of the TrafficLight are implemented as <tt>ImageViews</tt> that show different images depending on their state (on/off). The background image contains the colors that represent the 'off' state and the 'on' state is represented by overlay images</p>
+<pre class="qml">        <span class="comment">// The red light.</span>
+        <span class="type">ImageView</span> {
+            <span class="name">id</span>: <span class="name">redLight</span>
+            <span class="name">layoutProperties</span>: <span class="name">AbsoluteLayoutProperties</span> {
+                <span class="name">positionX</span>: <span class="number">40</span>
+                <span class="name">positionY</span>: <span class="number">41</span>
+            }
+            <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/red_light.png&quot;</span>
+            <span class="name">opacity</span>: <span class="name">root</span>.<span class="name">controller</span>.<span class="name">redOn</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+        }
+
+        <span class="comment">// The yellow light.</span>
+        <span class="type">ImageView</span> {
+            <span class="name">id</span>: <span class="name">yellowLight</span>
+            <span class="name">layoutProperties</span>: <span class="name">AbsoluteLayoutProperties</span> {
+                <span class="name">positionX</span>: <span class="number">39</span>
+                <span class="name">positionY</span>: <span class="number">196</span>
+            }
+            <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/yellow_light.png&quot;</span>
+            <span class="name">opacity</span>: <span class="name">root</span>.<span class="name">controller</span>.<span class="name">yellowOn</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+        }
+
+        <span class="comment">// The green light.</span>
+        <span class="type">ImageView</span> {
+            <span class="name">id</span>: <span class="name">greenLight</span>
+            <span class="name">layoutProperties</span>: <span class="name">AbsoluteLayoutProperties</span> {
+                <span class="name">positionX</span>: <span class="number">38</span>
+                <span class="name">positionY</span>: <span class="number">351</span>
+            }
+            <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/green_light.png&quot;</span>
+            <span class="name">opacity</span>: <span class="name">root</span>.<span class="name">controller</span>.<span class="name">greenOn</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+        }</pre>
+<p>To switch a color on or off we simple change the opacity of the overlay image. In this example the opacity properties are bound against the appropriated properties of the TrafficLightController object.</p>
+<a name="trafficlightcontroller"></a>
+<h2>TrafficLightController</h2>
+<p>The <tt>TrafficLightController</tt> is the central class of this application. It contains the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a> instance that drives the business logic and provides the properties that represent the state of the single traffic light colors</p>
+<pre class="cpp">    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// the state properties for the single lights</span>
+        Q_PROPERTY(<span class="type">bool</span> redOn READ redOn WRITE setRedOn NOTIFY redOnChanged)
+        Q_PROPERTY(<span class="type">bool</span> yellowOn READ yellowOn WRITE setYellowOn NOTIFY yellowOnChanged)
+        Q_PROPERTY(<span class="type">bool</span> greenOn READ greenOn WRITE setGreenOn NOTIFY greenOnChanged)
+
+        <span class="comment">// the state property that reflects whether the traffic light is currently paused</span>
+        Q_PROPERTY(<span class="type">bool</span> paused READ paused WRITE setPaused NOTIFY pausedChanged)</pre>
+<p>Inside the constructor of <tt>TrafficLightController</tt> we initialize the properties with their default values, set up the state machine and start the timer that is used to trigger the transitions between the traffic light phases.</p>
+<pre class="cpp">    TrafficLightController<span class="operator">::</span>TrafficLightController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_redOn(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_yellowOn(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_greenOn(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_paused(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_timer(<span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>(<span class="keyword">this</span>))
+    {
+        <span class="comment">// Create and start the state machine</span>
+        setupStateMachine();
+
+        <span class="comment">// Start the timer to trigger state changes</span>
+        m_timer<span class="operator">-</span><span class="operator">&gt;</span>start();
+    }</pre>
+<p>Inside <tt>setupStateMachine()</tt> we create the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a> object and all the <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> objects.</p>
+<pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>setupStateMachine()
+    {
+        <span class="comment">/**
+         * The state machine consists of two top-level states
+         *   - runningState
+         *   - pausedState
+         *
+         * The runningState consists of 4 child states that represent the 4 phase
+         * of a traffic light cycle:
+         *   - stopState:   The red light is on, cars have to wait
+         *   - waitState:   The red and yellow lights are on, cars can prepare to drive
+         *   - driveState:  The green light is on, cars can drive
+         *   - slowState:   The yellow light is on, cars have to slow down and stop
+         *
+         * Additionally the runningState contains a QHistoryState as child state, which is
+         * used when going back from pausedState to runningState to ensure that we continue
+         * execution at the same state we have been before we switched to the pausedState.
+         */</span>
+
+        <span class="comment">// Create the state machine</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span> <span class="operator">*</span>machine <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span>(<span class="keyword">this</span>);
+
+        <span class="comment">// Create the two top-level states</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>runningState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>pausedState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
+
+        <span class="comment">// Create the child states for the runningState</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>stopState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>waitState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>driveState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>slowState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span> <span class="operator">*</span>historyState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span>(runningState);
+
+        <span class="comment">// Define which properties should be modified when entering a state:</span>
+
+        <span class="comment">/**
+         * Depending on whether we are in runningState or pausedState, the 'paused' property
+         * of the TrafficLightControl object will be set to false/true.
+         */</span>
+        runningState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;paused&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        pausedState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;paused&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+
+        <span class="comment">/**
+         * For each phase state we define which light should be enabled and
+         * how long the phase should last.
+         */</span>
+        stopState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;redOn&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+        stopState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;yellowOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        stopState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;greenOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        stopState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(m_timer<span class="operator">,</span> <span class="string">&quot;interval&quot;</span><span class="operator">,</span> <span class="number">5000</span>);
+
+        waitState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;redOn&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+        waitState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;yellowOn&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+        waitState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;greenOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        waitState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(m_timer<span class="operator">,</span> <span class="string">&quot;interval&quot;</span><span class="operator">,</span> <span class="number">2000</span>);
+
+        driveState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;redOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        driveState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;yellowOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        driveState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;greenOn&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+        driveState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(m_timer<span class="operator">,</span> <span class="string">&quot;interval&quot;</span><span class="operator">,</span> <span class="number">5000</span>);
+
+        slowState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;redOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        slowState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;yellowOn&quot;</span><span class="operator">,</span> <span class="keyword">true</span>);
+        slowState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(<span class="keyword">this</span><span class="operator">,</span> <span class="string">&quot;greenOn&quot;</span><span class="operator">,</span> <span class="keyword">false</span>);
+        slowState<span class="operator">-</span><span class="operator">&gt;</span>assignProperty(m_timer<span class="operator">,</span> <span class="string">&quot;interval&quot;</span><span class="operator">,</span> <span class="number">2000</span>);
+
+        <span class="comment">// Define the transitions between the single states:</span>
+
+        <span class="comment">/**
+         * We cycle through the phase states whenever the timer emits the timeout()
+         * signal.
+         */</span>
+        stopState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> waitState);
+        waitState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> driveState);
+        driveState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> slowState);
+        slowState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> stopState);
+
+        <span class="comment">/**
+         * If we are in runningState and the pauseRequested() signal is emitted (that happens
+         * when the pause() slot has been invoked) then we go to the pausedState.
+         * If we are now in the pausedState and the pauseRequested() signal is emitted again,
+         * we go to the historyState which will forward us to the phase state we have been in
+         * when we left the runningState.
+         */</span>
+        runningState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(<span class="keyword">this</span><span class="operator">,</span> SIGNAL(pauseRequested())<span class="operator">,</span> pausedState);
+        pausedState<span class="operator">-</span><span class="operator">&gt;</span>addTransition(<span class="keyword">this</span><span class="operator">,</span> SIGNAL(pauseRequested())<span class="operator">,</span> historyState);
+
+        <span class="comment">// Define which child state should be the initial state</span>
+        runningState<span class="operator">-</span><span class="operator">&gt;</span>setInitialState(stopState);
+        machine<span class="operator">-</span><span class="operator">&gt;</span>setInitialState(runningState);
+
+        <span class="comment">// Start the state machine</span>
+        machine<span class="operator">-</span><span class="operator">&gt;</span>start();
+    }</pre>
+<p>The <a href="http://qt.nokia.com/doc/4.8/qstate.html#assignProperty">assignProperty()</a> calls on the <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> objects ensure that whenever the state is entered, the given value will be assigned to the named property on the passed object. So whenever the 'driveState' is entered, the 'greenOn' property of the TrafficLightController object will be set to <tt>true</tt>, in all other states to <tt>false</tt>. When the 'greenOn' property is changed, the properties setter method <tt>setGreenOn()</tt> will be invoked.</p>
+<pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>setGreenOn(<span class="type">bool</span> on)
+    {
+        <span class="keyword">if</span> (m_greenOn <span class="operator">!</span><span class="operator">=</span> on) {
+            m_greenOn <span class="operator">=</span> on;
+            <span class="keyword">emit</span> greenOnChanged();
+        }
+    }</pre>
+<p>Inside this method we check whether the state has changed, and only if that's the case we update the internal state and emit the change notification signal.</p>
+<p>The next step inside <tt>setupStateMachine()</tt> is to wire up the states with transitions. As trigger for the transitions between the traffic light phases the <a href="http://qt.nokia.com/doc/4.8/qtimer.html#timeout">timeout()</a> signal of the <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a> object is used. For the transitions between 'runningState' and 'pausedState' the <tt>pauseRequested()</tt> signal of the <tt>TrafficLightController</tt> object is used, which is emitted whenever the user clicks on the 'Pause' button</p>
+<pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>pause()
+    {
+        <span class="keyword">emit</span> pauseRequested();
+    }</pre>
+</div>
+<!-- @@@statemachine/trafficlight -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

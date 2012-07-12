@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- downloadmanager.qdoc -->
+  <title>Cascades : Network Download Manager Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#ui">UI</a></li>
+<li class="level1"><a href="#downloadmanager">DownloadManager</a></li>
+</ul>
+</div>
+<h1 class="title">Network Download Manager Example</h1>
+<span class="subtitle"></span>
+<!-- $$$network/downloadmanager-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="network-downloadmanager-assets-progressbar-qml.html">network/downloadmanager/assets/ProgressBar.qml</a></li>
+<li><a href="network-downloadmanager-assets-main-qml.html">network/downloadmanager/assets/main.qml</a></li>
+<li><a href="network-downloadmanager-src-downloadmanager-cpp.html">network/downloadmanager/src/DownloadManager.cpp</a></li>
+<li><a href="network-downloadmanager-src-downloadmanager-hpp.html">network/downloadmanager/src/DownloadManager.hpp</a></li>
+<li><a href="network-downloadmanager-src-main-cpp.html">network/downloadmanager/src/main.cpp</a></li>
+<li><a href="network-downloadmanager-downloadmanager-pro.html">network/downloadmanager/downloadmanager.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Network Download example shows how to implement a queue for multiple downloads using the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> class.</p>
+<p class="centerAlign"><img src="images/downloadmanager-example.png" alt="" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> class to download a file over the network and how to monitor the progress and the status of the operation via a <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a>.</p>
+<a name="ui"></a>
+<h2>UI</h2>
+<p>The UI of this sample application consists of a text field where the user can enter the URL of the file to download, a button that can be clicked to start the download, a progress bar that shows the current progress of the operation and a status and error label that show status and error messages.</p>
+<p>The business logic of the application is encapsulated in the DownloadManager class that is exported as '_manager' to the UI.</p>
+<pre class="qml">                    <span class="comment">// A standard TextField for the url address</span>
+                    <span class="type">TextField</span> {
+                        <span class="name">id</span>: <span class="name">url</span>
+                        <span class="name">hintText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enter URL to download&quot;</span>)
+                        <span class="name">text</span>: <span class="string">&quot;http://www.winkde.org/pub/kde/ports/win32/installer/kdewin-installer-gui-latest.exe&quot;</span>
+
+                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        }
+
+                        <span class="comment">// Disable the control button upon text input</span>
+                        <span class="name">onTextChanging</span>: {
+                            <span class="name">downloadButton</span>.<span class="name">enabled</span> <span class="operator">=</span> (<span class="name">text</span> <span class="operator">!=</span> <span class="string">&quot;&quot;</span>)
+                        }
+                    }</pre>
+<p>The text field is initialized with an URL and whenever the user changes the text, the state of the 'Download' button is adapted to disable it whenever the text field is empty.</p>
+<pre class="qml">                    <span class="comment">// A standard button</span>
+                    <span class="type">Button</span> {
+                        <span class="name">id</span>: <span class="name">downloadButton</span>
+                        <span class="name">topMargin</span>: <span class="number">50</span>
+                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                        }
+
+                        <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Download&quot;</span>)
+
+                        <span class="comment">// Start download from url on click</span>
+                        <span class="name">onClicked</span>: <span class="name">_manager</span>.<span class="name">downloadUrl</span> (<span class="name">url</span>.<span class="name">text</span>)
+                    }</pre>
+<p>When the user clicks the 'Download' button, the downloadUrl() slot of the DownloadManager object is invoked with the URL from the text field as parameter.</p>
+<pre class="qml">                <span class="comment">// A standard Label</span>
+                <span class="type">Label</span> {
+                    <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Active Downloads: &quot;</span>) <span class="operator">+</span> (<span class="name">_manager</span>.<span class="name">activeDownloads</span> <span class="operator">==</span> <span class="number">0</span> ? <span class="string">&quot;none&quot;</span> : <span class="name">_manager</span>.<span class="name">activeDownloads</span>)
+                    <span class="name">topMargin</span>: <span class="number">10</span>
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+                }
+                <span class="comment">// A standard TextArea for the download status output</span>
+                <span class="type">TextArea</span> {
+                    <span class="name">preferredWidth</span>: <span class="number">900</span>
+                    <span class="name">preferredHeight</span>: <span class="number">145</span>
+
+                    <span class="name">backgroundVisible</span>: <span class="number">false</span>
+                    <span class="name">editable</span>: <span class="number">false</span>
+
+                    <span class="name">text</span>: <span class="name">_manager</span>.<span class="name">statusMessage</span>
+
+                    <span class="comment">// Defines text style with custom Color</span>
+                    <span class="type">textStyle</span> {
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">create</span>(<span class="string">&quot;#ff509d4c&quot;</span>)
+                    }
+                }
+                <span class="comment">// A standard TextArea for displaying error output</span>
+                <span class="type">TextArea</span> {
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+                    <span class="name">preferredWidth</span>: <span class="number">900</span>
+                    <span class="name">preferredHeight</span>: <span class="number">125</span>
+
+                    <span class="name">backgroundVisible</span>: <span class="number">false</span>
+                    <span class="name">editable</span>: <span class="number">false</span>
+
+                    <span class="name">text</span>: <span class="name">_manager</span>.<span class="name">errorMessage</span>
+
+                    <span class="comment">// Defines a text style with custom Color</span>
+                    <span class="type">textStyle</span> {
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">create</span>(<span class="string">&quot;#ffbc3434&quot;</span>)
+                    }
+                }</pre>
+<p>The 'text' properties of the status and error labels are bound against the status and error properties of the DownloadManager object, so that the UI is updated automatically as soon as the DonwloadManager changes its state.</p>
+<pre class="qml">                <span class="comment">// Custom Container for displaying download progress as a bar</span>
+                <span class="type">ProgressBar</span> {
+                    <span class="name">total</span>: <span class="name">_manager</span>.<span class="name">progressTotal</span>
+                    <span class="name">value</span>: <span class="name">_manager</span>.<span class="name">progressValue</span>
+                    <span class="name">message</span>: <span class="name">_manager</span>.<span class="name">progressMessage</span>
+                    <span class="name">topMargin</span>: <span class="number">10</span>
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+                }</pre>
+<p>The properties of the progress bar (implemented in ProgressBar.qml) are bound against the appropriated properties of the DownloadManager object as well, so that the progress of the download operation can be visualized.</p>
+<a name="downloadmanager"></a>
+<h2>DownloadManager</h2>
+<p>The DownloadManager is the central class in this sample application which contains all the business logic. It is responsible for downloading the requested URL, storing the data on the local file system and publishing the current progress and state via properties.</p>
+<p>The DownloadManager can handle multiple download requests, by holding them in an internal queue and processing them one after another. Whenever the user clicks the 'Download' button in the UI, the downloadUrl() slot of the DownloadManager is invoked, which will add the passed URL to the internal queue and triggers the processing of the next queue entry by calling startNextDownload()</p>
+<pre class="cpp">    <span class="type">void</span> DownloadManager<span class="operator">::</span>startNextDownload()
+    {
+        <span class="comment">// If the queue is empty just add a new status message</span>
+        <span class="keyword">if</span> (m_downloadQueue<span class="operator">.</span>isEmpty()) {
+            addStatusMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;%1/%2 files downloaded successfully&quot;</span>)<span class="operator">.</span>arg(m_downloadedCount)<span class="operator">.</span>arg(m_totalCount));
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Otherwise dequeue the first job from the queue ...</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> url <span class="operator">=</span> m_downloadQueue<span class="operator">.</span>dequeue();
+
+        <span class="comment">// ... and determine a local file name where the result can be stored.</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> filename <span class="operator">=</span> saveFileName(url);
+
+        <span class="comment">// Open the file with this file name for writing</span>
+        m_output<span class="operator">.</span>setFileName(filename);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_output<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+            addErrorMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;Problem opening save file '%1' for download '%2': %3&quot;</span>)<span class="operator">.</span>arg(filename<span class="operator">,</span> url<span class="operator">.</span>toString()<span class="operator">,</span> m_output<span class="operator">.</span>errorString()));
+
+            startNextDownload();
+            <span class="keyword">return</span>; <span class="comment">// skip this download</span>
+        }
+
+        <span class="comment">// Now create the network request for the URL ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span> request(url);
+
+        <span class="comment">// ... and start the download.</span>
+        m_currentDownload <span class="operator">=</span> m_manager<span class="operator">.</span>get(request);
+
+        <span class="comment">// Connect against the necessary signals to get informed about progress and status changes</span>
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>))<span class="operator">,</span>
+                SLOT(downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>)));
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> SLOT(downloadFinished()));
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> SLOT(downloadReadyRead()));
+
+        <span class="comment">// Add a status message</span>
+        addStatusMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;Downloading %1...&quot;</span>)<span class="operator">.</span>arg(url<span class="operator">.</span>toString()));
+
+        <span class="comment">// Start the timer so that we can calculate the download speed later on</span>
+        m_downloadTime<span class="operator">.</span>start();
+    }</pre>
+<p>This method will dequeue the first URL from the internal queue and assemble the target file name on the local file system by calling saveFileName(). Then it tries to open the target file, so that the downloaded data can be saved there.</p>
+<p>In the next step a <a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a> object is created with the dequeued URL as parameter. The <a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a> encapsulates all data that describe the resource to download. Additionally to the URL it could also take authentication credentials, cookie information etc. Calling <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html#get">get()</a> on the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> returns a <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a> object that can be used to monitor the progress and state of the download operation. Therefor we connect the signals of the reply object to the private slots of the DownloadManager object.</p>
+<p>Whenever new data arrive over the network now, the downloadReadyRead() slot is invoked, which writes all retrieved data to the target file.</p>
+<pre class="cpp">    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadReadyRead()
+    {
+        <span class="comment">// Whenever new data are available on the network reply, write them out to the result file</span>
+        m_output<span class="operator">.</span>write(m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>readAll());
+    }</pre>
+<p>Additionally the downloadProgress() slot is invoked, which calculates the speed and progress of the download operation and updates the properties, so that the progress bar in the UI is updated.</p>
+<pre class="cpp">    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> bytesReceived<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> bytesTotal)
+    {
+        <span class="comment">// Update the properties with the new progress values</span>
+        m_progressTotal <span class="operator">=</span> bytesTotal;
+        m_progressValue <span class="operator">=</span> bytesReceived;
+        <span class="keyword">emit</span> progressTotalChanged();
+        <span class="keyword">emit</span> progressValueChanged();
+
+        <span class="comment">// Calculate the download speed ...</span>
+        <span class="type">double</span> speed <span class="operator">=</span> bytesReceived <span class="operator">*</span> <span class="number">1000.0</span> <span class="operator">/</span> m_downloadTime<span class="operator">.</span>elapsed();
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> unit;
+        <span class="keyword">if</span> (speed <span class="operator">&lt;</span> <span class="number">1024</span>) {
+            unit <span class="operator">=</span> <span class="string">&quot;bytes/sec&quot;</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (speed <span class="operator">&lt;</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) {
+            speed <span class="operator">/</span><span class="operator">=</span> <span class="number">1024</span>;
+            unit <span class="operator">=</span> <span class="string">&quot;kB/s&quot;</span>;
+        } <span class="keyword">else</span> {
+            speed <span class="operator">/</span><span class="operator">=</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>;
+            unit <span class="operator">=</span> <span class="string">&quot;MB/s&quot;</span>;
+        }
+
+        <span class="comment">// ... and update the progress message.</span>
+        m_progressMessage <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;%1 %2&quot;</span>)<span class="operator">.</span>arg(speed<span class="operator">,</span> <span class="number">3</span><span class="operator">,</span> <span class="char">'f'</span><span class="operator">,</span> <span class="number">1</span>)<span class="operator">.</span>arg(unit);
+        <span class="keyword">emit</span> progressMessageChanged();
+    }</pre>
+<p>When the download operation is finished, the downloadFinished() slot will be invoked, which resets the progress information, updates the status information (whether an error occurred or download was successfully) and deletes the <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a> object, because we gained the ownership of it when calling <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html#get">QNetworkAccessManager::get()</a>.</p>
+<pre class="cpp">    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadFinished()
+    {
+        <span class="comment">// Reset the progress information when the download has finished</span>
+        m_progressTotal <span class="operator">=</span> <span class="number">0</span>;
+        m_progressValue <span class="operator">=</span> <span class="number">0</span>;
+        m_progressMessage<span class="operator">.</span>clear();
+        <span class="keyword">emit</span> progressValueChanged();
+        <span class="keyword">emit</span> progressTotalChanged();
+        <span class="keyword">emit</span> progressMessageChanged();
+
+        <span class="comment">// Close the file where the data have been written</span>
+        m_output<span class="operator">.</span>close();
+
+        <span class="comment">// Add a status or error message</span>
+        <span class="keyword">if</span> (m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>error()) {
+            addErrorMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;Failed: %1&quot;</span>)<span class="operator">.</span>arg(m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>errorString()));
+        } <span class="keyword">else</span> {
+            addStatusMessage(<span class="string">&quot;Succeeded.&quot;</span>);
+            <span class="operator">+</span><span class="operator">+</span>m_downloadedCount;
+        }
+
+        <span class="comment">/**
+         * We can't call 'delete m_currentDownload' here, because this method might have been invoked directly as result of a signal
+         * emission of the network reply object.
+         */</span>
+        m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+        m_currentDownload <span class="operator">=</span> <span class="number">0</span>;
+        <span class="keyword">emit</span> activeDownloadsChanged();
+
+        <span class="comment">// Trigger the execution of the next job</span>
+        startNextDownload();
+    }</pre>
+<p>In the last step the downloadFinished() slot calls startNextDownload() to trigger the next download from the internal queue.</p>
+</div>
+<!-- @@@network/downloadmanager -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

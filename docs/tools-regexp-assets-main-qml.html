@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : main.qml Example File (tools/regexp/assets/main.qml)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">main.qml Example File</h1>
+<span class="small-subtitle">tools/regexp/assets/main.qml</span>
+<!-- $$$tools/regexp/assets/main.qml-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="qml">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    import bb.cascades 1.0
+
+    <span class="comment">// Page displays layout of TextField's, Label's, CheckBox's and DopDown's to run a user</span>
+    <span class="comment">// defined regular expression on a string and display the detailed matched results</span>
+    <span class="type">Page</span> {
+
+        <span class="comment">// The root container, used to set the background Color</span>
+        <span class="name">content</span>: <span class="name">Container</span> {
+            <span class="name">layout</span>: <span class="name">DockLayout</span> {}
+
+            <span class="comment">// The background image</span>
+            <span class="type">ImageView</span> {
+                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+                }
+
+                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
+            }
+
+            <span class="type">Container</span> {
+                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+                }
+
+                <span class="comment">// A standard Label for the application header</span>
+                <span class="type">Label</span> {
+                    <span class="name">preferredHeight</span>: <span class="number">200</span>
+                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                    }
+
+                    <span class="name">text</span>: <span class="string">&quot;Regular Expression Example&quot;</span>
+
+                    <span class="comment">// Defines custom text style</span>
+                    <span class="type">textStyle</span> {
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">TitleText</span>
+                        <span class="name">fontWeight</span>: <span class="name">FontWeight</span>.<span class="name">Bold</span>
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
+                    }
+                }
+
+                <span class="comment">// Enable/Disable vertical scroll mode</span>
+                <span class="type">ScrollView</span> {
+                    <span class="type">scrollViewProperties</span> {
+                        <span class="name">scrollMode</span>: <span class="name">ScrollMode</span>.<span class="name">Vertical</span>
+                    }
+
+                    <span class="type">Container</span> {
+
+                        <span class="comment">// The TextStyleDefinition's to be used in AbstractTextControl's</span>
+                        <span class="name">attachedObjects</span>: [
+
+                            <span class="comment">// Defines custom text style definition</span>
+                            <span class="type">TextStyleDefinition</span> {
+                                <span class="name">id</span>: <span class="name">tsd</span>
+                                <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
+                            },
+
+                            <span class="comment">// Defines custom text style definition</span>
+                            <span class="type">TextStyleDefinition</span> {
+                                <span class="name">id</span>: <span class="name">tsh</span>
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                                <span class="name">fontWeight</span>: <span class="name">FontWeight</span>.<span class="name">Bold</span>
+                            }
+                        ]
+
+                        <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                            <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">TopToBottom</span>
+                            <span class="name">leftPadding</span>: <span class="number">20</span>
+                            <span class="name">rightPadding</span>: <span class="number">20</span>
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">text</span>: <span class="string">&quot;Inputs:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">TitleText</span>
+                                <span class="name">fontWeight</span>: <span class="name">FontWeight</span>.<span class="name">Bold</span>
+                                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">leftMargin</span>: <span class="number">10</span>
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Pattern:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard TextField for the regular expression pattern</span>
+                        <span class="type">TextField</span> {
+                            <span class="name">leftMargin</span>: <span class="number">10</span>
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+                            <span class="name">preferredWidth</span>: <span class="number">500</span>
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">pattern</span>
+                            <span class="name">onTextChanging</span>: <span class="name">_regexp</span>.<span class="name">pattern</span> <span class="operator">=</span> <span class="name">text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Escaped Pattern:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Displays the regular expression pattern input from above TextField</span>
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">escapedPattern</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// Drop down for selecting various pattern syntax</span>
+                        <span class="type">DropDown</span> {
+                            <span class="name">title</span>: <span class="string">&quot;Pattern Syntax:&quot;</span>
+                            <span class="name">onSelectedIndexChanged</span>: <span class="name">_app</span>.<span class="name">setPatternSyntax</span> (<span class="name">selectedIndex</span>)
+                            <span class="type">Option</span> {
+                                <span class="name">text</span>: <span class="string">&quot;Regular expression v1&quot;</span>
+                                <span class="name">selected</span>: <span class="number">true</span>
+                            }
+                            <span class="type">Option</span> {
+                                <span class="name">text</span>: <span class="string">&quot;Regular expression v2&quot;</span>
+                            }
+                            <span class="type">Option</span> {
+                                <span class="name">text</span>: <span class="string">&quot;Wildcard&quot;</span>
+                            }
+                            <span class="type">Option</span> {
+                                <span class="name">text</span>: <span class="string">&quot;Fixed string&quot;</span>
+                            }
+                            <span class="type">Option</span> {
+                                <span class="name">text</span>: <span class="string">&quot;W3C Xml Schema 1.1&quot;</span>
+                            }
+                        }
+
+                        <span class="comment">// Container grouping the CheckBox's and their corresponding Label's</span>
+                        <span class="type">Container</span> {
+                            <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                            }
+
+                            <span class="type">Container</span> {
+                                <span class="name">topMargin</span>: <span class="number">10</span>
+                                <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                                    <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                                }
+
+                                <span class="comment">// A standard CheckBox</span>
+                                <span class="type">CheckBox</span> {
+                                    <span class="comment">// Default check</span>
+                                    <span class="name">checked</span>: <span class="number">true</span>
+
+                                    <span class="comment">// Save the boolean value upon being checked</span>
+                                    <span class="name">onCheckedChanged</span>: <span class="name">_regexp</span>.<span class="name">caseSensitive</span> <span class="operator">=</span> <span class="name">checked</span>
+                                }
+
+                                <span class="comment">// A standard Label for the checkbox</span>
+                                <span class="type">Label</span> {
+                                    <span class="name">leftMargin</span>: <span class="number">10</span>
+
+                                    <span class="name">text</span>: <span class="string">&quot;Case Sensitive&quot;</span>
+                                    <span class="type">textStyle</span> {
+                                        <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                                    }
+                                }
+                            }
+
+                            <span class="type">Container</span> {
+                                <span class="name">topMargin</span>: <span class="number">10</span>
+                                <span class="name">leftMargin</span>: <span class="number">25</span>
+                                <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                                    <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                                }
+
+                                <span class="comment">// A standard CheckBox</span>
+                                <span class="type">CheckBox</span> {
+
+                                    <span class="comment">// Save the boolean value upon being checked</span>
+                                    <span class="name">onCheckedChanged</span>: <span class="name">_regexp</span>.<span class="name">minimal</span> <span class="operator">=</span> <span class="name">checked</span>
+                                }
+
+                                <span class="comment">// A standard Label for the checkbox</span>
+                                <span class="type">Label</span> {
+                                    <span class="name">leftMargin</span>: <span class="number">10</span>
+                                    <span class="name">text</span>: <span class="string">&quot;Minimal&quot;</span>
+                                    <span class="type">textStyle</span> {
+                                        <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                                    }
+                                }
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Text:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard TextField for the input string to run the regular</span>
+                        <span class="comment">// expression against</span>
+                        <span class="type">TextField</span> {
+                            <span class="name">preferredWidth</span>: <span class="number">500</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+
+                            <span class="comment">// Save the text on input</span>
+                            <span class="name">onTextChanging</span>: <span class="name">_regexp</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">text</span>
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">text</span>: <span class="string">&quot;Outputs:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">TitleText</span>
+                                <span class="name">fontWeight</span>: <span class="name">FontWeight</span>.<span class="name">Bold</span>
+                                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
+                            }
+                        }
+
+                        <span class="type">Container</span> {
+                            <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                            }
+
+                            <span class="comment">// A standard Label</span>
+                            <span class="type">Label</span> {
+                                <span class="name">topMargin</span>: <span class="number">10</span>
+
+                                <span class="name">text</span>: <span class="string">&quot;Index of Match:&quot;</span>
+                                <span class="type">textStyle</span> {
+                                    <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                                }
+                            }
+
+                            <span class="comment">// A standard Label for the index of match output</span>
+                            <span class="type">Label</span> {
+                                <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">matchIndex</span> <span class="operator">+</span> <span class="string">&quot;&quot;</span>
+                                <span class="type">textStyle</span> {
+                                    <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                                }
+                            }
+                        }
+
+                        <span class="type">Container</span> {
+                            <span class="name">layout</span>: <span class="name">StackLayout</span> {
+                                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                            }
+
+                            <span class="comment">// A standard Label</span>
+                            <span class="type">Label</span> {
+                                <span class="name">topMargin</span>: <span class="number">10</span>
+
+                                <span class="name">text</span>: <span class="string">&quot;Matched Length:&quot;</span>
+                                <span class="type">textStyle</span> {
+                                    <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                                }
+                            }
+
+                            <span class="comment">// A standard Label for the matched length output</span>
+                            <span class="type">Label</span> {
+                                <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">matchLength</span> <span class="operator">+</span> <span class="string">&quot;&quot;</span>
+                                <span class="type">textStyle</span> {
+                                    <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                                }
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture0Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Match:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the match output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture0Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture0Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture1Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Capture 1:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the capture 1 output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture1Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture1Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture2Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Capture 2:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the capture 2 output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture2Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture2Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture3Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Capture 3:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the capture 3 output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture3Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture3Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture4Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Capture 4:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the capture 4 output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture4Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture4Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture5Available</span>
+
+                            <span class="name">text</span>: <span class="string">&quot;Capture 5:&quot;</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsh</span>.<span class="name">style</span>
+                            }
+                        }
+
+                        <span class="comment">// A standard Label for the capture 5 output</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Enabled if output available</span>
+                            <span class="name">enabled</span>: <span class="name">_regexp</span>.<span class="name">capture5Available</span>
+
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">capture5Text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }</pre>
+</div>
+<!-- @@@tools/regexp/assets/main.qml -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

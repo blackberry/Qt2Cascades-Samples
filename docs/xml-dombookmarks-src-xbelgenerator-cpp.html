@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : xbelgenerator.cpp Example File (xml/dombookmarks/src/xbelgenerator.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">xbelgenerator.cpp Example File</h1>
+<span class="small-subtitle">xml/dombookmarks/src/xbelgenerator.cpp</span>
+<!-- $$$xml/dombookmarks/src/xbelgenerator.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;xbelgenerator.hpp&quot;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    XbelGenerator<span class="operator">::</span>XbelGenerator(Container <span class="operator">*</span>treeContainer)
+            : m_treeContainer(treeContainer)
+    {
+    }
+
+    <span class="type">bool</span> XbelGenerator<span class="operator">::</span>write(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    {
+        <span class="comment">// Create a new DOM document</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomdocument.html">QDomDocument</a></span> domDocument(<span class="string">&quot;xbel&quot;</span>);
+        domDocument<span class="operator">.</span>appendChild(domDocument<span class="operator">.</span>createProcessingInstruction(<span class="string">&quot;xml&quot;</span><span class="operator">,</span> <span class="string">&quot;version=\&quot;1.0\&quot; encoding=\&quot;utf-8\&quot;&quot;</span>));
+
+        <span class="comment">// Add the root element with the necessary 'xbel' element and version attribute</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> rootElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;xbel&quot;</span>);
+        rootElement<span class="operator">.</span>setAttribute(<span class="string">&quot;version&quot;</span><span class="operator">,</span> <span class="string">&quot;1.0&quot;</span>);
+        domDocument<span class="operator">.</span>appendChild(rootElement);
+
+        <span class="comment">// Iterate over the controls of the tree container and generate an XBEL element for each of them</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> m_treeContainer<span class="operator">-</span><span class="operator">&gt;</span>count(); <span class="operator">+</span><span class="operator">+</span>i)
+            generateItem(m_treeContainer<span class="operator">-</span><span class="operator">&gt;</span>at(i)<span class="operator">,</span> rootElement<span class="operator">,</span> domDocument);
+
+        <span class="keyword">const</span> <span class="type">int</span> IndentWidth <span class="operator">=</span> <span class="number">4</span>;
+
+        <span class="comment">// Use a text stream to write out the DOM document in a nicely formatted way</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> stream(device);
+        stream<span class="operator">.</span>setCodec(<span class="string">&quot;UTF-8&quot;</span>);
+        domDocument<span class="operator">.</span>save(stream<span class="operator">,</span> IndentWidth);
+
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    <span class="type">void</span> XbelGenerator<span class="operator">::</span>generateItem(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomdocument.html">QDomDocument</a></span> <span class="operator">&amp;</span>domDocument)
+    {
+        <span class="comment">/**
+         * Retrieve the tag name and title from the control.
+         * These two properties have been set on the controls by the XbelParser.
+         */</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+
+        <span class="comment">// Depending on the tag name generate a new DOM element in the XBEL document</span>
+        <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>) {
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> folderElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;folder&quot;</span>);
+            folderElement<span class="operator">.</span>setAttribute(<span class="string">&quot;folded&quot;</span><span class="operator">,</span> <span class="string">&quot;no&quot;</span>);
+
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomtext.html">QDomText</a></span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
+            titleElement<span class="operator">.</span>appendChild(titleText);
+            folderElement<span class="operator">.</span>appendChild(titleElement);
+
+            <span class="comment">// Iterate over the child controls of the container</span>
+            <span class="keyword">const</span> Container <span class="operator">*</span>container <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>Container<span class="operator">*</span><span class="operator">&gt;</span>(control);
+            <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> container<span class="operator">-</span><span class="operator">&gt;</span>count(); <span class="operator">+</span><span class="operator">+</span>i)
+                generateItem(container<span class="operator">-</span><span class="operator">&gt;</span>at(i)<span class="operator">,</span> folderElement<span class="operator">,</span> domDocument);
+
+            parent<span class="operator">.</span>appendChild(folderElement);
+        } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>) {
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
+
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> bookmarkElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;bookmark&quot;</span>);
+            <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isEmpty())
+                bookmarkElement<span class="operator">.</span>setAttribute(<span class="string">&quot;href&quot;</span><span class="operator">,</span> url);
+
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomtext.html">QDomText</a></span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
+            titleElement<span class="operator">.</span>appendChild(titleText);
+            bookmarkElement<span class="operator">.</span>appendChild(titleElement);
+
+            parent<span class="operator">.</span>appendChild(bookmarkElement);
+        } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span>) {
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> separatorElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;separator&quot;</span>);
+            parent<span class="operator">.</span>appendChild(separatorElement);
+        }
+    }</pre>
+</div>
+<!-- @@@xml/dombookmarks/src/xbelgenerator.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

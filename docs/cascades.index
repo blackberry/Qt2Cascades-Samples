@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Cascades Examples Documentation" version="">
+    <namespace access="public" threadsafety="unspecified" status="commendable" name="" href="" location="" module="">
+        <page access="public" status="commendable" name="Board" href="qml-board.html" subtype="qmlclass" title="QML Board Component" fulltitle="QML Board Component" subtitle="" location="Board.qml"/>
+        <page access="public" status="commendable" name="index.html" href="index.html" subtype="page" title="Qt with Cascades UI Examples" fulltitle="Qt with Cascades UI Examples" subtitle="" location="pages.qdoc"/>
+        <page access="public" status="commendable" name="ipc/sharedmemory" href="ipc-sharedmemory.html" subtype="example" title="Shared Memory Example" fulltitle="Shared Memory Example" subtitle="" location="sharedmemory.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="fileloaderproxy" title="FileLoaderProxy" level="1"/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/assets/main.qml" href="ipc-sharedmemory-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="ipc/sharedmemory/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/sharedmemory.pro" href="ipc-sharedmemory-sharedmemory-pro.html" subtype="file" title="" fulltitle="sharedmemory.pro Example File" subtitle="ipc/sharedmemory/sharedmemory.pro" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/src/FileLoaderProxy.cpp" href="ipc-sharedmemory-src-fileloaderproxy-cpp.html" subtype="file" title="" fulltitle="FileLoaderProxy.cpp Example File" subtitle="ipc/sharedmemory/src/FileLoaderProxy.cpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/src/FileLoaderProxy.hpp" href="ipc-sharedmemory-src-fileloaderproxy-hpp.html" subtype="file" title="" fulltitle="FileLoaderProxy.hpp Example File" subtitle="ipc/sharedmemory/src/FileLoaderProxy.hpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/src/SharedMemoryApp.cpp" href="ipc-sharedmemory-src-sharedmemoryapp-cpp.html" subtype="file" title="" fulltitle="SharedMemoryApp.cpp Example File" subtitle="ipc/sharedmemory/src/SharedMemoryApp.cpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/src/SharedMemoryApp.hpp" href="ipc-sharedmemory-src-sharedmemoryapp-hpp.html" subtype="file" title="" fulltitle="SharedMemoryApp.hpp Example File" subtitle="ipc/sharedmemory/src/SharedMemoryApp.hpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory/src/main.cpp" href="ipc-sharedmemory-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="ipc/sharedmemory/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="ipc/sharedmemory_loader" href="ipc-sharedmemory-loader.html" subtype="example" title="Shared Memory Loader Example" fulltitle="Shared Memory Loader Example" subtitle="" location="sharedmemory_loader.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="fileloader" title="FileLoader" level="1"/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/assets/main.qml" href="ipc-sharedmemory-loader-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="ipc/sharedmemory_loader/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/sharedmemory_loader.pro" href="ipc-sharedmemory-loader-sharedmemory-loader-pro.html" subtype="file" title="" fulltitle="sharedmemory_loader.pro Example File" subtitle="ipc/sharedmemory_loader/sharedmemory_loader.pro" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/src/FileLoader.cpp" href="ipc-sharedmemory-loader-src-fileloader-cpp.html" subtype="file" title="" fulltitle="FileLoader.cpp Example File" subtitle="ipc/sharedmemory_loader/src/FileLoader.cpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/src/FileLoader.hpp" href="ipc-sharedmemory-loader-src-fileloader-hpp.html" subtype="file" title="" fulltitle="FileLoader.hpp Example File" subtitle="ipc/sharedmemory_loader/src/FileLoader.hpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp" href="ipc-sharedmemory-loader-src-sharedmemoryloaderapp-cpp.html" subtype="file" title="" fulltitle="SharedMemoryLoaderApp.cpp Example File" subtitle="ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.hpp" href="ipc-sharedmemory-loader-src-sharedmemoryloaderapp-hpp.html" subtype="file" title="" fulltitle="SharedMemoryLoaderApp.hpp Example File" subtitle="ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.hpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/src/main.cpp" href="ipc-sharedmemory-loader-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="ipc/sharedmemory_loader/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="ipc/sharedmemory_loader/translations/sharedmemory_loader.pro" href="ipc-sharedmemory-loader-translations-sharedmemory-loader-pro.html" subtype="file" title="" fulltitle="sharedmemory_loader.pro Example File" subtitle="ipc/sharedmemory_loader/translations/sharedmemory_loader.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/broadcastreceiver" href="network-broadcastreceiver.html" subtype="example" title="Broadcast Receiver Example" fulltitle="Broadcast Receiver Example" subtitle="" location="broadcastreceiver.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="receiver" title="Receiver" level="1"/>
+            <page access="public" status="commendable" name="network/broadcastreceiver/assets/main.qml" href="network-broadcastreceiver-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/broadcastreceiver/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/broadcastreceiver/broadcastreceiver.pro" href="network-broadcastreceiver-broadcastreceiver-pro.html" subtype="file" title="" fulltitle="broadcastreceiver.pro Example File" subtitle="network/broadcastreceiver/broadcastreceiver.pro" location=""/>
+            <page access="public" status="commendable" name="network/broadcastreceiver/src/Receiver.cpp" href="network-broadcastreceiver-src-receiver-cpp.html" subtype="file" title="" fulltitle="Receiver.cpp Example File" subtitle="network/broadcastreceiver/src/Receiver.cpp" location=""/>
+            <page access="public" status="commendable" name="network/broadcastreceiver/src/Receiver.hpp" href="network-broadcastreceiver-src-receiver-hpp.html" subtype="file" title="" fulltitle="Receiver.hpp Example File" subtitle="network/broadcastreceiver/src/Receiver.hpp" location=""/>
+            <page access="public" status="commendable" name="network/broadcastreceiver/src/main.cpp" href="network-broadcastreceiver-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/broadcastreceiver/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/broadcastsender" href="network-broadcastsender.html" subtype="example" title="Broadcast Sender Example" fulltitle="Broadcast Sender Example" subtitle="" location="broadcastsender.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="sender" title="Sender" level="1"/>
+            <page access="public" status="commendable" name="network/broadcastsender/assets/main.qml" href="network-broadcastsender-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/broadcastsender/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/broadcastsender/broadcastsender.pro" href="network-broadcastsender-broadcastsender-pro.html" subtype="file" title="" fulltitle="broadcastsender.pro Example File" subtitle="network/broadcastsender/broadcastsender.pro" location=""/>
+            <page access="public" status="commendable" name="network/broadcastsender/src/Sender.cpp" href="network-broadcastsender-src-sender-cpp.html" subtype="file" title="" fulltitle="Sender.cpp Example File" subtitle="network/broadcastsender/src/Sender.cpp" location=""/>
+            <page access="public" status="commendable" name="network/broadcastsender/src/Sender.hpp" href="network-broadcastsender-src-sender-hpp.html" subtype="file" title="" fulltitle="Sender.hpp Example File" subtitle="network/broadcastsender/src/Sender.hpp" location=""/>
+            <page access="public" status="commendable" name="network/broadcastsender/src/main.cpp" href="network-broadcastsender-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/broadcastsender/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/downloadmanager" href="network-downloadmanager.html" subtype="example" title="Network Download Manager Example" fulltitle="Network Download Manager Example" subtitle="" location="downloadmanager.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="ui" title="UI" level="1"/>
+            <contents name="downloadmanager" title="DownloadManager" level="1"/>
+            <page access="public" status="commendable" name="network/downloadmanager/assets/ProgressBar.qml" href="network-downloadmanager-assets-progressbar-qml.html" subtype="file" title="" fulltitle="ProgressBar.qml Example File" subtitle="network/downloadmanager/assets/ProgressBar.qml" location=""/>
+            <page access="public" status="commendable" name="network/downloadmanager/assets/main.qml" href="network-downloadmanager-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/downloadmanager/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/downloadmanager/downloadmanager.pro" href="network-downloadmanager-downloadmanager-pro.html" subtype="file" title="" fulltitle="downloadmanager.pro Example File" subtitle="network/downloadmanager/downloadmanager.pro" location=""/>
+            <page access="public" status="commendable" name="network/downloadmanager/src/DownloadManager.cpp" href="network-downloadmanager-src-downloadmanager-cpp.html" subtype="file" title="" fulltitle="DownloadManager.cpp Example File" subtitle="network/downloadmanager/src/DownloadManager.cpp" location=""/>
+            <page access="public" status="commendable" name="network/downloadmanager/src/DownloadManager.hpp" href="network-downloadmanager-src-downloadmanager-hpp.html" subtype="file" title="" fulltitle="DownloadManager.hpp Example File" subtitle="network/downloadmanager/src/DownloadManager.hpp" location=""/>
+            <page access="public" status="commendable" name="network/downloadmanager/src/main.cpp" href="network-downloadmanager-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/downloadmanager/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/googlesuggest" href="network-googlesuggest.html" subtype="example" title="Google Suggest Example" fulltitle="Google Suggest Example" subtitle="" location="googlesuggest.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="googlesuggest-class-declaration" title="GoogleSuggest Class Declaration" level="1"/>
+            <contents name="googlesuggest-class-implementation" title="GoogleSuggest Class Implementation" level="1"/>
+            <page access="public" status="commendable" name="network/googlesuggest/assets/main.qml" href="network-googlesuggest-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/googlesuggest/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/googlesuggest/googlesuggest.pro" href="network-googlesuggest-googlesuggest-pro.html" subtype="file" title="" fulltitle="googlesuggest.pro Example File" subtitle="network/googlesuggest/googlesuggest.pro" location=""/>
+            <page access="public" status="commendable" name="network/googlesuggest/src/googlesuggest.cpp" href="network-googlesuggest-src-googlesuggest-cpp.html" subtype="file" title="" fulltitle="googlesuggest.cpp Example File" subtitle="network/googlesuggest/src/googlesuggest.cpp" location=""/>
+            <page access="public" status="commendable" name="network/googlesuggest/src/googlesuggest.hpp" href="network-googlesuggest-src-googlesuggest-hpp.html" subtype="file" title="" fulltitle="googlesuggest.hpp Example File" subtitle="network/googlesuggest/src/googlesuggest.hpp" location=""/>
+            <page access="public" status="commendable" name="network/googlesuggest/src/main.cpp" href="network-googlesuggest-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/googlesuggest/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/http" href="network-http.html" subtype="example" title="HTTP Example" fulltitle="HTTP Example" subtitle="" location="http.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="the-httpdownloader" title="The HttpDownloader" level="1"/>
+            <contents name="the-messageboxcontroller" title="The MessageBoxController" level="1"/>
+            <contents name="the-authenticationdialog" title="The AuthenticationDialog" level="1"/>
+            <contents name="integration" title="Integration" level="1"/>
+            <page access="public" status="commendable" name="network/http/assets/AuthenticationDialog.qml" href="network-http-assets-authenticationdialog-qml.html" subtype="file" title="" fulltitle="AuthenticationDialog.qml Example File" subtitle="network/http/assets/AuthenticationDialog.qml" location=""/>
+            <page access="public" status="commendable" name="network/http/assets/Downloader.qml" href="network-http-assets-downloader-qml.html" subtype="file" title="" fulltitle="Downloader.qml Example File" subtitle="network/http/assets/Downloader.qml" location=""/>
+            <page access="public" status="commendable" name="network/http/assets/MessageBox.qml" href="network-http-assets-messagebox-qml.html" subtype="file" title="" fulltitle="MessageBox.qml Example File" subtitle="network/http/assets/MessageBox.qml" location=""/>
+            <page access="public" status="commendable" name="network/http/assets/main.qml" href="network-http-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/http/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/http/http.pro" href="network-http-http-pro.html" subtype="file" title="" fulltitle="http.pro Example File" subtitle="network/http/http.pro" location=""/>
+            <page access="public" status="commendable" name="network/http/src/AuthenticationDialogController.cpp" href="network-http-src-authenticationdialogcontroller-cpp.html" subtype="file" title="" fulltitle="AuthenticationDialogController.cpp Example File" subtitle="network/http/src/AuthenticationDialogController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/AuthenticationDialogController.hpp" href="network-http-src-authenticationdialogcontroller-hpp.html" subtype="file" title="" fulltitle="AuthenticationDialogController.hpp Example File" subtitle="network/http/src/AuthenticationDialogController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/DialogController.cpp" href="network-http-src-dialogcontroller-cpp.html" subtype="file" title="" fulltitle="DialogController.cpp Example File" subtitle="network/http/src/DialogController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/DialogController.hpp" href="network-http-src-dialogcontroller-hpp.html" subtype="file" title="" fulltitle="DialogController.hpp Example File" subtitle="network/http/src/DialogController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/HttpDownloader.cpp" href="network-http-src-httpdownloader-cpp.html" subtype="file" title="" fulltitle="HttpDownloader.cpp Example File" subtitle="network/http/src/HttpDownloader.cpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/HttpDownloader.hpp" href="network-http-src-httpdownloader-hpp.html" subtype="file" title="" fulltitle="HttpDownloader.hpp Example File" subtitle="network/http/src/HttpDownloader.hpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/MessageBoxController.cpp" href="network-http-src-messageboxcontroller-cpp.html" subtype="file" title="" fulltitle="MessageBoxController.cpp Example File" subtitle="network/http/src/MessageBoxController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/MessageBoxController.hpp" href="network-http-src-messageboxcontroller-hpp.html" subtype="file" title="" fulltitle="MessageBoxController.hpp Example File" subtitle="network/http/src/MessageBoxController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/http/src/main.cpp" href="network-http-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/http/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/multicastreceiver" href="network-multicastreceiver.html" subtype="example" title="Multicast Receiver Example" fulltitle="Multicast Receiver Example" subtitle="" location="multicastreceiver.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="receiver" title="Receiver" level="1"/>
+            <page access="public" status="commendable" name="network/multicastreceiver/assets/main.qml" href="network-multicastreceiver-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/multicastreceiver/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/multicastreceiver/multicastreceiver.pro" href="network-multicastreceiver-multicastreceiver-pro.html" subtype="file" title="" fulltitle="multicastreceiver.pro Example File" subtitle="network/multicastreceiver/multicastreceiver.pro" location=""/>
+            <page access="public" status="commendable" name="network/multicastreceiver/src/Receiver.cpp" href="network-multicastreceiver-src-receiver-cpp.html" subtype="file" title="" fulltitle="Receiver.cpp Example File" subtitle="network/multicastreceiver/src/Receiver.cpp" location=""/>
+            <page access="public" status="commendable" name="network/multicastreceiver/src/Receiver.hpp" href="network-multicastreceiver-src-receiver-hpp.html" subtype="file" title="" fulltitle="Receiver.hpp Example File" subtitle="network/multicastreceiver/src/Receiver.hpp" location=""/>
+            <page access="public" status="commendable" name="network/multicastreceiver/src/main.cpp" href="network-multicastreceiver-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/multicastreceiver/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/multicastsender" href="network-multicastsender.html" subtype="example" title="Multicast Sender Example" fulltitle="Multicast Sender Example" subtitle="" location="multicastsender.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="sender" title="Sender" level="1"/>
+            <page access="public" status="commendable" name="network/multicastsender/assets/main.qml" href="network-multicastsender-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/multicastsender/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/multicastsender/multicastsender.pro" href="network-multicastsender-multicastsender-pro.html" subtype="file" title="" fulltitle="multicastsender.pro Example File" subtitle="network/multicastsender/multicastsender.pro" location=""/>
+            <page access="public" status="commendable" name="network/multicastsender/src/Sender.cpp" href="network-multicastsender-src-sender-cpp.html" subtype="file" title="" fulltitle="Sender.cpp Example File" subtitle="network/multicastsender/src/Sender.cpp" location=""/>
+            <page access="public" status="commendable" name="network/multicastsender/src/Sender.hpp" href="network-multicastsender-src-sender-hpp.html" subtype="file" title="" fulltitle="Sender.hpp Example File" subtitle="network/multicastsender/src/Sender.hpp" location=""/>
+            <page access="public" status="commendable" name="network/multicastsender/src/main.cpp" href="network-multicastsender-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/multicastsender/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/qftp" href="network-qftp.html" subtype="example" title="FTP Example" fulltitle="FTP Example" subtitle="" location="ftp.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="ftpdownloader-class-definition" title="FtpDownloader Class Definition" level="1"/>
+            <contents name="ftpdownloader-class-implementation" title="FtpDownloader Class Implementation" level="1"/>
+            <page access="public" status="commendable" name="network/qftp/assets/Downloader.qml" href="network-qftp-assets-downloader-qml.html" subtype="file" title="" fulltitle="Downloader.qml Example File" subtitle="network/qftp/assets/Downloader.qml" location=""/>
+            <page access="public" status="commendable" name="network/qftp/assets/MessageBox.qml" href="network-qftp-assets-messagebox-qml.html" subtype="file" title="" fulltitle="MessageBox.qml Example File" subtitle="network/qftp/assets/MessageBox.qml" location=""/>
+            <page access="public" status="commendable" name="network/qftp/assets/ProgressDialog.qml" href="network-qftp-assets-progressdialog-qml.html" subtype="file" title="" fulltitle="ProgressDialog.qml Example File" subtitle="network/qftp/assets/ProgressDialog.qml" location=""/>
+            <page access="public" status="commendable" name="network/qftp/assets/main.qml" href="network-qftp-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/qftp/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/qftp/qftp.pro" href="network-qftp-qftp-pro.html" subtype="file" title="" fulltitle="qftp.pro Example File" subtitle="network/qftp/qftp.pro" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/DialogController.cpp" href="network-qftp-src-dialogcontroller-cpp.html" subtype="file" title="" fulltitle="DialogController.cpp Example File" subtitle="network/qftp/src/DialogController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/DialogController.hpp" href="network-qftp-src-dialogcontroller-hpp.html" subtype="file" title="" fulltitle="DialogController.hpp Example File" subtitle="network/qftp/src/DialogController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpDownloader.cpp" href="network-qftp-src-ftpdownloader-cpp.html" subtype="file" title="" fulltitle="FtpDownloader.cpp Example File" subtitle="network/qftp/src/FtpDownloader.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpDownloader.hpp" href="network-qftp-src-ftpdownloader-hpp.html" subtype="file" title="" fulltitle="FtpDownloader.hpp Example File" subtitle="network/qftp/src/FtpDownloader.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpItem.hpp" href="network-qftp-src-ftpitem-hpp.html" subtype="file" title="" fulltitle="FtpItem.hpp Example File" subtitle="network/qftp/src/FtpItem.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpItemManager.cpp" href="network-qftp-src-ftpitemmanager-cpp.html" subtype="file" title="" fulltitle="FtpItemManager.cpp Example File" subtitle="network/qftp/src/FtpItemManager.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpItemManager.hpp" href="network-qftp-src-ftpitemmanager-hpp.html" subtype="file" title="" fulltitle="FtpItemManager.hpp Example File" subtitle="network/qftp/src/FtpItemManager.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpListItem.cpp" href="network-qftp-src-ftplistitem-cpp.html" subtype="file" title="" fulltitle="FtpListItem.cpp Example File" subtitle="network/qftp/src/FtpListItem.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/FtpListItem.hpp" href="network-qftp-src-ftplistitem-hpp.html" subtype="file" title="" fulltitle="FtpListItem.hpp Example File" subtitle="network/qftp/src/FtpListItem.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/MessageBoxController.cpp" href="network-qftp-src-messageboxcontroller-cpp.html" subtype="file" title="" fulltitle="MessageBoxController.cpp Example File" subtitle="network/qftp/src/MessageBoxController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/MessageBoxController.hpp" href="network-qftp-src-messageboxcontroller-hpp.html" subtype="file" title="" fulltitle="MessageBoxController.hpp Example File" subtitle="network/qftp/src/MessageBoxController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/ProgressDialogController.cpp" href="network-qftp-src-progressdialogcontroller-cpp.html" subtype="file" title="" fulltitle="ProgressDialogController.cpp Example File" subtitle="network/qftp/src/ProgressDialogController.cpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/ProgressDialogController.hpp" href="network-qftp-src-progressdialogcontroller-hpp.html" subtype="file" title="" fulltitle="ProgressDialogController.hpp Example File" subtitle="network/qftp/src/ProgressDialogController.hpp" location=""/>
+            <page access="public" status="commendable" name="network/qftp/src/main.cpp" href="network-qftp-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/qftp/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="network/securesocketclient" href="network-securesocketclient.html" subtype="example" title="Secure Socket Client Example" fulltitle="Secure Socket Client Example" subtitle="" location="securesocketclient.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="sslclient" title="SslClient" level="1"/>
+            <contents name="certificateinfocontrol" title="CertificateInfoControl" level="1"/>
+            <page access="public" status="commendable" name="network/securesocketclient/assets/CertificateInfoView.qml" href="network-securesocketclient-assets-certificateinfoview-qml.html" subtype="file" title="" fulltitle="CertificateInfoView.qml Example File" subtitle="network/securesocketclient/assets/CertificateInfoView.qml" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/assets/MainView.qml" href="network-securesocketclient-assets-mainview-qml.html" subtype="file" title="" fulltitle="MainView.qml Example File" subtitle="network/securesocketclient/assets/MainView.qml" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/assets/SslErrorView.qml" href="network-securesocketclient-assets-sslerrorview-qml.html" subtype="file" title="" fulltitle="SslErrorView.qml Example File" subtitle="network/securesocketclient/assets/SslErrorView.qml" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/assets/main.qml" href="network-securesocketclient-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="network/securesocketclient/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/securesocketclient.pro" href="network-securesocketclient-securesocketclient-pro.html" subtype="file" title="" fulltitle="securesocketclient.pro Example File" subtitle="network/securesocketclient/securesocketclient.pro" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/App.cpp" href="network-securesocketclient-src-app-cpp.html" subtype="file" title="" fulltitle="App.cpp Example File" subtitle="network/securesocketclient/src/App.cpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/App.hpp" href="network-securesocketclient-src-app-hpp.html" subtype="file" title="" fulltitle="App.hpp Example File" subtitle="network/securesocketclient/src/App.hpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/CertificateInfoControl.cpp" href="network-securesocketclient-src-certificateinfocontrol-cpp.html" subtype="file" title="" fulltitle="CertificateInfoControl.cpp Example File" subtitle="network/securesocketclient/src/CertificateInfoControl.cpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/CertificateInfoControl.hpp" href="network-securesocketclient-src-certificateinfocontrol-hpp.html" subtype="file" title="" fulltitle="CertificateInfoControl.hpp Example File" subtitle="network/securesocketclient/src/CertificateInfoControl.hpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/SslClient.cpp" href="network-securesocketclient-src-sslclient-cpp.html" subtype="file" title="" fulltitle="SslClient.cpp Example File" subtitle="network/securesocketclient/src/SslClient.cpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/SslClient.hpp" href="network-securesocketclient-src-sslclient-hpp.html" subtype="file" title="" fulltitle="SslClient.hpp Example File" subtitle="network/securesocketclient/src/SslClient.hpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/SslErrorControl.cpp" href="network-securesocketclient-src-sslerrorcontrol-cpp.html" subtype="file" title="" fulltitle="SslErrorControl.cpp Example File" subtitle="network/securesocketclient/src/SslErrorControl.cpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/SslErrorControl.hpp" href="network-securesocketclient-src-sslerrorcontrol-hpp.html" subtype="file" title="" fulltitle="SslErrorControl.hpp Example File" subtitle="network/securesocketclient/src/SslErrorControl.hpp" location=""/>
+            <page access="public" status="commendable" name="network/securesocketclient/src/main.cpp" href="network-securesocketclient-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="network/securesocketclient/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="qtconcurrent/progressdialog" href="qtconcurrent-progressdialog.html" subtype="example" title="Progress Dialog Example" fulltitle="Progress Dialog Example" subtitle="" location="progressdialog.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="progressdialogapp" title="ProgressDialogApp" level="1"/>
+            <page access="public" status="commendable" name="qtconcurrent/progressdialog/assets/main.qml" href="qtconcurrent-progressdialog-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="qtconcurrent/progressdialog/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/progressdialog/progressdialog.pro" href="qtconcurrent-progressdialog-progressdialog-pro.html" subtype="file" title="" fulltitle="progressdialog.pro Example File" subtitle="qtconcurrent/progressdialog/progressdialog.pro" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/progressdialog/src/ProgressDialogApp.cpp" href="qtconcurrent-progressdialog-src-progressdialogapp-cpp.html" subtype="file" title="" fulltitle="ProgressDialogApp.cpp Example File" subtitle="qtconcurrent/progressdialog/src/ProgressDialogApp.cpp" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/progressdialog/src/ProgressDialogApp.hpp" href="qtconcurrent-progressdialog-src-progressdialogapp-hpp.html" subtype="file" title="" fulltitle="ProgressDialogApp.hpp Example File" subtitle="qtconcurrent/progressdialog/src/ProgressDialogApp.hpp" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/progressdialog/src/main.cpp" href="qtconcurrent-progressdialog-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="qtconcurrent/progressdialog/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="qtconcurrent/wordcount" href="qtconcurrent-wordcount.html" subtype="example" title="Word Count Example" fulltitle="Word Count Example" subtitle="" location="wordcount.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="wordcountapp" title="WordCountApp" level="1"/>
+            <contents name="single-threaded" title="Single-Threaded" level="2"/>
+            <contents name="multi-threaded" title="Multi-Threaded" level="2"/>
+            <page access="public" status="commendable" name="qtconcurrent/wordcount/assets/main.qml" href="qtconcurrent-wordcount-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="qtconcurrent/wordcount/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/wordcount/src/WordCountApp.cpp" href="qtconcurrent-wordcount-src-wordcountapp-cpp.html" subtype="file" title="" fulltitle="WordCountApp.cpp Example File" subtitle="qtconcurrent/wordcount/src/WordCountApp.cpp" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/wordcount/src/WordCountApp.hpp" href="qtconcurrent-wordcount-src-wordcountapp-hpp.html" subtype="file" title="" fulltitle="WordCountApp.hpp Example File" subtitle="qtconcurrent/wordcount/src/WordCountApp.hpp" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/wordcount/src/main.cpp" href="qtconcurrent-wordcount-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="qtconcurrent/wordcount/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="qtconcurrent/wordcount/wordcount.pro" href="qtconcurrent-wordcount-wordcount-pro.html" subtype="file" title="" fulltitle="wordcount.pro Example File" subtitle="qtconcurrent/wordcount/wordcount.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="script/scriptgame" href="script-scriptgame.html" subtype="example" title="Script Game Example" fulltitle="Script Game Example" subtitle="" location="scriptgame.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="player" title="Player" level="1"/>
+            <contents name="board" title="Board" level="1"/>
+            <contents name="gamecontroller" title="GameController" level="1"/>
+            <page access="public" status="commendable" name="script/scriptgame/assets/Maze.qml" href="script-scriptgame-assets-maze-qml.html" subtype="file" title="" fulltitle="Maze.qml Example File" subtitle="script/scriptgame/assets/Maze.qml" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/assets/main.qml" href="script-scriptgame-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="script/scriptgame/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/scriptgame.pro" href="script-scriptgame-scriptgame-pro.html" subtype="file" title="" fulltitle="scriptgame.pro Example File" subtitle="script/scriptgame/scriptgame.pro" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/Board.cpp" href="script-scriptgame-src-board-cpp.html" subtype="file" title="" fulltitle="Board.cpp Example File" subtitle="script/scriptgame/src/Board.cpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/Board.hpp" href="script-scriptgame-src-board-hpp.html" subtype="file" title="" fulltitle="Board.hpp Example File" subtitle="script/scriptgame/src/Board.hpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/GameController.cpp" href="script-scriptgame-src-gamecontroller-cpp.html" subtype="file" title="" fulltitle="GameController.cpp Example File" subtitle="script/scriptgame/src/GameController.cpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/GameController.hpp" href="script-scriptgame-src-gamecontroller-hpp.html" subtype="file" title="" fulltitle="GameController.hpp Example File" subtitle="script/scriptgame/src/GameController.hpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/Player.cpp" href="script-scriptgame-src-player-cpp.html" subtype="file" title="" fulltitle="Player.cpp Example File" subtitle="script/scriptgame/src/Player.cpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/Player.hpp" href="script-scriptgame-src-player-hpp.html" subtype="file" title="" fulltitle="Player.hpp Example File" subtitle="script/scriptgame/src/Player.hpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/ScriptGameApp.cpp" href="script-scriptgame-src-scriptgameapp-cpp.html" subtype="file" title="" fulltitle="ScriptGameApp.cpp Example File" subtitle="script/scriptgame/src/ScriptGameApp.cpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/ScriptGameApp.hpp" href="script-scriptgame-src-scriptgameapp-hpp.html" subtype="file" title="" fulltitle="ScriptGameApp.hpp Example File" subtitle="script/scriptgame/src/ScriptGameApp.hpp" location=""/>
+            <page access="public" status="commendable" name="script/scriptgame/src/main.cpp" href="script-scriptgame-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="script/scriptgame/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="sql/sqlwidgetmapper" href="sql-sqlwidgetmapper.html" subtype="example" title="SQL Widget Mapper Example" fulltitle="SQL Widget Mapper Example" subtitle="" location="sqlwidgetmapper.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="controldatamapper" title="ControlDataMapper" level="1"/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/assets/main.qml" href="sql-sqlwidgetmapper-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="sql/sqlwidgetmapper/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/sqlwidgetmapper.pro" href="sql-sqlwidgetmapper-sqlwidgetmapper-pro.html" subtype="file" title="" fulltitle="sqlwidgetmapper.pro Example File" subtitle="sql/sqlwidgetmapper/sqlwidgetmapper.pro" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/src/app.cpp" href="sql-sqlwidgetmapper-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="sql/sqlwidgetmapper/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/src/app.hpp" href="sql-sqlwidgetmapper-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="sql/sqlwidgetmapper/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/src/datacontrolmapper.cpp" href="sql-sqlwidgetmapper-src-datacontrolmapper-cpp.html" subtype="file" title="" fulltitle="datacontrolmapper.cpp Example File" subtitle="sql/sqlwidgetmapper/src/datacontrolmapper.cpp" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/src/datacontrolmapper.hpp" href="sql-sqlwidgetmapper-src-datacontrolmapper-hpp.html" subtype="file" title="" fulltitle="datacontrolmapper.hpp Example File" subtitle="sql/sqlwidgetmapper/src/datacontrolmapper.hpp" location=""/>
+            <page access="public" status="commendable" name="sql/sqlwidgetmapper/src/main.cpp" href="sql-sqlwidgetmapper-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="sql/sqlwidgetmapper/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="statemachine/factorial" href="statemachine-factorial.html" subtype="example" title="Factorial States Example" fulltitle="Factorial States Example" subtitle="" location="factorial.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <page access="public" status="commendable" name="statemachine/factorial/assets/main.qml" href="statemachine-factorial-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="statemachine/factorial/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/factorial.pro" href="statemachine-factorial-factorial-pro.html" subtype="file" title="" fulltitle="factorial.pro Example File" subtitle="statemachine/factorial/factorial.pro" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/src/factorial.cpp" href="statemachine-factorial-src-factorial-cpp.html" subtype="file" title="" fulltitle="factorial.cpp Example File" subtitle="statemachine/factorial/src/factorial.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/src/factorial.hpp" href="statemachine-factorial-src-factorial-hpp.html" subtype="file" title="" fulltitle="factorial.hpp Example File" subtitle="statemachine/factorial/src/factorial.hpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/src/main.cpp" href="statemachine-factorial-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="statemachine/factorial/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/src/transitions.cpp" href="statemachine-factorial-src-transitions-cpp.html" subtype="file" title="" fulltitle="transitions.cpp Example File" subtitle="statemachine/factorial/src/transitions.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/factorial/src/transitions.hpp" href="statemachine-factorial-src-transitions-hpp.html" subtype="file" title="" fulltitle="transitions.hpp Example File" subtitle="statemachine/factorial/src/transitions.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="statemachine/pingpong" href="statemachine-pingpong.html" subtype="example" title="Ping Pong States Example" fulltitle="Ping Pong States Example" subtitle="" location="pingpong.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <page access="public" status="commendable" name="statemachine/pingpong/assets/PingBalloon.qml" href="statemachine-pingpong-assets-pingballoon-qml.html" subtype="file" title="" fulltitle="PingBalloon.qml Example File" subtitle="statemachine/pingpong/assets/PingBalloon.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/pingpong/assets/PongBalloon.qml" href="statemachine-pingpong-assets-pongballoon-qml.html" subtype="file" title="" fulltitle="PongBalloon.qml Example File" subtitle="statemachine/pingpong/assets/PongBalloon.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/pingpong/assets/main.qml" href="statemachine-pingpong-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="statemachine/pingpong/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/pingpong/pingpong.pro" href="statemachine-pingpong-pingpong-pro.html" subtype="file" title="" fulltitle="pingpong.pro Example File" subtitle="statemachine/pingpong/pingpong.pro" location=""/>
+            <page access="public" status="commendable" name="statemachine/pingpong/src/main.cpp" href="statemachine-pingpong-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="statemachine/pingpong/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="statemachine/trafficlight" href="statemachine-trafficlight.html" subtype="example" title="Traffic Light Example" fulltitle="Traffic Light Example" subtitle="" location="trafficlight.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="trafficlightcontroller" title="TrafficLightController" level="1"/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/assets/TrafficLight.qml" href="statemachine-trafficlight-assets-trafficlight-qml.html" subtype="file" title="" fulltitle="TrafficLight.qml Example File" subtitle="statemachine/trafficlight/assets/TrafficLight.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/assets/main.qml" href="statemachine-trafficlight-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="statemachine/trafficlight/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/src/TrafficLightApp.cpp" href="statemachine-trafficlight-src-trafficlightapp-cpp.html" subtype="file" title="" fulltitle="TrafficLightApp.cpp Example File" subtitle="statemachine/trafficlight/src/TrafficLightApp.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/src/TrafficLightApp.hpp" href="statemachine-trafficlight-src-trafficlightapp-hpp.html" subtype="file" title="" fulltitle="TrafficLightApp.hpp Example File" subtitle="statemachine/trafficlight/src/TrafficLightApp.hpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/src/TrafficLightController.cpp" href="statemachine-trafficlight-src-trafficlightcontroller-cpp.html" subtype="file" title="" fulltitle="TrafficLightController.cpp Example File" subtitle="statemachine/trafficlight/src/TrafficLightController.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/src/TrafficLightController.hpp" href="statemachine-trafficlight-src-trafficlightcontroller-hpp.html" subtype="file" title="" fulltitle="TrafficLightController.hpp Example File" subtitle="statemachine/trafficlight/src/TrafficLightController.hpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/src/main.cpp" href="statemachine-trafficlight-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="statemachine/trafficlight/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="statemachine/trafficlight/trafficlight.pro" href="statemachine-trafficlight-trafficlight-pro.html" subtype="file" title="" fulltitle="trafficlight.pro Example File" subtitle="statemachine/trafficlight/trafficlight.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="threads/queuedcustomtype" href="threads-queuedcustomtype.html" subtype="example" title="Queued Custom Type Example" fulltitle="Queued Custom Type Example" subtitle="" location="queuedcustomtype.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-block-class" title="The Block Class" level="1"/>
+            <contents name="the-renderer-class" title="The Renderer Class" level="1"/>
+            <contents name="the-renderthread-class" title="The RenderThread Class" level="1"/>
+            <contents name="registering-the-type" title="Registering the Type" level="1"/>
+            <contents name="further-reading" title="Further Reading" level="1"/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/assets/main.qml" href="threads-queuedcustomtype-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="threads/queuedcustomtype/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/queuedcustomtype.pro" href="threads-queuedcustomtype-queuedcustomtype-pro.html" subtype="file" title="" fulltitle="queuedcustomtype.pro Example File" subtitle="threads/queuedcustomtype/queuedcustomtype.pro" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/block.cpp" href="threads-queuedcustomtype-src-block-cpp.html" subtype="file" title="" fulltitle="block.cpp Example File" subtitle="threads/queuedcustomtype/src/block.cpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/block.hpp" href="threads-queuedcustomtype-src-block-hpp.html" subtype="file" title="" fulltitle="block.hpp Example File" subtitle="threads/queuedcustomtype/src/block.hpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/main.cpp" href="threads-queuedcustomtype-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="threads/queuedcustomtype/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/renderer.cpp" href="threads-queuedcustomtype-src-renderer-cpp.html" subtype="file" title="" fulltitle="renderer.cpp Example File" subtitle="threads/queuedcustomtype/src/renderer.cpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/renderer.hpp" href="threads-queuedcustomtype-src-renderer-hpp.html" subtype="file" title="" fulltitle="renderer.hpp Example File" subtitle="threads/queuedcustomtype/src/renderer.hpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/renderthread.cpp" href="threads-queuedcustomtype-src-renderthread-cpp.html" subtype="file" title="" fulltitle="renderthread.cpp Example File" subtitle="threads/queuedcustomtype/src/renderthread.cpp" location=""/>
+            <page access="public" status="commendable" name="threads/queuedcustomtype/src/renderthread.hpp" href="threads-queuedcustomtype-src-renderthread-hpp.html" subtype="file" title="" fulltitle="renderthread.hpp Example File" subtitle="threads/queuedcustomtype/src/renderthread.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="threads/semaphores" href="threads-semaphores.html" subtype="example" title="Semaphores Example" fulltitle="Semaphores Example" subtitle="" location="semaphores.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="global-variables" title="Global Variables" level="1"/>
+            <contents name="producer-class" title="Producer Class" level="1"/>
+            <contents name="consumer-class" title="Consumer Class" level="1"/>
+            <contents name="the-main-function" title="The main() Function" level="1"/>
+            <page access="public" status="commendable" name="threads/semaphores/assets/main.qml" href="threads-semaphores-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="threads/semaphores/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="threads/semaphores/semaphores.pro" href="threads-semaphores-semaphores-pro.html" subtype="file" title="" fulltitle="semaphores.pro Example File" subtitle="threads/semaphores/semaphores.pro" location=""/>
+            <page access="public" status="commendable" name="threads/semaphores/src/main.cpp" href="threads-semaphores-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="threads/semaphores/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="threads/waitconditions" href="threads-waitconditions.html" subtype="example" title="Wait Conditions Example" fulltitle="Wait Conditions Example" subtitle="" location="waitconditions.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="global-variables" title="Global Variables" level="1"/>
+            <contents name="producer-class" title="Producer Class" level="1"/>
+            <contents name="consumer-class" title="Consumer Class" level="1"/>
+            <contents name="the-main-function" title="The main() Function" level="1"/>
+            <page access="public" status="commendable" name="threads/waitconditions/assets/main.qml" href="threads-waitconditions-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="threads/waitconditions/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="threads/waitconditions/src/main.cpp" href="threads-waitconditions-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="threads/waitconditions/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="threads/waitconditions/waitconditions.pro" href="threads-waitconditions-waitconditions-pro.html" subtype="file" title="" fulltitle="waitconditions.pro Example File" subtitle="threads/waitconditions/waitconditions.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="tools/codecs" href="tools-codecs.html" subtype="example" title="Codecs Example" fulltitle="Codecs Example" subtitle="" location="codecs.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="codeccontroller" title="CodecController" level="1"/>
+            <page access="public" status="commendable" name="tools/codecs/assets/main.qml" href="tools-codecs-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="tools/codecs/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/codecs.pro" href="tools-codecs-codecs-pro.html" subtype="file" title="" fulltitle="codecs.pro Example File" subtitle="tools/codecs/codecs.pro" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/src/CodecController.cpp" href="tools-codecs-src-codeccontroller-cpp.html" subtype="file" title="" fulltitle="CodecController.cpp Example File" subtitle="tools/codecs/src/CodecController.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/src/CodecController.hpp" href="tools-codecs-src-codeccontroller-hpp.html" subtype="file" title="" fulltitle="CodecController.hpp Example File" subtitle="tools/codecs/src/CodecController.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/src/CodecsApp.cpp" href="tools-codecs-src-codecsapp-cpp.html" subtype="file" title="" fulltitle="CodecsApp.cpp Example File" subtitle="tools/codecs/src/CodecsApp.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/src/CodecsApp.hpp" href="tools-codecs-src-codecsapp-hpp.html" subtype="file" title="" fulltitle="CodecsApp.hpp Example File" subtitle="tools/codecs/src/CodecsApp.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/codecs/src/main.cpp" href="tools-codecs-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="tools/codecs/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="tools/contiguouscache" href="tools-contiguouscache.html" subtype="example" title="Contiguous Cache Example" fulltitle="Contiguous Cache Example" subtitle="" location="contiguouscache.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <page access="public" status="commendable" name="tools/contiguouscache/assets/main.qml" href="tools-contiguouscache-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="tools/contiguouscache/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/contiguouscache.pro" href="tools-contiguouscache-contiguouscache-pro.html" subtype="file" title="" fulltitle="contiguouscache.pro Example File" subtitle="tools/contiguouscache/contiguouscache.pro" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/src/ContiguousCacheApp.cpp" href="tools-contiguouscache-src-contiguouscacheapp-cpp.html" subtype="file" title="" fulltitle="ContiguousCacheApp.cpp Example File" subtitle="tools/contiguouscache/src/ContiguousCacheApp.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/src/ContiguousCacheApp.hpp" href="tools-contiguouscache-src-contiguouscacheapp-hpp.html" subtype="file" title="" fulltitle="ContiguousCacheApp.hpp Example File" subtitle="tools/contiguouscache/src/ContiguousCacheApp.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/src/ImageModel.cpp" href="tools-contiguouscache-src-imagemodel-cpp.html" subtype="file" title="" fulltitle="ImageModel.cpp Example File" subtitle="tools/contiguouscache/src/ImageModel.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/src/ImageModel.hpp" href="tools-contiguouscache-src-imagemodel-hpp.html" subtype="file" title="" fulltitle="ImageModel.hpp Example File" subtitle="tools/contiguouscache/src/ImageModel.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/contiguouscache/src/main.cpp" href="tools-contiguouscache-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="tools/contiguouscache/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="tools/i18n" href="tools-i18n.html" subtype="example" title="I18N Example" fulltitle="I18N Example" subtitle="" location="i18n.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="ui" title="UI" level="1"/>
+            <contents name="app" title="App" level="1"/>
+            <page access="public" status="commendable" name="tools/i18n/assets/MainView.qml" href="tools-i18n-assets-mainview-qml.html" subtype="file" title="" fulltitle="MainView.qml Example File" subtitle="tools/i18n/assets/MainView.qml" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/assets/main.qml" href="tools-i18n-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="tools/i18n/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/i18n.pro" href="tools-i18n-i18n-pro.html" subtype="file" title="" fulltitle="i18n.pro Example File" subtitle="tools/i18n/i18n.pro" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/i18n.qrc" href="tools-i18n-i18n-qrc.html" subtype="file" title="" fulltitle="i18n.qrc Example File" subtitle="tools/i18n/i18n.qrc" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/src/app.cpp" href="tools-i18n-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="tools/i18n/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/src/app.hpp" href="tools-i18n-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="tools/i18n/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/i18n/src/main.cpp" href="tools-i18n-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="tools/i18n/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="tools/regexp" href="tools-regexp.html" subtype="example" title="Regular Expressions Example" fulltitle="Regular Expressions Example" subtitle="" location="regexp.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="regexp" title="RegExp" level="1"/>
+            <page access="public" status="commendable" name="tools/regexp/assets/main.qml" href="tools-regexp-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="tools/regexp/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/regexp.pro" href="tools-regexp-regexp-pro.html" subtype="file" title="" fulltitle="regexp.pro Example File" subtitle="tools/regexp/regexp.pro" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/src/app.cpp" href="tools-regexp-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="tools/regexp/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/src/app.hpp" href="tools-regexp-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="tools/regexp/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/src/main.cpp" href="tools-regexp-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="tools/regexp/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/src/regexp.cpp" href="tools-regexp-src-regexp-cpp.html" subtype="file" title="" fulltitle="regexp.cpp Example File" subtitle="tools/regexp/src/regexp.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/regexp/src/regexp.hpp" href="tools-regexp-src-regexp-hpp.html" subtype="file" title="" fulltitle="regexp.hpp Example File" subtitle="tools/regexp/src/regexp.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="tools/undoframework" href="tools-undoframework.html" subtype="example" title="Undo Framework Example" fulltitle="Undo Framework Example" subtitle="" location="undoframework.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-undo-framework" title="The Undo Framework" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="movecommand" title="MoveCommand" level="1"/>
+            <contents name="undomanager" title="UndoManager" level="1"/>
+            <page access="public" status="commendable" name="tools/undoframework/assets/Board.qml" href="tools-undoframework-assets-board-qml.html" subtype="file" title="" fulltitle="Board.qml Example File" subtitle="tools/undoframework/assets/Board.qml" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/assets/Stone.qml" href="tools-undoframework-assets-stone-qml.html" subtype="file" title="" fulltitle="Stone.qml Example File" subtitle="tools/undoframework/assets/Stone.qml" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/assets/main.qml" href="tools-undoframework-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="tools/undoframework/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/MoveCommand.cpp" href="tools-undoframework-src-movecommand-cpp.html" subtype="file" title="" fulltitle="MoveCommand.cpp Example File" subtitle="tools/undoframework/src/MoveCommand.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/MoveCommand.hpp" href="tools-undoframework-src-movecommand-hpp.html" subtype="file" title="" fulltitle="MoveCommand.hpp Example File" subtitle="tools/undoframework/src/MoveCommand.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/UndoFrameworkApp.cpp" href="tools-undoframework-src-undoframeworkapp-cpp.html" subtype="file" title="" fulltitle="UndoFrameworkApp.cpp Example File" subtitle="tools/undoframework/src/UndoFrameworkApp.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/UndoFrameworkApp.hpp" href="tools-undoframework-src-undoframeworkapp-hpp.html" subtype="file" title="" fulltitle="UndoFrameworkApp.hpp Example File" subtitle="tools/undoframework/src/UndoFrameworkApp.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/UndoManager.cpp" href="tools-undoframework-src-undomanager-cpp.html" subtype="file" title="" fulltitle="UndoManager.cpp Example File" subtitle="tools/undoframework/src/UndoManager.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/UndoManager.hpp" href="tools-undoframework-src-undomanager-hpp.html" subtype="file" title="" fulltitle="UndoManager.hpp Example File" subtitle="tools/undoframework/src/UndoManager.hpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/src/main.cpp" href="tools-undoframework-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="tools/undoframework/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="tools/undoframework/undoframework.pro" href="tools-undoframework-undoframework-pro.html" subtype="file" title="" fulltitle="undoframework.pro Example File" subtitle="tools/undoframework/undoframework.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/dombookmarks" href="xml-dombookmarks.html" subtype="example" title="DOM Bookmarks Example" fulltitle="DOM Bookmarks Example" subtitle="" location="dombookmarks.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="app" title="App" level="1"/>
+            <contents name="xbelgenerator-class-definition" title="XbelGenerator Class Definition" level="1"/>
+            <contents name="xbelgenerator-class-implementation" title="XbelGenerator Class Implementation" level="1"/>
+            <contents name="xbelparser-class-definition" title="XbelParser Class Definition" level="1"/>
+            <contents name="xbelparser-class-implementation" title="XbelParser Class Implementation" level="1"/>
+            <page access="public" status="commendable" name="xml/dombookmarks/assets/BookmarkItem.qml" href="xml-dombookmarks-assets-bookmarkitem-qml.html" subtype="file" title="" fulltitle="BookmarkItem.qml Example File" subtitle="xml/dombookmarks/assets/BookmarkItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/assets/FolderItem.qml" href="xml-dombookmarks-assets-folderitem-qml.html" subtype="file" title="" fulltitle="FolderItem.qml Example File" subtitle="xml/dombookmarks/assets/FolderItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/assets/SeparatorItem.qml" href="xml-dombookmarks-assets-separatoritem-qml.html" subtype="file" title="" fulltitle="SeparatorItem.qml Example File" subtitle="xml/dombookmarks/assets/SeparatorItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/assets/main.qml" href="xml-dombookmarks-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/dombookmarks/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/dombookmarks.pro" href="xml-dombookmarks-dombookmarks-pro.html" subtype="file" title="" fulltitle="dombookmarks.pro Example File" subtitle="xml/dombookmarks/dombookmarks.pro" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/app.cpp" href="xml-dombookmarks-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="xml/dombookmarks/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/app.hpp" href="xml-dombookmarks-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="xml/dombookmarks/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/main.cpp" href="xml-dombookmarks-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/dombookmarks/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/xbelgenerator.cpp" href="xml-dombookmarks-src-xbelgenerator-cpp.html" subtype="file" title="" fulltitle="xbelgenerator.cpp Example File" subtitle="xml/dombookmarks/src/xbelgenerator.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/xbelgenerator.hpp" href="xml-dombookmarks-src-xbelgenerator-hpp.html" subtype="file" title="" fulltitle="xbelgenerator.hpp Example File" subtitle="xml/dombookmarks/src/xbelgenerator.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/xbelparser.cpp" href="xml-dombookmarks-src-xbelparser-cpp.html" subtype="file" title="" fulltitle="xbelparser.cpp Example File" subtitle="xml/dombookmarks/src/xbelparser.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/dombookmarks/src/xbelparser.hpp" href="xml-dombookmarks-src-xbelparser-hpp.html" subtype="file" title="" fulltitle="xbelparser.hpp Example File" subtitle="xml/dombookmarks/src/xbelparser.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/htmlinfo" href="xml-htmlinfo.html" subtype="example" title="XML HTML Info Example" fulltitle="XML HTML Info Example" subtitle="" location="htmlinfo.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="basic-operation" title="Basic Operation" level="1"/>
+            <page access="public" status="commendable" name="xml/htmlinfo/assets/SlideoutPanel.qml" href="xml-htmlinfo-assets-slideoutpanel-qml.html" subtype="file" title="" fulltitle="SlideoutPanel.qml Example File" subtitle="xml/htmlinfo/assets/SlideoutPanel.qml" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/assets/main.qml" href="xml-htmlinfo-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/htmlinfo/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/htmlinfo.pro" href="xml-htmlinfo-htmlinfo-pro.html" subtype="file" title="" fulltitle="htmlinfo.pro Example File" subtitle="xml/htmlinfo/htmlinfo.pro" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/src/app.cpp" href="xml-htmlinfo-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="xml/htmlinfo/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/src/app.hpp" href="xml-htmlinfo-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="xml/htmlinfo/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/src/htmlinfo.cpp" href="xml-htmlinfo-src-htmlinfo-cpp.html" subtype="file" title="" fulltitle="htmlinfo.cpp Example File" subtitle="xml/htmlinfo/src/htmlinfo.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/src/htmlinfo.hpp" href="xml-htmlinfo-src-htmlinfo-hpp.html" subtype="file" title="" fulltitle="htmlinfo.hpp Example File" subtitle="xml/htmlinfo/src/htmlinfo.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/htmlinfo/src/main.cpp" href="xml-htmlinfo-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/htmlinfo/src/main.cpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/rsslisting" href="xml-rsslisting.html" subtype="example" title="RSS-Listing Example" fulltitle="RSS-Listing Example" subtitle="" location="rsslisting.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="rsslisting" title="RSSListing" level="1"/>
+            <page access="public" status="commendable" name="xml/rsslisting/assets/main.qml" href="xml-rsslisting-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/rsslisting/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/rsslisting/rsslisting.pro" href="xml-rsslisting-rsslisting-pro.html" subtype="file" title="" fulltitle="rsslisting.pro Example File" subtitle="xml/rsslisting/rsslisting.pro" location=""/>
+            <page access="public" status="commendable" name="xml/rsslisting/src/main.cpp" href="xml-rsslisting-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/rsslisting/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/rsslisting/src/rsslisting.cpp" href="xml-rsslisting-src-rsslisting-cpp.html" subtype="file" title="" fulltitle="rsslisting.cpp Example File" subtitle="xml/rsslisting/src/rsslisting.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/rsslisting/src/rsslisting.hpp" href="xml-rsslisting-src-rsslisting-hpp.html" subtype="file" title="" fulltitle="rsslisting.hpp Example File" subtitle="xml/rsslisting/src/rsslisting.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/saxbookmarks" href="xml-saxbookmarks.html" subtype="example" title="SAX Bookmarks Example" fulltitle="SAX Bookmarks Example" subtitle="" location="saxbookmarks.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="app" title="App" level="1"/>
+            <contents name="xbelgenerator-class-definition" title="XbelGenerator Class Definition" level="1"/>
+            <contents name="xbelgenerator-class-implementation" title="XbelGenerator Class Implementation" level="1"/>
+            <contents name="xbelhandler-class-definition" title="XbelHandler Class Definition" level="1"/>
+            <contents name="xbelhandler-class-implementation" title="XbelHandler Class Implementation" level="1"/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/assets/BookmarkItem.qml" href="xml-saxbookmarks-assets-bookmarkitem-qml.html" subtype="file" title="" fulltitle="BookmarkItem.qml Example File" subtitle="xml/saxbookmarks/assets/BookmarkItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/assets/FolderItem.qml" href="xml-saxbookmarks-assets-folderitem-qml.html" subtype="file" title="" fulltitle="FolderItem.qml Example File" subtitle="xml/saxbookmarks/assets/FolderItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/assets/SeparatorItem.qml" href="xml-saxbookmarks-assets-separatoritem-qml.html" subtype="file" title="" fulltitle="SeparatorItem.qml Example File" subtitle="xml/saxbookmarks/assets/SeparatorItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/assets/main.qml" href="xml-saxbookmarks-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/saxbookmarks/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/saxbookmarks.pro" href="xml-saxbookmarks-saxbookmarks-pro.html" subtype="file" title="" fulltitle="saxbookmarks.pro Example File" subtitle="xml/saxbookmarks/saxbookmarks.pro" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/app.cpp" href="xml-saxbookmarks-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="xml/saxbookmarks/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/app.hpp" href="xml-saxbookmarks-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="xml/saxbookmarks/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/main.cpp" href="xml-saxbookmarks-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/saxbookmarks/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/xbelgenerator.cpp" href="xml-saxbookmarks-src-xbelgenerator-cpp.html" subtype="file" title="" fulltitle="xbelgenerator.cpp Example File" subtitle="xml/saxbookmarks/src/xbelgenerator.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/xbelgenerator.hpp" href="xml-saxbookmarks-src-xbelgenerator-hpp.html" subtype="file" title="" fulltitle="xbelgenerator.hpp Example File" subtitle="xml/saxbookmarks/src/xbelgenerator.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/xbelhandler.cpp" href="xml-saxbookmarks-src-xbelhandler-cpp.html" subtype="file" title="" fulltitle="xbelhandler.cpp Example File" subtitle="xml/saxbookmarks/src/xbelhandler.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/saxbookmarks/src/xbelhandler.hpp" href="xml-saxbookmarks-src-xbelhandler-hpp.html" subtype="file" title="" fulltitle="xbelhandler.hpp Example File" subtitle="xml/saxbookmarks/src/xbelhandler.hpp" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/streambookmarks" href="xml-streambookmarks.html" subtype="example" title="QXmlStream Bookmarks Example" fulltitle="QXmlStream Bookmarks Example" subtitle="" location="streambookmarks.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="overview" title="Overview" level="1"/>
+            <contents name="the-ui" title="The UI" level="1"/>
+            <contents name="app" title="App" level="1"/>
+            <contents name="xbelwriter-class-definition" title="XbelWriter Class Definition" level="1"/>
+            <contents name="xbelwriter-class-implementation" title="XbelWriter Class Implementation" level="1"/>
+            <contents name="xbelreader-class-definition" title="XbelReader Class Definition" level="1"/>
+            <contents name="xbelreader-class-implementation" title="XbelReader Class Implementation" level="1"/>
+            <page access="public" status="commendable" name="xml/streambookmarks/assets/BookmarkItem.qml" href="xml-streambookmarks-assets-bookmarkitem-qml.html" subtype="file" title="" fulltitle="BookmarkItem.qml Example File" subtitle="xml/streambookmarks/assets/BookmarkItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/assets/FolderItem.qml" href="xml-streambookmarks-assets-folderitem-qml.html" subtype="file" title="" fulltitle="FolderItem.qml Example File" subtitle="xml/streambookmarks/assets/FolderItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/assets/SeparatorItem.qml" href="xml-streambookmarks-assets-separatoritem-qml.html" subtype="file" title="" fulltitle="SeparatorItem.qml Example File" subtitle="xml/streambookmarks/assets/SeparatorItem.qml" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/assets/main.qml" href="xml-streambookmarks-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/streambookmarks/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/app.cpp" href="xml-streambookmarks-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="xml/streambookmarks/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/app.hpp" href="xml-streambookmarks-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="xml/streambookmarks/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/main.cpp" href="xml-streambookmarks-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/streambookmarks/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/xbelreader.cpp" href="xml-streambookmarks-src-xbelreader-cpp.html" subtype="file" title="" fulltitle="xbelreader.cpp Example File" subtitle="xml/streambookmarks/src/xbelreader.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/xbelreader.hpp" href="xml-streambookmarks-src-xbelreader-hpp.html" subtype="file" title="" fulltitle="xbelreader.hpp Example File" subtitle="xml/streambookmarks/src/xbelreader.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/xbelwriter.cpp" href="xml-streambookmarks-src-xbelwriter-cpp.html" subtype="file" title="" fulltitle="xbelwriter.cpp Example File" subtitle="xml/streambookmarks/src/xbelwriter.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/src/xbelwriter.hpp" href="xml-streambookmarks-src-xbelwriter-hpp.html" subtype="file" title="" fulltitle="xbelwriter.hpp Example File" subtitle="xml/streambookmarks/src/xbelwriter.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/streambookmarks/streambookmarks.pro" href="xml-streambookmarks-streambookmarks-pro.html" subtype="file" title="" fulltitle="streambookmarks.pro Example File" subtitle="xml/streambookmarks/streambookmarks.pro" location=""/>
+        </page>
+        <page access="public" status="commendable" name="xml/xmlstreamlint" href="xml-xmlstreamlint.html" subtype="example" title="XML Stream Lint Example" fulltitle="XML Stream Lint Example" subtitle="" location="xmlstreamlint.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="basic-operation" title="Basic Operation" level="1"/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/assets/SlideoutPanel.qml" href="xml-xmlstreamlint-assets-slideoutpanel-qml.html" subtype="file" title="" fulltitle="SlideoutPanel.qml Example File" subtitle="xml/xmlstreamlint/assets/SlideoutPanel.qml" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/assets/main.qml" href="xml-xmlstreamlint-assets-main-qml.html" subtype="file" title="" fulltitle="main.qml Example File" subtitle="xml/xmlstreamlint/assets/main.qml" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/src/app.cpp" href="xml-xmlstreamlint-src-app-cpp.html" subtype="file" title="" fulltitle="app.cpp Example File" subtitle="xml/xmlstreamlint/src/app.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/src/app.hpp" href="xml-xmlstreamlint-src-app-hpp.html" subtype="file" title="" fulltitle="app.hpp Example File" subtitle="xml/xmlstreamlint/src/app.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/src/main.cpp" href="xml-xmlstreamlint-src-main-cpp.html" subtype="file" title="" fulltitle="main.cpp Example File" subtitle="xml/xmlstreamlint/src/main.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/src/xmlstreamlint.cpp" href="xml-xmlstreamlint-src-xmlstreamlint-cpp.html" subtype="file" title="" fulltitle="xmlstreamlint.cpp Example File" subtitle="xml/xmlstreamlint/src/xmlstreamlint.cpp" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/src/xmlstreamlint.hpp" href="xml-xmlstreamlint-src-xmlstreamlint-hpp.html" subtype="file" title="" fulltitle="xmlstreamlint.hpp Example File" subtitle="xml/xmlstreamlint/src/xmlstreamlint.hpp" location=""/>
+            <page access="public" status="commendable" name="xml/xmlstreamlint/xmlstreamlint.pro" href="xml-xmlstreamlint-xmlstreamlint-pro.html" subtype="file" title="" fulltitle="xmlstreamlint.pro Example File" subtitle="xml/xmlstreamlint/xmlstreamlint.pro" location=""/>
+        </page>
+    </namespace>
+</INDEX>

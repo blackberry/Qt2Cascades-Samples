@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : datacontrolmapper.hpp Example File (sql/sqlwidgetmapper/src/datacontrolmapper.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">datacontrolmapper.hpp Example File</h1>
+<span class="small-subtitle">sql/sqlwidgetmapper/src/datacontrolmapper.hpp</span>
+<!-- $$$sql/sqlwidgetmapper/src/datacontrolmapper.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef DATACONTROLMAPPER_HPP</span>
+    <span class="preprocessor">#define DATACONTROLMAPPER_HPP</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/DataModel&gt;</span>
+
+    <span class="keyword">class</span> DataControlMapperPrivate;
+
+    <span class="comment">/**
+     * The DataControlMapper class provides mapping between a row of a data model to controls.
+     * DataControlMapper can be used to create data-aware controls by mapping them to rows of a data model.
+     * Everytime the current index changes, each control is updated with data from the model.
+     */</span>
+    <span class="keyword">class</span> DataControlMapper: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">/**
+         * The current index of the DataControlMapper. If a SQL model on a SQL table is used, then the
+         * index will be between 0 and the number of rows.
+         */</span>
+        Q_PROPERTY(<span class="type">int</span> currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+
+        <span class="comment">// The number of rows the model provides</span>
+        Q_PROPERTY(<span class="type">int</span> count READ count NOTIFY countChanged)
+
+    <span class="keyword">public</span>:
+        DataControlMapper(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="operator">~</span>DataControlMapper();
+
+        <span class="comment">/**
+         * This method creates a mapping between a control and a section identifier.
+         * For a SQL model the section identifier is the column name.
+         * The data will be set on well-known properties depending on the type of the control
+         * (e.g. 'text' property for Label).
+         */</span>
+        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section);
+
+        <span class="comment">/**
+         * This method creates a mapping between a control and a section identifier.
+         * For a SQL model the section identifier is the column name.
+         * The data will be set on the property with the given name.
+         */</span>
+        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> <span class="operator">&amp;</span>propertyName);
+
+        <span class="comment">/**
+         * Removes all mappings that have been created before with addMapping().
+         */</span>
+        <span class="type">void</span> clearMapping();
+
+        <span class="comment">// Removes the mapping for the given control</span>
+        <span class="type">void</span> removeMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control);
+
+        <span class="comment">// Accessor methods for the properties</span>
+        <span class="type">int</span> currentIndex() <span class="keyword">const</span>;
+        <span class="type">int</span> count() <span class="keyword">const</span>;
+
+        <span class="comment">// Returns the property name that is used to update values for the given control</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> mappedPropertyName(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
+
+        <span class="comment">// Returns the section identifier that is mapped to the given control</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> mappedSection(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
+
+        <span class="comment">// Returns the control that is mapped to the given section identifier</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Control<span class="operator">*</span> mappedControlAt(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section) <span class="keyword">const</span>;
+
+        <span class="comment">// Returns the data model the DataControlMapper works on</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>;
+
+        <span class="comment">// Sets the data model the DataControlMapper will work on</span>
+        <span class="type">void</span> setModel(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel <span class="operator">*</span>model);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method resets the control's content with the data from the model</span>
+        <span class="type">void</span> revert();
+
+        <span class="comment">// This method sets the current index to a given value</span>
+        <span class="type">void</span> setCurrentIndex(<span class="type">int</span> index);
+
+        <span class="comment">// This method sets the current index to the first row</span>
+        <span class="type">void</span> toFirst();
+
+        <span class="comment">// This method sets the current index to the last row</span>
+        <span class="type">void</span> toLast();
+
+        <span class="comment">// This method increments the current index by one row</span>
+        <span class="type">void</span> toNext();
+
+        <span class="comment">// This method decrements the current index by one row</span>
+        <span class="type">void</span> toPrevious();
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signals for the properties</span>
+        <span class="type">void</span> currentIndexChanged(<span class="type">int</span> index);
+        <span class="type">void</span> countChanged();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The private class that hides private API</span>
+        DataControlMapperPrivate<span class="operator">*</span> <span class="keyword">const</span> d;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@sql/sqlwidgetmapper/src/datacontrolmapper.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

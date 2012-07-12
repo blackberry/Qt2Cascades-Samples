@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : FtpDownloader.cpp Example File (network/qftp/src/FtpDownloader.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">FtpDownloader.cpp Example File</h1>
+<span class="small-subtitle">network/qftp/src/FtpDownloader.cpp</span>
+<!-- $$$network/qftp/src/FtpDownloader.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;FtpDownloader.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/Button&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Label&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/ListView&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/TextField&gt;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QFile&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    FtpDownloader<span class="operator">::</span>FtpDownloader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_url(QLatin1String(<span class="string">&quot;ftp://ftp.qnx.com/usr/free/Tech_Support_FAQ/other/&quot;</span>))
+        <span class="operator">,</span> m_ftp(<span class="number">0</span>)
+        <span class="operator">,</span> m_file(<span class="number">0</span>)
+        <span class="operator">,</span> m_parentDirectoryAvailable(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_downloadPossible(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_connectPossible(<span class="keyword">true</span>)
+        <span class="operator">,</span> m_connectLabel(tr(<span class="string">&quot;Connect&quot;</span>))
+        <span class="operator">,</span> m_selectionPossible(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_networkSession(<span class="number">0</span>)
+    {
+        <span class="comment">// Initialize the properties with some default values to bring the UI in a sane state on startup</span>
+
+        m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Please enter the name of an FTP server.&quot;</span>);
+        <span class="keyword">emit</span> statusTextChanged();
+
+        m_selectionPossible <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> selectionPossibleChanged();
+
+        m_parentDirectoryAvailable <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> parentDirectoryAvailableChanged();
+
+        m_downloadPossible <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> downloadPossibleChanged();
+
+        <span class="comment">// Call the cancelDownload() method whenever the user presses the 'Cancel' button in the download progress dialog</span>
+        connect(<span class="operator">&amp;</span>m_progressDialogController<span class="operator">,</span> SIGNAL(canceled())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(cancelDownload()));
+    }
+
+    FtpDownloader<span class="operator">::</span><span class="operator">~</span>FtpDownloader()
+    {
+        <span class="keyword">delete</span> m_file;
+        m_file <span class="operator">=</span> <span class="number">0</span>;
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>connectOrDisconnect()
+    {
+        <span class="comment">// This method is called whenever the user clicks on the 'Connect/Disconnect' button in the UI</span>
+
+        <span class="comment">// If we are currently connected (we have a valid FTP client object), we'll disconnect</span>
+        <span class="keyword">if</span> (m_ftp) {
+            <span class="comment">// Cleanup the FTP client object</span>
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>abort();
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+            m_ftp <span class="operator">=</span> <span class="number">0</span>;
+            <span class="comment">// Reset all properties to a disconnected state</span>
+            m_selectionPossible <span class="operator">=</span> <span class="keyword">false</span>;
+            <span class="keyword">emit</span> selectionPossibleChanged();
+
+            m_parentDirectoryAvailable <span class="operator">=</span> <span class="keyword">false</span>;
+            <span class="keyword">emit</span> parentDirectoryAvailableChanged();
+
+            m_downloadPossible <span class="operator">=</span> <span class="keyword">false</span>;
+            <span class="keyword">emit</span> downloadPossibleChanged();
+
+            m_connectPossible <span class="operator">=</span> <span class="keyword">true</span>;
+            <span class="keyword">emit</span> connectPossibleChanged();
+
+            m_connectLabel <span class="operator">=</span> tr(<span class="string">&quot;Connect&quot;</span>);
+            <span class="keyword">emit</span> connectLabelChanged();
+
+            m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Please enter the name of an FTP server.&quot;</span>);
+            <span class="keyword">emit</span> statusTextChanged();
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Before we try to create a new FTP client object, we check the availability of a network connection</span>
+
+        <span class="keyword">if</span> (<span class="operator">!</span>m_networkSession <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>m_networkSession<span class="operator">-</span><span class="operator">&gt;</span>isOpen()) { <span class="comment">// If we have no network session available yet...</span>
+
+            <span class="comment">// ... check if the platform requires that a network session is created before network operations can be performed</span>
+            <span class="keyword">if</span> (m_manager<span class="operator">.</span>capabilities() <span class="operator">&amp;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfigurationmanager.html">QNetworkConfigurationManager</a></span><span class="operator">::</span>NetworkSessionRequired) {
+
+                <span class="keyword">if</span> (<span class="operator">!</span>m_networkSession) {
+                    <span class="comment">// Get saved network configuration</span>
+                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsettings.html">QSettings</a></span> settings(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsettings.html">QSettings</a></span><span class="operator">::</span>UserScope<span class="operator">,</span> QLatin1String(<span class="string">&quot;Trolltech&quot;</span>));
+                    settings<span class="operator">.</span>beginGroup(QLatin1String(<span class="string">&quot;QtNetwork&quot;</span>));
+                    <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> id <span class="operator">=</span> settings<span class="operator">.</span>value(QLatin1String(<span class="string">&quot;DefaultNetworkConfiguration&quot;</span>))<span class="operator">.</span>toString();
+                    settings<span class="operator">.</span>endGroup();
+
+                    <span class="comment">// If the saved network configuration is not currently discovered use the system default</span>
+                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfiguration.html">QNetworkConfiguration</a></span> config <span class="operator">=</span> m_manager<span class="operator">.</span>configurationFromIdentifier(id);
+                    <span class="keyword">if</span> ((config<span class="operator">.</span>state() <span class="operator">&amp;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfiguration.html">QNetworkConfiguration</a></span><span class="operator">::</span>Discovered) <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfiguration.html">QNetworkConfiguration</a></span><span class="operator">::</span>Discovered) {
+                        config <span class="operator">=</span> m_manager<span class="operator">.</span>defaultConfiguration();
+                    }
+
+                    m_networkSession <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworksession.html">QNetworkSession</a></span>(config<span class="operator">,</span> <span class="keyword">this</span>);
+
+                    <span class="comment">// As soon as the network session is established, try to connect to the FTP server</span>
+                    connect(m_networkSession<span class="operator">,</span> SIGNAL(opened())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(connectToFtp()));
+
+                    connect(m_networkSession<span class="operator">,</span> SIGNAL(error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworksession.html">QNetworkSession</a></span><span class="operator">::</span>SessionError))<span class="operator">,</span>
+                            <span class="keyword">this</span><span class="operator">,</span> SLOT(enableConnectButton()));
+                }
+
+                m_connectPossible <span class="operator">=</span> <span class="keyword">false</span>;
+                <span class="keyword">emit</span> connectPossibleChanged();
+
+                m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Opening network session.&quot;</span>);
+                <span class="keyword">emit</span> statusTextChanged();
+
+                <span class="comment">// Trigger to open the network session</span>
+                m_networkSession<span class="operator">-</span><span class="operator">&gt;</span>open();
+                <span class="keyword">return</span>;
+            }
+        }
+
+        <span class="comment">// ... otherwise if a we have an open network session, try to connect to the FTP server immediately</span>
+        connectToFtp();
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url)
+    {
+        <span class="keyword">if</span> (m_url <span class="operator">!</span><span class="operator">=</span> url) {
+            m_url <span class="operator">=</span> url;
+            <span class="keyword">emit</span> urlChanged();
+        }
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FtpDownloader<span class="operator">::</span>url() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_url;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FtpDownloader<span class="operator">::</span>statusText() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_statusText;
+    }
+
+    <span class="type">bool</span> FtpDownloader<span class="operator">::</span>parentDirectoryAvailable() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_parentDirectoryAvailable;
+    }
+
+    <span class="type">bool</span> FtpDownloader<span class="operator">::</span>downloadPossible() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_downloadPossible;
+    }
+
+    <span class="type">bool</span> FtpDownloader<span class="operator">::</span>connectPossible() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_connectPossible;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FtpDownloader<span class="operator">::</span>connectLabel() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_connectLabel;
+    }
+
+    <span class="type">bool</span> FtpDownloader<span class="operator">::</span>selectionPossible() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_selectionPossible;
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>connectToFtp()
+    {
+        <span class="comment">// Create a new FTP client object and connect to the signals for receiving status changes</span>
+        m_ftp <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span>(<span class="keyword">this</span>);
+        connect(m_ftp<span class="operator">,</span> SIGNAL(commandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(ftpCommandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(listInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(addToList(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(dataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>)));
+
+        <span class="comment">// Reset the model and current path before we start navigation on the FTP server</span>
+        m_model<span class="operator">.</span>clear();
+        m_currentPath<span class="operator">.</span>clear();
+
+        <span class="comment">// Connect to the FTP server (with credentials if available) and navigate to the given path</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> url(m_url);
+        <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isValid() <span class="operator">|</span><span class="operator">|</span> url<span class="operator">.</span>scheme()<span class="operator">.</span>toLower() <span class="operator">!</span><span class="operator">=</span> QLatin1String(<span class="string">&quot;ftp&quot;</span>)) {
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>connectToHost(m_url<span class="operator">,</span> <span class="number">21</span>);
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login();
+        } <span class="keyword">else</span> {
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>connectToHost(url<span class="operator">.</span>host()<span class="operator">,</span> url<span class="operator">.</span>port(<span class="number">21</span>));
+
+            <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>userName()<span class="operator">.</span>isEmpty())
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span><span class="operator">::</span>fromPercentEncoding(url<span class="operator">.</span>userName()<span class="operator">.</span>toLatin1())<span class="operator">,</span> url<span class="operator">.</span>password());
+            <span class="keyword">else</span>
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login();
+            <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>path()<span class="operator">.</span>isEmpty()) {
+                m_currentPath <span class="operator">=</span> url<span class="operator">.</span>path();
+                <span class="keyword">if</span> (m_currentPath<span class="operator">.</span>endsWith(<span class="char">'/'</span>))
+                    m_currentPath<span class="operator">.</span>chop(<span class="number">1</span>);
+
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>cd(m_currentPath);
+            }
+        }
+
+        <span class="comment">// Update the status properties to reflect that we can start navigation on the FTP server</span>
+        m_selectionPossible <span class="operator">=</span> <span class="keyword">true</span>;
+        <span class="keyword">emit</span> selectionPossibleChanged();
+
+        m_connectPossible <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> connectPossibleChanged();
+
+        m_connectLabel <span class="operator">=</span> tr(<span class="string">&quot;Disconnect&quot;</span>);
+        <span class="keyword">emit</span> connectLabelChanged();
+
+        m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Connecting to FTP server %1...&quot;</span>)<span class="operator">.</span>arg(m_url);
+        <span class="keyword">emit</span> statusTextChanged();
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>downloadFile()
+    {
+        <span class="comment">// Retrieve the selected item from the directory listing ListView</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> data <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
+        <span class="keyword">if</span> (<span class="operator">!</span>data<span class="operator">.</span>isValid()) {
+            enableDownloadButton();
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">const</span> FtpItem currentItem <span class="operator">=</span> data<span class="operator">.</span>value<span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span>();
+
+        <span class="comment">// Assemble the target file name for the download</span>
+        m_downloadFileName <span class="operator">=</span> currentItem<span class="operator">.</span>fileName;
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> diskFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_downloadFileName;
+    <span class="comment">//</span>
+        <span class="comment">// If the target file name exists already, report an error</span>
+        <span class="keyword">if</span> (<span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span><span class="operator">::</span>exists(diskFileName)) {
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;FTP&quot;</span>)<span class="operator">,</span>
+                    tr(<span class="string">&quot;There already exists a file called %1 in %2.&quot;</span>)<span class="operator">.</span>arg(diskFileName)<span class="operator">.</span>arg(<span class="string">&quot;tmp/&quot;</span>)<span class="operator">,</span>
+                    tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Try to open the target file and report an error if that's not possible</span>
+        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span>(diskFileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;FTP&quot;</span>)<span class="operator">,</span>
+                    tr(<span class="string">&quot;Unable to save the file %1: %2.&quot;</span>)<span class="operator">.</span>arg(diskFileName)<span class="operator">.</span>arg(m_file<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span>
+                    tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+            <span class="keyword">delete</span> m_file;
+            m_file <span class="operator">=</span> <span class="number">0</span>;
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Start the download of the selected item on the FTP server to the local target file</span>
+        m_ftp<span class="operator">-</span><span class="operator">&gt;</span>get(m_downloadFileName<span class="operator">,</span> m_file);
+
+        <span class="comment">// Update the status properties to reflect the started download</span>
+        m_progressDialogController<span class="operator">.</span>setLabelText(tr(<span class="string">&quot;Downloading %1...&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName));
+        m_downloadPossible <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> downloadPossibleChanged();
+
+        <span class="comment">// Show the progress dialog</span>
+        m_progressDialogController<span class="operator">.</span>show();
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>cancelDownload()
+    {
+        <span class="comment">// If the user wants to cancel the download, tell the FTP client about it ...</span>
+        m_ftp<span class="operator">-</span><span class="operator">&gt;</span>abort();
+
+        <span class="comment">// ... and clean up the local target file</span>
+        <span class="keyword">if</span> (m_file<span class="operator">-</span><span class="operator">&gt;</span>exists()) {
+            m_file<span class="operator">-</span><span class="operator">&gt;</span>close();
+            m_file<span class="operator">-</span><span class="operator">&gt;</span>remove();
+        }
+        <span class="keyword">delete</span> m_file;
+        m_file <span class="operator">=</span> <span class="number">0</span>;
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>ftpCommandFinished(<span class="type">int</span><span class="operator">,</span> <span class="type">bool</span> error)
+    {
+        <span class="comment">// This method is called whenever a FTP command has been processed by the FTP client</span>
+
+        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>ConnectToHost) {
+            <span class="comment">// If the connect failed, show an error dialog ...</span>
+            <span class="keyword">if</span> (error) {
+                m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;FTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Unable to connect to the FTP server &quot;</span>
+                        <span class="string">&quot;at %1. Please check that the host &quot;</span>
+                        <span class="string">&quot;name is correct.&quot;</span>)<span class="operator">.</span>arg(m_url)<span class="operator">,</span>
+                        tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+                connectOrDisconnect();
+                <span class="keyword">return</span>;
+            }
+
+            <span class="comment">// ... otherwise update status properties to reflect successful login.</span>
+            m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Logged onto %1.&quot;</span>)<span class="operator">.</span>arg(m_url);
+            <span class="keyword">emit</span> statusTextChanged();
+
+            m_connectPossible <span class="operator">=</span> <span class="keyword">true</span>;
+            <span class="keyword">emit</span> connectPossibleChanged();
+
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// After a successful login we immediately start with the directory listing</span>
+        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>Login)
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>list();
+
+        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>Get) {
+            <span class="keyword">if</span> (error) {
+                <span class="comment">// If the download failed, we update the status property ...</span>
+                m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Canceled download of %1.&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName);
+                <span class="keyword">emit</span> statusTextChanged();
+
+                <span class="comment">// ... and clean up the local target file</span>
+                <span class="keyword">if</span> (m_file) {
+                    m_file<span class="operator">-</span><span class="operator">&gt;</span>close();
+                    m_file<span class="operator">-</span><span class="operator">&gt;</span>remove();
+                }
+            } <span class="keyword">else</span> {
+                <span class="comment">// If the download succeeded or was explicitly canceled, we just update the status property</span>
+                <span class="keyword">if</span> (m_file) {
+                    <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> actualDir(<span class="operator">*</span>m_file);
+                    m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Downloaded %1 to %2.&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName)<span class="operator">.</span>arg(actualDir<span class="operator">.</span>absolutePath());
+                    <span class="keyword">emit</span> statusTextChanged();
+
+                    m_file<span class="operator">-</span><span class="operator">&gt;</span>close();
+                } <span class="keyword">else</span> {
+                    m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Canceled download of %1.&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName);
+                    <span class="keyword">emit</span> statusTextChanged();
+                }
+            }
+
+            <span class="comment">// Delete the target file object (Note: that does not delete the local file on the file system)</span>
+            <span class="keyword">delete</span> m_file;
+            m_file <span class="operator">=</span> <span class="number">0</span>;
+
+            <span class="comment">// Update the status properties</span>
+            enableDownloadButton();
+
+            <span class="comment">// Hide the progress dialog</span>
+            m_progressDialogController<span class="operator">.</span>hide();
+        } <span class="keyword">else</span> <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>List) {
+            <span class="keyword">if</span> (m_model<span class="operator">.</span>isEmpty()) {
+                <span class="comment">/**
+                 * If the model is empty after a directory listing, we add a not selectable dummy entry, so
+                 * that the user has some visual feedback for an empty directory.
+                 */</span>
+                FtpItem item;
+                item<span class="operator">.</span>fileName <span class="operator">=</span> tr(<span class="string">&quot;&lt;empty&gt;&quot;</span>);
+                m_model<span class="operator">.</span>append(item);
+                m_selectionPossible <span class="operator">=</span> <span class="keyword">false</span>;
+                <span class="keyword">emit</span> selectionPossibleChanged();
+            }
+
+            <span class="keyword">if</span> (<span class="operator">!</span>m_currentPath<span class="operator">.</span>isEmpty()) {
+                <span class="comment">// Update the status property</span>
+                m_parentDirectoryAvailable <span class="operator">=</span> <span class="keyword">true</span>;
+                <span class="keyword">emit</span> parentDirectoryAvailableChanged();
+            }
+        }
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>addToList(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span> <span class="operator">&amp;</span>urlInfo)
+    {
+        <span class="comment">// Fill an FtpItem with the data from FTP directory listing ...</span>
+        FtpItem item;
+        item<span class="operator">.</span>fileName <span class="operator">=</span> urlInfo<span class="operator">.</span>name();
+        item<span class="operator">.</span>fileSize <span class="operator">=</span> urlInfo<span class="operator">.</span>size();
+        item<span class="operator">.</span>owner <span class="operator">=</span> urlInfo<span class="operator">.</span>owner();
+        item<span class="operator">.</span>group <span class="operator">=</span> urlInfo<span class="operator">.</span>group();
+        item<span class="operator">.</span>time <span class="operator">=</span> urlInfo<span class="operator">.</span>lastModified();
+        item<span class="operator">.</span>isDirectory <span class="operator">=</span> urlInfo<span class="operator">.</span>isDir();
+
+        <span class="keyword">const</span> <span class="type">bool</span> wasEmpty <span class="operator">=</span> m_model<span class="operator">.</span>isEmpty();
+
+        <span class="comment">// ... and append it to the model</span>
+        m_model<span class="operator">.</span>append(item);
+
+        <span class="comment">// If this is the first entry in the model, also update the status property</span>
+        <span class="keyword">if</span> (wasEmpty) {
+            m_selectionPossible <span class="operator">=</span> <span class="keyword">true</span>;
+            <span class="keyword">emit</span> selectionPossibleChanged();
+        }
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>processItem(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath<span class="operator">,</span> <span class="type">bool</span> active)
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_selectionPossible)
+            <span class="keyword">return</span>;
+
+        m_currentIndexPath <span class="operator">=</span> indexPath;
+        enableDownloadButton();
+
+        <span class="keyword">if</span> (<span class="operator">!</span>indexPath<span class="operator">.</span>isEmpty() <span class="operator">&amp;</span><span class="operator">&amp;</span> active) {
+            <span class="comment">// If the user has selected an valid item in the directory listing ListView, check whether it's a directory</span>
+            <span class="keyword">const</span> FtpItem item <span class="operator">=</span> m_model<span class="operator">.</span>data(indexPath)<span class="operator">.</span>value<span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span>();
+            <span class="keyword">if</span> (item<span class="operator">.</span>isDirectory) {
+                <span class="comment">// In this case clear the content of the model ...</span>
+                m_model<span class="operator">.</span>clear();
+
+                <span class="comment">// ... assemble the path for the selected subdirectory ...</span>
+                m_currentPath <span class="operator">+</span><span class="operator">=</span> <span class="char">'/'</span>;
+                m_currentPath <span class="operator">+</span><span class="operator">=</span> item<span class="operator">.</span>fileName;
+
+                <span class="comment">// ... and trigger a listing for this subdirectory</span>
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>cd(item<span class="operator">.</span>fileName);
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>list();
+
+                <span class="comment">// Update the status property</span>
+                m_parentDirectoryAvailable <span class="operator">=</span> <span class="keyword">true</span>;
+                <span class="keyword">emit</span> parentDirectoryAvailableChanged();
+                <span class="keyword">return</span>;
+            }
+        }
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>cdToParent()
+    {
+        <span class="comment">// If the user requests to go to the parent directory clear the model ...</span>
+        m_model<span class="operator">.</span>clear();
+
+        m_currentIndexPath<span class="operator">.</span>clear();
+        enableDownloadButton();
+
+        <span class="comment">// ... extract the path to the parent directory ...</span>
+        m_currentPath <span class="operator">=</span> m_currentPath<span class="operator">.</span>left(m_currentPath<span class="operator">.</span>lastIndexOf(<span class="char">'/'</span>));
+
+        <span class="comment">// ... change to the parent directory ...</span>
+        <span class="keyword">if</span> (m_currentPath<span class="operator">.</span>isEmpty()) {
+            m_parentDirectoryAvailable <span class="operator">=</span> <span class="keyword">false</span>;
+            <span class="keyword">emit</span> parentDirectoryAvailableChanged();
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>cd(<span class="string">&quot;/&quot;</span>);
+        } <span class="keyword">else</span> {
+            m_ftp<span class="operator">-</span><span class="operator">&gt;</span>cd(m_currentPath);
+        }
+
+        <span class="comment">// ... and trigger a listing for the parent directory</span>
+        m_ftp<span class="operator">-</span><span class="operator">&gt;</span>list();
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> readBytes<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> totalBytes)
+    {
+        <span class="comment">// Calculate the progress of the download in percent</span>
+        <span class="keyword">const</span> <span class="type">float</span> progress <span class="operator">=</span> readBytes <span class="operator">/</span> (<span class="type">float</span>) totalBytes <span class="operator">*</span> <span class="number">100.0f</span>;
+
+        <span class="comment">// Update the progress information in the progress dialog</span>
+        m_progressDialogController<span class="operator">.</span>setProgress(progress);
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>enableDownloadButton()
+    {
+        <span class="comment">// Check whether the currently selected directory listing entry can be downloaded</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> itemData <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
+        <span class="keyword">if</span> (itemData<span class="operator">.</span>isValid()) {
+            <span class="keyword">const</span> FtpItem item <span class="operator">=</span> itemData<span class="operator">.</span>value<span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span>();
+            m_downloadPossible <span class="operator">=</span> <span class="operator">!</span>item<span class="operator">.</span>isDirectory;
+        } <span class="keyword">else</span> {
+            m_downloadPossible <span class="operator">=</span> <span class="keyword">false</span>;
+        }
+        <span class="keyword">emit</span> downloadPossibleChanged();
+    }
+
+    <span class="type">void</span> FtpDownloader<span class="operator">::</span>enableConnectButton()
+    {
+        <span class="comment">// Save the used configuration</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfiguration.html">QNetworkConfiguration</a></span> config <span class="operator">=</span> m_networkSession<span class="operator">-</span><span class="operator">&gt;</span>configuration();
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> id;
+        <span class="keyword">if</span> (config<span class="operator">.</span>type() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfiguration.html">QNetworkConfiguration</a></span><span class="operator">::</span>UserChoice)
+            id <span class="operator">=</span> m_networkSession<span class="operator">-</span><span class="operator">&gt;</span>sessionProperty(QLatin1String(<span class="string">&quot;UserChoiceConfiguration&quot;</span>))<span class="operator">.</span>toString();
+        <span class="keyword">else</span>
+            id <span class="operator">=</span> config<span class="operator">.</span>identifier();
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsettings.html">QSettings</a></span> settings(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsettings.html">QSettings</a></span><span class="operator">::</span>UserScope<span class="operator">,</span> QLatin1String(<span class="string">&quot;Trolltech&quot;</span>));
+        settings<span class="operator">.</span>beginGroup(QLatin1String(<span class="string">&quot;QtNetwork&quot;</span>));
+        settings<span class="operator">.</span>setValue(QLatin1String(<span class="string">&quot;DefaultNetworkConfiguration&quot;</span>)<span class="operator">,</span> id);
+        settings<span class="operator">.</span>endGroup();
+
+        <span class="comment">// Update the status properties</span>
+        m_connectPossible <span class="operator">=</span> <span class="keyword">true</span>;
+        <span class="keyword">emit</span> connectPossibleChanged();
+
+        m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Please enter the name of an FTP server.&quot;</span>);
+        <span class="keyword">emit</span> statusTextChanged();
+    }
+
+    bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span> <span class="operator">*</span>FtpDownloader<span class="operator">::</span>model()
+    {
+        <span class="keyword">return</span> <span class="operator">&amp;</span>m_model;
+    }
+
+    MessageBoxController <span class="operator">*</span>FtpDownloader<span class="operator">::</span>messageBoxController()
+    {
+        <span class="keyword">return</span> <span class="operator">&amp;</span>m_messageBoxController;
+    }
+
+    ProgressDialogController <span class="operator">*</span>FtpDownloader<span class="operator">::</span>progressDialogController()
+    {
+        <span class="keyword">return</span> <span class="operator">&amp;</span>m_progressDialogController;
+    }</pre>
+</div>
+<!-- @@@network/qftp/src/FtpDownloader.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

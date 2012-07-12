@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : Player.cpp Example File (script/scriptgame/src/Player.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">Player.cpp Example File</h1>
+<span class="small-subtitle">script/scriptgame/src/Player.cpp</span>
+<!-- $$$script/scriptgame/src/Player.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;Player.hpp&quot;</span>
+
+    <span class="preprocessor">#include &quot;Board.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbsoluteLayoutProperties&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    <span class="keyword">const</span> <span class="keyword">static</span> <span class="type">int</span> s_tileSize <span class="operator">=</span> <span class="number">50</span>;
+
+    Player<span class="operator">::</span>Player(Board <span class="operator">*</span>board<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_board(board)
+        <span class="operator">,</span> m_playerTile(<span class="keyword">new</span> ImageView)
+        <span class="operator">,</span> m_currentDirection(Down)
+        <span class="operator">,</span> m_currentPosition(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>)
+    {
+        <span class="comment">// Initialize the player tile and add it to the board container</span>
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setPreferredWidth(s_tileSize);
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setPreferredHeight(s_tileSize);
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setImage(Image(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span>(<span class="string">&quot;asset:///images/player.png&quot;</span>)));
+        m_board<span class="operator">-</span><span class="operator">&gt;</span>board()<span class="operator">-</span><span class="operator">&gt;</span>add(m_playerTile);
+
+        <span class="comment">/**
+         * Ensure that x/y position is really 0, otherwise using the translationX/translationY properties
+         * does not work as expected.
+         */</span>
+        AbsoluteLayoutProperties <span class="operator">*</span>properties <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>AbsoluteLayoutProperties<span class="operator">*</span><span class="operator">&gt;</span>(m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>layoutProperties());
+        <span class="keyword">if</span> (properties) {
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionX(<span class="number">0</span>);
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionY(<span class="number">0</span>);
+        }
+    }
+
+    Player<span class="operator">::</span><span class="operator">~</span>Player()
+    {
+        <span class="comment">// Remove the tile from the UI when this player is deleted</span>
+        m_board<span class="operator">-</span><span class="operator">&gt;</span>board()<span class="operator">-</span><span class="operator">&gt;</span>remove(m_playerTile);
+        <span class="keyword">delete</span> m_playerTile;
+    }
+
+    <span class="type">void</span> Player<span class="operator">::</span><a href="http://qt.nokia.com/doc/4.8/qtextstream.html#reset">reset</a>()
+    {
+        <span class="comment">// Reset the current direction</span>
+        m_currentDirection <span class="operator">=</span> Down;
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(<span class="number">0</span>);
+
+        <span class="comment">// Reset the current position</span>
+        m_currentPosition <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>);
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setTranslationX(<span class="number">0</span>);
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setTranslationY(<span class="number">0</span>);
+    }
+
+    <span class="type">void</span> Player<span class="operator">::</span>turnLeft()
+    {
+        <span class="comment">// Just rotate the tile, in a later version we can use different images for each direction</span>
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">-</span> <span class="number">90</span>);
+
+        <span class="comment">// Update the direction depending on the current direction</span>
+        <span class="keyword">switch</span> (m_currentDirection) {
+            <span class="keyword">case</span> Up:
+                m_currentDirection <span class="operator">=</span> Left;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Right:
+                m_currentDirection <span class="operator">=</span> Up;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Down:
+                m_currentDirection <span class="operator">=</span> Right;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Left:
+                m_currentDirection <span class="operator">=</span> Down;
+                <span class="keyword">break</span>;
+        }
+    }
+
+    <span class="type">void</span> Player<span class="operator">::</span>turnRight()
+    {
+        <span class="comment">// Just rotate the tile, in a later version we can use different images for each direction</span>
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setRotationZ(m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>rotationZ() <span class="operator">+</span> <span class="number">90</span>);
+
+        <span class="comment">// Update the direction depending on the current direction</span>
+        <span class="keyword">switch</span> (m_currentDirection) {
+            <span class="keyword">case</span> Up:
+                m_currentDirection <span class="operator">=</span> Right;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Right:
+                m_currentDirection <span class="operator">=</span> Down;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Down:
+                m_currentDirection <span class="operator">=</span> Left;
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Left:
+                m_currentDirection <span class="operator">=</span> Up;
+                <span class="keyword">break</span>;
+        }
+    }
+
+    <span class="type">void</span> Player<span class="operator">::</span>go()
+    {
+        <span class="comment">// Update the current position of the player depending on the current direction</span>
+        <span class="keyword">switch</span> (m_currentDirection) {
+            <span class="keyword">case</span> Up:
+                <span class="keyword">if</span> (m_board<span class="operator">-</span><span class="operator">&gt;</span>canMoveTo(m_currentPosition<span class="operator">.</span>x()<span class="operator">,</span> m_currentPosition<span class="operator">.</span>y() <span class="operator">-</span> <span class="number">1</span>)) {
+                    m_currentPosition<span class="operator">.</span>setY(m_currentPosition<span class="operator">.</span>y() <span class="operator">-</span> <span class="number">1</span>);
+                }
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Right:
+                <span class="keyword">if</span> (m_board<span class="operator">-</span><span class="operator">&gt;</span>canMoveTo(m_currentPosition<span class="operator">.</span>x() <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> m_currentPosition<span class="operator">.</span>y())) {
+                    m_currentPosition<span class="operator">.</span>setX(m_currentPosition<span class="operator">.</span>x() <span class="operator">+</span> <span class="number">1</span>);
+                }
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Down:
+                <span class="keyword">if</span> (m_board<span class="operator">-</span><span class="operator">&gt;</span>canMoveTo(m_currentPosition<span class="operator">.</span>x()<span class="operator">,</span> m_currentPosition<span class="operator">.</span>y() <span class="operator">+</span> <span class="number">1</span>)) {
+                    m_currentPosition<span class="operator">.</span>setY(m_currentPosition<span class="operator">.</span>y() <span class="operator">+</span> <span class="number">1</span>);
+                }
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> Left:
+                <span class="keyword">if</span> (m_board<span class="operator">-</span><span class="operator">&gt;</span>canMoveTo(m_currentPosition<span class="operator">.</span>x() <span class="operator">-</span> <span class="number">1</span><span class="operator">,</span> m_currentPosition<span class="operator">.</span>y())) {
+                    m_currentPosition<span class="operator">.</span>setX(m_currentPosition<span class="operator">.</span>x() <span class="operator">-</span> <span class="number">1</span>);
+                }
+                <span class="keyword">break</span>;
+        }
+
+        <span class="comment">// Update the position of the player tile on screen</span>
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setTranslationX(m_currentPosition<span class="operator">.</span>x() <span class="operator">*</span> s_tileSize);
+        m_playerTile<span class="operator">-</span><span class="operator">&gt;</span>setTranslationY(m_currentPosition<span class="operator">.</span>y() <span class="operator">*</span> s_tileSize);
+    }</pre>
+</div>
+<!-- @@@script/scriptgame/src/Player.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- multicastreceiver.qdoc -->
+  <title>Cascades : Multicast Receiver Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#receiver">Receiver</a></li>
+</ul>
+</div>
+<h1 class="title">Multicast Receiver Example</h1>
+<span class="subtitle"></span>
+<!-- $$$network/multicastreceiver-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="network-multicastreceiver-assets-main-qml.html">network/multicastreceiver/assets/main.qml</a></li>
+<li><a href="network-multicastreceiver-src-receiver-cpp.html">network/multicastreceiver/src/Receiver.cpp</a></li>
+<li><a href="network-multicastreceiver-src-receiver-hpp.html">network/multicastreceiver/src/Receiver.hpp</a></li>
+<li><a href="network-multicastreceiver-src-main-cpp.html">network/multicastreceiver/src/main.cpp</a></li>
+<li><a href="network-multicastreceiver-multicastreceiver-pro.html">network/multicastreceiver/multicastreceiver.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Multicast Receiver example shows how to receive information that is sent to a multicast group.</p>
+<p class="centerAlign"><img src="images/multicastreceiver-example.png" alt="" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> class to send and receive multicast messages on the network.</p>
+<p>The example application is splitted in two executables, <a href="network-multicastsender.html">multicastsender</a> and multicastreceiver. While the <a href="network-multicastsender.html">multicastsender</a> allows the user to start the multicasting of messages on the local network, the multicastreceiver will listen on the local network for these messages and display the received ones in the UI.</p>
+<a name="receiver"></a>
+<h2>Receiver</h2>
+<p>The central class in multicastreceiver is Receiver, which encapsulates the retrieval of the multicasted messages and provides a property to display the content of the received datagrams in the UI.</p>
+<pre class="qml">                <span class="comment">// A standard Label</span>
+                <span class="type">Label</span> {
+                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                    }
+
+                    <span class="name">text</span>: <span class="name">_receiver</span>.<span class="name">status</span>
+
+                    <span class="comment">// Defines a text style with custom font size</span>
+                    <span class="type">textStyle</span> {
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                        <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                        <span class="name">size</span>: <span class="number">40</span>
+                    }
+                }</pre>
+<p>The 'status' property of the exported Receiver object is bound against the 'text' property of a Label control, so that whenever a new datagram arrives, the text is updated automatically on screen.</p>
+<pre class="cpp">    Receiver<span class="operator">::</span>Receiver(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    {
+        <span class="comment">// Initialize the multicast address</span>
+        m_groupAddress <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhostaddress.html">QHostAddress</a></span>(<span class="string">&quot;239.255.43.21&quot;</span>);
+
+        <span class="comment">/**
+         * Initialize the 'status' property with some data, it will
+         * be shown in the UI until the first datagram arrives.
+         */</span>
+        m_status <span class="operator">=</span> tr(<span class="string">&quot;Listening for multicasted messages&quot;</span>);
+
+        <span class="comment">// Create a new UDP socket and bind it against port 45454</span>
+        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>(<span class="keyword">this</span>);
+        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>bind(<span class="number">45454</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span><span class="operator">::</span>ShareAddress);
+
+        <span class="comment">// Tell the UDP socket which multicast group it should join</span>
+        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>joinMulticastGroup(m_groupAddress);
+
+        <span class="comment">/**
+         * Create signal/slot connection to invoke processPendingDatagrams() whenever
+         * a new multicast datagram is received by the socket.
+         */</span>
+        connect(m_udpSocket<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(processPendingDatagrams()));
+    }</pre>
+<p>Inside the constructor of the Receiver class, we initialize the 'status' property and create the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> object that encapsulates the low-level network communication. By calling <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html#bind">bind()</a> we let the socket listen on port 45454 for incoming messages. We also have to tell the socket which multicast group we want to join, that's done by calling <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html#joinMulticastGroup">joinMulticastGroup()</a>. In the next step we connect the <a href="http://qt.nokia.com/doc/4.8/qiodevice.html#readyRead">readyRead()</a> signal of the socket, which is emitted whenever a new datagram arrived, against our own slot processPendingDatagrams().</p>
+<pre class="cpp">    <span class="type">void</span> Receiver<span class="operator">::</span>processPendingDatagrams()
+    {
+        <span class="comment">// Now read all available datagrams from the socket</span>
+        <span class="keyword">while</span> (m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>hasPendingDatagrams()) {
+            <span class="comment">// Create a temporary buffer ...</span>
+            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> datagram;
+
+            <span class="comment">// ... with the size of the received datagram ...</span>
+            datagram<span class="operator">.</span>resize(m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>pendingDatagramSize());
+
+            <span class="comment">// ... and copy over the received datagram into that buffer.</span>
+            m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>readDatagram(datagram<span class="operator">.</span>data()<span class="operator">,</span> datagram<span class="operator">.</span>size());
+
+            <span class="comment">// Update the 'status' property with the content of the received datagram</span>
+            m_status <span class="operator">=</span> tr(<span class="string">&quot;%1&quot;</span>)<span class="operator">.</span>arg(datagram<span class="operator">.</span>data());
+            <span class="keyword">emit</span> statusChanged();
+        }
+    }</pre>
+<p>In processPendingDatagrams() we check whether the socket still has pending datagrams and if that's the case, we read the next datagram from the socket and store its content in the 'status' property. By emitting the 'statusChanged()' signal, we trigger the reevaluation of all property bindings in the UI where 'status' is used.</p>
+</div>
+<!-- @@@network/multicastreceiver -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>
