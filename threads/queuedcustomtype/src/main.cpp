@@ -61,18 +61,22 @@ int main(int argc, char **argv)
 
     Application app(argc, argv);
 
+    // Create the renderer object
     Renderer renderer;
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // Make the Renderer object available as context property
-        qml->setContextProperty("_renderer", &renderer);
-        Page *appPage = qml->createRootNode<Page>();
-        if (appPage) {
-            Application::instance()->setScene(appPage);
-            // Tell the Renderer object which control it should use for 'painting'
-            renderer.setCanvas(appPage->findChild<Container*>("canvas"));
-        }
-    }
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the Renderer object available to the UI as context property
+    qml->setContextProperty("_renderer", &renderer);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
+
+    // Tell the Renderer object which control it should use for 'painting'
+    renderer.setCanvas(appPage->findChild<Container*>("canvas"));
+
     return Application::exec();
 }
 //! [main function]

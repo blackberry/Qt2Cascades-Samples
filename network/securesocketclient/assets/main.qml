@@ -48,49 +48,42 @@ import bb.cascades 1.0
 Page {
 //![0]
     // A container is used to gather visual items together.
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // Main application control view
         MainView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
         }
 
         // Displays any ssl errors.
         SslErrorView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             visible: _sslErrorControl.visible
         }
 
         // Displays certifacte information
         CertificateInfoView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             visible: _certificateInfoControl.visible
         }
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             visible: false
         }
     }

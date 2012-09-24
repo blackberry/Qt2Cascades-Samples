@@ -55,10 +55,10 @@ using namespace bb::cascades;
 App::App()
 {
     // Load the main QML file and make the App object available as context property
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
     if (!qml->hasErrors()) {
         qml->setContextProperty("_app", this);
-        Page *appPage = qml->createRootNode<Page>();
+        Page *appPage = qml->createRootObject<Page>();
         if (appPage) {
             Application::instance()->setScene(appPage);
 

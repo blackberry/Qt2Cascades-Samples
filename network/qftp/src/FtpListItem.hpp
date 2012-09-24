@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef _FTPLISTITEM_H_
-#define _FTPLISTITEM_H_
+#ifndef FTPLISTITEM_HPP
+#define FTPLISTITEM_HPP
 
 #include <bb/cascades/CustomControl>
 #include <bb/cascades/ListItemListener>
@@ -97,4 +97,4 @@ private:
     ImageView *m_highlighContainer;
 };
 
-#endif // ifndef _FTPLISTITEM_H_
+#endif

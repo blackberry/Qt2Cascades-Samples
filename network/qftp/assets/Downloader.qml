@@ -48,41 +48,34 @@ Container {
     layout: DockLayout {}
 
     ImageView {
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-            verticalAlignment: VerticalAlignment.Top
-        }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Top
 
         imageSource: "asset:///images/top.png"
     }
 
     // Groups the ftp url TextField
     Container {
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-            verticalAlignment: VerticalAlignment.Fill
-        }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
 
-        layout: StackLayout {
-            leftPadding: 20
-            rightPadding: 20
-        }
+        leftPadding: 20
+        rightPadding: 20
 
         Container {
             minHeight: 120
+            leftPadding: 30
+            rightPadding: 30
 
             layout: StackLayout {
-                leftPadding: 30
-                rightPadding: 30
-
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
 
             // A standard TextField
             TextField {
+                verticalAlignment: VerticalAlignment.Center
                 leftMargin: 5
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: 3
                 }
                 text: _downloader.url
@@ -93,9 +86,9 @@ Container {
 
             // A standard Button
             Button {
+                verticalAlignment: VerticalAlignment.Center
                 leftMargin: 15
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: 2
                 }
 
@@ -110,43 +103,46 @@ Container {
 
         // A standard ListView
         ListView {
+            horizontalAlignment: HorizontalAlignment.Center
             preferredWidth: 700
             topMargin: 24
 
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
                 spaceQuota: 6
             }
 
             dataModel: _model
-            listItemManager: _itemManager
+            listItemProvider: _itemProvider
             enabled: _downloader.selectionPossible
 
             // Open folder or highlight file on selection
-            onSelectionChanged: _downloader.processItem (indexPath, selected)
+            onTriggered: {
+                clearSelection();
+                select(indexPath);
+
+                _downloader.processItem (indexPath)
+            }
         }
 
         Container {
+            horizontalAlignment: HorizontalAlignment.Fill
+
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
                 spaceQuota: 1
             }
 
             // Groups the connection control Buttons
             Container {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard Button
                 Button {
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
-                    }
+                    verticalAlignment: VerticalAlignment.Center
+
                     text: qsTr ("Up")
 
                     // Enable control upon successful connection
@@ -158,9 +154,8 @@ Container {
 
                 // A standard Button
                 Button {
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
-                    }
+                    verticalAlignment: VerticalAlignment.Center
+
                     text: qsTr ("Download")
 
                     // Enable Button upon successful connection
@@ -173,10 +168,8 @@ Container {
 
             // A standard Label
             Label {
+                horizontalAlignment: HorizontalAlignment.Fill
                 topMargin: 10
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                }
 
                 text: _downloader.statusText
 
@@ -184,7 +177,6 @@ Container {
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
                     color: Color.Black
-                    size: 25
                 }
             }
         }

@@ -45,23 +45,19 @@ import bb.cascades 1.0
 
 Page {
     // A container is used to gather visual items together.
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Center
 
 
             // Defines a TextStyleDefinition that can be used in each control.
@@ -70,16 +66,16 @@ Page {
                     id: tsd
                     color: Color.White
                     base: SystemDefaults.TextStyles.BodyText
-                    alignment: TextAlignment.Center
+                    textAlign: TextAlign.Center
                 }
             ]
 
             // A standard Label
             Label {
                 id: title
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+
+                horizontalAlignment: HorizontalAlignment.Center
+
                 text: qsTr ("Listening for messages")
                 textStyle.color: Color.White
                 textStyle.base: SystemDefaults.TextStyles.TitleText
@@ -89,9 +85,9 @@ Page {
             // A standard Label
             Label {
                 id: message
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+
+                horizontalAlignment: HorizontalAlignment.Center
+
                 text: _receiver.status
                 textStyle {
                     color: Color.White
@@ -122,9 +118,8 @@ Page {
             // A standard Button
             Button {
                 topMargin: 30
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
+
                 text: qsTr ("Quit")
 
                 // Exit application on click

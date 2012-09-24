@@ -55,13 +55,13 @@ App::App()
     : m_regExp(new RegExp(this))
 {
     // Loads the QML file
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
     if (!qml->hasErrors()) {
         // Make the RegExp and App object available to the UI as context properties
         qml->setContextProperty("_app", this);
         qml->setContextProperty("_regexp", m_regExp);
 
-        Page *appPage = qml->createRootNode<Page>();
+        Page *appPage = qml->createRootObject<Page>();
         if (appPage) {
             Application::instance()->setScene(appPage);
         }

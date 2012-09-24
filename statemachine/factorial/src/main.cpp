@@ -95,16 +95,17 @@ int main(int argc, char **argv)
     // Set the 'compute' state as initial state of the state machine
     machine.setInitialState(compute);
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // Make the Factorial and StateMachine object available to the UI as context properties
-        qml->setContextProperty("_factorial", &factorial);
-        qml->setContextProperty("_machine", &machine);
-        Page *appPage = qml->createRootNode<Page>();
-        if (appPage) {
-            Application::instance()->setScene(appPage);
-        }
-    }
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the Factorial and StateMachine object available to the UI as context properties
+    qml->setContextProperty("_factorial", &factorial);
+    qml->setContextProperty("_machine", &machine);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
+
     return Application::exec();
 }
 //! [6]

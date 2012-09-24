@@ -73,7 +73,7 @@ Container {
             }
 
             color: "white"
-            title: "First Stone"
+            title: qsTr ("First Stone")
 
             onMoved: _undoManager.createMoveCommand(firstStone, sourceX, sourceY, targetX, targetY)
         }
@@ -87,7 +87,7 @@ Container {
             }
 
             color: "black"
-            title: "Second Stone"
+            title: qsTr ("Second Stone")
 
             onMoved: _undoManager.createMoveCommand(secondStone, sourceX, sourceY, targetX, targetY)
         }
@@ -100,7 +100,7 @@ Container {
             }
 
             color: "black"
-            title: "Third Stone"
+            title: qsTr ("Third Stone")
 
             onMoved: _undoManager.createMoveCommand(thirdStone, sourceX, sourceY, targetX, targetY)
         }
@@ -113,7 +113,7 @@ Container {
             }
 
             color: "white"
-            title: "Fourth Stone"
+            title: qsTr ("Fourth Stone")
 
             onMoved: _undoManager.createMoveCommand(fourthStone, sourceX, sourceY, targetX, targetY)
         }

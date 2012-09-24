@@ -45,28 +45,30 @@ import bb.cascades 1.0
 
 // Container for the Downloader visual nodes
 Container {
-    layout: StackLayout {
-        leftPadding: 30
-        topPadding: 20
-        rightPadding: 30
-        bottomPadding: 30
-    }
-    
+    leftPadding: 30
+    topPadding: 20
+    rightPadding: 30
+    bottomPadding: 30
+
     // Container grouping the url label and input
     Container {
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
-        
+
         // A standard Label
         Label {
+            verticalAlignment: VerticalAlignment.Center
             rightMargin: 10
-            
-            text: qsTr ("URL:")
-            textStyle.color: Color.White
+
             layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
                 spaceQuota: -1
+            }
+
+            text: qsTr ("URL:")
+            textStyle {
+                base: SystemDefaults.TextStyles.BodyText
+                color: Color.White
             }
         }
 // ![0]
@@ -74,70 +76,70 @@ Container {
         TextField {
             id: urlEdit
 
+            verticalAlignment: VerticalAlignment.Center
+
             layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
                 spaceQuota: 1
             }
-            
+
             // Default url to use
             text: "http://qt-project.org/"
-            textStyle {
-                base: SystemDefaults.TextStyles.SmallText
-            }
             //text: "http://www.pagetutor.com/keeper/mystash/secretstuff.html" // For HTTP authentication example (username is jimmy, password is page)
             //text: "https://qt.nokia.com" // For site with SSL errors (untrusted certificate)
             //text: "http://www.example.com" // For site which redirects
+
+            textStyle {
+                base: SystemDefaults.TextStyles.SmallText
+            }
+
             enabled: _downloader.startDownloadPossible
         }
     }
 // ![0]
-    
+
     // A standard TextField for the download status
     TextField {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 50
+
         preferredHeight: 200
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
 
         enabled: false
         backgroundVisible: false
-        
+
         text: _downloader.statusText
         textStyle {
             base: SystemDefaults.TextStyles.SmallText
+            color: Color.Black
         }
     }
-    
+
     // Container for the application controls
     Container {
+        horizontalAlignment: HorizontalAlignment.Center
         topMargin: 30
 
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
+        layout: StackLayout {
+            orientation: LayoutOrientation.LeftToRight
         }
 
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
-        }
-        
         // A standard Button
         Button {
             rightMargin: 20
-            
+
             text: qsTr ("Download")
-            
+
             // Enable Button after text verification and when startDownloadPossible is set
             enabled: _downloader.startDownloadPossible && urlEdit.text.length > 0
-            
+
             // Start the download on click
             onClicked: _downloader.startDownload (urlEdit.text)
         }
-        
+
         // A standard Button
         Button {
             text: qsTr ("Quit")
-            
+
             // Quit application on click
             onClicked: Qt.quit ()
         }

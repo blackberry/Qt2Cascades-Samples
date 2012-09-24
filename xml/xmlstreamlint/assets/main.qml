@@ -47,35 +47,29 @@ import bb.cascades 1.0
 // Page shows different HTML file selections in a ListView that will be parsed using a xml
 // reader and statistics about the file will be displayed
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         ScrollView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             scrollViewProperties {
                 scrollMode: ScrollMode.Vertical
             }
 
             Container {
-                layout: StackLayout {
-                    topPadding: 150
-                    leftPadding: 30
-                    rightPadding: 30
-                }
+                topPadding: 150
+                leftPadding: 30
+                rightPadding: 30
 
                 // A standard TextArea for displaying the result
                 TextArea {
@@ -117,10 +111,8 @@ Page {
         }
 
         SlideoutPanel {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Top
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Top
 
             translationY: -444
 

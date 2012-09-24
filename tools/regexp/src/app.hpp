@@ -44,13 +44,6 @@
 #define APP_HPP
 
 #include <QtCore/QObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QRegExp>
-
-#include <bb/cascades/Control>
-#include <bb/cascades/Event>
-#include <bb/cascades/QListDataModel>
-#include <bb/cascades/UiObject>
 
 class RegExp;
 

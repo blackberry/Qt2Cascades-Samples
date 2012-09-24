@@ -43,15 +43,12 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QMap>
-
 #include <bb/cascades/Control>
-#include <bb/cascades/Event>
 #include <bb/cascades/QListDataModel>
 #include <bb/cascades/TextArea>
-#include <bb/cascades/UiObject>
+
+#include <QtCore/QObject>
+#include <QtCore/QMap>
 
 class QStringList;
 
@@ -63,13 +60,25 @@ class App : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString message READ message NOTIFY messageChanged)
+
 public:
     App();
 
     // This method is called when the user selects a different language in the UI
     Q_INVOKABLE void setCurrentLanguage(const QVariantList &indexPath);
 
+Q_SIGNALS:
+    // This signal is emitted to trigger a re-translation of the UI
+    void retranslate();
+
+    // The change notification signal of the property
+    void messageChanged();
+
 private:
+    // The accessor method of the property
+    QString message() const;
+
     // A helper method that creates the model for the language list view
     void setupLanguageModel();
 
@@ -79,14 +88,11 @@ private:
     // A helper method that returns the name of a language for a given catalog file
     QString languageName(const QString &qmFile) const;
 
-    // The main view object in the UI
-    QPointer<bb::cascades::Control> m_mainView;
-
-    // The text area object in the UI
-    QPointer<bb::cascades::TextArea> m_textArea;
-
     // The list model that contains the language names of all available catalogs
     bb::cascades::QListDataModel<QString> m_model;
+
+    // The property value
+    QString m_message;
 
     // The map that maps language names to catalog file names
     QMap<QString, QString> m_languageMap;

@@ -45,106 +45,121 @@ import bb.cascades 1.0
 
 // Container grouping all visual nodes for the authentication dialog
 Container {
-    leftMargin: 10
-    topMargin: 10
-    rightMargin: 10
-    bottomMargin: 10
+    leftPadding: 20
+    topPadding: 20
+    rightPadding: 20
+    bottomPadding: 20
+
     background: Color.White
-    
-    layout: StackLayout {
-        layoutDirection: LayoutDirection.TopToBottom
-    }
-    
+
     // A standard Label
     Label {
+        horizontalAlignment: HorizontalAlignment.Center
+
         text: qsTr ("You need a username and a password to access this site")
-    }
-    
-    // A Container grouping the site Label's
-    Container {
-        topMargin: 10
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
-        }
-        
-        // A standard Label
-        Label {
-            text: qsTr ("Site:")
-        }
-        
-        // A standard Label
-        Label {
-            leftMargin: 10
-            text: _authDialog.site
+        textStyle {
+            base: SystemDefaults.TextStyles.BodyText
+            color: Color.Black
         }
     }
-    
-    // Container grouping the user/password inputs
+
+    // The site Label's
+    Label {
+        topMargin: 100
+        text: qsTr ("Site: %1").arg(_authDialog.site)
+        textStyle {
+            base: SystemDefaults.TextStyles.BodyText
+            color: Color.Black
+        }
+    }
+
+    // Container grouping the user input
     Container {
-        topMargin: 10
+        horizontalAlignment: HorizontalAlignment.Fill
+        topMargin: 50
 
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
-        
+
         // A standard Label
         Label {
-            rightMargin: 10
-            
+            verticalAlignment: VerticalAlignment.Center
+
             text: qsTr ("User:")
-            layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
+            textStyle {
+                base: SystemDefaults.TextStyles.BodyText
+                color: Color.Black
             }
         }
-        
+
         // A standard TextField
         TextField {
             id: userEdit
-            preferredWidth: 850
+
+            verticalAlignment: VerticalAlignment.Center
+
+            layoutProperties: StackLayoutProperties {
+                spaceQuota: 1
+            }
+
             text: _authDialog.user
         }
-        
+    }
+
+    // Container grouping the password input
+    Container {
+        horizontalAlignment: HorizontalAlignment.Fill
+        topMargin: 10
+
         // A standard Label
         Label {
-            topMargin: 10
-            rightMargin: 10
-            
+            verticalAlignment: VerticalAlignment.Center
+
             text: qsTr ("Password:")
-            layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
+            textStyle {
+                base: SystemDefaults.TextStyles.BodyText
+                color: Color.Black
             }
         }
-        
+
         // A standard TextField
         TextField {
             id: passwordEdit
-            preferredWidth: 850
-            
+
+            verticalAlignment: VerticalAlignment.Center
+
+            layoutProperties: StackLayoutProperties {
+                spaceQuota: 1
+            }
+
             text: _authDialog.password
         }
     }
-    
+
     // Container grouping the control Button's
     Container {
-        topMargin: 10
+        horizontalAlignment: HorizontalAlignment.Center
+        topMargin: 50
+
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
-        
+
         // A standard Button
         Button {
             rightMargin: 20
-            
+
             text: qsTr ("OK")
-            
+
             // Send authentication on click
             onClicked: _authDialog.continueAuthentication (userEdit.text, passwordEdit.text)
         }
-        
+
         // A standard Button
         Button {
             text: qsTr ("Cancel")
-            
+
             // Terminate authentication on click
             onClicked: _authDialog.cancel ()
         }

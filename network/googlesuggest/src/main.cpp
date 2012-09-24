@@ -40,17 +40,30 @@
  **
  ****************************************************************************/
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
 #include "googlesuggest.hpp"
 
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    GoogleSuggest mainApp;
+    // Create the google suggest object
+    GoogleSuggest googleSuggest;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the GoogleSuggest object available to the UI as context properties
+    qml->setContextProperty("_googleSuggest", &googleSuggest);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

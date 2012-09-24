@@ -40,18 +40,37 @@
  **
  ****************************************************************************/
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "SharedMemoryLoaderApp.hpp"
+#include "FileLoader.hpp"
 
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
+/**
+ * This sample application shows how to use QSharedMemory to share memory
+ * between two processes. This example application works together with the sharedmemory
+ * example. While the sharedmemory creates a shared memory segment, this application
+ * allows the user to fill this segment with the content of a file, which the sharedmemory
+ * application will show on screen then after a reload.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    SharedMemoryLoaderApp mainApp;
+    // Create the file loader object
+    FileLoader fileLoader;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the FileLoader object available to the UI as context property
+    qml->setContextProperty("_fileLoader", &fileLoader);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }
-

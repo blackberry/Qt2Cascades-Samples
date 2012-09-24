@@ -40,17 +40,47 @@
  **
  ****************************************************************************/
 
-#include "App.hpp"
+#include "CertificateInfoControl.hpp"
+#include "SslClient.hpp"
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
+/**
+ * This sample application shows how to setup a SSL-secured network connection,
+ * handle SSL-handshake errors and retrieve information about the used certificates.
+ *
+ * The user specify an URL to connect to and the application will try to create an SSL-secured
+ * connection. If the connection has been established successfully, the user can send commands
+ * and receive responses.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    App mainApp;
+    // Create the certificate info control object
+    CertificateInfoControl certificateInfoControl;
+
+    // Create the SSL client object
+    SslClient sslClient;
+
+    QObject::connect(&sslClient, SIGNAL(viewCertificateChainRequested()), &certificateInfoControl, SLOT(show()));
+    QObject::connect(&sslClient, SIGNAL(certificateChainChanged(QList<QSslCertificate>)), &certificateInfoControl, SLOT(setCertificateChain(QList<QSslCertificate>)));
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the business logic objects available to the UI as context properties
+    qml->setContextProperty("_certificateInfoControl", &certificateInfoControl);
+    qml->setContextProperty("_sslClient", &sslClient);
+    qml->setContextProperty("_sslErrorControl", sslClient.sslErrorControl());
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

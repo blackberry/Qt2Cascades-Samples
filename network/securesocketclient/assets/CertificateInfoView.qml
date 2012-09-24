@@ -49,36 +49,32 @@ Container {
     topMargin: 10
     rightMargin: 10
     bottomMargin: 10
+
     background: Color.White
-    
+
     // A standard Label
     Label {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 10
         bottomMargin: 10
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
+
         text: qsTr ("Certification Path")
         textStyle {
             base: SystemDefaults.TextStyles.BodyText
-            alignment: TextAlignment.Center
+            textAlign: TextAlign.Center
         }
     }
-    
+
     // A Container to change background Color of the ListView
     Container {
         background: Color.Black
         ListView {
+            horizontalAlignment: HorizontalAlignment.Fill
             topMargin: 10
             bottomMargin: 10
             preferredHeight: 380
             preferredWidth: 800
-            
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
-            
+
             dataModel: _certificateInfoControl.model
 
             listItemComponents: ListItemComponent {
@@ -86,49 +82,50 @@ Container {
                     title: ListItem.data
                 }
             }
-            
+
             // Display selected ceritificate information on selection
-            onSelectionChanged: _certificateInfoControl.setCurrentCertificate (indexPath)
+            onTriggered: {
+                clearSelection();
+                select(indexPath);
+
+                _certificateInfoControl.setCurrentCertificate (indexPath)
+            }
         }
     }
-    
+
     // A standard Label
     Label {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 20
         bottomMargin: 10
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
+
         text: qsTr ("Certificate Information")
         textStyle {
             base: SystemDefaults.TextStyles.BodyText
-            alignment: TextAlignment.Center
+            textAlign: TextAlign.Center
         }
     }
-    
+
     // A standard TextArea
     TextArea {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 10
         bottomMargin: 10
         preferredHeight: 350
+
         editable: false
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
+
         // Displays info of selected certificate
         text: _certificateInfoControl.certificateInfo
     }
-    
+
     // Application control Button
     Button {
+        horizontalAlignment: HorizontalAlignment.Right
         topMargin: 10
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Right
-        }
+
         text: qsTr ("Close")
-        
+
         //Hide this Container on click
         onClicked: _certificateInfoControl.visible = false
     }

@@ -45,11 +45,9 @@ import bb.cascades 1.0
 
 // Container grouping all visual nodes for the main view
 Container {
-    layout: StackLayout {
-        leftPadding: 30
-        topPadding: 30
-        rightPadding: 30
-    }
+    leftPadding: 30
+    topPadding: 30
+    rightPadding: 30
 
     // TextStyleDefinition to be used in different AbstractTextControl's to achieve same text look.
     attachedObjects: [
@@ -60,40 +58,31 @@ Container {
         }
     ]
 
-    // A standard Label
-    Label {
-        text: qsTr ("Host name:")
-        layoutProperties: StackLayoutProperties {
-            verticalAlignment: VerticalAlignment.Center
-            spaceQuota: -1
-        }
-        textStyle {
-            base: labelTsd.style
-        }
-    }
-
     // A Container to group the url and its corresponding TextField
     Container {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 10
         bottomMargin: 10
 
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
 
 //! [0]
         // A standard TextField
         TextField {
+            verticalAlignment: VerticalAlignment.Center
             leftMargin: 10
             rightMargin: 5
+
             layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
                 spaceQuota: 1
             }
+
+            hintText: qsTr ("Enter host name")
+            text: "www.blackberry.com"
+
+            inputMode: TextFieldInputMode.Url
 
             // Save url on input
             onTextChanging: _sslClient.hostName = text
@@ -102,32 +91,29 @@ Container {
 
         // A standard ImageView
         ImageView {
-            imageSource: "asset:///encrypted.png"
+            verticalAlignment: VerticalAlignment.Center
             preferredWidth: 32
             preferredHeight: 32
+
             layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
                 spaceQuota: -1
             }
 
             // Visibility control
             visible: _sslClient.sessionActive
 
+            imageSource: "asset:///images/encrypted.png"
+
             // Display certificate info view on touch
             onTouch: _certificateInfoControl.visible = true
         }
     }
 
-    // A standard Label
-    Label {
-        text: qsTr ("Port:")
-        textStyle {
-            base: labelTsd.style
-        }
-    }
-
     // A standard TextField
     TextField {
+        hintText: qsTr ("Enter port number")
+        text: "443"
+
         // Save port on input
         onTextChanging: _sslClient.port = text
     }
@@ -135,12 +121,10 @@ Container {
 //! [1]
     // A standard Button
     Button {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 30
         bottomMargin: 10
         maxHeight: 100
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
 
         text: qsTr ("Connect to host")
 
@@ -151,24 +135,23 @@ Container {
 
     // Groups the nodes for displaying connection details and connection communication controls.
     Container {
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
         leftMargin: 20
         topMargin: 20
+
         layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-            verticalAlignment: VerticalAlignment.Fill
             spaceQuota: 1
         }
 
         // A standard Label
         Label {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
 
             text: qsTr ("Active session")
             textStyle {
                 base: labelTsd.style
-                alignment: TextAlignment.Center
+                textAlign: TextAlign.Center
             }
         }
 
@@ -183,24 +166,23 @@ Container {
 
         // A standard Label
         Label {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
 
             // Displays cipher information upon successful connection
             text: _sslClient.cipher
             textStyle {
                 base: SystemDefaults.TextStyles.SmallText
-                alignment: TextAlignment.Center
+                textAlign: TextAlign.Center
                 color: Color.Red
             }
         }
 
         // A standard TextArea
         TextArea {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
                 spaceQuota: 7
             }
 
@@ -216,14 +198,16 @@ Container {
 
         // Groups the input and Button for data sending
         Container {
+            horizontalAlignment: HorizontalAlignment.Fill
             topMargin: 10
             bottomMargin: 10
+
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
                 spaceQuota: 2
             }
+
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
 
             // Enable these controls only when connection has been established
@@ -231,39 +215,44 @@ Container {
 
             // A standard Label
             Label {
-                text: qsTr ("Input:")
+                verticalAlignment: VerticalAlignment.Center
 
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: -1
                 }
 
+                text: qsTr ("Input:")
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
+                    color: Color.White
                 }
             }
 
             // A standard TextField
             TextField {
                 id: inputField
+
+                text: "GET / HTTP/1.0"
+
+                verticalAlignment: VerticalAlignment.Center
                 leftMargin: 10
 
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: 1
                 }
             }
 
             // A standard Button
             Button {
+                verticalAlignment: VerticalAlignment.Center
                 leftMargin: 10
-                text: qsTr ("Send")
                 preferredWidth: 250
 
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: -1
                 }
+
+                text: qsTr ("Send")
 
                 // Send input data on click
                 onClicked: {

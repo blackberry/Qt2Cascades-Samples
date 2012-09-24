@@ -173,17 +173,17 @@ Container *XbelReader::createChildItem(Container *parent)
     const QString tagName = m_xml.name().toString();
 
     // Use a different QML file depending on the current XBEL element type
-    const QString qmlFile = (tagName == "folder" ? "FolderItem.qml" :
-                             tagName == "bookmark" ? "BookmarkItem.qml" :
-                             tagName == "separator" ? "SeparatorItem.qml" : QString());
+    const QString qmlFile = (tagName == "folder" ? "asset:///FolderItem.qml" :
+                             tagName == "bookmark" ? "asset:///BookmarkItem.qml" :
+                             tagName == "separator" ? "asset:///SeparatorItem.qml" : QString());
 
     Container *container = 0;
 
     // Load the QML file ...
-    QmlDocument *qml = QmlDocument::create().load(qmlFile);
+    QmlDocument *qml = QmlDocument::create(qmlFile);
     if (!qml->hasErrors()) {
         // ... create the top-level control ...
-        container = qml->createRootNode<Container>();
+        container = qml->createRootObject<Container>();
 
         // ... and add it to the parent container
         parent->add(container);

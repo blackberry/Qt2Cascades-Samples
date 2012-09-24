@@ -90,19 +90,18 @@ App::App()
     m_model.setSortingKeys(QStringList() << "title");
     m_model.setSortedAscending(true);
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
     if (!qml->hasErrors()) {
         // Make the business logic objects available to the UI as context properties
         qml->setContextProperty("_app", this);
         qml->setContextProperty("_xmlStreamLint", m_xmlStreamLint);
         qml->setContextProperty("_model", &m_model);
-        Page *appPage = qml->createRootNode<Page>();
+        Page *appPage = qml->createRootObject<Page>();
         if (appPage) {
             Application::instance()->setScene(appPage);
 
             // Pre-select the first entry in the ListView
-            ListView *listView = appPage->findChild<ListView*>("listView");
-            listView->select(QVariantList() << QVariant(0));
+            setFileName(QVariantList() << QVariant(0));
         }
     }
 

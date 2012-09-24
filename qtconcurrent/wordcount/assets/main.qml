@@ -43,80 +43,66 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
-
-        preferredWidth: 768
-        preferredHeight: 1280
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
 //! [0]
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
-                text: qsTr("Count words of %1 files").arg(_app.fileCount)
+                text: qsTr("Count words of %1 files").arg(_wordCount.fileCount)
                 textStyle.color: Color.White
                 textStyle.base: SystemDefaults.TextStyles.BigText
             }
 //! [0]
 
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [1]
                 Button {
                     text: qsTr ("Single Threaded")
-                    enabled: !_app.active
-                    onClicked: _app.countSingleThreaded()
+                    enabled: !_wordCount.active
+                    onClicked: _wordCount.countSingleThreaded()
                 }
 
                 Button {
                     text: qsTr ("Multi Threaded")
-                    enabled: !_app.active
-                    onClicked: _app.countMultiThreaded()
+                    enabled: !_wordCount.active
+                    onClicked: _wordCount.countMultiThreaded()
                 }
 //! [1]
             }
 
 //! [2]
             Label {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
-                text: qsTr("%1 words in %2 ms").arg(_app.wordCount).arg(_app.elapsedTime)
+                text: qsTr("%1 words in %2 ms").arg(_wordCount.wordCount).arg(_wordCount.elapsedTime)
                 textStyle.color: Color.White
                 textStyle.base: SystemDefaults.TextStyles.BigText
             }

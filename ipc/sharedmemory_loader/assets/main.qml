@@ -43,41 +43,33 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
-
-        preferredWidth: 768
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
             // The DropDown to select the file to load
             DropDown {
                 id: fileSelection
 
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
+
                 title: qsTr ("File")
 
                 Option {
@@ -114,13 +106,13 @@ Page {
 
             // Shows the status
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
                 text: _fileLoader.status
                 textStyle.base: SystemDefaults.TextStyles.SmallText
                 textStyle.color: Color.White
+
+                multiline: true
             }
         }
     }

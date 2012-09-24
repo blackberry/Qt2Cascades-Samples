@@ -40,8 +40,8 @@
  **
  ****************************************************************************/
 
-#ifndef FTPDOWNLOADER_H_
-#define FTPDOWNLOADER_H_
+#ifndef FTPDOWNLOADER_HPP
+#define FTPDOWNLOADER_HPP
 
 #include "FtpItem.hpp"
 #include "MessageBoxController.hpp"
@@ -113,7 +113,7 @@ public Q_SLOTS:
     void connectOrDisconnect();
 
     // This method is called whenever the user has selected an item in the directory listing ListView
-    void processItem(const QVariantList &indexPath, bool active);
+    void processItem(const QVariantList &indexPath);
 
 Q_SIGNALS:
     // The change notification signals of the properties

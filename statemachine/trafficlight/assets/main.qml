@@ -43,51 +43,46 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         id: root
         layout: DockLayout {}
 
-        preferredWidth: 768
-
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             Container {
-                layout: DockLayout {}
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: 2
                 }
+
+                layout: DockLayout {}
 
 //! [0]
                 TrafficLight {
                     id: trafficLight
+
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+
                     controller: _trafficLightController
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Center
-                    }
                 }
 //! [0]
 
                 Label {
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
 
-                    text: "Paused"
+                    text: qsTr ("Paused")
                     textStyle.color: Color.White
                     textStyle.base: SystemDefaults.TextStyles.BigText
                     opacity: _trafficLightController.paused
@@ -95,22 +90,23 @@ Page {
             }
 
             Container {
-                layout: DockLayout {}
+                horizontalAlignment: HorizontalAlignment.Fill
+                rightMargin: 30
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: -1
                 }
 
-                rightMargin: 30
+                layout: DockLayout {}
 
                 Container {
-                    layout: StackLayout {
-                        layoutDirection: LayoutDirection.LeftToRight
-                    }
+                    bottomPadding: 30
 
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Center
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
                     }
 
 //! [1]

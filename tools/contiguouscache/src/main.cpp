@@ -40,17 +40,37 @@
  **
  ****************************************************************************/
 
+#include "ImageModel.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "ContiguousCacheApp.hpp"
+using namespace bb::cascades;
 
-using ::bb::cascades::Application;
-
+/**
+ * In this sample application we show how to use QContiguousCache, a class
+ * that provides an efficient way of caching items for display in a user interface view.
+ * This example uses QContiguousCache inside a custom DataModel. The model provides
+ * 10000 images, however the QContiguousCache will ensure that at maximum only 50 images
+ * are kept in memory.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    ContiguousCacheApp mainApp;
+    // Create the image model
+    ImageModel model;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the ImageModel object available to the UI as context property
+    qml->setContextProperty("_dataModel", &model);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

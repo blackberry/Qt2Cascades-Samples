@@ -67,12 +67,6 @@
 
     \snippet network/googlesuggest/src/googlesuggest.cpp 1
 
-    We start off by setting up the QML layout we'll be using. We also 
-    expose the class to the layout so we can access it from the QML.
-    We do this with the \c setContextProperty method of \c QmlDocument.
-
-    We then set up the main scene which is created from our QML.
-
     A single-shot QTimer is used to start the request when the user has stopped
     typing for 500 ms.
 

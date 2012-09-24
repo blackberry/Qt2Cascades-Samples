@@ -45,14 +45,12 @@ import bb.cascades 1.0
 
 // Page shows the loading and saving of XBEL files using the streaming parser
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
@@ -60,19 +58,23 @@ Page {
         Container {
             id: root
 
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             // Container grouping application Button controls
             Container {
                 id: menuContainer
+
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+
+                leftPadding: 10
+                topPadding: 10
+                rightPadding: 10
+                bottomPadding: 10
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    leftPadding: 10
-                    topPadding: 10
-                    rightPadding: 10
-                    bottomPadding: 10
-                }
-                layoutProperties: DockLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Top
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [0]
@@ -135,22 +137,24 @@ Page {
 //! [1]
             }
             Container {
-                background: Color.DarkGray
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Top
+
+                leftPadding: 10
+                rightPadding: 10
+                bottomPadding: 10
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    leftPadding: 10
-                    rightPadding: 10
-                    bottomPadding: 10
+                    orientation: LayoutOrientation.LeftToRight
                 }
-                layoutProperties: DockLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Top
-                }
+
+                background: Color.DarkGray
 
                 // A standard Label for displaying the action status
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -166,27 +170,24 @@ Page {
             // Container for displaying the loaded XBEL output
             ScrollView {
                 topMargin: 10
+
                 scrollViewProperties {
                     scrollMode: ScrollMode.Vertical
                 }
+
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 1
                 }
+
                 Container {
                     objectName: "treeContainer"
-                    layout: StackLayout {
-                        leftPadding: 10
-                        rightPadding: 10
-                        bottomPadding: 10
-                    }
+
+                    leftPadding: 10
+                    rightPadding: 10
+                    bottomPadding: 10
                 }
             }
 //! [2]
-
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
         }
     }
 }

@@ -57,7 +57,7 @@ using namespace bb::cascades;
 static const int DataSize = 100000;
 
 // The size of the buffer that is used to deliver data from the producer to the consumer
-static const int BufferSize = 1900;
+static const int BufferSize = 1700;
 
 // The buffer that is used to deliver data from the producer to the consumer
 static char buffer[BufferSize];
@@ -242,19 +242,20 @@ int main(int argc, char **argv)
     QObject::connect(&consumer, SIGNAL(stringConsumed(const QString&)),
                      &textBuffer, SLOT(appendText(const QString&)), Qt::BlockingQueuedConnection);
 
-    QmlDocument * const qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // Make the TextBuffer available to the UI as context property
-        qml->setContextProperty("_textBuffer", &textBuffer);
-        Page *appPage = qml->createRootNode<Page>();
-        if (appPage) {
-            Application::instance()->setScene(appPage);
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-            // Start the producer and consumer thread
-            producer.start();
-            consumer.start();
-        }
-    }
+    // Make the TextBuffer object available to the UI as context property
+    qml->setContextProperty("_textBuffer", &textBuffer);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
+
+    // Start the producer and consumer thread
+    producer.start();
+    consumer.start();
+
     return Application::exec();
 }
 //! [6]

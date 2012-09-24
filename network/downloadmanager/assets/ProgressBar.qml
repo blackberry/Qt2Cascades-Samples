@@ -40,42 +40,40 @@
  **
  ****************************************************************************/
 
- 
+
 import bb.cascades 1.0
 
 // Groups all the visual nodes for the grogress bar
 Container {
-    
+    id: root
+
     // The total progress bar value
     property int total: 0
-    
+
     // The current progress
     property int value: 0
 
     property alias message: messageLabel.text
-    id: root
+
     preferredWidth: 1000
-    
-    layout: DockLayout {
-    }
+
+    layout: DockLayout {}
 
     // Container for the progress bar identifying the Layout
     Container {
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-            verticalAlignment: VerticalAlignment.Fill
-        }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
 
         layout: AbsoluteLayout {}
-        
+
         // Container representing the size and color of the bar
         Container {
             background: Color.Blue
-            
+
             // Bar width changing depending on the current value
             preferredWidth: root.total == 0 ? 0 : root.value * root.preferredWidth / root.total
             preferredHeight: 40
-            
+
             layoutProperties: AbsoluteLayoutProperties {
                 positionX: 0
                 positionY: 0
@@ -88,15 +86,15 @@ Container {
             }
         }
     }
-    
+
     // A standard Label for the bar message
     Label {
         id: messageLabel
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-            verticalAlignment: VerticalAlignment.Center
-        }
+
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
 
         textStyle.color: Color.White
+        textStyle.base: SystemDefaults.TextStyles.SmallText
     }
 }

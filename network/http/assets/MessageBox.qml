@@ -46,66 +46,59 @@ import bb.cascades 1.0
 // Container for the message box visual nodes
 Container {
     background: Color.White
-    layout: DockLayout {
-    }
-    
+
+    layout: DockLayout {}
+
     // Container grouping the Label and TextArea elements
     Container {
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-            verticalAlignment: VerticalAlignment.Center
-        }
-        
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
+
         preferredWidth: 750
-        
+
         // A standard Label for the TextArea title
         Label {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
-            
+            horizontalAlignment: HorizontalAlignment.Center
+
             text: _messageBox.title
             textStyle {
                 base: SystemDefaults.TextStyles.TitleText
-                alignment: TextAlignment.Center
+                textAlign: TextAlign.Center
             }
         }
-        
+
         // A standard TextArea displaying the message
-        TextArea {
+        Label {
+            horizontalAlignment: HorizontalAlignment.Center
             topMargin: 10
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
-            
+
             preferredWidth: 700 // HorizontalAlignment.Fill doesn't seem to work in all cases here
-            backgroundVisible: false
-            editable: false
+            multiline: true
 
             text: _messageBox.text
             textStyle {
                 base: SystemDefaults.TextStyles.BigText
-                alignment: TextAlignment.Center
+                color: Color.Black
+                textAlign: TextAlign.Center
             }
         }
-        
+
         // Container grouping the box controls
         Container {
+            horizontalAlignment: HorizontalAlignment.Center
             topMargin: 10
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
+
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
-            
+
             // A standard Button
             Button {
                 text: _messageBox.button1Text
                 onClicked: _messageBox.button1Clicked ()
                 rightMargin: 20
             }
-            
+
             // A standard Button
             Button {
                 text: _messageBox.button2Text

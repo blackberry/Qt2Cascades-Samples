@@ -45,31 +45,33 @@ import bb.cascades 1.0
 
 // This page shows Layout of TextArea
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
-        // The container that hosts the balloons
-        Container {
-            objectName: "balloonsContainer"
+        // The list view that hosts the balloons
+        ListView {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
+            dataModel: _model
+
+            listItemComponents: ListItemComponent {
+                type: ""
+
+                Balloon {
+                    message: ListItemData
+                }
             }
         }
     }

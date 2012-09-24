@@ -43,38 +43,32 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
-
-        preferredWidth: 768
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
             // The button at the top
             Button {
+                horizontalAlignment: HorizontalAlignment.Center
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
                     spaceQuota: -1
                 }
 
@@ -89,8 +83,9 @@ Page {
 
             // Shows the file content
             TextArea {
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: 1
                 }
 

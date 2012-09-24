@@ -45,28 +45,23 @@ import bb.cascades 1.0
 
 // Page shows a TextArea displaying buffered output
 Page {
-    content: Container {
-        preferredWidth: 768
-
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // A standard TextArea
         TextArea {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             editable: false
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
 
             // Display text from buffer
             text: _textBuffer.text

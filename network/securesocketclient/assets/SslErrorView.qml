@@ -50,63 +50,61 @@ Container {
     topMargin: 10
     rightMargin: 10
     bottomMargin: 10
+
     background: Color.White
-    
+
     // A standard TextArea
-    TextArea {
-        text: "Warning: One or more errors with this connection prevent validating the authenticity of the host you are connecting to. Please review the following list of errors, and click Ignore to continue, or Cancel to abort the connection."
-        editable: false
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
+    Label {
+        horizontalAlignment: HorizontalAlignment.Fill
+        text: qsTr ("Warning: One or more errors with this connection prevent validating the authenticity of the host you are connecting to. Please review the following list of errors, and click Ignore to continue, or Cancel to abort the connection.")
+        multiline: true
     }
-    
+
     // A standard TextArea
     TextArea {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 10
         preferredHeight: 400
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
+
         // Displays the ssl error message
-        text: _sslErrorControl.message       
+        text: _sslErrorControl.message
     }
-    
+
     // A standard Button
     Button {
-        text: "View Certificate Chain"
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
-        
+        horizontalAlignment: HorizontalAlignment.Fill
+
+        text: qsTr ("View Certificate Chain")
+
         // Display certificate invo on click
         onClicked: _sslErrorControl.viewCertificateChain ()
     }
-    
+
     // Groups the views control Buttons
     Container {
+        horizontalAlignment: HorizontalAlignment.Fill
         topMargin: 10
-        layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
-        }
+
         layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
             spaceQuota: 1
         }
-        
+
+        layout: StackLayout {
+            orientation: LayoutOrientation.LeftToRight
+        }
+
         // A standard Button
         Button {
             text: qsTr ("Ignore")
-            
+
             // Dismiss view and error on click and continue
             onClicked: _sslErrorControl.ignore ()
         }
-        
+
         // A standard Button
         Button {
             text: qsTr ("Cancel")
-            
+
             // Hide view on click
             onClicked: _sslErrorControl.cancel ()
         }

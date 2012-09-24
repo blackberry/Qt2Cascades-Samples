@@ -47,42 +47,35 @@ import bb.cascades 1.0
 Page {
 
     // The root Container
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 20
-                rightPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 20
+            rightPadding: 30
 
             // A Container to group the url TextField with its download Button
             Container {
 //! [0]
                 // A standard TextField for the url address
                 TextField {
-                    id: url
+                    id: urlField
+
+                    horizontalAlignment: HorizontalAlignment.Fill
+
                     hintText: qsTr("Enter URL to download")
                     text: "http://www.winkde.org/pub/kde/ports/win32/installer/kdewin-installer-gui-latest.exe"
-
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                    }
 
                     // Disable the control button upon text input
                     onTextChanging: {
@@ -95,15 +88,14 @@ Page {
                 // A standard button
                 Button {
                     id: downloadButton
+
+                    horizontalAlignment: HorizontalAlignment.Center
                     topMargin: 50
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
 
                     text: qsTr("Download")
 
                     // Start download from url on click
-                    onClicked: _manager.downloadUrl (url.text)
+                    onClicked: _manager.downloadUrl (urlField.text)
                 }
 //! [1]
             }
@@ -111,28 +103,35 @@ Page {
 //! [2]
             // Custom Container for displaying download progress as a bar
             ProgressBar {
+                topMargin: 10
+                leftMargin: 10
+
                 total: _manager.progressTotal
                 value: _manager.progressValue
                 message: _manager.progressMessage
-                topMargin: 10
-                leftMargin: 10
             }
 //! [2]
 
 //! [3]
             // A standard Label
             Label {
-                text: qsTr("Active Downloads: ") + (_manager.activeDownloads == 0 ? "none" : _manager.activeDownloads)
                 topMargin: 10
                 leftMargin: 10
+
+                text: qsTr("Active Downloads: ") + (_manager.activeDownloads == 0 ? "none" : _manager.activeDownloads)
+                textStyle.base: SystemDefaults.TextStyles.BodyText
+                textStyle.color: Color.Black
             }
 //! [3]
 
             // A standard Label
             Label {
-                text: qsTr("Status:")
                 topMargin: 10
                 leftMargin: 10
+
+                text: qsTr("Status:")
+                textStyle.base: SystemDefaults.TextStyles.BodyText
+                textStyle.color: Color.Black
             }
 
 //! [4]
@@ -156,8 +155,11 @@ Page {
 
             // A standard Label
             Label {
-                text: "Errors:"
                 leftMargin: 10
+
+                text: qsTr ("Errors:")
+                textStyle.base: SystemDefaults.TextStyles.BodyText
+                textStyle.color: Color.Black
             }
 
 //! [5]

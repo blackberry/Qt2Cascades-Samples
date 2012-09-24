@@ -44,38 +44,32 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 20
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 20
+            rightPadding: 30
+            bottomPadding: 30
 
             TextField {
                 id: search
                 text: ""
                 hintText: qsTr ("Search Google!")
 
-                // Inform the App object about the new input whenever the input text changes
-                onTextChanging: _app.input = text
+                // Inform the GoogleSuggest object about the new input whenever the input text changes
+                onTextChanging: _googleSuggest.input = text
             }
 
             ListView {
@@ -83,7 +77,7 @@ Page {
 
                 topMargin: 10
 
-                dataModel: _app.model
+                dataModel: _googleSuggest.model
 
                 listItemComponents: [
                     ListItemComponent {
@@ -91,13 +85,13 @@ Page {
                         StandardListItem {
                             title: ListItemData.suggestion
                             status: ListItemData.hits
-                            reserveImageSpace: false
+                            imageSpaceReserved: false
                         }
                     }
                 ]
 
-                // Connect the 'clearSelection' signal of the App object against the 'clearSelection' slot of the ListView
-                onCreationCompleted: _app.clearSelection.connect(suggestions.clearSelection)
+                // Connect the 'clearSelection' signal of the GoogleSuggest object against the 'clearSelection' slot of the ListView
+                onCreationCompleted: _googleSuggest.clearSelection.connect(suggestions.clearSelection)
             }
         }
     }

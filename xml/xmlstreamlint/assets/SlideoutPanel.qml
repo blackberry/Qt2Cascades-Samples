@@ -53,33 +53,27 @@ Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/slideout_background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 20
-                rightPadding: 20
-            }
+            leftPadding: 20
+            rightPadding: 20
 
             // The standard ListView holding the HTML file selections
             ListView {
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: 1
                 }
 
-                objectName: "listView"
                 dataModel: _model
 
                 listItemComponents: ListItemComponent {
@@ -90,24 +84,27 @@ Container {
                 }
 
                 // Set and parse the HTML file on selection
-                onSelectionChanged: _app.setFileName (indexPath)
+                onTriggered: {
+                    clearSelection();
+                    select(indexPath);
+
+                    _app.setFileName (indexPath)
+                }
             }
 
             Label {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Center
+
                 topMargin: 30
                 preferredHeight: 130
-
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Center
-                }
 
                 text: _app.fileTitle
 
                 textStyle {
-                    alignment: TextAlignment.Center
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.White
+                    textAlign: TextAlign.Center
                 }
 
                 onTouch: {
@@ -120,9 +117,7 @@ Container {
     }
 
     ImageView {
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
+        horizontalAlignment: HorizontalAlignment.Fill
 
         imageSource: "asset:///images/shadow.png"
         translationY: -7

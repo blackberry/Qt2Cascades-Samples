@@ -46,51 +46,42 @@ import bb.cascades 1.0
 // This page shows how to create a button with a dynamically changing label
 Page {
     // A container is used to gather visual items together.
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
             preferredWidth: 900
 
 //! [0]
             // A standard Label
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
                 text: _receiver.status
 
                 // Defines a text style with custom font size
                 textStyle {
                     color: Color.White
-                    base: SystemDefaults.TextStyles.SmallText
-                    alignment: TextAlignment.Center
-                    size: 40
+                    base: SystemDefaults.TextStyles.BodyText
+                    textAlign: TextAlign.Center
                 }
             }
 //! [0]
 
             // A standard Button
             Button {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 30
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 text: qsTr ("Quit")
 

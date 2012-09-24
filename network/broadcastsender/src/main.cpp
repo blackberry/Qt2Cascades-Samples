@@ -42,8 +42,8 @@
 
 #include "Sender.hpp"
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
-#include <bb/cascades/Page>
 #include <bb/cascades/QmlDocument>
 
 using namespace ::bb::cascades;
@@ -61,18 +61,16 @@ int main(int argc, char **argv)
     // Create the sender object
     Sender sender;
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // Make the Sender and Application object available to the UI as context properties
-        qml->setContextProperty("_sender", &sender);
-        qml->setContextProperty("_app", &app);
-        Page *appPage = qml->createRootNode<Page>();
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-        if (appPage) {
-            Application::instance()->setScene(appPage);
-        }
-    }
+    // Make the Sender and Application object available to the UI as context properties
+    qml->setContextProperty("_sender", &sender);
+    qml->setContextProperty("_app", &app);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }
-

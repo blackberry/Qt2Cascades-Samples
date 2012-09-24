@@ -79,12 +79,12 @@ ImageView {
             startX = layoutProperties.positionX
             startY = layoutProperties.positionY
 
-            offsetX = event.screenX - layoutProperties.positionX
-            offsetY = event.screenY - layoutProperties.positionY
+            offsetX = event.windowX - layoutProperties.positionX
+            offsetY = event.windowY - layoutProperties.positionY
         } else if (event.isMove()) {
             // Move stone to current position
-            layoutProperties.positionX = Math.min(Math.max(event.screenX - offsetX, 0), 436)
-            layoutProperties.positionY = Math.min(Math.max(event.screenY - offsetY, 0), 436)
+            layoutProperties.positionX = Math.min(Math.max(event.windowX - offsetX, 0), 436)
+            layoutProperties.positionY = Math.min(Math.max(event.windowY - offsetY, 0), 436)
         } else if (event.isUp()) {
             // emit the moved() signal
             moved(startX, startY, layoutProperties.positionX, layoutProperties.positionY)

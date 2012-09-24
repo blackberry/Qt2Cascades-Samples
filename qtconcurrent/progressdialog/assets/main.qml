@@ -43,84 +43,73 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
-
-        preferredWidth: 768
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
 //! [0]
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
-                text: qsTr("Run the computation on %1 cores").arg(_app.numberOfCores)
-                textStyle.color: Color.White
-                textStyle.base: SystemDefaults.TextStyles.TitleText
+                text: qsTr("Run the computation on %1 cores").arg(_progressDialog.numberOfCores)
+                textStyle {
+                    color: Color.White
+                    base: SystemDefaults.TextStyles.TitleText
+                }
             }
 //! [0]
 
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [1]
                 Button {
                     text: qsTr ("Start")
-                    enabled: !_app.active
-                    onClicked: _app.startComputation()
+                    enabled: !_progressDialog.active
+                    onClicked: _progressDialog.startComputation()
                 }
 
                 Button {
                     text: qsTr ("Cancel")
-                    enabled: _app.active
-                    onClicked: _app.cancelComputation()
+                    enabled: _progressDialog.active
+                    onClicked: _progressDialog.cancelComputation()
                 }
 //! [1]
             }
 
 //! [2]
             ProgressIndicator {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 // Show the progress bar only when computation is running
-                opacity: _app.active ? 1.0 : 0.0
+                opacity: _progressDialog.active ? 1.0 : 0.0
 
-                fromValue: _app.progressMinimum
-                toValue: _app.progressMaximum
-                value: _app.progressValue
+                fromValue: _progressDialog.progressMinimum
+                toValue: _progressDialog.progressMaximum
+                value: _progressDialog.progressValue
             }
 //! [2]
         }

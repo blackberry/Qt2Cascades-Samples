@@ -47,40 +47,34 @@ import bb.cascades 1.0
 // defined regular expression on a string and display the detailed matched results
 Page {
 
-    // The root container, used to set the background Color
-    content: Container {
+    // The root container
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             // A standard Label for the application header
             Label {
+                horizontalAlignment: HorizontalAlignment.Center
                 preferredHeight: 200
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
-                text: "Regular Expression Example"
+                text: qsTr ("Regular Expression Example")
 
                 // Defines custom text style
                 textStyle {
                     base: SystemDefaults.TextStyles.TitleText
-                    fontWeight: FontWeight.Bold
                     color: Color.Black
+                    fontWeight: FontWeight.Bold
                 }
             }
 
@@ -91,6 +85,8 @@ Page {
                 }
 
                 Container {
+                    leftPadding: 20
+                    rightPadding: 20
 
                     // The TextStyleDefinition's to be used in AbstractTextControl's
                     attachedObjects: [
@@ -110,19 +106,13 @@ Page {
                         }
                     ]
 
-                    layout: StackLayout {
-                        layoutDirection: LayoutDirection.TopToBottom
-                        leftPadding: 20
-                        rightPadding: 20
-                    }
-
                     // A standard Label
                     Label {
-                        text: "Inputs:"
+                        text: qsTr ("Inputs:")
                         textStyle {
                             base: SystemDefaults.TextStyles.TitleText
-                            fontWeight: FontWeight.Bold
                             color: Color.Black
+                            fontWeight: FontWeight.Bold
                         }
                     }
 
@@ -131,7 +121,7 @@ Page {
                         leftMargin: 10
                         topMargin: 10
 
-                        text: "Pattern:"
+                        text: qsTr ("Pattern:")
                         textStyle {
                             base: tsh.style
                         }
@@ -156,7 +146,7 @@ Page {
                     Label {
                         topMargin: 10
 
-                        text: "Escaped Pattern:"
+                        text: qsTr ("Escaped Pattern:")
                         textStyle {
                             base: tsh.style
                         }
@@ -176,36 +166,36 @@ Page {
 
                     // Drop down for selecting various pattern syntax
                     DropDown {
-                        title: "Pattern Syntax:"
+                        title: qsTr ("Pattern Syntax:")
                         onSelectedIndexChanged: _app.setPatternSyntax (selectedIndex)
                         Option {
-                            text: "Regular expression v1"
+                            text: qsTr ("Regular expression v1")
                             selected: true
                         }
                         Option {
-                            text: "Regular expression v2"
+                            text: qsTr ("Regular expression v2")
                         }
                         Option {
-                            text: "Wildcard"
+                            text: qsTr ("Wildcard")
                         }
                         Option {
-                            text: "Fixed string"
+                            text: qsTr ("Fixed string")
                         }
                         Option {
-                            text: "W3C Xml Schema 1.1"
+                            text: qsTr ("W3C Xml Schema 1.1")
                         }
                     }
 
                     // Container grouping the CheckBox's and their corresponding Label's
                     Container {
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
+                            orientation: LayoutOrientation.LeftToRight
                         }
 
                         Container {
                             topMargin: 10
                             layout: StackLayout {
-                                layoutDirection: LayoutDirection.LeftToRight
+                                orientation: LayoutOrientation.LeftToRight
                             }
 
                             // A standard CheckBox
@@ -221,7 +211,7 @@ Page {
                             Label {
                                 leftMargin: 10
 
-                                text: "Case Sensitive"
+                                text: qsTr ("Case Sensitive")
                                 textStyle {
                                     base: tsh.style
                                 }
@@ -232,7 +222,7 @@ Page {
                             topMargin: 10
                             leftMargin: 25
                             layout: StackLayout {
-                                layoutDirection: LayoutDirection.LeftToRight
+                                orientation: LayoutOrientation.LeftToRight
                             }
 
                             // A standard CheckBox
@@ -245,7 +235,7 @@ Page {
                             // A standard Label for the checkbox
                             Label {
                                 leftMargin: 10
-                                text: "Minimal"
+                                text: qsTr ("Minimal")
                                 textStyle {
                                     base: tsh.style
                                 }
@@ -257,7 +247,7 @@ Page {
                     Label {
                         topMargin: 10
 
-                        text: "Text:"
+                        text: qsTr ("Text:")
                         textStyle {
                             base: tsh.style
                         }
@@ -279,7 +269,7 @@ Page {
 
                     // A standard Label
                     Label {
-                        text: "Outputs:"
+                        text: qsTr ("Outputs:")
                         textStyle {
                             base: SystemDefaults.TextStyles.TitleText
                             fontWeight: FontWeight.Bold
@@ -289,14 +279,14 @@ Page {
 
                     Container {
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
+                            orientation: LayoutOrientation.LeftToRight
                         }
 
                         // A standard Label
                         Label {
                             topMargin: 10
 
-                            text: "Index of Match:"
+                            text: qsTr ("Index of Match:")
                             textStyle {
                                 base: tsh.style
                             }
@@ -313,14 +303,14 @@ Page {
 
                     Container {
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
+                            orientation: LayoutOrientation.LeftToRight
                         }
 
                         // A standard Label
                         Label {
                             topMargin: 10
 
-                            text: "Matched Length:"
+                            text: qsTr ("Matched Length:")
                             textStyle {
                                 base: tsh.style
                             }
@@ -342,7 +332,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture0Available
 
-                        text: "Match:"
+                        text: qsTr ("Match:")
                         textStyle {
                             base: tsh.style
                         }
@@ -367,7 +357,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture1Available
 
-                        text: "Capture 1:"
+                        text: qsTr ("Capture 1:")
                         textStyle {
                             base: tsh.style
                         }
@@ -392,7 +382,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture2Available
 
-                        text: "Capture 2:"
+                        text: qsTr ("Capture 2:")
                         textStyle {
                             base: tsh.style
                         }
@@ -417,7 +407,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture3Available
 
-                        text: "Capture 3:"
+                        text: qsTr ("Capture 3:")
                         textStyle {
                             base: tsh.style
                         }
@@ -442,7 +432,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture4Available
 
-                        text: "Capture 4:"
+                        text: qsTr ("Capture 4:")
                         textStyle {
                             base: tsh.style
                         }
@@ -467,7 +457,7 @@ Page {
                         // Enabled if output available
                         enabled: _regexp.capture5Available
 
-                        text: "Capture 5:"
+                        text: qsTr ("Capture 5:")
                         textStyle {
                             base: tsh.style
                         }

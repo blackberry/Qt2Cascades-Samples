@@ -40,17 +40,70 @@
  **
  ****************************************************************************/
 
+#include "datacontrolmapper.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/Control>
+#include <bb/cascades/QListDataModel>
+#include <bb/cascades/QmlDocument>
+#include <bb/data/SqlDataAccess>
 
-#include "app.hpp"
+using namespace bb::cascades;
+using namespace bb::data;
 
-using ::bb::cascades::Application;
-
+/**
+ * This sample application shows how to read data from an QSLite database and displaying
+ * them in the UI.
+ * Additionally this example provides a class that maps a row of a SQL table on a
+ * set of controls in the UI and allows the user to navigate throught the rows of the table
+ * and update the contents of the controls automatically.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    App mainApp;
+    const QString dbNameWithPath = "app/native/assets/sql/quotes.db";
+
+    // Create a SqlDataAccess object for a SQLite database file in the filesystem ...
+    SqlDataAccess sqlDataAccess(dbNameWithPath);
+
+    // Load the result into a QVariantList ...
+    const QVariantList sqlData = sqlDataAccess.execute("SELECT * FROM quotes").value<QVariantList>();
+
+    // Use the result as data source for a QListDataModel
+    QListDataModel<QVariantMap> model;
+
+    foreach (const QVariant &entry, sqlData)
+        model.append(entry.toMap());
+
+//! [0]
+    // Create a DataControlMapper and let it work on the DataSetModel
+    DataControlMapper mapper;
+    mapper.setModel(&model);
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the DataControlMapper available to the UI as context property
+    qml->setContextProperty("_dataMapper", &mapper);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
+
+    if (appPage) {
+        // Lookup the controls that should contain the content of a row from the SQL data
+        Control *firstNameField = appPage->findChild<Control*>("firstNameField");
+        Control *lastNameField = appPage->findChild<Control*>("lastNameField");
+        Control *quoteField = appPage->findChild<Control*>("quoteField");
+
+        // Define the mapping between control and column name
+        mapper.addMapping(firstNameField, "firstname");
+        mapper.addMapping(lastNameField, "lastname");
+        mapper.addMapping(quoteField, "quote");
+    }
+//! [0]
 
     return Application::exec();
 }

@@ -57,7 +57,7 @@ class CertificateInfoControl: public QObject
     Q_OBJECT
 
     // Makes the list of certificates (certificate chain) available as DataModel to the UI
-    Q_PROPERTY(bb::cascades::DataModel* model READ model NOTIFY modelChanged)
+    Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
 
     // Makes a textual representation of the selected certificate available to the UI
     Q_PROPERTY(QString certificateInfo READ certificateInfo NOTIFY certificateInfoChanged)
@@ -88,7 +88,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     // The change notification signals of the properties
-    void modelChanged();
     void certificateInfoChanged();
     void visibleChanged();
 

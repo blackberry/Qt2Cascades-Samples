@@ -43,12 +43,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
-
 #include <bb/cascades/Container>
-#include <bb/cascades/Event>
-#include <bb/cascades/UiObject>
+
+#include <QtCore/QObject>
 
 /**
  * This sample application shows how to read and write XML documents with

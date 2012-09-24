@@ -40,17 +40,44 @@
  **
  ****************************************************************************/
 
+#include "GameController.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "ScriptGameApp.hpp"
+using namespace bb::cascades;
 
-using ::bb::cascades::Application;
-
+/**
+ * This sample shows how to make an application scriptable with the QScript
+ * framework.
+ * It provides a game where a yellow circle can be move through a maze by turning
+ * it 90 degree to the left or to the right and moving one step in the current direction.
+ * The code that does the actual manipulation of the circle's position is implemented in
+ * C++, however the single commands (turn left / turn right / go forward) come from
+ * a JS script that the user can modify in the UI.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    ScriptGameApp mainApp;
+    // Create the game controller object
+    GameController gameController;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // We make the GameController and Application object available to the UI as context properties
+    qml->setContextProperty("_gameController", &gameController);
+    qml->setContextProperty("_app", &app);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+
+    // Tell the gameController which Container should be used as board
+    gameController.setBoard(appPage->findChild<Container*>("board"));
+
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

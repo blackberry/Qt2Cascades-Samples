@@ -58,19 +58,18 @@ int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    // Create download manager ...
+    // Create download manager object
     DownloadManager manager;
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // ... and make it available to the UI as context property
-        qml->setContextProperty("_manager", &manager);
-        Page *appPage = qml->createRootNode<Page>();
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-        if (appPage) {
-            Application::instance()->setScene(appPage);
-        }
-    }
+    // Make the DownloadManager object available to the UI as context properties
+    qml->setContextProperty("_manager", &manager);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

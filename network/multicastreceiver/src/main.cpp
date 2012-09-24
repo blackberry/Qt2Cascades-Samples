@@ -60,18 +60,16 @@ int main(int argc, char **argv)
     // Create the receiver object
     Receiver receiver;
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        // Make the Receiver and Application object available to the UI as context properties
-        qml->setContextProperty("_receiver", &receiver);
-        qml->setContextProperty("_app", &app);
-        Page *appPage = qml->createRootNode<Page>();
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-        if (appPage) {
-            Application::instance()->setScene(appPage);
-        }
-    }
+    // Make the Receiver and Application object available to the UI as context properties
+    qml->setContextProperty("_receiver", &receiver);
+    qml->setContextProperty("_app", &app);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }
-

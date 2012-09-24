@@ -47,62 +47,55 @@ import bb.cascades 1.0
 Page {
 
     // The root Container
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // A Container is used to gather visual items together.
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
             preferredWidth: 1000
 
 //! [0]
             // A standard Label
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
                 text: _sender.status
 
                 // Defines text style with custom font size
                 textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
                     color: Color.White
-                    base: SystemDefaults.TextStyles.SmallText
-                    size: 35
                 }
             }
 //! [0]
 
             // A Container for grouping the Label and TextField pair in a different Layout
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 30
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard Label
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
+
                     text: qsTr ("TTL for multicast datagrams:")
-                    textStyle.color: Color.White
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
+                        color: Color.White
                     }
                 }
 
@@ -121,15 +114,13 @@ Page {
 
             // A Container for grouping the control Buttons
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 30
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                leftPadding: 30
+                rightPadding: 30
 
                 layout: StackLayout {
-                    leftPadding: 30
-                    rightPadding: 30
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [2]
@@ -150,7 +141,7 @@ Page {
                     leftMargin: 100
                     text: qsTr ("Quit")
 
-                    //Quit the application on click
+                    // Quit the application on click
                     onClicked: _app.quit ()
                 }
             }

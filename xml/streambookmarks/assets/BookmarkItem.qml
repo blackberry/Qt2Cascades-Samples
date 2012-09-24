@@ -49,36 +49,32 @@ Container {
     property string tagName: "bookmark"
     property alias title: titleField.text
     property alias url: urlField.text
+
     topMargin: 10
     leftMargin: 20
-
-    layout: StackLayout {
-        leftPadding: 20
-    }
+    leftPadding: 20
 
     Container {
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
 
         // A standard ImageView
         ImageView {
-            imageSource: "asset:///images/bookmark.png"
+            verticalAlignment: VerticalAlignment.Center
             minWidth: 82
             minHeight: 62
-            layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
-            }
+
+            imageSource: "asset:///images/bookmark.png"
             scalingMethod: ScalingMethod.AspectFit
         }
 
         // A standard Label for the bookmark title element
         Label {
             id: titleField
+
+            verticalAlignment: VerticalAlignment.Center
             leftMargin: 10
-            layoutProperties: StackLayoutProperties {
-                verticalAlignment: VerticalAlignment.Center
-            }
 
             textStyle {
                 base: SystemDefaults.TextStyles.SmallText
@@ -96,11 +92,10 @@ Container {
     // A standard TextField for the bookmark url attribute value
     TextField {
         id: urlField
+
+        verticalAlignment: VerticalAlignment.Center
         leftMargin: 10
         visible: false
-        layoutProperties: StackLayoutProperties {
-            verticalAlignment: VerticalAlignment.Center
-        }
 
         textStyle {
             base: SystemDefaults.TextStyles.SmallText

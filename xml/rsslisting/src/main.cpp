@@ -63,11 +63,11 @@ int main(int argc, char **argv)
     // Create the business logic object
     RSSListing rssListing;
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
     if (!qml->hasErrors()) {
         // Make the RSSListing object available to the UI as context property
         qml->setContextProperty("_rssListing", &rssListing);
-        Page *appPage = qml->createRootNode<Page>();
+        Page *appPage = qml->createRootObject<Page>();
         if (appPage) {
             Application::instance()->setScene(appPage);
         }

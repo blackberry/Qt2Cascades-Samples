@@ -40,17 +40,36 @@
  **
  ****************************************************************************/
 
+#include "CodecController.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "CodecsApp.hpp"
+using namespace bb::cascades;
 
-using ::bb::cascades::Application;
-
+/**
+ * This sample application shows how to use Qt's codec classes to represent the
+ * content of files on the screen that have been stored with different codecs.
+ * In the UI the user can select a file and a codec and the application will try
+ * to decode the file content with the chosen codec and displays the result on screen.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    CodecsApp mainApp;
+    // Create the codec controller object
+    CodecController controller;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the CodecController object available to the UI as context property
+    qml->setContextProperty("_codecController", &controller);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

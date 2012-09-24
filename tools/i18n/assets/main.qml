@@ -47,23 +47,19 @@ import bb.cascades 1.0
 // as the canvas for displaying the selection
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
 //! [1]
             // Container contents transformed by selection
@@ -83,21 +79,24 @@ Page {
                 ListView {
                     id: languageSelector
 
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        verticalAlignment: VerticalAlignment.Bottom
-                    }
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Bottom
 
                     dataModel: _model
 
                     listItemComponents: ListItemComponent {
                         StandardListItem {
                             description: ListItem.data
-                            reserveImageSpace: false
+                            imageSpaceReserved: false
                         }
                     }
 
-                    onSelectionChanged: _app.setCurrentLanguage (indexPath)
+                    onTriggered: {
+                        clearSelection();
+                        select(indexPath);
+
+                        _app.setCurrentLanguage (indexPath)
+                    }
                 }
 //! [0]
             }

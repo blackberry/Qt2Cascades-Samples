@@ -40,8 +40,8 @@
  **
  ****************************************************************************/
 
-#ifndef FTPITEM_H
-#define FTPITEM_H
+#ifndef FTPITEM_HPP
+#define FTPITEM_HPP
 
 #include <QtCore/QDateTime>
 #include <QtCore/QVariant>

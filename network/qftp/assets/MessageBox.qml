@@ -46,63 +46,58 @@ import bb.cascades 1.0
 // Container grouping all visual nodes for the message view
 Container {
     background: Color.White
-    layout: DockLayout {
-    }
+    layout: DockLayout {}
+
     Container {
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-            verticalAlignment: VerticalAlignment.Center
-        }
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
+
         preferredWidth: 750
-        
+
         // A standard Label
         Label {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
-            
+            horizontalAlignment: HorizontalAlignment.Fill
+
             text: _messageBox.title
             textStyle {
                 base: SystemDefaults.TextStyles.TitleText
-                alignment: TextAlignment.Center
+                color: Color.Black
+                textAlign: TextAlign.Center
             }
         }
-        
+
         // A standard TextArea for displaying message
-        TextArea {
+        Label {
+            horizontalAlignment: HorizontalAlignment.Fill
             topMargin: 10
             preferredWidth: 700
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
-            
-            backgroundVisible: false
-            editable: false
-            
+
+            multiline: true
+
             text: _messageBox.text
             textStyle {
                 base: SystemDefaults.TextStyles.BodyText
-                alignment: TextAlignment.Center
+                color: Color.Black
+                textAlign: TextAlign.Center
             }
         }
-        
+
         // Groups message control Button's
         Container {
+            horizontalAlignment: HorizontalAlignment.Center
             topMargin: 10
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
+
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
-            
+
             // A standard Button
             Button {
                 text: _messageBox.button1Text
                 onClicked: _messageBox.button1Clicked ()
                 rightMargin: 20
             }
-            
+
             // A standard Button
             Button {
                 text: _messageBox.button2Text

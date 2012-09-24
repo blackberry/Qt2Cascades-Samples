@@ -62,6 +62,8 @@
 
     MainView.qml contains a top-level function that translates all user visible texts from its source
     language (normally english) to their target language by using the \l{qdeclarativei18n.html}{qsTr()} function.
+    The function is connected against the retranslate() signal of the \c App object, so whenever \c App emits
+    the signal, the function is invoked automatically.
 
     \section1 App
     The App class contains all the business logic of the application and is also responsible for initializing
@@ -71,13 +73,7 @@
 
     Inside the constructor we load the 'main.qml' file to initialize the UI and we export the data model that contains
     the languages and the 'App' object to the UI, so that these two objects are accessible from within the 'main.qml' file.
-    After the root node of the UI has been constructed, we lookup the C++ objects that represent the MainView.qml and its contained
-    TextView control. This lookup is done by using the \l{QObject::findChild()}{findChild()} method on the root node and passing
-    the names that have been specified for the 'objectName' properties in the QML file:
-
-    \snippet tools/i18n/assets/MainView.qml 1
-
-    In the last step we pre-select a language by calling the setCurrentLanguage() method with an index path pointing to the
+    Afterwards we pre-select a language by calling the setCurrentLanguage() method with an index path pointing to the
     second entry in the data model.
 
     The model itself setup inside the setupLanguageModel() method:
@@ -104,10 +100,8 @@
     inside the QML files, automatically. That is because qsTr() is a function and the translation is only done at the point when the function
     is invoked.
     However, as previously seen, our MainView.qml contains a top-level function that calls the qsTr() functions and assigns the results to
-    the 'text' properties of the controls, so we can simply call this top-level function to trigger the retranslation.
-
-    Invoking a JavaScript function from C++ can be done with the \l{QMetaObject::invokeMethod()}{QMetaObject::invokeMethod()} method, which expects
-    the pointer to the C++ object that represents the QML object with the JavaScript function and the name of the JavaScript function.
+    the 'text' properties of the controls, so we can simply invoke this top-level function by emitting the retranslate() signal which is
+    connected against this top-level function.
 
     It is also possible to translate text that can not be wrapped with qsTr(), for example if the texts are part of a table structure:
 

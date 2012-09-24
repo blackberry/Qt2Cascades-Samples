@@ -45,23 +45,19 @@ import bb.cascades 1.0
 
 Page {
     // A container is used to gather visual items together.
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
             // Defines a TextStyleDefinition that can be used in each control.
             attachedObjects: [
@@ -69,22 +65,18 @@ Page {
                     id: tsd
                     color: Color.White
                     base: SystemDefaults.TextStyles.BodyText
-                    alignment: TextAlignment.Center
+                    textAlign: TextAlign.Center
                 }
             ]
 
             Container {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                }
+                horizontalAlignment: HorizontalAlignment.Fill
 
                 // A standard Label
                 Label {
                     id: title
 
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Fill
 
                     text: qsTr ("Ready to broadcast datagrams on port 45454")
                     textStyle {
@@ -96,13 +88,14 @@ Page {
 //! [0]
                 // A standard Label, displays sending data
                 Label {
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
 
                     text: _sender.status
-                    textStyle.color: Color.White
-                    textStyle.fontWeight: FontWeight.Bold
+                    textStyle {
+                        color: Color.White
+                        fontWeight: FontWeight.Bold
+                        fontSize: FontSize.Medium
+                    }
 
                     // Plays scale animation upon sending the data
                     animations: [
@@ -130,14 +123,12 @@ Page {
             // The control Container, contains the buttons to start and quit application.
             Container {
                 topMargin: 30
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
+                leftPadding: 30
+                rightPadding: 30
 
                 layout: StackLayout {
-                    leftPadding: 30
-                    rightPadding: 30
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [1]

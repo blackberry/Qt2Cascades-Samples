@@ -45,67 +45,64 @@ import bb.cascades 1.0
 
 // Page shows Layout of Label's and Button's
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // Container mainly for background color and Layout purposes
         Container {
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
+
+            leftPadding: 10
+            rightPadding: 10
+            topPadding: 10
+            bottomPadding: 10
+
             background: Color.DarkGray
-            layout: StackLayout {
-                leftPadding: 10
-                rightPadding: 10
-                topPadding: 10
-                bottomPadding: 10
-            }
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
-            
+
             // Container for foreground Color overlaying the previous Color
             // to give impression of Container border
             Container {
+                leftPadding: 20
+                rightPadding: 20
+                topPadding: 20
+                bottomPadding: 20
+
                 background: Color.LightGray
-                layout: StackLayout {
-                    leftPadding: 20
-                    rightPadding: 20
-                    topPadding: 20
-                    bottomPadding: 20
-                }
-                
+
                 // A standard Label
                 Label {
-                    text: "Integer Input = " + _factorial.xorig
-                    
+                    text: qsTr ("Integer Input = %1").arg(_factorial.xorig)
+
                     // Defines custom text Color
                     textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
                         color: Color.create ("#b72141")
                     }
                 }
-                
+
                 // A standard Label
                 Label {
-                    text: "Factorial(" + _factorial.xorig + ")     = " + _factorial.fac
-                    
+                    text: qsTr ("Factorial(%1)     = %2").arg(_factorial.xorig).arg(_factorial.fac)
+
                     // Defines custom text Color
                     textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
                         color: Color.create ("#b72141")
                     }
                 }
-                
+
                 // A standard Button
                 Button {
-                    text: "Start Calculation"
-                    
+                    text: qsTr ("Start Calculation")
+
                     // Start state machine calculation on click
                     onClicked: _machine.start ()
                 }

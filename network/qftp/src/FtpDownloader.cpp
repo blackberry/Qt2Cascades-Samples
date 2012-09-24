@@ -54,7 +54,7 @@ using namespace bb::cascades;
 
 FtpDownloader::FtpDownloader(QObject *parent)
     : QObject(parent)
-    , m_url(QLatin1String("ftp://ftp.qnx.com/usr/free/Tech_Support_FAQ/other/"))
+    , m_url(QLatin1String("ftp://ftp.kde.org"))
     , m_ftp(0)
     , m_file(0)
     , m_parentDirectoryAvailable(false)
@@ -447,7 +447,7 @@ void FtpDownloader::addToList(const QUrlInfo &urlInfo)
 //![10]
 
 //![11]
-void FtpDownloader::processItem(const QVariantList &indexPath, bool active)
+void FtpDownloader::processItem(const QVariantList &indexPath)
 {
     if (!m_selectionPossible)
         return;
@@ -455,7 +455,7 @@ void FtpDownloader::processItem(const QVariantList &indexPath, bool active)
     m_currentIndexPath = indexPath;
     enableDownloadButton();
 
-    if (!indexPath.isEmpty() && active) {
+    if (!indexPath.isEmpty()) {
         // If the user has selected an valid item in the directory listing ListView, check whether it's a directory
         const FtpItem item = m_model.data(indexPath).value<FtpItem>();
         if (item.isDirectory) {

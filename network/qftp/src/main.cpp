@@ -41,12 +41,11 @@
  ****************************************************************************/
 
 #include "FtpDownloader.hpp"
-#include "FtpItemManager.hpp"
+#include "FtpItemProvider.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/Page>
 #include <bb/cascades/DataModel>
-#include <bb/cascades/ListItemManager>
 #include <bb/cascades/QmlDocument>
 
 using namespace bb::cascades;
@@ -60,30 +59,28 @@ int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-
     // Creates the FtpDownloader object that contains the business logic
     FtpDownloader downloader;
 
-    // Creates the FtpItemManager for the ListView
-    FtpItemManager itemManager;
+    // Creates the FtpItemProvider for the ListView
+    FtpItemProvider itemProvider;
 
-    if (!qml->hasErrors()) {
-        // Make all the business logic objects available to the UI as context properties
-        qml->setContextProperty("_model", downloader.model());
-        qml->setContextProperty("_itemManager", &itemManager);
-        qml->setContextProperty("_downloader", &downloader);
-        qml->setContextProperty("_messageBox", downloader.messageBoxController());
-        qml->setContextProperty("_progressDialog", downloader.progressDialogController());
-        Page *appPage = qml->createRootNode<Page>();
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-        if (appPage) {
-            Application::instance()->setScene(appPage);
+    // Make all the business logic objects available to the UI as context properties
+    qml->setContextProperty("_model", downloader.model());
+    qml->setContextProperty("_itemProvider", &itemProvider);
+    qml->setContextProperty("_downloader", &downloader);
+    qml->setContextProperty("_messageBox", downloader.messageBoxController());
+    qml->setContextProperty("_progressDialog", downloader.progressDialogController());
 
-            // Quit the application if 'Qt.quit()' is called in the UI
-            QObject::connect(qml->documentContext()->engine(), SIGNAL(quit()), &app, SLOT(quit()));
-        }
-    }
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
+
+    // Quit the application if 'Qt.quit()' is called in the UI
+    QObject::connect(qml->documentContext()->engine(), SIGNAL(quit()), &app, SLOT(quit()));
 
     return Application::exec();
 }

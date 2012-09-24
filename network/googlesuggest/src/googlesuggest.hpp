@@ -43,12 +43,10 @@
 #ifndef GOOGLESUGGEST_HPP
 #define GOOGLESUGGEST_HPP
 
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
-#include <QtNetwork/QNetworkAccessManager>
-
-#include <bb/cascades/Application>
 #include <bb/cascades/QListDataModel>
+
+#include <QtCore/QObject>
+#include <QtNetwork/QNetworkAccessManager>
 
 class QNetworkReply;
 
@@ -61,7 +59,7 @@ class GoogleSuggest: public QObject
     Q_PROPERTY(QString input READ input WRITE setInput NOTIFY inputChanged)
 
     // This property makes the model that contains the results available to the UI
-    Q_PROPERTY(bb::cascades::DataModel* model READ model NOTIFY modelChanged)
+    Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
 
 public:
     GoogleSuggest();
@@ -73,9 +71,8 @@ public:
     bb::cascades::DataModel* model() const;
 
 Q_SIGNALS:
-    // The change notification signals of the properties
+    // The change notification signal of the property
     void inputChanged();
-    void modelChanged();
 
     // This signal is emitted to trigger the ListView to clear its selection
     void clearSelection();

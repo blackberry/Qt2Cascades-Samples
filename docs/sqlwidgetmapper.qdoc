@@ -92,7 +92,7 @@
     In the next step the mappings between the Cascades controls and the section names (in this case the column names of the SQL table) can
     be configured.
 
-    \snippet sql/sqlwidgetmapper/src/app.cpp 0
+    \snippet sql/sqlwidgetmapper/src/main.cpp 0
 
     The addMapping() call will determine the type of the Cascades control and call an overloaded addMapping() method with the default
     property names for the specific control type.

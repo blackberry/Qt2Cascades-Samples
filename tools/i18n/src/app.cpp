@@ -71,37 +71,19 @@ App::App()
 {
     setupLanguageModel();
 
-    QmlDocument *qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        /**
-         * Make the language model available as context properties,
-         * it is used by the ListView in the UI.
-         */
-        qml->setContextProperty("_model", &m_model);
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
-        /**
-         * Make the App object available to the UI as well, so that its setCurrentLanguage()
-         * method can be invoked from there.
-         */
-        qml->setContextProperty("_app", this);
+    // Make the language model and App object available to the UI as context properties
+    qml->setContextProperty("_model", &m_model);
+    qml->setContextProperty("_app", this);
 
-        Page *appPage = qml->createRootNode<Page>();
-        if (appPage) {
-            Application::instance()->setScene(appPage);
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
-            /**
-             * Lookup the main view and text area controls in the QML tree and store them
-             * in our member variables.
-             * Note: We use QPointers here for m_mainView and m_textArea, so we can always
-             *       check whether the objects have been deleted by the UI in the meantime.
-             */
-            m_mainView = appPage->findChild<Control*>("mainView");
-            m_textArea = appPage->findChild<TextArea*>("textArea");
-
-            // Pre-select the second entry - English
-            setCurrentLanguage(QVariantList() << QVariant(1));
-        }
-    }
+    // Pre-select the second entry - English
+    setCurrentLanguage(QVariantList() << QVariant(1));
 }
 //! [1]
 
@@ -125,26 +107,27 @@ void App::setCurrentLanguage(const QVariantList &indexPath)
     qApp->installTranslator(m_translator);
 
     // ... and trigger the translation of the texts inside the UI.
-    if (m_mainView) {
-        QMetaObject::invokeMethod(m_mainView, "retranslate");
+    emit retranslate();
+
+    m_message.clear();
+    for (int i = 0; listEntries[i]; ++i) {
+        /**
+         * The static string literals, that have been marked to be translated with
+         * QT_TRANSLATE_NOOP above, are eventually translated here.
+         * Note: The context identifier ('MainView' here) must match with the context identifier
+         *       that is used in the QT_TRANSLATE_NOOP declaration.
+         */
+        m_message += qApp->translate("MainView", listEntries[i]) + "\n";
     }
 
-    if (m_textArea) {
-        QString text;
-        for (int i = 0; listEntries[i]; ++i) {
-            /**
-             * The static string literals, that have been marked to be translated with
-             * QT_TRANSLATE_NOOP above, are eventually translated here.
-             * Note: The context identifier ('MainView' here) must match with the context identifier
-             *       that is used in the QT_TRANSLATE_NOOP declaration.
-             */
-            text += qApp->translate("MainView", listEntries[i]) + "\n";
-        }
-
-        m_textArea->setText(text);
-    }
+    emit messageChanged();
 }
 //! [2]
+
+QString App::message() const
+{
+    return m_message;
+}
 
 //! [3]
 void App::setupLanguageModel()

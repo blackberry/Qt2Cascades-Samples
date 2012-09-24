@@ -45,48 +45,39 @@ import bb.cascades 1.0
 
 // Page shows layout of TextField's bound to database data
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 20
-                rightPadding: 20
-                topPadding: 20
-                bottomPadding: 20
-            }
+            leftPadding: 20
+            rightPadding: 20
+            topPadding: 20
+            bottomPadding: 20
 
             // Groups the label and corresponding TextField
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+                bottomPadding: 20
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    bottomPadding: 20
-                }
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard Label
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
                     preferredWidth: 200
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
-                    }
 
                     text: qsTr ("First Name")
 
@@ -100,9 +91,11 @@ Page {
                 // Standard TextField
                 TextField {
                     objectName: "firstNameField"
+
+                    verticalAlignment: VerticalAlignment.Center
                     leftMargin: 10
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -114,20 +107,17 @@ Page {
 
             // Groups the label and corresponding TextField
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+                bottomPadding: 20
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    bottomPadding: 20
-                }
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard Label
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
                     preferredWidth: 200
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
-                    }
 
                     text: qsTr ("Last Name")
 
@@ -141,8 +131,10 @@ Page {
                 // A standard TextField
                 TextField {
                     objectName: "lastNameField"
+
+                    verticalAlignment: VerticalAlignment.Center
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -154,20 +146,17 @@ Page {
 
             // Groups the label and corresponding TextArea
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+                bottomPadding: 20
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
-                    bottomPadding: 20
-                }
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard Label
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
                     preferredWidth: 200
-                    layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
-                    }
 
                     text: qsTr ("Quote")
 
@@ -181,9 +170,11 @@ Page {
                 // A standard TextArea
                 TextArea {
                     objectName: "quoteField"
+
+                    verticalAlignment: VerticalAlignment.Center
                     preferredHeight: 350
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -195,18 +186,18 @@ Page {
 
             // Groups the application control Buttons
             Container {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
-                }
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [0]
                 // A standard Button
                 Button {
+                    verticalAlignment: VerticalAlignment.Center
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -217,15 +208,15 @@ Page {
 
                     // Enable Button if there is previous data
                     enabled: _dataMapper.currentIndex != 0
-
                 }
 //! [0]
 
 //! [1]
                 // A standard Label
                 Label {
+                    verticalAlignment: VerticalAlignment.Center
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
 
@@ -233,8 +224,9 @@ Page {
 
                     // Defines custom text Color
                     textStyle {
-                        alignment: TextAlignment.Center
+                        base: SystemDefaults.TextStyles.SmallText
                         color: Color.White
+                        textAlign: TextAlign.Center
                     }
                 }
 //! [1]
@@ -242,10 +234,12 @@ Page {
 //! [2]
                 // A standard Button
                 Button {
+                    verticalAlignment: VerticalAlignment.Center
+
                     layoutProperties: StackLayoutProperties {
-                        verticalAlignment: VerticalAlignment.Center
                         spaceQuota: 1
                     }
+
                     text: qsTr ("Next")
 
                     // Go to next data on click
@@ -253,7 +247,6 @@ Page {
 
                     // Enable Button only if there is more data
                     enabled: (_dataMapper.currentIndex < (_dataMapper.count - 1))
-
                 }
 //! [2]
             }

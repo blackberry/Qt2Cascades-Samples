@@ -40,11 +40,10 @@
  **
  ****************************************************************************/
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
-#include <bb/cascades/Container>
-#include <bb/cascades/Control>
+#include <bb/cascades/QListDataModel>
 #include <bb/cascades/QmlDocument>
-#include <bb/cascades/Page>
 
 #include <QtCore/QAbstractTransition>
 #include <QtCore/QState>
@@ -53,7 +52,7 @@
 using namespace ::bb::cascades;
 
 /**
- * The BalloonCreator creates the balloon controls in the UI whenever the
+ * The BalloonCreator adds balloon information to the model whenever the
  * 'pinger', 'pingTransition' or 'pongTransition' emit a notification.
  */
 class BalloonCreator : public QObject
@@ -63,38 +62,30 @@ class BalloonCreator : public QObject
 public:
     explicit BalloonCreator(QObject *parent = 0)
         : QObject(parent)
+        , m_model(new QStringListDataModel())
     {
+        m_model->setParent(this);
     }
 
-    void setBalloonsContainer(Container *container)
+    bb::cascades::DataModel* model() const
     {
-        m_balloonsContainer = container;
+        return m_model;
     }
 
 public Q_SLOTS:
     // This slot is called whenever a new notification from pinger, pingTransition or pongTransition is received
     void notify(const QString &message)
     {
-        if (!m_balloonsContainer)
-            return;
-
         // Show 10 balloons at maximum
-        if (m_balloonsContainer->count() == 10)
-            m_balloonsContainer->removeAll();
+        if (m_model->childCount(QVariantList()) == 10)
+            m_model->clear();
 
-        const QString qmlFile = (message == "ping" ? "PingBalloon.qml" : "PongBalloon.qml");
-
-        QmlDocument * const qml = QmlDocument::create().load(qmlFile);
-        if (!qml->hasErrors()) {
-            Control *balloon = qml->createRootNode<Control>();
-            if (balloon)
-                m_balloonsContainer->add(balloon);
-        }
+        m_model->append(message);
     }
 
 private:
-    // The container where the balloons should be placed in
-    QPointer<Container> m_balloonsContainer;
+    // The model that contains 
+    bb::cascades::QStringListDataModel* m_model;
 };
 
 //! [0]
@@ -285,22 +276,21 @@ int main(int argc, char **argv)
 
     BalloonCreator balloonCreator;
 
-    QmlDocument * const qml = QmlDocument::create().load("main.qml");
-    if (!qml->hasErrors()) {
-        Page *appPage = qml->createRootNode<Page>();
-        if (appPage) {
-            Application::instance()->setScene(appPage);
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+    qml->setContextProperty("_model", balloonCreator.model());
 
-            balloonCreator.setBalloonsContainer(appPage->findChild<Container*>("balloonsContainer"));
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
-            QObject::connect(pinger, SIGNAL(notify(QString)),
-                             &balloonCreator, SLOT(notify(QString)));
-            QObject::connect(pingTransition, SIGNAL(notify(QString)),
-                             &balloonCreator, SLOT(notify(QString)));
-            QObject::connect(pongTransition, SIGNAL(notify(QString)),
-                             &balloonCreator, SLOT(notify(QString)));
-        }
-    }
+    QObject::connect(pinger, SIGNAL(notify(QString)),
+                     &balloonCreator, SLOT(notify(QString)));
+    QObject::connect(pingTransition, SIGNAL(notify(QString)),
+                     &balloonCreator, SLOT(notify(QString)));
+    QObject::connect(pongTransition, SIGNAL(notify(QString)),
+                     &balloonCreator, SLOT(notify(QString)));
+
     return Application::exec();
 }
 //! [6]

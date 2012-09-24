@@ -40,17 +40,36 @@
  **
  ****************************************************************************/
 
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "SharedMemoryApp.hpp"
+#include "FileLoaderProxy.hpp"
 
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
+/**
+ * This sample application shows how to use QSharedMemory to share memory
+ * between two processes. In this example the main process (sharedmemory) creates
+ * a shared memory segment and waits for a second process (sharedmemory_loader)
+ * to fill the shared memory with data.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    SharedMemoryApp mainApp;
+    // Create the file loader proxy object
+    FileLoaderProxy fileLoaderProxy;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the FileLoaderProxy object available to the UI as context property
+    qml->setContextProperty("_fileLoaderProxy", &fileLoaderProxy);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

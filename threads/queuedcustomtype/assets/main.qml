@@ -45,34 +45,28 @@ import bb.cascades 1.0
 
 // Page shows a Layout of ImageView's, Label's and control Button
 Page {
-    content: Container {
-        preferredWidth: 768
+    Container {
 
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
             imageSource: "asset:///images/background.png"
         }
 
         // Container for the title
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
 
             // A standard Label
             Label {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 20
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+
                 text: qsTr ("Touch one of the images below to start rendering")
 
                 // Defines custom text Color and style
@@ -84,12 +78,11 @@ Page {
 
             // Groups the available ImageView's for rendering
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 10
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
                 // A standard ImageView
@@ -109,6 +102,7 @@ Page {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
+
                     imageSource: "asset:///images/sphere.png"
 
                     // Render this image on touch
@@ -122,6 +116,7 @@ Page {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
+
                     imageSource: "asset:///images/cylinder.png"
 
                     // Render this image on touch
@@ -135,6 +130,7 @@ Page {
                     leftMargin: 30
                     preferredWidth: 128
                     preferredHeight: 128
+
                     imageSource: "asset:///images/pyramid.png"
 
                     // Render this image on touch
@@ -147,24 +143,20 @@ Page {
             // Container in which the image is rendered
             Container {
                 objectName: "canvas"
+
+                horizontalAlignment: HorizontalAlignment.Center
                 preferredWidth: 300
                 preferredHeight: 300
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
-                layout: AbsoluteLayout {
-                }
+
+                layout: AbsoluteLayout {}
             }
 
             // Container for the app control Button
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
+                bottomPadding: 5
+
                 preferredWidth: 200
-                layout: DockLayout {
-                    bottomPadding: 5
-                }
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
 
                 // A standard Button
                 Button {

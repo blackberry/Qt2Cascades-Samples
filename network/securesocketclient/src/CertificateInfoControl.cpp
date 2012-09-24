@@ -65,9 +65,6 @@ void CertificateInfoControl::setCertificateChain(const QList<QSslCertificate> &c
         m_model.append(chainInformation);
     }
 
-    // Notify the UI that the model has changed
-    emit modelChanged();
-
     // Pre-select the first certificate in the list
     setCurrentCertificate(QVariantList() << QVariant(0));
 }

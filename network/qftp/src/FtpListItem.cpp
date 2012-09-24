@@ -17,7 +17,7 @@
 
 #include <bb/cascades/Container>
 #include <bb/cascades/DockLayout>
-#include <bb/cascades/DockLayoutProperties>
+#include <bb/cascades/FontSize>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/Image>
 #include <bb/cascades/Label>
@@ -33,7 +33,7 @@ FtpListItem::FtpListItem(Container *parent)
 {
     Container *contents = new Container();
     StackLayout *contentsLayout = new StackLayout();
-    contentsLayout->setLayoutDirection(LayoutDirection::LeftToRight);
+    contentsLayout->setOrientation(LayoutOrientation::LeftToRight);
     contents->setLayout(contentsLayout);
 
     // A background Container that will hold a background image and a item content Container.
@@ -41,7 +41,7 @@ FtpListItem::FtpListItem(Container *parent)
     backgroundContainer->setPreferredHeight(141);
     DockLayout *backgroundLayout = new DockLayout();
     backgroundContainer->setLayout(backgroundLayout);
-    backgroundContainer->setLayoutProperties(DockLayoutProperties::create().horizontal(HorizontalAlignment::Fill));
+    backgroundContainer->setHorizontalAlignment(HorizontalAlignment::Fill);
 
     m_highlighContainer = new ImageView();
     m_highlighContainer->setImage(Image(QUrl("asset:///images/highlighted.png")));
@@ -60,7 +60,7 @@ FtpListItem::FtpListItem(Container *parent)
     m_itemDescription = Label::create();
     m_itemDescription->textStyle()->setBase(SystemDefaults::TextStyles::smallText());
     m_itemDescription->textStyle()->setColor(Color::Black);
-    m_itemDescription->textStyle()->setSize(25.0f);
+    m_itemDescription->textStyle()->setFontSize(FontSize::Medium);
 
     contents->add(m_itemImage);
     contents->add(textContents);

@@ -12,21 +12,21 @@ lupdate_inclusion {
 }
 
 device {
-	CONFIG(release, debug|release) {
-		DESTDIR = o.le-v7
-	}
-	CONFIG(debug, debug|release) {
-		DESTDIR = o.le-v7-g
-	}
+    CONFIG(release, debug|release) {
+        DESTDIR = o.le-v7
+    }
+    CONFIG(debug, debug|release) {
+        DESTDIR = o.le-v7-g
+    }
 }
 
 simulator {
-	CONFIG(release, debug|release) {
-		DESTDIR = o
-	}
-	CONFIG(debug, debug|release) {
-		DESTDIR = o-g
-	}
+    CONFIG(release, debug|release) {
+        DESTDIR = o
+    }
+    CONFIG(debug, debug|release) {
+        DESTDIR = o-g
+    }
 }
 
 OBJECTS_DIR = $${DESTDIR}/.obj
@@ -43,7 +43,7 @@ QMAKE_EXTRA_TARGETS += suredelete
 TRANSLATIONS = \
     $${TARGET}_en_GB.ts \
     $${TARGET}_fr.ts \
-    $${TARGET}_it.ts \    
+    $${TARGET}_it.ts \
     $${TARGET}_de.ts \
     $${TARGET}_es.ts \
     $${TARGET}.ts

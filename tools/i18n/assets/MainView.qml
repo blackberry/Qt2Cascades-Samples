@@ -45,12 +45,9 @@ import bb.cascades 1.0
 
 // Groups various visual nodes
 Container {
-    layout: StackLayout {
-        leftPadding: 30
-        rightPadding: 30
-        topPadding: 30
-    }
-    objectName: "mainView"
+    leftPadding: 30
+    rightPadding: 30
+    topPadding: 30
 
 //! [0]
     // Function tasked with the setting and translation of the Label's text
@@ -61,6 +58,8 @@ Container {
         isometricLabel.text = qsTr ("Isometric");
         obliqueLabel.text = qsTr ("Oblique");
     }
+
+    onCreationCompleted: _app.retranslate.connect(retranslate)
 //! [0]
 
     // A standard Label defining the language header
@@ -68,44 +67,38 @@ Container {
         id: headerLabel
         topMargin: 10
         textStyle {
+            base: SystemDefaults.TextStyles.BodyText
             color: Color.create ("#e3741a")
         }
     }
 
     // Container used as a visula divider line
     Container {
-        background: Color.White
+        horizontalAlignment: HorizontalAlignment.Fill
         preferredHeight: 2
         topMargin: 10
         bottomMargin: 10
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
+
+        background: Color.White
     }
 
     // Groups the various Label's that are to be translated to selected language
     Container {
-        layout: StackLayout {
-            bottomPadding: 30
-        }
-        layoutProperties: StackLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Fill
-        }
+        horizontalAlignment: HorizontalAlignment.Fill
+        bottomPadding: 30
 
         // A standard Label
         Label {
             id: viewLabel
+            horizontalAlignment: HorizontalAlignment.Fill
             topMargin: 10
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
 
             // Defines custom text style
             textStyle {
                 base: SystemDefaults.TextStyles.TitleText
-                alignment: TextAlignment.Center
                 color: Color.White
                 fontWeight: FontWeight.Bold
+                textAlign: TextAlign.Center
             }
         }
 
@@ -113,6 +106,7 @@ Container {
         Label {
             id: perspectiveLabel
             textStyle {
+                base: SystemDefaults.TextStyles.BodyText
                 color: Color.create ("#e3741a")
             }
         }
@@ -121,6 +115,7 @@ Container {
         Label {
             id: isometricLabel
             textStyle {
+                base: SystemDefaults.TextStyles.BodyText
                 color: Color.create ("#e3741a")
             }
         }
@@ -129,29 +124,27 @@ Container {
         Label {
             id: obliqueLabel
             textStyle {
+                base: SystemDefaults.TextStyles.BodyText
                 color: Color.create ("#e3741a")
             }
         }
     }
 
     Container {
-        layout: StackLayout {
-            bottomPadding: 20
-        }
+        bottomPadding: 20
 
-//! [1]
         // A standard TextArea
         TextArea {
             id: textArea
-            objectName: "textArea"
-//! [1]
+
+            text: _app.message
+
+            horizontalAlignment: HorizontalAlignment.Fill
             preferredHeight: 200
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
 
             // Defines custom text Color
             textStyle {
+                base: SystemDefaults.TextStyles.BodyText
                 color: Color.create ("#e3741a")
             }
         }

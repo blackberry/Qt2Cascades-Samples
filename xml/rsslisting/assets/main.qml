@@ -45,27 +45,21 @@ import bb.cascades 1.0
 
 // Page that displays news items from RDF news sources
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                topPadding: 140
-            }
+            topPadding: 140
 
 //! [0]
             // A standard TextArea for displaying items
@@ -75,40 +69,39 @@ Page {
                 text: _rssListing.feeds
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
+                    color: Color.Black
                 }
             }
 //! [0]
         }
 
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Top
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Top
 
             imageSource: "asset:///images/overlay.png"
         }
 
         // Container to create the application header with a certain Color
         Container {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Top
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Top
+
+            leftPadding: 20
+            rightPadding: 20
+            topPadding: 20
+            bottomPadding: 20
 
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
-                leftPadding: 20
-                rightPadding: 20
-                topPadding: 20
-                bottomPadding: 20
+                orientation: LayoutOrientation.LeftToRight
             }
 
 //! [1]
             // A standard TextField for the RSS url
             TextField {
+                verticalAlignment: VerticalAlignment.Center
+
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: 1
                 }
 
@@ -124,12 +117,13 @@ Page {
 //! [2]
             // A standard Button
             Button {
+                verticalAlignment: VerticalAlignment.Center
+                leftMargin: 10
+
                 layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
                     spaceQuota: -1
                 }
 
-                leftMargin: 10
                 enabled: ! _rssListing.active
 
                 text: qsTr ("Fetch")

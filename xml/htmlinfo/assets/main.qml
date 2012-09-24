@@ -47,42 +47,36 @@ import bb.cascades 1.0
 // Page shows different HTML file selections in a ListView that will be parsed using a xml
 // reader and statistics about the file will be displayed
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
 
         ScrollView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             scrollViewProperties {
                 scrollMode: ScrollMode.Vertical
             }
 
             Container {
-                layout: StackLayout {
-                    topPadding: 150
-                    leftPadding: 30
-                    rightPadding: 30
-                }
+                topPadding: 150
+                leftPadding: 30
+                rightPadding: 30
 
                 // A standard TextArea for displaying any parse errors
-                TextArea {
+                Label {
                     preferredWidth: 680
                     preferredHeight: 360
-                    editable: false
+                    multiline: true
 
                     // Make this Container visible only if there are errors
                     visible: _htmlInfo.error != ""
@@ -93,7 +87,7 @@ Page {
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                         color: Color.DarkRed
-                        alignment: TextAlignment.Center
+                        textAlign: TextAlign.Center
                     }
                 }
 
@@ -112,7 +106,7 @@ Page {
                         textStyle {
                             base: SystemDefaults.TextStyles.TitleText
                             color: Color.White
-                            alignment: TextAlignment.Center
+                            textAlign: TextAlign.Center
                         }
                     }
 
@@ -123,14 +117,12 @@ Page {
 
                     // Container grouping the Label and the corresponding output
                     Container {
-                        layoutProperties: StackLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                        }
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        leftPadding: 30
+                        rightPadding: 30
 
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
-                            leftPadding: 30
-                            rightPadding: 30
+                            orientation: LayoutOrientation.LeftToRight
                         }
 
                         // A standard Label
@@ -156,9 +148,9 @@ Page {
                             text: _htmlInfo.paragraphs
 
                             textStyle {
-                                alignment: TextAlignment.ForceRight
                                 base: SystemDefaults.TextStyles.SmallText
                                 color: Color.White
+                                textAlign: TextAlign.Right
                             }
                         }
                     }
@@ -170,14 +162,12 @@ Page {
 
                     // Container grouping the Label and the corresponding output
                     Container {
-                        layoutProperties: StackLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Fill
-                        }
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        leftPadding: 30
+                        rightPadding: 30
 
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
-                            leftPadding: 30
-                            rightPadding: 30
+                            orientation: LayoutOrientation.LeftToRight
                         }
 
                         // A standard Label
@@ -203,9 +193,9 @@ Page {
                             text: _htmlInfo.links
 
                             textStyle {
-                                alignment: TextAlignment.ForceRight
                                 base: SystemDefaults.TextStyles.SmallText
                                 color: Color.White
+                                textAlign: TextAlign.Right
                             }
                         }
                     }
@@ -219,10 +209,8 @@ Page {
 
                     // Container grouping the Label and the corresponding output
                     Container {
-                        layout: StackLayout {
-                            leftPadding: 30
-                            rightPadding: 30
-                        }
+                        leftPadding: 30
+                        rightPadding: 30
 
                         // A standard TextArea displaying link url's
                         TextArea {
@@ -243,10 +231,8 @@ Page {
         }
 
         SlideoutPanel {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Top
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Top
 
             translationY: -444
 

@@ -40,17 +40,37 @@
  **
  ****************************************************************************/
 
+#include "UndoManager.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "UndoFrameworkApp.hpp"
+using namespace bb::cascades;
 
-using ::bb::cascades::Application;
-
+/**
+ * This sample application shows how to use the undo/redo framework that is
+ * provided by Qt.
+ * The user can move around gaming pieces on a board and undo/redo the moves
+ * by clicking the 'Undo' or 'Redo' button.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    UndoFrameworkApp mainApp;
+    // Create the undo manager
+    UndoManager manager;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the UndoManager and Application object available to the UI as context properties
+    qml->setContextProperty("_undoManager", &manager);
+    qml->setContextProperty("_app", &app);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

@@ -43,48 +43,42 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
-        preferredWidth: 768
-        preferredHeight: 1280
+    Container {
 
         layout: DockLayout {}
 
         // The background
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // The main container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                topPadding: 30
-            }
+            topPadding: 30
 
             // The text
             Label {
-                layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
+                horizontalAlignment: HorizontalAlignment.Center
 
                 text: qsTr ("Move the black and white gaming pieces")
-                textStyle.color: Color.Black
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.Black
+                }
             }
 
 //! [0]
             // The board
             Board {
+                horizontalAlignment: HorizontalAlignment.Center
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
                     spaceQuota: 1
                 }
             }
@@ -92,8 +86,9 @@ Page {
 
             // The buttons container
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
                     spaceQuota: 1
                 }
 

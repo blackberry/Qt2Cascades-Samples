@@ -40,15 +40,7 @@
  **
  ****************************************************************************/
 
-#include <bb/cascades/AbstractPane>
-#include <bb/cascades/Application>
-#include <bb/cascades/ListView>
-#include <bb/cascades/QListDataModel>
-#include <bb/cascades/QmlDocument>
-#include <bb/cascades/TextField>
-
-#include <Qt/qnetworkaccessmanager.h>
-#include <Qt/qnetworkrequest.h>
+#include <QtNetwork/QNetworkRequest>
 
 //! [1]
 #include "googlesuggest.hpp"
@@ -61,12 +53,6 @@ const char *GSUGGEST_URL = "http://google.com/complete/search?output=toolbar&q=%
 //! [2]
 GoogleSuggest::GoogleSuggest()
 {
-    QmlDocument *qml = QmlDocument::create("main.qml");
-    qml->setContextProperty("_app", this);
-
-    AbstractPane *root = qml->createRootNode<AbstractPane>();
-    Application::instance()->setScene(root);
-
     // We use a timer that goes off after 500ms to trigger
     // actually retrieving the suggestions
     m_timer.setSingleShot(true);

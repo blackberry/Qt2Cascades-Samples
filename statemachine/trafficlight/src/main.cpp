@@ -40,17 +40,37 @@
  **
  ****************************************************************************/
 
+#include "TrafficLightController.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "TrafficLightApp.hpp"
+using namespace bb::cascades;
 
-using ::bb::cascades::Application;
-
+/**
+ * This sample app focuses on how to drive the business logic of an application
+ * with the help of a state machine.
+ * We show how to setup a state machine and how to map the business logic to the single states.
+ * Furthermore it is shown how the state changes are reflected in the UI.
+ */
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    TrafficLightApp mainApp;
+    // Create the traffic light controller object
+    TrafficLightController controller;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // We make the TrafficLightController and Application object available to the UI as context properties
+    qml->setContextProperty("_trafficLightController", &controller);
+    qml->setContextProperty("_app", &app);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

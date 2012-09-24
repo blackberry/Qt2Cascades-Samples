@@ -43,11 +43,8 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
-
-        preferredWidth: 1280
-        preferredHeight: 768
 
 //! [0]
         onCreationCompleted: {
@@ -59,42 +56,38 @@ Page {
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
             // The DropDown bar at the top
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: -1
                 }
 
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
 
 //! [1]
                 DropDown {
                     id: fileList
-                    title: "File"
+                    title: qsTr ("File")
 
                     onSelectedIndexChanged: {
                         // Trigger an update of the decoded file content
@@ -104,7 +97,7 @@ Page {
 
                 DropDown {
                     id: codecList
-                    title: "Codec"
+                    title: qsTr ("Codec")
 
                     onSelectedIndexChanged: {
                         // Trigger an update of the decoded file content
@@ -117,8 +110,9 @@ Page {
 //! [2]
             // Shows the decoded file content
             TextArea {
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: 1
                 }
 

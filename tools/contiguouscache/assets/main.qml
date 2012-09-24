@@ -43,35 +43,29 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         id: root
         layout: DockLayout {}
 
-        preferredWidth: 768
-        preferredHeight: 1280
-
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level container
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-            layout: AbsoluteLayout {
-            }
+            layout: AbsoluteLayout {}
 
             Container {
                 preferredWidth: 86
                 preferredHeight: 254
+
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 88
                     positionY: 178
@@ -81,11 +75,10 @@ Page {
 
                 // The image ListView
                 ListView {
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Fill
+
                     preferredWidth: 100
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Fill
-                    }
 
                     translationX: 5
 
@@ -103,13 +96,11 @@ Page {
 
                 // The mask overlay
                 ImageView {
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        verticalAlignment: VerticalAlignment.Fill
-                    }
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
 
                     imageSource: "asset:///images/listview_overlay.png"
-                    overlapTouchPolicy: OverlapTouch.Allow
+                    overlapTouchPolicy: OverlapTouchPolicy.Allow
                 }
             }
 
@@ -120,7 +111,7 @@ Page {
                     positionY: 600
                 }
 
-                text: "Cached Images: " + _dataModel.cachedItemCount
+                text: qsTr ("Cached Images: %1").arg(_dataModel.cachedItemCount)
                 textStyle.color: Color.create("#ff2d323c")
                 textStyle.base: SystemDefaults.TextStyles.TitleText
             }

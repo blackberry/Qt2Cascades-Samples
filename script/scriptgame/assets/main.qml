@@ -43,37 +43,32 @@
 import bb.cascades 1.0
 
 Page {
-    content: Container {
+    Container {
         layout: DockLayout {}
 
         // The background image
         ImageView {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: verticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: verticalAlignment.Fill
 
             imageSource: "asset:///images/background.png"
         }
 
         // The top-level Container that contains the Maze and the control elements
         Container {
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: verticalAlignment.Fill
-            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: verticalAlignment.Fill
 
-            layout: StackLayout {
-                leftPadding: 30
-                topPadding: 30
-                rightPadding: 30
-                bottomPadding: 30
-            }
+            leftPadding: 30
+            topPadding: 30
+            rightPadding: 30
+            bottomPadding: 30
 
             // The upper part of the screen
             Container {
+                horizontalAlignment: HorizontalAlignment.Center
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
                     spaceQuota: 1
                 }
 
@@ -82,44 +77,43 @@ Page {
 //! [0]
                 // The maze board
                 Maze {
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: verticalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: verticalAlignment.Center
                 }
 //! [0]
 
                 // The script error overlay text
                 TextArea {
-                    layoutProperties: DockLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: verticalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: verticalAlignment.Center
 
                     preferredWidth: 400
                     preferredHeight: 400
                     opacity: _gameController.scriptError == "" ? 0.0 : 1.0
                     backgroundVisible: false
-                    textStyle.alignment: TextAlignment.Center
-                    textStyle.color: Color.White
-                    textStyle.base: SystemDefaults.TextStyles.BigText
+
                     text: _gameController.scriptError
+
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BigText
+                        color: Color.White
+                        textAlign: TextAlign.Center
+                    }
                 }
             }
 
             // The lower part of the screen
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Fill
                     spaceQuota: 1
                 }
 
                 DropDown {
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
 
-                    title: "Scripts"
+                    title: qsTr ("Scripts")
 
                     Option {
                         text: qsTr ("Simple moves")
@@ -182,8 +176,10 @@ Page {
 //! [1]
                 TextArea {
                     id: scriptContent
+
+                    horizontalAlignment: HorizontalAlignment.Fill
+
                     layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Fill
                         spaceQuota: 1
                     }
 
@@ -191,9 +187,7 @@ Page {
                 }
 
                 Button {
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
 
                     text: qsTr ("Run Script")
                     onClicked: _gameController.run(scriptContent.text)

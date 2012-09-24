@@ -40,17 +40,30 @@
  **
  ****************************************************************************/
 
+#include "WordCount.hpp"
+
+#include <bb/cascades/AbstractPane>
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
 
-#include "WordCountApp.hpp"
-
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
 int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
-    WordCountApp mainApp;
+    // Create the word count object
+    WordCount wordCount;
+
+    // Load the UI description from main.qml
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+
+    // Make the WordCount object available to the UI as context property
+    qml->setContextProperty("_wordCount", &wordCount);
+
+    // Create the application scene
+    AbstractPane *appPage = qml->createRootObject<AbstractPane>();
+    Application::instance()->setScene(appPage);
 
     return Application::exec();
 }

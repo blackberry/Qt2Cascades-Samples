@@ -45,65 +45,63 @@ import bb.cascades 1.0
 
 // Container grouping all visual nodes for the download progress view
 Container {
+    layout: DockLayout {}
+
     background: Color.White
-    layout: DockLayout {
-    }
+
     Container {
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
+
         preferredWidth: 750
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-            verticalAlignment: VerticalAlignment.Center
-        }
-        
+
         // A standard Label
         Label {
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-            }
-            
+            horizontalAlignment: HorizontalAlignment.Fill
+
             // Progress bar status
             text: _progressDialog.labelText
             textStyle {
                 base: SystemDefaults.TextStyles.SmallText
-                alignment: TextAlignment.Center
+                color: Color.Black
+                textAlign: TextAlign.Center
             }
         }
-        
+
         // Container for the progress bar color and width
         Container {
             id: progressContainer
+
+            horizontalAlignment: HorizontalAlignment.Center
             preferredHeight: 40
             preferredWidth: 300
             topMargin: 10
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
-            layout: AbsoluteLayout {
-            }
+
+            layout: AbsoluteLayout {}
+
             Container {
                 background: Color.Blue
-                
+
                 // Changing width depending on current progress value
                 preferredWidth: _progressDialog.progress / 100 * progressContainer.preferredWidth
                 preferredHeight: 40
-                
+
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 0
                     positionY: 0
                 }
             }
         }
-        
+
         // A standard Button
         Button {
+            horizontalAlignment: HorizontalAlignment.Center
             topMargin: 10
+
             text: qsTr ("Cancel")
-            
+
             // Cancel download and hide dialog on click
             onClicked: _progressDialog.cancel ()
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
         }
     }
 }

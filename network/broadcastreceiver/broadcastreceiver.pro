@@ -4,25 +4,25 @@ TARGET = broadcastreceiver
 CONFIG += qt warn_on debug_and_release cascades
 
 INCLUDEPATH += ../src
-SOURCES += ../src/*.cpp 
-HEADERS += ../src/*.h ../src/*.hpp 
+SOURCES += ../src/*.cpp
+HEADERS += ../src/*.h ../src/*.hpp
 
 device {
-	CONFIG(release, debug|release) {		
-		DESTDIR = o.le-v7		
-	} 
-	CONFIG(debug, debug|release) {
-		DESTDIR = o.le-v7-g
-	}
+    CONFIG(release, debug|release) {
+        DESTDIR = o.le-v7
+    }
+    CONFIG(debug, debug|release) {
+        DESTDIR = o.le-v7-g
+    }
 }
 
 simulator {
-	CONFIG(release, debug|release) {
-		DESTDIR = o
-	} 
-	CONFIG(debug, debug|release) {
-		DESTDIR = o-g
-	}
+    CONFIG(release, debug|release) {
+        DESTDIR = o
+    }
+    CONFIG(debug, debug|release) {
+        DESTDIR = o-g
+    }
 }
 
 OBJECTS_DIR = $${DESTDIR}/.obj

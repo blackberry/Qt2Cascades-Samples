@@ -48,15 +48,13 @@ import bb.cascades 1.0
 Container {
     property string tagName: "folder"
     property alias title: titleField.text
-    topMargin: 20
 
-    layout: StackLayout {
-        leftPadding: 20
-    }
+    topMargin: 20
+    leftPadding: 20
 
     Container {
         layout: StackLayout {
-            layoutDirection: LayoutDirection.LeftToRight
+            orientation: LayoutOrientation.LeftToRight
         }
 
         // A standard ImageView
@@ -70,8 +68,6 @@ Container {
         Label {
             id: titleField
             leftMargin: 10
-            layoutProperties: StackLayoutProperties {
-            }
 
             // Defines custom text style
             textStyle {
