@@ -46,15 +46,16 @@
 <p>This example shows how to create an UI that displays news items from RDF news sources.</p>
 <p class="centerAlign"><img src="images/rsslisting-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> class to download a RSS news feed from the network and how to use <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> to parse the feed and extract information from it.</p>
+<p>In this example we'll learn how to use the QNetworkAccessManager class to download a RSS news feed from the network and how to use QXmlStreamReader to parse the feed and extract information from it.</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The sample application provides an UI where the user can enter the URL for a RSS news feed, a button the user can click to start the download of the news feed and a text area where the downloaded items are listed with title and URL.</p>
 <p>All the business logic is encapsulated in the C++ class RSSListing which has been exported to the UI under the name '<a href="#rsslisting">_rssListing</a>'.</p>
 <pre class="qml">                <span class="comment">// A standard TextField for the RSS url</span>
                 <span class="type">TextField</span> {
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
 
@@ -68,12 +69,13 @@
 <p>The TextField, where the user can enter the URL of the RSS news feed, binds against the 'url' property of the RSSListing object and updates this property whenever the user changes the text. The field will be disabled while a download operation is running and the 'active' property of the RSSListing object is true.</p>
 <pre class="qml">                <span class="comment">// A standard Button</span>
                 <span class="type">Button</span> {
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: -<span class="number">1</span>
                     }
 
-                    <span class="name">leftMargin</span>: <span class="number">10</span>
                     <span class="name">enabled</span>: ! <span class="name">_rssListing</span>.<span class="name">active</span>
 
                     <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Fetch&quot;</span>)
@@ -89,27 +91,28 @@
                     <span class="name">text</span>: <span class="name">_rssListing</span>.<span class="name">feeds</span>
                     <span class="type">textStyle</span> {
                         <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
                     }
                 }</pre>
 <p>The TextArea binds the 'feeds' property of the RSSListing object against its 'text' property to show the listing of extracted titles and URLs.</p>
 <a name="rsslisting"></a>
 <h2>RSSListing</h2>
-<p>The RSSListing class encapsulates the downloading of the RSS news feed and the extraction of information by parsing the XML data. It contains a <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> and a QXmlStreamParser as member variables which will do the low-level network communication and parsing.</p>
-<pre class="cpp">    RSSListing<span class="operator">::</span>RSSListing(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+<p>The RSSListing class encapsulates the downloading of the RSS news feed and the extraction of information by parsing the XML data. It contains a QNetworkAccessManager and a QXmlStreamParser as member variables which will do the low-level network communication and parsing.</p>
+<pre class="cpp">    RSSListing<span class="operator">::</span>RSSListing(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_url(<span class="string">&quot;http://feeds.feedburner.com/blackberry/CAxx&quot;</span>)
         <span class="operator">,</span> m_active(<span class="keyword">false</span>)
         <span class="operator">,</span> m_currentReply(<span class="number">0</span>)
     {
         <span class="comment">// Invoke the finished() method whenever the download job has been finished</span>
-        connect(<span class="operator">&amp;</span>m_manager<span class="operator">,</span> SIGNAL(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>)));
+        connect(<span class="operator">&amp;</span>m_manager<span class="operator">,</span> SIGNAL(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>)));
     }</pre>
-<p>In the constructor we connect the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html#finished">finished()</a> signal of the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> against the finished() slot of the RSSListing object, so that we can start the parsing of the XML data when the download of the feed has been finished.</p>
+<p>In the constructor we connect the finished() signal of the QNetworkAccessManager against the finished() slot of the RSSListing object, so that we can start the parsing of the XML data when the download of the feed has been finished.</p>
 <p>When the user clicks the 'Fetch' button, the fetch() slot will be invoked which calls get() internally:</p>
-<pre class="cpp">    <span class="type">void</span> RSSListing<span class="operator">::</span>get(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url)
+<pre class="cpp">    <span class="type">void</span> RSSListing<span class="operator">::</span>get(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>url)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span> request(url);
+        <span class="type">QNetworkRequest</span> request(url);
         <span class="keyword">if</span> (m_currentReply) {
             m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>disconnect(<span class="keyword">this</span>);
             m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
@@ -118,27 +121,27 @@
         m_currentReply <span class="operator">=</span> m_manager<span class="operator">.</span>get(request);
         connect(m_currentReply<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(readyRead()));
         connect(m_currentReply<span class="operator">,</span> SIGNAL(metaDataChanged())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(metaDataChanged()));
-        connect(m_currentReply<span class="operator">,</span> SIGNAL(error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError)));
+        connect(m_currentReply<span class="operator">,</span> SIGNAL(error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError)));
     }</pre>
-<p>Inside this method a new download request is passed to the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html#get">get()</a> method of the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> with the URL as parameter that the user entered in the TextField in the UI. The return value is a <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a> object that acts as handle to monitor the status and progress of the download operation.</p>
-<p>We connect the <a href="http://qt.nokia.com/doc/4.8/qiodevice.html#readyRead">readyRead()</a> signal of the <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a> against our own slot to be informed whenever new data are available from the network</p>
+<p>Inside this method a new download request is passed to the get() method of the QNetworkAccessManager with the URL as parameter that the user entered in the TextField in the UI. The return value is a QNetworkReply object that acts as handle to monitor the status and progress of the download operation.</p>
+<p>We connect the readyRead() signal of the QNetworkReply against our own slot to be informed whenever new data are available from the network</p>
 <pre class="cpp">    <span class="type">void</span> RSSListing<span class="operator">::</span>readyRead()
     {
-        <span class="keyword">const</span> <span class="type">int</span> statusCode <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span><span class="operator">::</span>HttpStatusCodeAttribute)<span class="operator">.</span>toInt();
+        <span class="keyword">const</span> <span class="type">int</span> statusCode <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type">QNetworkRequest</span><span class="operator">::</span>HttpStatusCodeAttribute)<span class="operator">.</span>toInt();
         <span class="keyword">if</span> (statusCode <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">200</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> statusCode <span class="operator">&lt;</span> <span class="number">300</span>) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> data <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>readAll();
+            <span class="keyword">const</span> <span class="type">QByteArray</span> data <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>readAll();
             m_xml<span class="operator">.</span>addData(data);
         }
     }</pre>
-<p>Whenever readyRead() is invoked, we read all available data from the network and pass them to the <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> instance.</p>
+<p>Whenever readyRead() is invoked, we read all available data from the network and pass them to the QXmlStreamReader instance.</p>
 <pre class="cpp">    <span class="type">void</span> RSSListing<span class="operator">::</span>parseXml()
     {
         m_feeds<span class="operator">.</span>clear();
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> currentTag;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> linkString;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> titleString;
+        <span class="type">QString</span> currentTag;
+        <span class="type">QString</span> linkString;
+        <span class="type">QString</span> titleString;
 
         <span class="keyword">while</span> (<span class="operator">!</span>m_xml<span class="operator">.</span>atEnd()) {
             m_xml<span class="operator">.</span>readNext();
@@ -149,7 +152,7 @@
             } <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>isEndElement()) {
                 <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;item&quot;</span>) {
 
-                    m_feeds<span class="operator">.</span>append(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1\n      %2\n\n&quot;</span>)<span class="operator">.</span>arg(titleString<span class="operator">,</span> linkString));
+                    m_feeds<span class="operator">.</span>append(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1\n      %2\n\n&quot;</span>)<span class="operator">.</span>arg(titleString<span class="operator">,</span> linkString));
 
                     titleString<span class="operator">.</span>clear();
                     linkString<span class="operator">.</span>clear();
@@ -163,9 +166,9 @@
             }
         }
 
-        <span class="keyword">if</span> (m_xml<span class="operator">.</span>error() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span><span class="operator">::</span>PrematureEndOfDocumentError) {
+        <span class="keyword">if</span> (m_xml<span class="operator">.</span>error() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type">QXmlStreamReader</span><span class="operator">::</span>PrematureEndOfDocumentError) {
             m_feeds<span class="operator">.</span>append(
-                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;XML ERROR: %1: %2&quot;</span>)<span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())<span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString()));
+                    <span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;XML ERROR: %1: %2&quot;</span>)<span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())<span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString()));
         }
 
         <span class="keyword">emit</span> feedsChanged();

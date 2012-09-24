@@ -67,12 +67,12 @@
 
     <span class="preprocessor">#include &quot;CertificateInfoControl.hpp&quot;</span>
 
-    CertificateInfoControl<span class="operator">::</span>CertificateInfoControl(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_visible(<span class="keyword">false</span>)
+    CertificateInfoControl<span class="operator">::</span>CertificateInfoControl(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)<span class="operator">,</span> m_visible(<span class="keyword">false</span>)
     {
     }
 
-    <span class="type">void</span> CertificateInfoControl<span class="operator">::</span>setCertificateChain(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain)
+    <span class="type">void</span> CertificateInfoControl<span class="operator">::</span>setCertificateChain(<span class="keyword">const</span> <span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslCertificate</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain)
     {
         m_chain <span class="operator">=</span> chain;
 
@@ -81,27 +81,24 @@
 
         <span class="comment">// ... and add a new entry for each certificate from the chain to the model</span>
         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> m_chain<span class="operator">.</span>size(); <span class="operator">+</span><span class="operator">+</span>i) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span> <span class="operator">&amp;</span>cert <span class="operator">=</span> m_chain<span class="operator">.</span>at(i);
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> chainInformation <span class="operator">=</span> tr(<span class="string">&quot;%1%2 (%3)&quot;</span>)<span class="operator">.</span>arg(<span class="operator">!</span>i <span class="operator">?</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>() : tr(<span class="string">&quot;Issued by: &quot;</span>))
-                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>Organization))
-                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CommonName));
+            <span class="keyword">const</span> <span class="type">QSslCertificate</span> <span class="operator">&amp;</span>cert <span class="operator">=</span> m_chain<span class="operator">.</span>at(i);
+            <span class="keyword">const</span> <span class="type">QString</span> chainInformation <span class="operator">=</span> tr(<span class="string">&quot;%1%2 (%3)&quot;</span>)<span class="operator">.</span>arg(<span class="operator">!</span>i <span class="operator">?</span> <span class="type">QString</span>() : tr(<span class="string">&quot;Issued by: &quot;</span>))
+                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>Organization))
+                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>CommonName));
 
             m_model<span class="operator">.</span>append(chainInformation);
         }
 
-        <span class="comment">// Notify the UI that the model has changed</span>
-        <span class="keyword">emit</span> modelChanged();
-
         <span class="comment">// Pre-select the first certificate in the list</span>
-        setCurrentCertificate(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span>(<span class="number">0</span>));
+        setCurrentCertificate(<span class="type">QVariantList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type">QVariant</span>(<span class="number">0</span>));
     }
 
     bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> CertificateInfoControl<span class="operator">::</span>model() <span class="keyword">const</span>
     {
-        <span class="keyword">return</span> <span class="keyword">const_cast</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&gt;</span><span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>m_model);
+        <span class="keyword">return</span> <span class="keyword">const_cast</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span><span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>m_model);
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> CertificateInfoControl<span class="operator">::</span>certificateInfo() <span class="keyword">const</span>
+    <span class="type">QString</span> CertificateInfoControl<span class="operator">::</span>certificateInfo() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_certificateInfo;
     }
@@ -125,29 +122,29 @@
         setVisible(<span class="keyword">true</span>);
     }
 
-    <span class="type">void</span> CertificateInfoControl<span class="operator">::</span>setCurrentCertificate(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    <span class="type">void</span> CertificateInfoControl<span class="operator">::</span>setCurrentCertificate(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="comment">// Get the index of the certificate that the user has selected</span>
         <span class="keyword">const</span> <span class="type">int</span> index <span class="operator">=</span> indexPath<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>toInt();
 
         <span class="keyword">if</span> (index <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> index <span class="operator">&lt;</span> m_chain<span class="operator">.</span>size()) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span> <span class="operator">&amp;</span>cert <span class="operator">=</span> m_chain<span class="operator">.</span>at(index);
+            <span class="keyword">const</span> <span class="type">QSslCertificate</span> <span class="operator">&amp;</span>cert <span class="operator">=</span> m_chain<span class="operator">.</span>at(index);
 
             <span class="comment">// Assemble the textual representation of the selected certificate and update the property</span>
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> lines;
-            lines <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Organization: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>Organization))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Subunit: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>OrganizationalUnitName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Country: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CountryName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Locality: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>LocalityName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;State/Province: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>StateOrProvinceName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Common Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CommonName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>()
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Organization: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>Organization))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Unit Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>OrganizationalUnitName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Country: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CountryName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Locality: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>LocalityName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer State/Province: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>StateOrProvinceName))
-                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Common Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CommonName));
+            <span class="type">QStringList</span> lines;
+            lines <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Organization: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>Organization))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Subunit: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>OrganizationalUnitName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Country: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>CountryName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Locality: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>LocalityName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;State/Province: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>StateOrProvinceName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Common Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>CommonName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type">QString</span>()
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Organization: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>Organization))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Unit Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>OrganizationalUnitName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Country: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>CountryName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Locality: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>LocalityName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer State/Province: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>StateOrProvinceName))
+                    <span class="operator">&lt;</span><span class="operator">&lt;</span> tr(<span class="string">&quot;Issuer Common Name: %1&quot;</span>)<span class="operator">.</span>arg(cert<span class="operator">.</span>issuerInfo(<span class="type">QSslCertificate</span><span class="operator">::</span>CommonName));
 
             m_certificateInfo <span class="operator">=</span> lines<span class="operator">.</span>join(<span class="string">&quot;\n&quot;</span>);
         } <span class="keyword">else</span> {

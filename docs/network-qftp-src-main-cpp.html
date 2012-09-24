@@ -66,12 +66,11 @@
      ****************************************************************************/</span>
 
     <span class="preprocessor">#include &quot;FtpDownloader.hpp&quot;</span>
-    <span class="preprocessor">#include &quot;FtpItemManager.hpp&quot;</span>
+    <span class="preprocessor">#include &quot;FtpItemProvider.hpp&quot;</span>
 
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Page&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/DataModel&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/ListItemManager&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
 
     <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
@@ -85,30 +84,28 @@
     {
         Application app(argc<span class="operator">,</span> argv);
 
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-
         <span class="comment">// Creates the FtpDownloader object that contains the business logic</span>
         FtpDownloader downloader;
 
-        <span class="comment">// Creates the FtpItemManager for the ListView</span>
-        FtpItemManager itemManager;
+        <span class="comment">// Creates the FtpItemProvider for the ListView</span>
+        FtpItemProvider itemProvider;
 
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make all the business logic objects available to the UI as context properties</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>model());
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_itemManager&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>itemManager);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_progressDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>progressDialogController());
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
 
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+        <span class="comment">// Make all the business logic objects available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>model());
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_itemProvider&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>itemProvider);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_progressDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>progressDialogController());
 
-                <span class="comment">// Quit the application if 'Qt.quit()' is called in the UI</span>
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));
-            }
-        }
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="comment">// Quit the application if 'Qt.quit()' is called in the UI</span>
+        <span class="type">QObject</span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

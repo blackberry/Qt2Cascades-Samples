@@ -73,35 +73,31 @@
         <span class="name">topMargin</span>: <span class="number">10</span>
         <span class="name">rightMargin</span>: <span class="number">10</span>
         <span class="name">bottomMargin</span>: <span class="number">10</span>
+
         <span class="name">background</span>: <span class="name">Color</span>.<span class="name">White</span>
 
         <span class="comment">// A standard Label</span>
         <span class="type">Label</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">10</span>
             <span class="name">bottomMargin</span>: <span class="number">10</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
 
             <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Certification Path&quot;</span>)
             <span class="type">textStyle</span> {
                 <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
-                <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
             }
         }
 
         <span class="comment">// A Container to change background Color of the ListView</span>
         <span class="type">Container</span> {
             <span class="name">background</span>: <span class="name">Color</span>.<span class="name">Black</span>
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+            <span class="type">ListView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                 <span class="name">topMargin</span>: <span class="number">10</span>
                 <span class="name">bottomMargin</span>: <span class="number">10</span>
                 <span class="name">preferredHeight</span>: <span class="number">380</span>
                 <span class="name">preferredWidth</span>: <span class="number">800</span>
-
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                }
 
                 <span class="name">dataModel</span>: <span class="name">_certificateInfoControl</span>.<span class="name">model</span>
 
@@ -112,34 +108,36 @@
                 }
 
                 <span class="comment">// Display selected ceritificate information on selection</span>
-                <span class="name">onSelectionChanged</span>: <span class="name">_certificateInfoControl</span>.<span class="name">setCurrentCertificate</span> (<span class="name">indexPath</span>)
+                <span class="name">onTriggered</span>: {
+                    <span class="name">clearSelection</span>();
+                    <span class="name">select</span>(<span class="name">indexPath</span>);
+
+                    <span class="name">_certificateInfoControl</span>.<span class="name">setCurrentCertificate</span> (<span class="name">indexPath</span>)
+                }
             }
         }
 
         <span class="comment">// A standard Label</span>
         <span class="type">Label</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">20</span>
             <span class="name">bottomMargin</span>: <span class="number">10</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
 
             <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Certificate Information&quot;</span>)
             <span class="type">textStyle</span> {
                 <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
-                <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
             }
         }
 
         <span class="comment">// A standard TextArea</span>
         <span class="type">TextArea</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">10</span>
             <span class="name">bottomMargin</span>: <span class="number">10</span>
             <span class="name">preferredHeight</span>: <span class="number">350</span>
+
             <span class="name">editable</span>: <span class="number">false</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
 
             <span class="comment">// Displays info of selected certificate</span>
             <span class="name">text</span>: <span class="name">_certificateInfoControl</span>.<span class="name">certificateInfo</span>
@@ -147,10 +145,9 @@
 
         <span class="comment">// Application control Button</span>
         <span class="type">Button</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Right</span>
             <span class="name">topMargin</span>: <span class="number">10</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Right</span>
-            }
+
             <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Close&quot;</span>)
 
             <span class="comment">//Hide this Container on click</span>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : SharedMemoryLoaderApp.cpp Example File (ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp)</title>
+  <title>Cascades : ReadingPage.qml Example File (sensors/sensorexplorer/assets/ReadingPage.qml)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,11 +19,11 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">SharedMemoryLoaderApp.cpp Example File</h1>
-<span class="small-subtitle">ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp</span>
-<!-- $$$ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp-description -->
+<h1 class="title">ReadingPage.qml Example File</h1>
+<span class="small-subtitle">sensors/sensorexplorer/assets/ReadingPage.qml</span>
+<!-- $$$sensors/sensorexplorer/assets/ReadingPage.qml-description -->
 <div class="descr"> <a name="details"></a>
-<pre class="cpp">    <span class="comment">/****************************************************************************
+<pre class="qml">    <span class="comment">/****************************************************************************
      **
      ** Portions Copyright (C) 2012 Research In Motion Limited.
      ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
@@ -65,36 +65,49 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    import bb.cascades 1.0
 
-    <span class="preprocessor">#include &quot;SharedMemoryLoaderApp.hpp&quot;</span>
+    <span class="type">Page</span> {
+        <span class="type">Container</span> {
+            <span class="name">background</span>: <span class="name">Color</span>.<span class="name">DarkGray</span>
+            <span class="name">leftPadding</span>: <span class="number">30</span>
+            <span class="name">topPadding</span>: <span class="number">30</span>
+            <span class="name">rightPadding</span>: <span class="number">30</span>
+            <span class="name">bottomPadding</span>: <span class="number">30</span>
 
-    <span class="preprocessor">#include &quot;FileLoader.hpp&quot;</span>
+            <span class="type">Label</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Reading Properties&quot;</span>)
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BigText</span>
+                    <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                    <span class="name">fontWeight</span>: <span class="name">FontWeight</span>.<span class="name">Bold</span>
+                }
+            }
 
-    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+            <span class="type">ListView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                    <span class="name">spaceQuota</span>: <span class="number">1</span>
+                }
 
-    SharedMemoryLoaderApp<span class="operator">::</span>SharedMemoryLoaderApp()
-    {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+                <span class="name">dataModel</span>: <span class="name">_sensorExplorer</span>.<span class="name">readingPropertiesModel</span>
 
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// We make the FileLoader object available as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_fileLoader&quot;</span><span class="operator">,</span> <span class="keyword">new</span> FileLoader(<span class="keyword">this</span>));
-
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+                <span class="name">listItemComponents</span>: [
+                    <span class="type">ListItemComponent</span> {
+                        <span class="name">type</span>: <span class="string">&quot;item&quot;</span>
+                        <span class="type">StandardListItem</span> {
+                            <span class="name">title</span>: <span class="name">ListItemData</span>.<span class="name">name</span>
+                            <span class="name">status</span>: <span class="name">ListItemData</span>.<span class="name">type</span>
+                            <span class="name">description</span>: <span class="name">ListItemData</span>.<span class="name">value</span>
+                        }
+                     }
+                 ]
             }
         }
     }</pre>
 </div>
-<!-- @@@ipc/sharedmemory_loader/src/SharedMemoryLoaderApp.cpp -->
+<!-- @@@sensors/sensorexplorer/assets/ReadingPage.qml -->
   <div class="ft">
     <span></span>
   </div>

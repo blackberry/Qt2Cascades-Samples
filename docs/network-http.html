@@ -61,74 +61,71 @@
     <span class="comment">// This page shows transitions between different screens through toggling Container visibility</span>
     <span class="type">Page</span> {
         <span class="comment">// A container is used to gather visual items together.</span>
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// A custom Container for the download screen</span>
             <span class="type">Downloader</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
             }
 
             <span class="comment">// A custom Container for the authentication dialog</span>
             <span class="type">AuthenticationDialog</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_authDialog</span>.<span class="name">visible</span>
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
             }
 
             <span class="comment">// A custom Container for the message box</span>
             <span class="type">MessageBox</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_messageBox</span>.<span class="name">visible</span>
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
             }
         }
     }</pre>
-<p>The downloader UI just contains an input field for the URL, a download and a close button and a status label. The download button and the label are linked to the C++ side with a property binding to exported objects. For easier readability the exported objects start with &quot;<a href="http://qt.nokia.com/doc/4.8/index.html">_</a>&quot;:</p>
+<p>The downloader UI just contains an input field for the URL, a download and a close button and a status label. The download button and the label are linked to the C++ side with a property binding to exported objects. For easier readability the exported objects start with &quot;_&quot;:</p>
 <pre class="qml">            <span class="comment">// A standard TextField</span>
             <span class="type">TextField</span> {
                 <span class="name">id</span>: <span class="name">urlEdit</span>
 
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">spaceQuota</span>: <span class="number">1</span>
                 }
 
                 <span class="comment">// Default url to use</span>
                 <span class="name">text</span>: <span class="string">&quot;http://qt-project.org/&quot;</span>
-                <span class="type">textStyle</span> {
-                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
-                }
                 <span class="comment">//text: &quot;http://www.pagetutor.com/keeper/mystash/secretstuff.html&quot; // For HTTP authentication example (username is jimmy, password is page)</span>
                 <span class="comment">//text: &quot;https://qt.nokia.com&quot; // For site with SSL errors (untrusted certificate)</span>
                 <span class="comment">//text: &quot;http://www.example.com&quot; // For site which redirects</span>
+
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                }
+
                 <span class="name">enabled</span>: <span class="name">_downloader</span>.<span class="name">startDownloadPossible</span>
             }
         }</pre>
 <a name="the-httpdownloader"></a>
 <h2>The HttpDownloader</h2>
-<p>The C++ backend is located in HttpDownloader.h/cpp. It is a <a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a> with the two properties that our UI is bound to: statusText and startDownloadPossible. Note that the properties have a NOTIFY parameter, this is needed to have a working property binding on the qml side.</p>
+<p>The C++ backend is located in HttpDownloader.h/cpp. It is a QObject with the two properties that our UI is bound to: statusText and startDownloadPossible. Note that the properties have a NOTIFY parameter, this is needed to have a working property binding on the qml side.</p>
 <pre class="cpp">    <span class="comment">/**
      * The HttpDownloader class contains all the logic to download URLs from
      * the network and store them in a local file.
      */</span>
-    <span class="keyword">class</span> HttpDownloader : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> HttpDownloader : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -136,15 +133,15 @@
         Q_PROPERTY(<span class="type">bool</span> startDownloadPossible READ startDownloadPossible NOTIFY startDownloadPossibleChanged)
 
         <span class="comment">// Makes the status text available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusText READ statusText NOTIFY statusTextChanged)</pre>
+        Q_PROPERTY(<span class="type">QString</span> statusText READ statusText NOTIFY statusTextChanged)</pre>
 <p>To give the button the ability to start the download, we expose the startDownload() method by making it <tt>Q_INVOKABLE</tt>.</p>
 <pre class="cpp">        <span class="comment">// This method is executed when the user clicks the 'Download' button in the UI</span>
-        Q_INVOKABLE <span class="type">void</span> startDownload(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);</pre>
+        Q_INVOKABLE <span class="type">void</span> startDownload(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url);</pre>
 <p>This method does some preparation before asking the <tt>QNetworkAccessManager</tt> to download the file. The first step is checking if the given URL contains a filename, if not it adds an index.html to the URL path:</p>
 <pre class="cpp">        m_url <span class="operator">=</span> url;
 
         <span class="comment">// Extract the file name from the URL ...</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> fileInfo(m_url<span class="operator">.</span>path());
+        <span class="keyword">const</span> <span class="type">QFileInfo</span> fileInfo(m_url<span class="operator">.</span>path());
         m_fileName <span class="operator">=</span> fileInfo<span class="operator">.</span>fileName();
 
         <span class="comment">// ... and fall back to 'index.html' if it is empty.</span>
@@ -152,10 +149,10 @@
             m_fileName <span class="operator">=</span> <span class="string">&quot;index.html&quot;</span>;</pre>
 <p>Check if the file is already stored on the device and ask the user if the file should be overridden. This is done by using the <a href="#the-messageboxcontroller">MessageBoxController</a>.</p>
 <pre class="cpp">        <span class="comment">// Locate the file in the temp directory</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> actualFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_fileName;
+        <span class="keyword">const</span> <span class="type">QString</span> actualFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_fileName;
 
         <span class="comment">// If the file already exists, ask whether it should be overwritten</span>
-        <span class="keyword">if</span> (<span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span><span class="operator">::</span>exists(actualFileName)) {
+        <span class="keyword">if</span> (<span class="type">QFile</span><span class="operator">::</span>exists(actualFileName)) {
             <span class="keyword">const</span> MessageBoxController<span class="operator">::</span>Result result <span class="operator">=</span> m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span>
                                                                                     tr(<span class="string">&quot;There already exists a file called %1 in &quot;</span>
                                                                                        <span class="string">&quot;the target directory.\nOverwrite?&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">,</span>
@@ -166,13 +163,13 @@
             }
 
             <span class="comment">// ... otherwise remove the existing file.</span>
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span><span class="operator">::</span>remove(actualFileName);
+            <span class="type">QFile</span><span class="operator">::</span>remove(actualFileName);
         }</pre>
 <p>Finally we open the file, disable the download button, to avoid a double download and ask the <tt>QNetworkAccessManager</tt> to download the file.</p>
 <pre class="cpp">        <span class="comment">// Open the file for writing</span>
-        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span>(actualFileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
-            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Unable to save the file %1: %2.&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">.</span>arg(m_file<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QFile</span>(actualFileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type">QIODevice</span><span class="operator">::</span>WriteOnly)) {
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Unable to save the file %1: %2.&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">.</span>arg(m_file<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type">QString</span>());
             <span class="keyword">delete</span> m_file;
             m_file <span class="operator">=</span> <span class="number">0</span>;
             <span class="keyword">return</span>;
@@ -186,7 +183,7 @@
 <pre class="cpp">    <span class="type">void</span> HttpDownloader<span class="operator">::</span>startRequest()
     {
         <span class="comment">// Start the download ...</span>
-        m_reply <span class="operator">=</span> m_qnam<span class="operator">.</span>get(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span>(m_url));
+        m_reply <span class="operator">=</span> m_qnam<span class="operator">.</span>get(<span class="type">QNetworkRequest</span>(m_url));
 
         <span class="comment">// ... and create signal/slot connections to get informed about state changes</span>
         connect(m_reply<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(httpFinished()));
@@ -198,16 +195,16 @@
         <span class="comment">// All data have been written to the file, so close it</span>
         m_file<span class="operator">-</span><span class="operator">&gt;</span>flush();
         m_file<span class="operator">-</span><span class="operator">&gt;</span>close();
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> redirectionTarget <span class="operator">=</span> m_reply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span><span class="operator">::</span>RedirectionTargetAttribute);
+        <span class="keyword">const</span> <span class="type">QVariant</span> redirectionTarget <span class="operator">=</span> m_reply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type">QNetworkRequest</span><span class="operator">::</span>RedirectionTargetAttribute);
 
         <span class="keyword">if</span> (m_reply<span class="operator">-</span><span class="operator">&gt;</span>error()) {
             <span class="comment">// If there was an error, show an error message in a message box</span>
-            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Download failed: %1.&quot;</span>)<span class="operator">.</span>arg(m_reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+            m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Download failed: %1.&quot;</span>)<span class="operator">.</span>arg(m_reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type">QString</span>());
 
             setStartDownloadPossible(<span class="keyword">true</span>);
         } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="operator">!</span>redirectionTarget<span class="operator">.</span>isNull()) {
             <span class="comment">// If we got a redirect response (3XX), retrieve the redirect URL ...</span>
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> newUrl <span class="operator">=</span> m_url<span class="operator">.</span>resolved(redirectionTarget<span class="operator">.</span>toUrl());
+            <span class="keyword">const</span> <span class="type">QUrl</span> newUrl <span class="operator">=</span> m_url<span class="operator">.</span>resolved(redirectionTarget<span class="operator">.</span>toUrl());
 
             <span class="comment">// ... and ask the user whether the redirected page should be downloaded instead</span>
             <span class="keyword">const</span> MessageBoxController<span class="operator">::</span>Result result <span class="operator">=</span> m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;HTTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Redirect to %1 ?&quot;</span>)<span class="operator">.</span>arg(newUrl<span class="operator">.</span>toString())<span class="operator">,</span> tr(<span class="string">&quot;Yes&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;No&quot;</span>));
@@ -220,7 +217,7 @@
                 m_reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
 
                 <span class="comment">// ... reset the target file ...</span>
-                m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly);
+                m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type">QIODevice</span><span class="operator">::</span>WriteOnly);
                 m_file<span class="operator">-</span><span class="operator">&gt;</span>resize(<span class="number">0</span>);
 
                 <span class="comment">// ... and trigger a new download request with the new URL.</span>
@@ -231,7 +228,7 @@
             }
         } <span class="keyword">else</span> {
             <span class="comment">// If the download was successful, update the status message</span>
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> actualDir(<span class="operator">*</span>m_file);
+            <span class="keyword">const</span> <span class="type">QFileInfo</span> actualDir(<span class="operator">*</span>m_file);
             m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Downloaded %1 to %2.&quot;</span>)<span class="operator">.</span>arg(m_fileName)<span class="operator">.</span>arg(actualDir<span class="operator">.</span>absolutePath());
             <span class="keyword">emit</span> statusTextChanged();
             setStartDownloadPossible(<span class="keyword">true</span>);
@@ -255,7 +252,7 @@
      * nested event loop. The event loop will handle all user input while
      * the dialog is open and will be quit when the dialog is closed.
      */</span>
-    <span class="keyword">class</span> DialogController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> DialogController : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -263,7 +260,7 @@
         Q_PROPERTY(<span class="type">bool</span> visible READ visible NOTIFY visibleChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> DialogController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> DialogController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// This method is called to show the dialog</span>
         <span class="type">void</span> exec();
@@ -284,7 +281,7 @@
         <span class="type">bool</span> m_visible;
 
         <span class="comment">// The nested event loop</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qeventloop.html">QEventLoop</a></span> m_localLoop;
+        <span class="type">QEventLoop</span> m_localLoop;
     };
 
     <span class="type">void</span> DialogController<span class="operator">::</span>exec()
@@ -315,7 +312,7 @@
         };
 
         <span class="comment">// Shows the message box with the given title, text and the two buttons</span>
-        Result exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button2Text);</pre>
+        Result exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button2Text);</pre>
 <a name="the-authenticationdialog"></a>
 <h2>The AuthenticationDialog</h2>
 <p>The <tt>AuthenticationDialogController</tt> works very similar to the <tt>MessageBoxController</tt>, with the only difference that the <tt>AuthenticationDialogController</tt> asks for username and password and stores them.</p>
@@ -329,25 +326,25 @@
         Q_OBJECT
 
         <span class="comment">// Makes the site, the credentials are requested for, available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> site READ site NOTIFY siteChanged)
+        Q_PROPERTY(<span class="type">QString</span> site READ site NOTIFY siteChanged)
 
         <span class="comment">// Makes the user name of the credentials available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> user READ user NOTIFY userChanged)
+        Q_PROPERTY(<span class="type">QString</span> user READ user NOTIFY userChanged)
 
         <span class="comment">// Makes the password of the credentials available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> password READ password NOTIFY passwordChanged)
+        Q_PROPERTY(<span class="type">QString</span> password READ password NOTIFY passwordChanged)
 
     <span class="keyword">public</span>:
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> site() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> user() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> password() <span class="keyword">const</span>;
+        <span class="type">QString</span> site() <span class="keyword">const</span>;
+        <span class="type">QString</span> user() <span class="keyword">const</span>;
+        <span class="type">QString</span> password() <span class="keyword">const</span>;
 
         <span class="comment">// This method is executed to show the dialog</span>
-        <span class="type">bool</span> exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>password);
+        <span class="type">bool</span> exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>password);
 
         <span class="comment">// This method is called from the UI when the user has entered a user name and password</span>
-        Q_INVOKABLE <span class="type">void</span> continueAuthentication(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>password);
+        Q_INVOKABLE <span class="type">void</span> continueAuthentication(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>password);
 
         <span class="comment">// This method is called from the UI when the user wants to cancel authentication</span>
         Q_INVOKABLE <span class="type">void</span> cancel();
@@ -360,9 +357,9 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The property values</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_site;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_user;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_password;
+        <span class="type">QString</span> m_site;
+        <span class="type">QString</span> m_user;
+        <span class="type">QString</span> m_password;
 
         <span class="comment">// A flag that stores whether dialog has been canceled</span>
         <span class="type">bool</span> m_result;
@@ -370,20 +367,17 @@
 <a name="integration"></a>
 <h2>Integration</h2>
 <p>In the end we put it all together starting with the qml document setup:</p>
-<pre class="cpp">        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);</pre>
+<pre class="cpp">        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);</pre>
 <p>The next needed step is to export our C++ backend classes, the Downloader and the two dialogs:</p>
-<pre class="cpp">            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_authDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>authenticationDialogController());</pre>
+<pre class="cpp">        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_authDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>authenticationDialogController());</pre>
 <p>Setup the application object and execute it.</p>
-<pre class="cpp">            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+<pre class="cpp">        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-
-                <span class="comment">// Quit the application whenever 'Qt.quit()' is called inside the QML document</span>
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));
-            }</pre>
+        <span class="comment">// Quit the application whenever 'Qt.quit()' is called inside the QML document</span>
+        <span class="type">QObject</span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));</pre>
 </div>
 <!-- @@@network/http -->
   <div class="ft">

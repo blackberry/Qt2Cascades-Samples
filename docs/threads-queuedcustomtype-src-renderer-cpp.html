@@ -71,8 +71,8 @@
 
     <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades;
 
-    Renderer<span class="operator">::</span>Renderer(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
+    Renderer<span class="operator">::</span>Renderer(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
     {
         <span class="comment">/**
          * We use only one RenderThread object in this example, so only one
@@ -90,14 +90,14 @@
         m_container <span class="operator">=</span> container;
     }
 
-    <span class="type">void</span> Renderer<span class="operator">::</span>loadImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>name)
+    <span class="type">void</span> Renderer<span class="operator">::</span>loadImage(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>name)
     {
         <span class="comment">// Remove all blocks (from a previous transformation) from the canvas container</span>
         m_container<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
 
         <span class="comment">// Load the image from the file system and scale it down to 300x300 pixels</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qimage.html">QImage</a></span> image;
-        image<span class="operator">.</span>load(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/images/%1&quot;</span>)<span class="operator">.</span>arg(name));
+        <span class="type">QImage</span> image;
+        image<span class="operator">.</span>load(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/images/%1&quot;</span>)<span class="operator">.</span>arg(name));
         image <span class="operator">=</span> image<span class="operator">.</span>scaled(<span class="number">300</span><span class="operator">,</span> <span class="number">300</span>);
 
         <span class="comment">// Start the transformation of the image</span>

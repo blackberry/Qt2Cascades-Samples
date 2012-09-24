@@ -65,8 +65,8 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef FTPITEM_H</span>
-    <span class="preprocessor">#define FTPITEM_H</span>
+    <span class="preprocessor">#ifndef FTPITEM_HPP</span>
+    <span class="preprocessor">#define FTPITEM_HPP</span>
 
     <span class="preprocessor">#include &lt;QtCore/QDateTime&gt;</span>
     <span class="preprocessor">#include &lt;QtCore/QVariant&gt;</span>
@@ -82,31 +82,31 @@
          * This operator is needed as a workaround for a bug in
          * QListDataModel::data() in Cascades RC10.
          */</span>
-        <span class="keyword">operator</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span>() <span class="keyword">const</span>
+        <span class="keyword">operator</span> <span class="type">QVariant</span>() <span class="keyword">const</span>
         {
-            <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(<span class="operator">*</span><span class="keyword">this</span>);
+            <span class="keyword">return</span> <span class="type">QVariant</span><span class="operator">::</span>fromValue(<span class="operator">*</span><span class="keyword">this</span>);
         }
 
         <span class="comment">// The name of the item</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName;
+        <span class="type">QString</span> fileName;
 
         <span class="comment">// The size of the item</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> fileSize;
+        <span class="type">qint64</span> fileSize;
 
         <span class="comment">// The owner of the item</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> owner;
+        <span class="type">QString</span> owner;
 
         <span class="comment">// The group of the item</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> group;
+        <span class="type">QString</span> group;
 
         <span class="comment">// The creation time of the item</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdatetime.html">QDateTime</a></span> time;
+        <span class="type">QDateTime</span> time;
 
         <span class="comment">// Whether this item is a directory</span>
         <span class="type">bool</span> isDirectory;
     };
 
-    <a href="http://qt.nokia.com/doc/4.8/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a>(FtpItem)
+    Q_DECLARE_METATYPE(FtpItem)
 
     <span class="preprocessor">#endif</span></pre>
 </div>

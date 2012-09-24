@@ -68,12 +68,9 @@
     <span class="preprocessor">#ifndef APP_HPP</span>
     <span class="preprocessor">#define APP_HPP</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
-    <span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span>
-
     <span class="preprocessor">#include &lt;bb/cascades/Container&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Event&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/UiObject&gt;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
 
     <span class="comment">/**
      * This sample application shows how to read and write XML documents with
@@ -83,18 +80,18 @@
      * and the program will show the bookmarks on the screen in form of a tree.
      * The user can modify the links of the bookmarks now and save them again.
      */</span>
-    <span class="keyword">class</span> App: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> App: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the status of the application available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status READ status NOTIFY statusChanged)
+        Q_PROPERTY(<span class="type">QString</span> status READ status NOTIFY statusChanged)
 
     <span class="keyword">public</span>:
         App();
 
         <span class="comment">// This method is invoked when the user wants to load an XBEL file</span>
-        Q_INVOKABLE <span class="type">void</span> load(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName);
+        Q_INVOKABLE <span class="type">void</span> load(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName);
 
         <span class="comment">// This method is invoked when the user wants to save the currently loaded XBEL file</span>
         Q_INVOKABLE <span class="type">void</span> save();
@@ -105,13 +102,13 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor method of the status property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status() <span class="keyword">const</span>;
+        <span class="type">QString</span> status() <span class="keyword">const</span>;
 
         <span class="comment">// The Control where the bookmark tree is visualized in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
 
         <span class="comment">// A textual description of the application status</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_status;
+        <span class="type">QString</span> m_status;
     };
 
     <span class="preprocessor">#endif</span></pre>

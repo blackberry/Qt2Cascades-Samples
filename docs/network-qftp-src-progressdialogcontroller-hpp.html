@@ -83,17 +83,17 @@
         Q_PROPERTY(<span class="type">float</span> progress READ progress NOTIFY progressChanged)
 
         <span class="comment">// Make the textual description available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> labelText READ labelText NOTIFY labelTextChanged)
+        Q_PROPERTY(<span class="type">QString</span> labelText READ labelText NOTIFY labelTextChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> ProgressDialogController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> ProgressDialogController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods of the properties</span>
         <span class="type">float</span> progress() <span class="keyword">const</span>;
         <span class="type">void</span> setProgress(<span class="type">float</span> progress);
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> labelText() <span class="keyword">const</span>;
-        <span class="type">void</span> setLabelText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> labelText);
+        <span class="type">QString</span> labelText() <span class="keyword">const</span>;
+        <span class="type">void</span> setLabelText(<span class="keyword">const</span> <span class="type">QString</span> labelText);
 
         <span class="comment">// Calling this method shows the progress dialog</span>
         <span class="type">void</span> show();
@@ -117,7 +117,7 @@
         <span class="type">int</span> m_progress;
 
         <span class="comment">// The textual description</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_labelText;
+        <span class="type">QString</span> m_labelText;
     };
 
     <span class="preprocessor">#endif</span></pre>

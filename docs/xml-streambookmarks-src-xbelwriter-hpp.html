@@ -84,17 +84,17 @@
         XbelWriter(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// Starts the generation of the XBEL document</span>
-        <span class="type">bool</span> writeFile(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device);
+        <span class="type">bool</span> writeFile(<span class="type">QIODevice</span> <span class="operator">*</span>device);
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that generates an element in the XBEL document for the current control</span>
         <span class="type">void</span> writeItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>item);
 
         <span class="comment">// The XML stream writer that is used to generate the XBEL document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a></span> m_xml;
+        <span class="type">QXmlStreamWriter</span> m_xml;
 
         <span class="comment">// The container object the controls are located in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
     };
 
     <span class="preprocessor">#endif</span></pre>

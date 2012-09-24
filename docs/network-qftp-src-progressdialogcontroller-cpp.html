@@ -67,7 +67,7 @@
 
     <span class="preprocessor">#include &quot;ProgressDialogController.hpp&quot;</span>
 
-    ProgressDialogController<span class="operator">::</span>ProgressDialogController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+    ProgressDialogController<span class="operator">::</span>ProgressDialogController(<span class="type">QObject</span> <span class="operator">*</span>parent)
         : DialogController(parent)<span class="operator">,</span> m_progress(<span class="number">0</span>)
     {
     }
@@ -79,19 +79,19 @@
 
     <span class="type">void</span> ProgressDialogController<span class="operator">::</span>setProgress(<span class="type">float</span> progress)
     {
-        <span class="keyword">const</span> <span class="type">float</span> diff <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qAbs">qAbs</a>(m_progress <span class="operator">-</span> progress);
+        <span class="keyword">const</span> <span class="type">float</span> diff <span class="operator">=</span> qAbs(m_progress <span class="operator">-</span> progress);
         <span class="keyword">if</span> (diff <span class="operator">&gt;</span> <span class="number">0.1f</span>) {
             m_progress <span class="operator">=</span> progress;
             <span class="keyword">emit</span> progressChanged();
         }
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> ProgressDialogController<span class="operator">::</span>labelText() <span class="keyword">const</span>
+    <span class="type">QString</span> ProgressDialogController<span class="operator">::</span>labelText() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_labelText;
     }
 
-    <span class="type">void</span> ProgressDialogController<span class="operator">::</span>setLabelText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> labelText)
+    <span class="type">void</span> ProgressDialogController<span class="operator">::</span>setLabelText(<span class="keyword">const</span> <span class="type">QString</span> labelText)
     {
         <span class="keyword">if</span> (labelText <span class="operator">!</span><span class="operator">=</span> m_labelText) {
             m_labelText <span class="operator">=</span> labelText;

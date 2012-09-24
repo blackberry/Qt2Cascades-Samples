@@ -69,8 +69,8 @@
 
     <span class="preprocessor">#include &lt;QtNetwork/QUdpSocket&gt;</span>
 
-    Receiver<span class="operator">::</span>Receiver(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    Receiver<span class="operator">::</span>Receiver(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
         <span class="comment">/**
          * Initialize the 'status' property with no data, it won't
@@ -79,8 +79,8 @@
         m_status <span class="operator">=</span> <span class="string">&quot;--&quot;</span>;
 
         <span class="comment">// Create a new UDP socket and bind it against port 45454</span>
-        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>(<span class="keyword">this</span>);
-        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>bind(<span class="number">45454</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span><span class="operator">::</span>ShareAddress);
+        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QUdpSocket</span>(<span class="keyword">this</span>);
+        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>bind(<span class="number">45454</span><span class="operator">,</span> <span class="type">QUdpSocket</span><span class="operator">::</span>ShareAddress);
 
         <span class="comment">/**
          * Create signal/slot connection to invoke processPendingDatagrams() whenever
@@ -95,7 +95,7 @@
         <span class="comment">// Now read all available datagrams from the socket</span>
         <span class="keyword">while</span> (m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>hasPendingDatagrams()) {
             <span class="comment">// Create a temporary buffer ...</span>
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> datagram;
+            <span class="type">QByteArray</span> datagram;
 
             <span class="comment">// ... with the size of the received datagram ...</span>
             datagram<span class="operator">.</span>resize(m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>pendingDatagramSize());
@@ -109,7 +109,7 @@
         }
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> Receiver<span class="operator">::</span>status() <span class="keyword">const</span>
+    <span class="type">QString</span> Receiver<span class="operator">::</span>status() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_status;
     }</pre>

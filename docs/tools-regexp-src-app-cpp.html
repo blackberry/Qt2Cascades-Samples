@@ -80,13 +80,13 @@
         : m_regExp(<span class="keyword">new</span> RegExp(<span class="keyword">this</span>))
     {
         <span class="comment">// Loads the QML file</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
         <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
             <span class="comment">// Make the RegExp and App object available to the UI as context properties</span>
             qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
             qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_regexp&quot;</span><span class="operator">,</span> m_regExp);
 
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
             <span class="keyword">if</span> (appPage) {
                 Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
             }
@@ -98,22 +98,22 @@
         <span class="comment">// Set the pattern syntax depending on the index that the user has selected in the DropDown in the UI</span>
         <span class="keyword">switch</span> (selectedIndex) {
         <span class="keyword">case</span> <span class="number">0</span>:
-            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>RegExp);
+            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>RegExp);
             <span class="keyword">break</span>;
         <span class="keyword">case</span> <span class="number">1</span>:
-            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>RegExp2);
+            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>RegExp2);
             <span class="keyword">break</span>;
         <span class="keyword">case</span> <span class="number">2</span>:
-            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>Wildcard);
+            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>Wildcard);
             <span class="keyword">break</span>;
         <span class="keyword">case</span> <span class="number">3</span>:
-            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>FixedString);
+            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>FixedString);
             <span class="keyword">break</span>;
         <span class="keyword">case</span> <span class="number">4</span>:
-            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>W3CXmlSchema11);
+            m_regExp<span class="operator">-</span><span class="operator">&gt;</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>W3CXmlSchema11);
             <span class="keyword">break</span>;
         <span class="keyword">default</span>:
-            <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qDebug">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Unknown regexp pattern syntax for selected index: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> selectedIndex;
+            qDebug() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Unknown regexp pattern syntax for selected index: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> selectedIndex;
             <span class="keyword">break</span>;
         }
     }</pre>

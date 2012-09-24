@@ -45,7 +45,7 @@
 <p>The Broadcast Receiever example shows how to receive information that is broadcasted over a local network.</p>
 <p class="centerAlign"><img src="images/broadcastreceiver-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> class to send and receive broadcast messages on the network.</p>
+<p>In this example we'll learn how to use the QUdpSocket class to send and receive broadcast messages on the network.</p>
 <p>The example application is splitted in two executables, <a href="network-broadcastsender.html">broadcastsender</a> and broadcastreceiver. While the <a href="network-broadcastsender.html">broadcastsender</a> allows the user to start the broadcasting of messages on the local network, the broadcastreceiver will listen on the local network for these messages and display the received ones in the UI.</p>
 <a name="receiver"></a>
 <h2>Receiver</h2>
@@ -53,9 +53,9 @@
 <pre class="qml">                <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
                     <span class="name">id</span>: <span class="name">message</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+
                     <span class="name">text</span>: <span class="name">_receiver</span>.<span class="name">status</span>
                     <span class="type">textStyle</span> {
                         <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
@@ -64,7 +64,7 @@
                     }
                     <span class="comment">// Scale the label size on incoming data</span>
                     <span class="name">animations</span>: [
-                        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-sequentialanimation.html">SequentialAnimation</a></span> {
+                        <span class="type">SequentialAnimation</span> {
                             <span class="name">id</span>: <span class="name">animTextSize</span>
                             <span class="type">ScaleTransition</span> {
                                 <span class="name">toX</span>: <span class="number">1.4</span>
@@ -82,8 +82,8 @@
                     <span class="name">onTextChanged</span>: <span class="name">animTextSize</span>.<span class="name">play</span>()
                 }</pre>
 <p>The 'status' property of the exported Receiver object is bound against the 'text' property of a Label control, so that whenever a new datagram arrives, the text is updated automatically on screen. Like in the <a href="network-broadcastsender.html">broadcastsender</a>, the size of that label is animated here as well whenever its content changes.</p>
-<pre class="cpp">    Receiver<span class="operator">::</span>Receiver(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+<pre class="cpp">    Receiver<span class="operator">::</span>Receiver(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
         <span class="comment">/**
          * Initialize the 'status' property with no data, it won't
@@ -92,8 +92,8 @@
         m_status <span class="operator">=</span> <span class="string">&quot;--&quot;</span>;
 
         <span class="comment">// Create a new UDP socket and bind it against port 45454</span>
-        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>(<span class="keyword">this</span>);
-        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>bind(<span class="number">45454</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span><span class="operator">::</span>ShareAddress);
+        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QUdpSocket</span>(<span class="keyword">this</span>);
+        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>bind(<span class="number">45454</span><span class="operator">,</span> <span class="type">QUdpSocket</span><span class="operator">::</span>ShareAddress);
 
         <span class="comment">/**
          * Create signal/slot connection to invoke processPendingDatagrams() whenever
@@ -102,13 +102,13 @@
         connect(m_udpSocket<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
                 SLOT(processPendingDatagrams()));
     }</pre>
-<p>Inside the constructor of the Receiver class, we initialize the 'status' property and create the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> object that encapsulates the low-level network communication. By calling <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html#bind">bind()</a> we let the socket listen on port 45454 for incoming broadcast messages. In the next step we connect the <a href="http://qt.nokia.com/doc/4.8/qiodevice.html#readyRead">readyRead()</a> signal of the socket, which is emitted whenever a new datagram arrived, against our own slot processPendingDatagrams().</p>
+<p>Inside the constructor of the Receiver class, we initialize the 'status' property and create the QUdpSocket object that encapsulates the low-level network communication. By calling bind() we let the socket listen on port 45454 for incoming broadcast messages. In the next step we connect the readyRead() signal of the socket, which is emitted whenever a new datagram arrived, against our own slot processPendingDatagrams().</p>
 <pre class="cpp">    <span class="type">void</span> Receiver<span class="operator">::</span>processPendingDatagrams()
     {
         <span class="comment">// Now read all available datagrams from the socket</span>
         <span class="keyword">while</span> (m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>hasPendingDatagrams()) {
             <span class="comment">// Create a temporary buffer ...</span>
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> datagram;
+            <span class="type">QByteArray</span> datagram;
 
             <span class="comment">// ... with the size of the received datagram ...</span>
             datagram<span class="operator">.</span>resize(m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>pendingDatagramSize());

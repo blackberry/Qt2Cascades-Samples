@@ -69,80 +69,93 @@
 
     <span class="comment">// Container grouping all visual nodes for the authentication dialog</span>
     <span class="type">Container</span> {
-        <span class="name">leftMargin</span>: <span class="number">10</span>
-        <span class="name">topMargin</span>: <span class="number">10</span>
-        <span class="name">rightMargin</span>: <span class="number">10</span>
-        <span class="name">bottomMargin</span>: <span class="number">10</span>
-        <span class="name">background</span>: <span class="name">Color</span>.<span class="name">White</span>
+        <span class="name">leftPadding</span>: <span class="number">20</span>
+        <span class="name">topPadding</span>: <span class="number">20</span>
+        <span class="name">rightPadding</span>: <span class="number">20</span>
+        <span class="name">bottomPadding</span>: <span class="number">20</span>
 
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">TopToBottom</span>
-        }
+        <span class="name">background</span>: <span class="name">Color</span>.<span class="name">White</span>
 
         <span class="comment">// A standard Label</span>
         <span class="type">Label</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+
             <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;You need a username and a password to access this site&quot;</span>)
-        }
-
-        <span class="comment">// A Container grouping the site Label's</span>
-        <span class="type">Container</span> {
-            <span class="name">topMargin</span>: <span class="number">10</span>
-            <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-            }
-
-            <span class="comment">// A standard Label</span>
-            <span class="type">Label</span> {
-                <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Site:&quot;</span>)
-            }
-
-            <span class="comment">// A standard Label</span>
-            <span class="type">Label</span> {
-                <span class="name">leftMargin</span>: <span class="number">10</span>
-                <span class="name">text</span>: <span class="name">_authDialog</span>.<span class="name">site</span>
+            <span class="type">textStyle</span> {
+                <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
             }
         }
 
-        <span class="comment">// Container grouping the user/password inputs</span>
+        <span class="comment">// The site Label's</span>
+        <span class="type">Label</span> {
+            <span class="name">topMargin</span>: <span class="number">100</span>
+            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Site: %1&quot;</span>).<span class="name">arg</span>(<span class="name">_authDialog</span>.<span class="name">site</span>)
+            <span class="type">textStyle</span> {
+                <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
+            }
+        }
+
+        <span class="comment">// Container grouping the user input</span>
         <span class="type">Container</span> {
-            <span class="name">topMargin</span>: <span class="number">10</span>
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+            <span class="name">topMargin</span>: <span class="number">50</span>
 
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard Label</span>
             <span class="type">Label</span> {
-                <span class="name">rightMargin</span>: <span class="number">10</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                 <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;User:&quot;</span>)
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
                 }
             }
 
             <span class="comment">// A standard TextField</span>
             <span class="type">TextField</span> {
                 <span class="name">id</span>: <span class="name">userEdit</span>
-                <span class="name">preferredWidth</span>: <span class="number">850</span>
+
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
+                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                    <span class="name">spaceQuota</span>: <span class="number">1</span>
+                }
+
                 <span class="name">text</span>: <span class="name">_authDialog</span>.<span class="name">user</span>
             }
+        }
+
+        <span class="comment">// Container grouping the password input</span>
+        <span class="type">Container</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+            <span class="name">topMargin</span>: <span class="number">10</span>
 
             <span class="comment">// A standard Label</span>
             <span class="type">Label</span> {
-                <span class="name">topMargin</span>: <span class="number">10</span>
-                <span class="name">rightMargin</span>: <span class="number">10</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                 <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Password:&quot;</span>)
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
                 }
             }
 
             <span class="comment">// A standard TextField</span>
             <span class="type">TextField</span> {
                 <span class="name">id</span>: <span class="name">passwordEdit</span>
-                <span class="name">preferredWidth</span>: <span class="number">850</span>
+
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
+                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                    <span class="name">spaceQuota</span>: <span class="number">1</span>
+                }
 
                 <span class="name">text</span>: <span class="name">_authDialog</span>.<span class="name">password</span>
             }
@@ -150,9 +163,11 @@
 
         <span class="comment">// Container grouping the control Button's</span>
         <span class="type">Container</span> {
-            <span class="name">topMargin</span>: <span class="number">10</span>
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+            <span class="name">topMargin</span>: <span class="number">50</span>
+
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard Button</span>

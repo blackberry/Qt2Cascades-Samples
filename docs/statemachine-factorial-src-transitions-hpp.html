@@ -71,7 +71,7 @@
     <span class="preprocessor">#include &lt;QtCore/QSignalTransition&gt;</span>
 
     <span class="keyword">class</span> Factorial;
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span>;
+    <span class="keyword">class</span> <span class="type">QEvent</span>;
 
     <span class="comment">/**
      * This custom transition has the 'compute' state as source and
@@ -79,17 +79,17 @@
      * Inside the onTransition() method the actual work (calculating the factorial)
      * is done.
      */</span>
-    <span class="keyword">class</span> FactorialLoopTransition : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span>
+    <span class="keyword">class</span> FactorialLoopTransition : <span class="keyword">public</span> <span class="type">QSignalTransition</span>
     {
     <span class="keyword">public</span>:
         <span class="comment">// Creates a new factorial loop transition that works on the values of the given Factorial object</span>
         FactorialLoopTransition(Factorial <span class="operator">*</span>fact);
 
         <span class="comment">// This method is called by the state machine to check whether this transition can be executed</span>
-        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e);
+        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type">QEvent</span> <span class="operator">*</span>e);
 
         <span class="comment">// This method is called by the state machine if this transition is executed</span>
-        <span class="keyword">virtual</span> <span class="type">void</span> onTransition(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e);
+        <span class="keyword">virtual</span> <span class="type">void</span> onTransition(<span class="type">QEvent</span> <span class="operator">*</span>e);
 
     <span class="keyword">private</span>:
         <span class="comment">// The Factorial object to work on</span>
@@ -102,14 +102,14 @@
      * It tests inside eventTest() whether the calculation of the factorial is finished
      * and returns 'true' in this case.
      */</span>
-    <span class="keyword">class</span> FactorialDoneTransition : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span>
+    <span class="keyword">class</span> FactorialDoneTransition : <span class="keyword">public</span> <span class="type">QSignalTransition</span>
     {
     <span class="keyword">public</span>:
         <span class="comment">// Creates a new factorial loop transition that works on the values of the given Factorial object</span>
         FactorialDoneTransition(Factorial <span class="operator">*</span>fact);
 
         <span class="comment">// This method is called by the state machine to check whether this transition can be executed</span>
-        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e);
+        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type">QEvent</span> <span class="operator">*</span>e);
 
     <span class="keyword">private</span>:
         <span class="comment">// The Factorial object to work on</span>

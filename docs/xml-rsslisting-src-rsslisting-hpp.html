@@ -79,21 +79,21 @@
      * the RSS feed. The feed URL and the extracted articles are available
      * to the UI via properties.
      */</span>
-    <span class="keyword">class</span> RSSListing : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> RSSListing : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// The URL where the RSS feed is downloaded from</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url READ url WRITE setUrl NOTIFY urlChanged)
+        Q_PROPERTY(<span class="type">QString</span> url READ url WRITE setUrl NOTIFY urlChanged)
 
         <span class="comment">// Makes the extracted articles available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> feeds READ feeds NOTIFY feedsChanged)
+        Q_PROPERTY(<span class="type">QString</span> feeds READ feeds NOTIFY feedsChanged)
 
         <span class="comment">// Makes the state of the RSSListing available to the UI</span>
         Q_PROPERTY(<span class="type">bool</span> active READ active NOTIFY activeChanged)
 
     <span class="keyword">public</span>:
-        RSSListing(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>object <span class="operator">=</span> <span class="number">0</span>);
+        RSSListing(<span class="type">QObject</span> <span class="operator">*</span>object <span class="operator">=</span> <span class="number">0</span>);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is invoked from the UI to start the download of the RSS feed</span>
@@ -107,7 +107,7 @@
 
     <span class="keyword">private</span> Q_SLOTS:
         <span class="comment">// This method is called when the feed has been downloaded</span>
-        <span class="type">void</span> finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>reply);
+        <span class="type">void</span> finished(<span class="type">QNetworkReply</span> <span class="operator">*</span>reply);
 
         <span class="comment">// This method is called whenever new data from the feed have been received</span>
         <span class="type">void</span> readyRead();
@@ -116,14 +116,14 @@
         <span class="type">void</span> metaDataChanged();
 
         <span class="comment">// This method is called if an network related error occurred</span>
-        <span class="type">void</span> error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError);
+        <span class="type">void</span> error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError);
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor methods of the properties</span>
-        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url() <span class="keyword">const</span>;
+        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url);
+        <span class="type">QString</span> url() <span class="keyword">const</span>;
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> feeds() <span class="keyword">const</span>;
+        <span class="type">QString</span> feeds() <span class="keyword">const</span>;
 
         <span class="type">bool</span> active() <span class="keyword">const</span>;
 
@@ -131,21 +131,21 @@
         <span class="type">void</span> parseXml();
 
         <span class="comment">// This method triggers the actual download of the RSS feed</span>
-        <span class="type">void</span> get(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url);
+        <span class="type">void</span> get(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>url);
 
         <span class="comment">// The property values</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_url;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_feeds;
+        <span class="type">QString</span> m_url;
+        <span class="type">QString</span> m_feeds;
         <span class="type">bool</span> m_active;
 
         <span class="comment">// The XML stream reader that is used to extract the articles from the RSS feed</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> m_xml;
+        <span class="type">QXmlStreamReader</span> m_xml;
 
         <span class="comment">// The network manager that is used to download the RSS feed</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_manager;
+        <span class="type">QNetworkAccessManager</span> m_manager;
 
         <span class="comment">// The network reply that represents the current download job</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>m_currentReply;
+        <span class="type">QNetworkReply</span> <span class="operator">*</span>m_currentReply;
     };
 
     <span class="preprocessor">#endif</span></pre>

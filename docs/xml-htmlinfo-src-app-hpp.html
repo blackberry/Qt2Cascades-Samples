@@ -81,18 +81,18 @@
      * and the application will extract various information (title, paragraph count etc.)
      * from it and show them in the UI.
      */</span>
-    <span class="keyword">class</span> App : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> App : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// This property makes the title of the currently selected file accessible to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileTitle READ fileTitle NOTIFY fileTitleChanged)
+        Q_PROPERTY(<span class="type">QString</span> fileTitle READ fileTitle NOTIFY fileTitleChanged)
 
     <span class="keyword">public</span>:
         App();
 
         <span class="comment">// This method is called when the user has selected an XHTML document in the ListView</span>
-        Q_INVOKABLE <span class="type">void</span> setFileName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath);
+        Q_INVOKABLE <span class="type">void</span> setFileName(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signal for the file title property</span>
@@ -100,7 +100,7 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor method for the file title property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileTitle() <span class="keyword">const</span>;
+        <span class="type">QString</span> fileTitle() <span class="keyword">const</span>;
 
         <span class="comment">// The object that extracts the information from the XHTML document</span>
         HtmlInfo <span class="operator">*</span>m_htmlInfo;
@@ -109,7 +109,7 @@
         bb<span class="operator">::</span>cascades<span class="operator">::</span>GroupDataModel m_model;
 
         <span class="comment">// Contains the title of the currently selected file</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_fileTitle;
+        <span class="type">QString</span> m_fileTitle;
     };
 
     <span class="preprocessor">#endif</span></pre>

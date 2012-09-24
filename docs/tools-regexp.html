@@ -49,7 +49,7 @@
 <div class="centerAlign"><p><img src="images/regexp-example.png" alt="" /> <img src="images/regexp-example1.png" alt="" /></p>
 </div><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> class to find substrings inside a text that matches a given pattern (regular expression).</p>
+<p>In this example we'll learn how to use the QRegExp class to find substrings inside a text that matches a given pattern (regular expression).</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The UI of this sample application consists of two text fields in the 'Inputs' section, where the user can type in the pattern and the text. Additionally there are controls that can be used to configure various properties of the regular expression (e.g&#x2e; whether the lookup should be case sensitive, which pattern syntax should be used etc.)&#x2e; In the 'Outputs' section there are labels that show at which position the matching substring is located in the text, how long the matching substring is and what the matching substring looks like.</p>
@@ -78,18 +78,18 @@
 <p>The 'text' properties of the output related labels are also bound against the appropriated properties of the RegExp object, so whenever RegExp changes its result, the labels will be updated automatically.</p>
 <a name="regexp"></a>
 <h2>RegExp</h2>
-<p>The RegExp class encapsulates the business logic of this application. It's a thin wrapper around <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> that provides properties, so that data can be set and read from within the UI.</p>
-<p>All matching substrings (called captures) that the internal <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> object finds are stored inside the RegExp class as a list of Capture objects:</p>
+<p>The RegExp class encapsulates the business logic of this application. It's a thin wrapper around QRegExp that provides properties, so that data can be set and read from within the UI.</p>
+<p>All matching substrings (called captures) that the internal QRegExp object finds are stored inside the RegExp class as a list of Capture objects:</p>
 <pre class="cpp">        <span class="keyword">struct</span> Capture
         {
             <span class="type">bool</span> available;
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text;
+            <span class="type">QString</span> text;
         };</pre>
 <p>Inside the constructor of RegExp all the member variables are initialized and the 'available' property of all Capture objects is set to 'false' to represent the initial 'pattern is not matching' state.</p>
-<pre class="cpp">    RegExp<span class="operator">::</span>RegExp(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+<pre class="cpp">    RegExp<span class="operator">::</span>RegExp(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_pattern(<span class="string">&quot;[A-Za-z_]+([A-Za-z_0-9]*)&quot;</span>)
-        <span class="operator">,</span> m_patternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>RegExp)
+        <span class="operator">,</span> m_patternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>RegExp)
         <span class="operator">,</span> m_caseSensitive(<span class="keyword">true</span>)
         <span class="operator">,</span> m_minimal(<span class="keyword">false</span>)
         <span class="operator">,</span> m_text(<span class="string">&quot;(10 + delta4) * 32&quot;</span>)
@@ -111,7 +111,7 @@
 <pre class="cpp">    <span class="type">void</span> RegExp<span class="operator">::</span>refresh()
     {
         <span class="comment">// Create the escaped version of the pattern string ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> escaped <span class="operator">=</span> m_pattern;
+        <span class="type">QString</span> escaped <span class="operator">=</span> m_pattern;
         escaped<span class="operator">.</span>replace(<span class="string">&quot;\\&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\\&quot;</span>);
         escaped<span class="operator">.</span>replace(<span class="string">&quot;\&quot;&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\&quot;&quot;</span>);
         escaped<span class="operator">.</span>prepend(<span class="string">&quot;\&quot;&quot;</span>);
@@ -121,10 +121,10 @@
         m_escapedPattern <span class="operator">=</span> escaped;
 
         <span class="comment">// Create a temporary QRegExp object with the current pattern as parameter</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span> regexp(m_pattern);
+        <span class="type">QRegExp</span> regexp(m_pattern);
 
         <span class="comment">// Configure the QRegExp object according to the other input parameters</span>
-        regexp<span class="operator">.</span>setCaseSensitivity(m_caseSensitive <span class="operator">?</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qt.html">Qt</a></span><span class="operator">::</span>CaseSensitive : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qt.html">Qt</a></span><span class="operator">::</span>CaseInsensitive);
+        regexp<span class="operator">.</span>setCaseSensitivity(m_caseSensitive <span class="operator">?</span> <span class="type">Qt</span><span class="operator">::</span>CaseSensitive : <span class="type">Qt</span><span class="operator">::</span>CaseInsensitive);
         regexp<span class="operator">.</span>setMinimal(m_minimal);
         regexp<span class="operator">.</span>setPatternSyntax(m_patternSyntax);
 
@@ -142,9 +142,9 @@
         <span class="comment">// Notify the UI that the output parameters have changed</span>
         <span class="keyword">emit</span> regexpChanged();
     }</pre>
-<p>Inside the refresh() method the first step is to update the escaped version of the pattern and store it in the 'escapedPattern' property. In the second step we create a <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> object with the pattern as it has been typed in by the user. Now we configure the <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> object according to the properties of the RegExp object. The call to <a href="http://qt.nokia.com/doc/4.8/qregexp.html#indexIn">indexIn()</a> does the actual pattern matching against the input text. As a return value we get either '-1' if the text doesn't match the pattern or the offset where the matching substring starts.</p>
-<p>The <a href="http://qt.nokia.com/doc/4.8/qregexp.html#matchedLength">matchedLength()</a> method of the <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> class returns the length of the matching substring, that we simply store in the associated property of the RegExp object.</p>
-<p>To update the captures, we iterate over all Capture objects in the internal list and update them with the values returned by the <a href="http://qt.nokia.com/doc/4.8/qregexp.html#cap">cap()</a> method of the <a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a> object.</p>
+<p>Inside the refresh() method the first step is to update the escaped version of the pattern and store it in the 'escapedPattern' property. In the second step we create a QRegExp object with the pattern as it has been typed in by the user. Now we configure the QRegExp object according to the properties of the RegExp object. The call to indexIn() does the actual pattern matching against the input text. As a return value we get either '-1' if the text doesn't match the pattern or the offset where the matching substring starts.</p>
+<p>The matchedLength() method of the QRegExp class returns the length of the matching substring, that we simply store in the associated property of the RegExp object.</p>
+<p>To update the captures, we iterate over all Capture objects in the internal list and update them with the values returned by the cap() method of the QRegExp object.</p>
 <p>As last step we emit the regexpChanged() signal to notify the UI that all properties of the RegExp object have been changed.</p>
 <p>The setter methods of all input properties of the RegExp object follow always the same scheme:</p>
 <ol class="A">
@@ -153,7 +153,7 @@
 <li>Call refresh() to calculate the matching substrings</li>
 <li>Emit the change notification signal for this property</li>
 </ol>
-<pre class="cpp">    <span class="type">void</span> RegExp<span class="operator">::</span>setText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text)
+<pre class="cpp">    <span class="type">void</span> RegExp<span class="operator">::</span>setText(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text)
     {
         <span class="keyword">if</span> (m_text <span class="operator">=</span><span class="operator">=</span> text)
             <span class="keyword">return</span>;
@@ -169,7 +169,7 @@
         <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>available;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture0Text() <span class="keyword">const</span>
+    <span class="type">QString</span> RegExp<span class="operator">::</span>capture0Text() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>text;
     }</pre>

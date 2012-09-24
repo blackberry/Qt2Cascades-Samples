@@ -76,7 +76,7 @@
     {
     }
 
-    <span class="type">bool</span> XbelReader<span class="operator">::</span>read(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    <span class="type">bool</span> XbelReader<span class="operator">::</span>read(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         <span class="comment">// Set the XBEL document as input data to the XML stream reader</span>
         m_xml<span class="operator">.</span>setDevice(device);
@@ -87,15 +87,15 @@
             <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;xbel&quot;</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;version&quot;</span>) <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;1.0&quot;</span>)
                 readXBEL(); <span class="comment">// Start to parse the document</span>
             <span class="keyword">else</span>
-                m_xml<span class="operator">.</span>raiseError(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;The file is not an XBEL version 1.0 file.&quot;</span>));
+                m_xml<span class="operator">.</span>raiseError(<span class="type">QObject</span><span class="operator">::</span>tr(<span class="string">&quot;The file is not an XBEL version 1.0 file.&quot;</span>));
         }
 
         <span class="keyword">return</span> <span class="operator">!</span>m_xml<span class="operator">.</span>error();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelReader<span class="operator">::</span>errorString() <span class="keyword">const</span>
+    <span class="type">QString</span> XbelReader<span class="operator">::</span>errorString() <span class="keyword">const</span>
     {
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;%1\nLine %2, column %3&quot;</span>)
+        <span class="keyword">return</span> <span class="type">QObject</span><span class="operator">::</span>tr(<span class="string">&quot;%1\nLine %2, column %3&quot;</span>)
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString())
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>columnNumber());
@@ -125,7 +125,7 @@
         Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>);
 
         <span class="comment">// Read the title property and set it on the control</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> m_xml<span class="operator">.</span>readElementText();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> m_xml<span class="operator">.</span>readElementText();
         item<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> title);
     }
 
@@ -169,7 +169,7 @@
 
         <span class="comment">// Create the control for the bookmark and set the properties from the element on it</span>
         Container <span class="operator">*</span>bookmark <span class="operator">=</span> createChildItem(item);
-        bookmark<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;Unknown title&quot;</span>));
+        bookmark<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> <span class="type">QObject</span><span class="operator">::</span>tr(<span class="string">&quot;Unknown title&quot;</span>));
         bookmark<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;url&quot;</span><span class="operator">,</span> m_xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;href&quot;</span>)<span class="operator">.</span>toString());
 
         <span class="comment">// Read the &lt;title&gt; child element</span>
@@ -183,20 +183,20 @@
 
     Container <span class="operator">*</span>XbelReader<span class="operator">::</span>createChildItem(Container <span class="operator">*</span>parent)
     {
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> m_xml<span class="operator">.</span>name()<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> tagName <span class="operator">=</span> m_xml<span class="operator">.</span>name()<span class="operator">.</span>toString();
 
         <span class="comment">// Use a different QML file depending on the current XBEL element type</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> qmlFile <span class="operator">=</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span> <span class="operator">?</span> <span class="string">&quot;FolderItem.qml&quot;</span> :
-                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span> <span class="operator">?</span> <span class="string">&quot;BookmarkItem.qml&quot;</span> :
-                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span> <span class="operator">?</span> <span class="string">&quot;SeparatorItem.qml&quot;</span> : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+        <span class="keyword">const</span> <span class="type">QString</span> qmlFile <span class="operator">=</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span> <span class="operator">?</span> <span class="string">&quot;asset:///FolderItem.qml&quot;</span> :
+                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span> <span class="operator">?</span> <span class="string">&quot;asset:///BookmarkItem.qml&quot;</span> :
+                                 tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span> <span class="operator">?</span> <span class="string">&quot;asset:///SeparatorItem.qml&quot;</span> : <span class="type">QString</span>());
 
         Container <span class="operator">*</span>container <span class="operator">=</span> <span class="number">0</span>;
 
         <span class="comment">// Load the QML file ...</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(qmlFile);
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(qmlFile);
         <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
             <span class="comment">// ... create the top-level control ...</span>
-            container <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Container<span class="operator">&gt;</span>();
+            container <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>Container<span class="operator">&gt;</span>();
 
             <span class="comment">// ... and add it to the parent container</span>
             parent<span class="operator">-</span><span class="operator">&gt;</span>add(container);

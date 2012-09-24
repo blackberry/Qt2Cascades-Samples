@@ -54,10 +54,10 @@
 </ul>
 <a name="description"></a>
 <h2>Description</h2>
-<p>The QXmlStream Bookmarks example provides a reader for XML Bookmark Exchange Language (XBEL) files using Qt's <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> class for reading, and <a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a> class for writing the files.</p>
+<p>The QXmlStream Bookmarks example provides a reader for XML Bookmark Exchange Language (XBEL) files using Qt's QXmlStreamReader class for reading, and QXmlStreamWriter class for writing the files.</p>
 <p class="centerAlign"><img src="images/streambookmarks-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> and <a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a> classes to parse, modify and generate an XML document. Additionally we'll see how to generate UI objects (that are described in a QML file) on-the-fly and how to access and modify their properties.</p>
+<p>In this example we'll learn how to use the QXmlStreamReader and QXmlStreamWriter classes to parse, modify and generate an XML document. Additionally we'll see how to generate UI objects (that are described in a QML file) on-the-fly and how to access and modify their properties.</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The UI of this sample application consists of three buttons and a container. The first two buttons allow the user to load two different XBEL documents and the third button allows the user to save the currently loaded XBEL document back to file system (including possible changes done to the bookmarks).</p>
@@ -72,15 +72,13 @@
     <span class="type">Container</span> {
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;folder&quot;</span>
         property <span class="type">alias</span> <span class="name">title</span>: <span class="name">titleField</span>.<span class="name">text</span>
-        <span class="name">topMargin</span>: <span class="number">20</span>
 
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">topMargin</span>: <span class="number">20</span>
+        <span class="name">leftPadding</span>: <span class="number">20</span>
 
         <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard ImageView</span>
@@ -94,8 +92,6 @@
             <span class="type">Label</span> {
                 <span class="name">id</span>: <span class="name">titleField</span>
                 <span class="name">leftMargin</span>: <span class="number">10</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                }
 
                 <span class="comment">// Defines custom text style</span>
                 <span class="type">textStyle</span> {
@@ -112,36 +108,32 @@
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;bookmark&quot;</span>
         property <span class="type">alias</span> <span class="name">title</span>: <span class="name">titleField</span>.<span class="name">text</span>
         property <span class="type">alias</span> <span class="name">url</span>: <span class="name">urlField</span>.<span class="name">text</span>
+
         <span class="name">topMargin</span>: <span class="number">10</span>
         <span class="name">leftMargin</span>: <span class="number">20</span>
-
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">leftPadding</span>: <span class="number">20</span>
 
         <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard ImageView</span>
             <span class="type">ImageView</span> {
-                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/bookmark.png&quot;</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">minWidth</span>: <span class="number">82</span>
                 <span class="name">minHeight</span>: <span class="number">62</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
+
+                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/bookmark.png&quot;</span>
                 <span class="name">scalingMethod</span>: <span class="name">ScalingMethod</span>.<span class="name">AspectFit</span>
             }
 
             <span class="comment">// A standard Label for the bookmark title element</span>
             <span class="type">Label</span> {
                 <span class="name">id</span>: <span class="name">titleField</span>
+
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">leftMargin</span>: <span class="number">10</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
 
                 <span class="type">textStyle</span> {
                     <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
@@ -159,11 +151,10 @@
         <span class="comment">// A standard TextField for the bookmark url attribute value</span>
         <span class="type">TextField</span> {
             <span class="name">id</span>: <span class="name">urlField</span>
+
+            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
             <span class="name">leftMargin</span>: <span class="number">10</span>
             <span class="name">visible</span>: <span class="number">false</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-            }
 
             <span class="type">textStyle</span> {
                 <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
@@ -174,17 +165,13 @@
 <pre class="qml">    <span class="comment">// Container used to create a separator black visual line</span>
     <span class="type">Container</span> {
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;separator&quot;</span>
-        <span class="name">topMargin</span>: <span class="number">20</span>
 
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">40</span>
-            <span class="name">rightPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">topMargin</span>: <span class="number">20</span>
+        <span class="name">leftPadding</span>: <span class="number">40</span>
+        <span class="name">rightPadding</span>: <span class="number">20</span>
 
         <span class="type">ImageView</span> {
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
 
             <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/separator.png&quot;</span>
         }
@@ -230,32 +217,34 @@
 <pre class="qml">                <span class="comment">// Container for displaying the loaded XBEL output</span>
                 <span class="type">ScrollView</span> {
                     <span class="name">topMargin</span>: <span class="number">10</span>
+
                     <span class="type">scrollViewProperties</span> {
                         <span class="name">scrollMode</span>: <span class="name">ScrollMode</span>.<span class="name">Vertical</span>
                     }
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
+
                     <span class="type">Container</span> {
                         <span class="name">objectName</span>: <span class="string">&quot;treeContainer&quot;</span>
-                        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                            <span class="name">leftPadding</span>: <span class="number">10</span>
-                            <span class="name">rightPadding</span>: <span class="number">10</span>
-                            <span class="name">bottomPadding</span>: <span class="number">10</span>
-                        }
+
+                        <span class="name">leftPadding</span>: <span class="number">10</span>
+                        <span class="name">rightPadding</span>: <span class="number">10</span>
+                        <span class="name">bottomPadding</span>: <span class="number">10</span>
                     }
                 }</pre>
 <p>The container has the 'objectName' property set, so that it can be looked up from within C++.</p>
 <a name="app"></a>
 <h2>App</h2>
-<p>Inside the constructor of <tt>App</tt> we load the main.qml file and retrieve the C++ object that represents the root node of the QML document. With the <a href="http://qt.nokia.com/doc/4.8/qobject.html#findChild">findChild()</a> method we look up the <tt>Container</tt> object where we have assigned 'treeContainer' to the 'objectName' property.</p>
+<p>Inside the constructor of <tt>App</tt> we load the main.qml file and retrieve the C++ object that represents the root node of the QML document. With the findChild() method we look up the <tt>Container</tt> object where we have assigned 'treeContainer' to the 'objectName' property.</p>
 <pre class="cpp">    App<span class="operator">::</span>App()
     {
         <span class="comment">// Load the main QML file and make the App object available as context property</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
         <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
             qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
             <span class="keyword">if</span> (appPage) {
                 Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
@@ -265,7 +254,7 @@
         }
     }</pre>
 <p>Whenever the user clicks one of the load buttons, the <tt>load()</tt> method of the App object is invoked with the file name passed as parameter.</p>
-<pre class="cpp">    <span class="type">void</span> App<span class="operator">::</span>load(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+<pre class="cpp">    <span class="type">void</span> App<span class="operator">::</span>load(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName)
     {
         <span class="comment">// Do sanity check</span>
         <span class="keyword">if</span> (<span class="operator">!</span>m_treeContainer)
@@ -282,9 +271,9 @@
         XbelReader reader(m_treeContainer);
 
         <span class="comment">// Open the XBEL file which the user has selected</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(<span class="string">&quot;app/native/assets/&quot;</span> <span class="operator">+</span> fileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly))
-            <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qWarning">qWarning</a>(<span class="string">&quot;unable to open file&quot;</span>);
+        <span class="type">QFile</span> file(<span class="string">&quot;app/native/assets/&quot;</span> <span class="operator">+</span> fileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly))
+            qWarning(<span class="string">&quot;unable to open file&quot;</span>);
 
         <span class="comment">// Parse XBEL file and generate the bookmark controls</span>
         <span class="keyword">const</span> <span class="type">bool</span> ok <span class="operator">=</span> reader<span class="operator">.</span>read(<span class="operator">&amp;</span>file);
@@ -309,11 +298,11 @@
         m_status <span class="operator">=</span> tr(<span class="string">&quot;Saving...&quot;</span>);
         <span class="keyword">emit</span> statusChanged();
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName(<span class="string">&quot;tmp/streambookmarks.xbel&quot;</span>);
+        <span class="keyword">const</span> <span class="type">QString</span> fileName(<span class="string">&quot;tmp/streambookmarks.xbel&quot;</span>);
 
         <span class="comment">// Open the target file where the modified XBEL document will be written to</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-        file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly);
+        <span class="type">QFile</span> file(fileName);
+        file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>WriteOnly);
 
         <span class="comment">// Create the XBEL writer on the tree container and let it generate the XBEL document from the bookmark controls</span>
         XbelWriter writer(m_treeContainer);
@@ -330,7 +319,7 @@
 <p>Inside <tt>save()</tt> we try to open the file 'streambookmarks.xbel' inside the applications temp directory and then we use the <tt>XbelWriter</tt> class to iterate over the <tt>treeContainer</tt>, generate the XML document and store it to the file.</p>
 <a name="xbelwriter-class-definition"></a>
 <h2>XbelWriter Class Definition</h2>
-<p>The <tt>XbelWriter</tt> class contains a private instance of <a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a>, which provides an XML writer with a streaming API. <tt>XbelWriter</tt> also has a reference to the Container instance where the bookmark hierarchy is stored.</p>
+<p>The <tt>XbelWriter</tt> class contains a private instance of QXmlStreamWriter, which provides an XML writer with a streaming API. <tt>XbelWriter</tt> also has a reference to the Container instance where the bookmark hierarchy is stored.</p>
 <pre class="cpp">    <span class="comment">/**
      * The XbelWriter is responsible for generating a XBEL document from the
      * controls in the tree container.
@@ -343,29 +332,29 @@
         XbelWriter(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// Starts the generation of the XBEL document</span>
-        <span class="type">bool</span> writeFile(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device);
+        <span class="type">bool</span> writeFile(<span class="type">QIODevice</span> <span class="operator">*</span>device);
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that generates an element in the XBEL document for the current control</span>
         <span class="type">void</span> writeItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>item);
 
         <span class="comment">// The XML stream writer that is used to generate the XBEL document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a></span> m_xml;
+        <span class="type">QXmlStreamWriter</span> m_xml;
 
         <span class="comment">// The container object the controls are located in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
     };</pre>
 <a name="xbelwriter-class-implementation"></a>
 <h2>XbelWriter Class Implementation</h2>
-<p>The <tt>XbelWriter</tt> constructor accepts a <i>treeContainer</i> to initialize within its definition. We enable <a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a>'s auto-formatting property to ensure line-breaks and indentations are added automatically to empty sections between elements, increasing readability as the data is split into several lines.</p>
+<p>The <tt>XbelWriter</tt> constructor accepts a <i>treeContainer</i> to initialize within its definition. We enable QXmlStreamWriter's auto-formatting property to ensure line-breaks and indentations are added automatically to empty sections between elements, increasing readability as the data is split into several lines.</p>
 <pre class="cpp">    XbelWriter<span class="operator">::</span>XbelWriter(Container <span class="operator">*</span>treeContainer)
         : m_treeContainer(treeContainer)
     {
         <span class="comment">// Make the output of the XML stream writer easier to read for humans</span>
         m_xml<span class="operator">.</span>setAutoFormatting(<span class="keyword">true</span>);
     }</pre>
-<p>The <tt>writeFile()</tt> function accepts a <a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a> object and sets it using <tt>setDevice()</tt>. This function then writes the document type definition(DTD), the start element, the version, and <tt>treeContainer</tt>'s top-level items.</p>
-<pre class="cpp">    <span class="type">bool</span> XbelWriter<span class="operator">::</span>writeFile(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+<p>The <tt>writeFile()</tt> function accepts a QIODevice object and sets it using <tt>setDevice()</tt>. This function then writes the document type definition(DTD), the start element, the version, and <tt>treeContainer</tt>'s top-level items.</p>
+<pre class="cpp">    <span class="type">bool</span> XbelWriter<span class="operator">::</span>writeFile(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         m_xml<span class="operator">.</span>setDevice(device);
 
@@ -394,8 +383,8 @@
          * Retrieve the tag name and title from the control.
          * These two properties have been set on the controls by the XbelReader.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> tagName <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
 
         <span class="comment">// Depending on the tag name write a new element to the XBEL document</span>
         <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>) {
@@ -410,7 +399,7 @@
             m_xml<span class="operator">.</span>writeEndElement();
         } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>) {
             m_xml<span class="operator">.</span>writeStartElement(tagName);
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
+            <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isEmpty())
                 m_xml<span class="operator">.</span>writeAttribute(<span class="string">&quot;href&quot;</span><span class="operator">,</span> url);
             m_xml<span class="operator">.</span>writeTextElement(<span class="string">&quot;title&quot;</span><span class="operator">,</span> title);
@@ -421,7 +410,7 @@
     }</pre>
 <a name="xbelreader-class-definition"></a>
 <h2>XbelReader Class Definition</h2>
-<p>The <tt>XbelReader</tt> contains a private instance of <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a>, the companion class to <a href="http://qt.nokia.com/doc/4.8/qxmlstreamwriter.html">QXmlStreamWriter</a>. <tt>XbelReader</tt> also contains a reference to the Container that is used to group the bookmarks according to their hierarchy.</p>
+<p>The <tt>XbelReader</tt> contains a private instance of QXmlStreamReader, the companion class to QXmlStreamWriter. <tt>XbelReader</tt> also contains a reference to the Container that is used to group the bookmarks according to their hierarchy.</p>
 <pre class="cpp">    <span class="comment">/**
      * The XbelReader is responsible for parsing a XBEL file and generating
      * controls, that represent the bookmark entries, on the tree container.
@@ -434,10 +423,10 @@
         XbelReader(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// Starts the parsing of the XBEL document</span>
-        <span class="type">bool</span> read(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device);
+        <span class="type">bool</span> read(<span class="type">QIODevice</span> <span class="operator">*</span>device);
 
         <span class="comment">// Returns a textual representation of the error if one occurred</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorString() <span class="keyword">const</span>;
+        <span class="type">QString</span> errorString() <span class="keyword">const</span>;
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that parses the root element of a XBEL document</span>
@@ -459,10 +448,10 @@
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>createChildItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>parent);
 
         <span class="comment">// The XML stream reader that is used to parse the XBEL document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> m_xml;
+        <span class="type">QXmlStreamReader</span> m_xml;
 
         <span class="comment">// The container object the controls are created in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
     };</pre>
 <a name="xbelreader-class-implementation"></a>
 <h2>XbelReader Class Implementation</h2>
@@ -471,8 +460,8 @@
         : m_treeContainer(treeContainer)
     {
     }</pre>
-<p>The <tt>read()</tt> function accepts a <a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a> and sets it using <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html#setDevice">setDevice()</a>. The actual process of reading only takes place if the file is a valid XBEL 1.0 file. Note that the XML input needs to be well-formed to be accepted by <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a>. Otherwise, the <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html#raiseError">raiseError()</a> function is used to display an error message. Since the XBEL reader is only concerned with reading XML elements, it makes extensive use of the <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html#readNextStartElement">readNextStartElement()</a> convenience function.</p>
-<pre class="cpp">    <span class="type">bool</span> XbelReader<span class="operator">::</span>read(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+<p>The <tt>read()</tt> function accepts a QIODevice and sets it using setDevice(). The actual process of reading only takes place if the file is a valid XBEL 1.0 file. Note that the XML input needs to be well-formed to be accepted by QXmlStreamReader. Otherwise, the raiseError() function is used to display an error message. Since the XBEL reader is only concerned with reading XML elements, it makes extensive use of the readNextStartElement() convenience function.</p>
+<pre class="cpp">    <span class="type">bool</span> XbelReader<span class="operator">::</span>read(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         <span class="comment">// Set the XBEL document as input data to the XML stream reader</span>
         m_xml<span class="operator">.</span>setDevice(device);
@@ -483,20 +472,20 @@
             <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;xbel&quot;</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;version&quot;</span>) <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;1.0&quot;</span>)
                 readXBEL(); <span class="comment">// Start to parse the document</span>
             <span class="keyword">else</span>
-                m_xml<span class="operator">.</span>raiseError(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;The file is not an XBEL version 1.0 file.&quot;</span>));
+                m_xml<span class="operator">.</span>raiseError(<span class="type">QObject</span><span class="operator">::</span>tr(<span class="string">&quot;The file is not an XBEL version 1.0 file.&quot;</span>));
         }
 
         <span class="keyword">return</span> <span class="operator">!</span>m_xml<span class="operator">.</span>error();
     }</pre>
 <p>The <tt>errorString()</tt> function is used if an error occurred, in order to obtain a description of the error complete with line and column number information.</p>
-<pre class="cpp">    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelReader<span class="operator">::</span>errorString() <span class="keyword">const</span>
+<pre class="cpp">    <span class="type">QString</span> XbelReader<span class="operator">::</span>errorString() <span class="keyword">const</span>
     {
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;%1\nLine %2, column %3&quot;</span>)
+        <span class="keyword">return</span> <span class="type">QObject</span><span class="operator">::</span>tr(<span class="string">&quot;%1\nLine %2, column %3&quot;</span>)
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString())
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())
                 <span class="operator">.</span>arg(m_xml<span class="operator">.</span>columnNumber());
     }</pre>
-<p>The <tt>readXBEL()</tt> function reads the name of a startElement and calls the appropriate function to read it, depending on whether if its a &quot;folder&quot;, &quot;bookmark&quot; or &quot;separator&quot;. Otherwise, it calls <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html#skipCurrentElement">skipCurrentElement()</a>. The <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#Q_ASSERT">Q_ASSERT</a>() macro is used to provide a pre-condition for the function.</p>
+<p>The <tt>readXBEL()</tt> function reads the name of a startElement and calls the appropriate function to read it, depending on whether if its a &quot;folder&quot;, &quot;bookmark&quot; or &quot;separator&quot;. Otherwise, it calls skipCurrentElement(). The Q_ASSERT() macro is used to provide a pre-condition for the function.</p>
 <pre class="cpp">    <span class="type">void</span> XbelReader<span class="operator">::</span>readXBEL()
     {
         <span class="comment">// Do sanity check</span>
@@ -521,10 +510,10 @@
         Q_ASSERT(m_xml<span class="operator">.</span>isStartElement() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>);
 
         <span class="comment">// Read the title property and set it on the control</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> m_xml<span class="operator">.</span>readElementText();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> m_xml<span class="operator">.</span>readElementText();
         item<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;title&quot;</span><span class="operator">,</span> title);
     }</pre>
-<p>The <tt>readSeparator()</tt> function creates a separator. The element is then skipped using <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html#skipCurrentElement">skipCurrentElement()</a>.</p>
+<p>The <tt>readSeparator()</tt> function creates a separator. The element is then skipped using skipCurrentElement().</p>
 <pre class="cpp">    <span class="type">void</span> XbelReader<span class="operator">::</span>readSeparator(Container <span class="operator">*</span>item)
     {
         <span class="comment">// Do sanity check</span>

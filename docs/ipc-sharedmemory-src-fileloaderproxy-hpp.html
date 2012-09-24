@@ -76,18 +76,18 @@
      * It creates a shared memory segment on construction and makes the content
      * of this shared memory available via the 'fileContent' property.
      */</span>
-    <span class="keyword">class</span> FileLoaderProxy : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> FileLoaderProxy : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// The property that makes the file content available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileContent READ fileContent NOTIFY fileContentChanged)
+        Q_PROPERTY(<span class="type">QString</span> fileContent READ fileContent NOTIFY fileContentChanged)
 
     <span class="keyword">public</span>:
-        FileLoaderProxy(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        FileLoaderProxy(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor method for the file content property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileContent() <span class="keyword">const</span>;
+        <span class="type">QString</span> fileContent() <span class="keyword">const</span>;
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called when the user clicks the 'Load file' button in the UI</span>
@@ -99,7 +99,7 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The object that represents the shared memory segment</span>
-        <span class="keyword">mutable</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a></span> m_sharedMemory;
+        <span class="keyword">mutable</span> <span class="type">QSharedMemory</span> m_sharedMemory;
     };
 
     <span class="preprocessor">#endif</span></pre>

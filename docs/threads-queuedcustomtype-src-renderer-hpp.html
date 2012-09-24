@@ -78,7 +78,7 @@
      * the result via a signal/slot connection and then 'paints' the result in
      * the UI by generating a couple of colored Containers inside a canvas Container.
      */</span>
-    <span class="keyword">class</span> Renderer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> Renderer : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -86,7 +86,7 @@
         Q_PROPERTY(<span class="type">bool</span> active READ active NOTIFY activeChanged)
 
     <span class="keyword">public</span>:
-        Renderer(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        Renderer(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">/**
          * This method is called to tell the Renderer on which Container the colored
@@ -95,7 +95,7 @@
         <span class="type">void</span> setCanvas(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>container);
 
         <span class="comment">// This method is called whenever the user selects an image in the UI.</span>
-        Q_INVOKABLE <span class="type">void</span> loadImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>name);
+        Q_INVOKABLE <span class="type">void</span> loadImage(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>name);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called whenever the user wants to abort the current transformation of an image</span>

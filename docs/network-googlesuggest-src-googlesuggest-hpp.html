@@ -68,38 +68,35 @@
     <span class="preprocessor">#ifndef GOOGLESUGGEST_HPP</span>
     <span class="preprocessor">#define GOOGLESUGGEST_HPP</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
-    <span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span>
-    <span class="preprocessor">#include &lt;QtNetwork/QNetworkAccessManager&gt;</span>
-
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span>;
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkAccessManager&gt;</span>
 
-    <span class="keyword">class</span> GoogleSuggest: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> <span class="type">QNetworkReply</span>;
+
+    <span class="keyword">class</span> GoogleSuggest: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// This property is used to set the input text from the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> input READ input WRITE setInput NOTIFY inputChanged)
+        Q_PROPERTY(<span class="type">QString</span> input READ input WRITE setInput NOTIFY inputChanged)
 
         <span class="comment">// This property makes the model that contains the results available to the UI</span>
-        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model NOTIFY modelChanged)
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model CONSTANT)
 
     <span class="keyword">public</span>:
         GoogleSuggest();
 
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> input() <span class="keyword">const</span>;
-        <span class="type">void</span> setInput(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>input);
+        <span class="type">QString</span> input() <span class="keyword">const</span>;
+        <span class="type">void</span> setInput(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>input);
 
         bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>;
 
     Q_SIGNALS:
-        <span class="comment">// The change notification signals of the properties</span>
+        <span class="comment">// The change notification signal of the property</span>
         <span class="type">void</span> inputChanged();
-        <span class="type">void</span> modelChanged();
 
         <span class="comment">// This signal is emitted to trigger the ListView to clear its selection</span>
         <span class="type">void</span> clearSelection();
@@ -109,23 +106,23 @@
         <span class="type">void</span> autoSuggest();
 
         <span class="comment">// This method is called when the query provides new data</span>
-        <span class="type">void</span> handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>reply);
+        <span class="type">void</span> handleNetworkData(<span class="type">QNetworkReply</span> <span class="operator">*</span>reply);
 
         <span class="comment">// This method adds the parsed choices/hits information to the data model</span>
-        <span class="type">void</span> showCompletions(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>hits);
+        <span class="type">void</span> showCompletions(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>hits);
 
     <span class="keyword">private</span>:
         <span class="comment">// The data model that contains the choices/hits information</span>
         <span class="keyword">mutable</span> bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QMapListDataModel</span> m_model;
 
         <span class="comment">// The network manager that handles the communication with the web service</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_networkManager;
+        <span class="type">QNetworkAccessManager</span> m_networkManager;
 
         <span class="comment">// The time object to delay the start of the query</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span> m_timer;
+        <span class="type">QTimer</span> m_timer;
 
         <span class="comment">// The data the user has typed in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_input;
+        <span class="type">QString</span> m_input;
     };
 
     <span class="preprocessor">#endif</span></pre>

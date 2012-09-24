@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : App.hpp Example File (network/securesocketclient/src/App.hpp)</title>
+  <title>Cascades : Eye.qml Example File (sensors/gruedetector/assets/Eye.qml)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,11 +19,11 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">App.hpp Example File</h1>
-<span class="small-subtitle">network/securesocketclient/src/App.hpp</span>
-<!-- $$$network/securesocketclient/src/App.hpp-description -->
+<h1 class="title">Eye.qml Example File</h1>
+<span class="small-subtitle">sensors/gruedetector/assets/Eye.qml</span>
+<!-- $$$sensors/gruedetector/assets/Eye.qml-description -->
 <div class="descr"> <a name="details"></a>
-<pre class="cpp">    <span class="comment">/****************************************************************************
+<pre class="qml">    <span class="comment">/****************************************************************************
      **
      ** Portions Copyright (C) 2012 Research In Motion Limited.
      ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
@@ -65,45 +65,58 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef APP_HPP</span>
-    <span class="preprocessor">#define APP_HPP</span>
+    import bb.cascades 1.0
+    import Utils 1.0
 
-    <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Event&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/UiObject&gt;</span>
+    <span class="type">Container</span> {
+        <span class="name">preferredWidth</span>: <span class="number">256</span>
+        <span class="name">preferredHeight</span>: <span class="number">256</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span>
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+        <span class="name">layout</span>: <span class="name">AbsoluteLayout</span> {}
 
-    <span class="keyword">class</span> CertificateInfoControl;
-    <span class="keyword">class</span> SslClient;
+        <span class="name">onCreationCompleted</span>: <span class="name">winkTimer</span>.<span class="name">start</span>()
 
-    <span class="comment">/**
-     * This sample application shows how to setup a SSL-secured network connection,
-     * handle SSL-handshake errors and retrieve information about the used certificates.
-     *
-     * The user specify an URL to connect to and the application will try to create an SSL-secured
-     * connection. If the connection has been established successfully, the user can send commands
-     * and receive responses.
-     */</span>
-    <span class="keyword">class</span> App : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
-    {
-        Q_OBJECT
+        <span class="type">ImageView</span> {
+            <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/eye.png&quot;</span>
+        }
 
-    <span class="keyword">public</span>:
-        App();
+        <span class="type">ImageView</span> {
+            <span class="name">id</span>: <span class="name">eyebrow</span>
+            <span class="name">preferredHeight</span>: <span class="number">256</span>
+            <span class="name">layoutProperties</span>: <span class="name">AbsoluteLayoutProperties</span> {
+                <span class="name">positionX</span>: -<span class="number">20</span>
+                <span class="name">positionY</span>: -<span class="number">250</span>
+            }
 
-    <span class="keyword">private</span>:
-        <span class="comment">// The object to manage information about the used certificates</span>
-        CertificateInfoControl <span class="operator">*</span>m_certificateInfoControl;
+            <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/eyebrow.png&quot;</span>
 
-        <span class="comment">// The object that encapsulates the secured connection</span>
-        SslClient <span class="operator">*</span>m_sslClient;
-    };
+            <span class="name">animations</span>: <span class="name">SequentialAnimation</span> {
+                <span class="name">id</span>: <span class="name">winkAnimation</span>
+                <span class="type">TranslateTransition</span> {
+                    <span class="name">toY</span>: <span class="number">245</span>
+                    <span class="name">duration</span>: <span class="number">200</span>
+                    <span class="name">easingCurve</span>: <span class="name">StockCurve</span>.<span class="name">QuadtraticInOut</span>
+                }
+                <span class="type">TranslateTransition</span> {
+                    <span class="name">toY</span>: <span class="number">0</span>
+                    <span class="name">duration</span>: <span class="number">200</span>
+                    <span class="name">easingCurve</span>: <span class="name">StockCurve</span>.<span class="name">QuadtraticInOut</span>
+                }
+            }
 
-    <span class="preprocessor">#endif</span></pre>
+            <span class="name">attachedObjects</span>: <span class="name">Timer</span> {
+                <span class="name">id</span>: <span class="name">winkTimer</span>
+                <span class="name">singleShot</span>: <span class="number">false</span>
+                <span class="name">interval</span>: <span class="number">400</span>
+                <span class="name">onTimeout</span>: {
+                    <span class="keyword">if</span> (<span class="name">Math</span>.<span class="name">floor</span>(<span class="name">Math</span>.<span class="name">random</span>()<span class="operator">*</span><span class="number">10</span>) <span class="operator">==</span> <span class="number">1</span>)
+                        <span class="name">winkAnimation</span>.<span class="name">play</span>()
+                }
+            }
+        }
+    }</pre>
 </div>
-<!-- @@@network/securesocketclient/src/App.hpp -->
+<!-- @@@sensors/gruedetector/assets/Eye.qml -->
   <div class="ft">
     <span></span>
   </div>

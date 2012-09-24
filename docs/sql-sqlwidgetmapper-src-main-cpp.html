@@ -65,17 +65,68 @@
      **
      ****************************************************************************/</span>
 
+    <span class="preprocessor">#include &quot;datacontrolmapper.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &lt;bb/data/SqlDataAccess&gt;</span>
 
-    <span class="preprocessor">#include &quot;app.hpp&quot;</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>data;
 
-    <span class="keyword">using</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Application;
-
+    <span class="comment">/**
+     * This sample application shows how to read data from an QSLite database and displaying
+     * them in the UI.
+     * Additionally this example provides a class that maps a row of a SQL table on a
+     * set of controls in the UI and allows the user to navigate throught the rows of the table
+     * and update the contents of the controls automatically.
+     */</span>
     <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
     {
         Application app(argc<span class="operator">,</span> argv);
 
-        App mainApp;
+        <span class="keyword">const</span> <span class="type">QString</span> dbNameWithPath <span class="operator">=</span> <span class="string">&quot;app/native/assets/sql/quotes.db&quot;</span>;
+
+        <span class="comment">// Create a SqlDataAccess object for a SQLite database file in the filesystem ...</span>
+        SqlDataAccess sqlDataAccess(dbNameWithPath);
+
+        <span class="comment">// Load the result into a QVariantList ...</span>
+        <span class="keyword">const</span> <span class="type">QVariantList</span> sqlData <span class="operator">=</span> sqlDataAccess<span class="operator">.</span>execute(<span class="string">&quot;SELECT * FROM quotes&quot;</span>)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">QVariantList</span><span class="operator">&gt;</span>();
+
+        <span class="comment">// Use the result as data source for a QListDataModel</span>
+        <span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type">QVariantMap</span><span class="operator">&gt;</span> model;
+
+        foreach (<span class="keyword">const</span> <span class="type">QVariant</span> <span class="operator">&amp;</span>entry<span class="operator">,</span> sqlData)
+            model<span class="operator">.</span>append(entry<span class="operator">.</span>toMap());
+
+        <span class="comment">// Create a DataControlMapper and let it work on the DataSetModel</span>
+        DataControlMapper mapper;
+        mapper<span class="operator">.</span>setModel(<span class="operator">&amp;</span>model);
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// Make the DataControlMapper available to the UI as context property</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_dataMapper&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>mapper);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="keyword">if</span> (appPage) {
+            <span class="comment">// Lookup the controls that should contain the content of a row from the SQL data</span>
+            Control <span class="operator">*</span>firstNameField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;firstNameField&quot;</span>);
+            Control <span class="operator">*</span>lastNameField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;lastNameField&quot;</span>);
+            Control <span class="operator">*</span>quoteField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;quoteField&quot;</span>);
+
+            <span class="comment">// Define the mapping between control and column name</span>
+            mapper<span class="operator">.</span>addMapping(firstNameField<span class="operator">,</span> <span class="string">&quot;firstname&quot;</span>);
+            mapper<span class="operator">.</span>addMapping(lastNameField<span class="operator">,</span> <span class="string">&quot;lastname&quot;</span>);
+            mapper<span class="operator">.</span>addMapping(quoteField<span class="operator">,</span> <span class="string">&quot;quote&quot;</span>);
+        }
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

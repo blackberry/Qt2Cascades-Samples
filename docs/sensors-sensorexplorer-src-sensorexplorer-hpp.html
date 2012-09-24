@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : App.cpp Example File (network/securesocketclient/src/App.cpp)</title>
+  <title>Cascades : SensorExplorer.hpp Example File (sensors/sensorexplorer/src/SensorExplorer.hpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">App.cpp Example File</h1>
-<span class="small-subtitle">network/securesocketclient/src/App.cpp</span>
-<!-- $$$network/securesocketclient/src/App.cpp-description -->
+<h1 class="title">SensorExplorer.hpp Example File</h1>
+<span class="small-subtitle">sensors/sensorexplorer/src/SensorExplorer.hpp</span>
+<!-- $$$sensors/sensorexplorer/src/SensorExplorer.hpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,37 +65,62 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &quot;App.hpp&quot;</span>
-    <span class="preprocessor">#include &quot;CertificateInfoControl.hpp&quot;</span>
-    <span class="preprocessor">#include &quot;SslClient.hpp&quot;</span>
+    <span class="preprocessor">#ifndef SENSOREXPLORER_HPP</span>
+    <span class="preprocessor">#define SENSOREXPLORER_HPP</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Page&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;QtSensors/QSensor&gt;</span>
 
-    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+    <span class="preprocessor">#include &lt;bb/cascades/GroupDataModel&gt;</span>
 
-    App<span class="operator">::</span>App()
-        : m_certificateInfoControl(<span class="keyword">new</span> CertificateInfoControl(<span class="keyword">this</span>))<span class="operator">,</span> m_sslClient(<span class="keyword">new</span> SslClient(<span class="keyword">this</span>))
+    QTM_USE_NAMESPACE
+
+    <span class="keyword">class</span> SensorExplorer : <span class="keyword">public</span> <span class="type">QObject</span><span class="operator">,</span> <span class="keyword">public</span> <span class="type">QSensorFilter</span>
     {
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the business logic objects available to the UI as context properties</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_certificateInfoControl&quot;</span><span class="operator">,</span> m_certificateInfoControl);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_sslClient&quot;</span><span class="operator">,</span> m_sslClient);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_sslErrorControl&quot;</span><span class="operator">,</span> m_sslClient<span class="operator">-</span><span class="operator">&gt;</span>sslErrorControl());
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-                connect(m_sslClient<span class="operator">,</span> SIGNAL(viewCertificateChainRequested())<span class="operator">,</span> m_certificateInfoControl<span class="operator">,</span>
-                        SLOT(show()));
-                connect(m_sslClient<span class="operator">,</span> SIGNAL(certificateChainChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span>))<span class="operator">,</span>
-                        m_certificateInfoControl<span class="operator">,</span> SLOT(setCertificateChain(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span>)));
-            }
-        }
-    }</pre>
+        Q_OBJECT
+
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> sensorsModel READ sensorsModel CONSTANT)
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> sensorPropertiesModel READ sensorPropertiesModel CONSTANT)
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> readingPropertiesModel READ readingPropertiesModel CONSTANT)
+        Q_PROPERTY(<span class="type">bool</span> sensorActive READ sensorActive WRITE setSensorActive NOTIFY sensorActiveChanged)
+
+    <span class="keyword">public</span>:
+        SensorExplorer(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="type">bool</span> filter(<span class="type">QSensorReading</span> <span class="operator">*</span>reading);
+
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> sensorsModel() <span class="keyword">const</span>;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> sensorPropertiesModel() <span class="keyword">const</span>;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> readingPropertiesModel() <span class="keyword">const</span>;
+
+        <span class="type">bool</span> sensorActive() <span class="keyword">const</span>;
+        <span class="type">void</span> setSensorActive(<span class="type">bool</span> active);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="type">void</span> setCurrentSensor(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath);
+
+    Q_SIGNALS:
+        <span class="type">void</span> sensorActiveChanged();
+
+    <span class="keyword">private</span> Q_SLOTS:
+        <span class="type">void</span> loadSensors();
+        <span class="type">void</span> sensorChanged();
+
+    <span class="keyword">private</span>:
+        <span class="type">void</span> loadSensorProperties();
+        <span class="type">void</span> loadReadingProperties();
+
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>GroupDataModel <span class="operator">*</span>m_sensorsModel;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>GroupDataModel <span class="operator">*</span>m_sensorPropertiesModel;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>GroupDataModel <span class="operator">*</span>m_readingPropertiesModel;
+
+        <span class="type">QSensor</span> <span class="operator">*</span>m_sensor;
+        qtimestamp m_lastReading;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
 </div>
-<!-- @@@network/securesocketclient/src/App.cpp -->
+<!-- @@@sensors/sensorexplorer/src/SensorExplorer.hpp -->
   <div class="ft">
     <span></span>
   </div>

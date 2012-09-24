@@ -65,15 +65,7 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/ListView&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/TextField&gt;</span>
-
-    <span class="preprocessor">#include &lt;Qt/qnetworkaccessmanager.h&gt;</span>
-    <span class="preprocessor">#include &lt;Qt/qnetworkrequest.h&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkRequest&gt;</span>
 
     <span class="preprocessor">#include &quot;googlesuggest.hpp&quot;</span>
 
@@ -83,12 +75,6 @@
 
     GoogleSuggest<span class="operator">::</span>GoogleSuggest()
     {
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;main.qml&quot;</span>);
-        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-
-        AbstractPane <span class="operator">*</span>root <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(root);
-
         <span class="comment">// We use a timer that goes off after 500ms to trigger</span>
         <span class="comment">// actually retrieving the suggestions</span>
         m_timer<span class="operator">.</span>setSingleShot(<span class="keyword">true</span>);
@@ -97,16 +83,16 @@
         connect(<span class="operator">&amp;</span>m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(autoSuggest()));
 
         <span class="comment">// Hook this signal so we get our network requests</span>
-        connect(<span class="operator">&amp;</span>m_networkManager<span class="operator">,</span> SIGNAL(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>)));
+        connect(<span class="operator">&amp;</span>m_networkManager<span class="operator">,</span> SIGNAL(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(handleNetworkData(<span class="type">QNetworkReply</span><span class="operator">*</span>)));
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> GoogleSuggest<span class="operator">::</span>input() <span class="keyword">const</span>
+    <span class="type">QString</span> GoogleSuggest<span class="operator">::</span>input() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_input;
     }
 
-    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>setInput(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>input)
+    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>setInput(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>input)
     {
         <span class="keyword">if</span> (input <span class="operator">=</span><span class="operator">=</span> m_input)
             <span class="keyword">return</span>;
@@ -122,7 +108,7 @@
         <span class="keyword">return</span> <span class="operator">&amp;</span>m_model;
     }
 
-    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>showCompletions(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>hits)
+    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>showCompletions(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>hits)
     {
         <span class="keyword">emit</span> clearSelection();
 
@@ -132,10 +118,10 @@
             <span class="keyword">return</span>;
 
         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> choices<span class="operator">.</span>count(); <span class="operator">+</span><span class="operator">+</span>i) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantMap-typedef">QVariantMap</a></span> item;
+            <span class="type">QVariantMap</span> item;
 
-            item<span class="operator">[</span><span class="string">&quot;suggestion&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(choices<span class="operator">[</span>i<span class="operator">]</span>);
-            item<span class="operator">[</span><span class="string">&quot;hits&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(hits<span class="operator">[</span>i<span class="operator">]</span>);
+            item<span class="operator">[</span><span class="string">&quot;suggestion&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type">QString</span>(choices<span class="operator">[</span>i<span class="operator">]</span>);
+            item<span class="operator">[</span><span class="string">&quot;hits&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type">QString</span>(hits<span class="operator">[</span>i<span class="operator">]</span>);
             m_model<span class="operator">.</span>append(item);
         }
     }
@@ -147,22 +133,22 @@
             <span class="keyword">return</span>;
         }
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(GSUGGEST_URL)<span class="operator">.</span>arg(m_input);
+        <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> <span class="type">QString</span><span class="operator">::</span>fromLatin1(GSUGGEST_URL)<span class="operator">.</span>arg(m_input);
 
-        m_networkManager<span class="operator">.</span>get(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span>(url));
+        m_networkManager<span class="operator">.</span>get(<span class="type">QNetworkRequest</span>(url));
     }
 
-    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>networkReply)
+    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>handleNetworkData(<span class="type">QNetworkReply</span> <span class="operator">*</span>networkReply)
     {
         <span class="keyword">if</span> (<span class="operator">!</span>networkReply<span class="operator">-</span><span class="operator">&gt;</span>error()) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> choices;
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> hits;
+            <span class="type">QStringList</span> choices;
+            <span class="type">QStringList</span> hits;
 
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> response(networkReply<span class="operator">-</span><span class="operator">&gt;</span>readAll());
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> xml(response);
+            <span class="keyword">const</span> <span class="type">QByteArray</span> response(networkReply<span class="operator">-</span><span class="operator">&gt;</span>readAll());
+            <span class="type">QXmlStreamReader</span> xml(response);
             <span class="keyword">while</span> (<span class="operator">!</span>xml<span class="operator">.</span>atEnd()) {
                 xml<span class="operator">.</span>readNext();
-                <span class="keyword">if</span> (xml<span class="operator">.</span>tokenType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span><span class="operator">::</span>StartElement) {
+                <span class="keyword">if</span> (xml<span class="operator">.</span>tokenType() <span class="operator">=</span><span class="operator">=</span> <span class="type">QXmlStreamReader</span><span class="operator">::</span>StartElement) {
                     <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;suggestion&quot;</span>) {
                         choices <span class="operator">&lt;</span><span class="operator">&lt;</span> xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;data&quot;</span>)<span class="operator">.</span>toString();
                     } <span class="keyword">else</span> <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;num_queries&quot;</span>) {

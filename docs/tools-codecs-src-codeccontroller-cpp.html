@@ -69,10 +69,10 @@
 
     <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
-    <a href="http://qt.nokia.com/doc/4.8/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a>(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">*</span>)
+    Q_DECLARE_METATYPE(<span class="type">QTextCodec</span><span class="operator">*</span>)
 
-    CodecController<span class="operator">::</span>CodecController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    CodecController<span class="operator">::</span>CodecController(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_fileList(<span class="number">0</span>)
         <span class="operator">,</span> m_codecList(<span class="number">0</span>)
     {
@@ -110,7 +110,7 @@
         <span class="keyword">return</span> m_codecList;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> CodecController<span class="operator">::</span>fileContent() <span class="keyword">const</span>
+    <span class="type">QString</span> CodecController<span class="operator">::</span>fileContent() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_fileContent;
     }
@@ -130,16 +130,16 @@
         <span class="keyword">const</span> Option <span class="operator">*</span>selectedCodecOption <span class="operator">=</span> m_codecList<span class="operator">-</span><span class="operator">&gt;</span>at(m_codecList<span class="operator">-</span><span class="operator">&gt;</span>selectedIndex());
 
         <span class="comment">// Extract the values associated with the selected Options</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName <span class="operator">=</span> selectedFileOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>toString();
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> selectedCodecOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">*</span><span class="operator">&gt;</span>();
+        <span class="keyword">const</span> <span class="type">QString</span> fileName <span class="operator">=</span> selectedFileOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>toString();
+        <span class="type">QTextCodec</span> <span class="operator">*</span>codec <span class="operator">=</span> selectedCodecOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">QTextCodec</span><span class="operator">*</span><span class="operator">&gt;</span>();
 
         <span class="comment">// Open the selected file ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly))
+        <span class="type">QFile</span> file(fileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly))
             <span class="keyword">return</span>;
 
         <span class="comment">// ... set a QTextStream with the selected codec on it ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> stream(<span class="operator">&amp;</span>file);
+        <span class="type">QTextStream</span> stream(<span class="operator">&amp;</span>file);
         stream<span class="operator">.</span>setAutoDetectUnicode(<span class="keyword">false</span>);
         stream<span class="operator">.</span>setCodec(codec);
 
@@ -154,7 +154,7 @@
         <span class="keyword">if</span> (<span class="operator">!</span>m_fileList)
             <span class="keyword">return</span>;
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> fileNames <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>()
+        <span class="keyword">const</span> <span class="type">QStringList</span> fileNames <span class="operator">=</span> <span class="type">QStringList</span>()
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-1.txt&quot;</span>
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-15.txt&quot;</span>
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-16.txt&quot;</span>
@@ -166,10 +166,10 @@
         m_fileList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
 
         <span class="comment">// Create one entry for each file</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName<span class="operator">,</span> fileNames) {
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> fileName<span class="operator">,</span> fileNames) {
             Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
             option<span class="operator">-</span><span class="operator">&gt;</span>setText(fileName);
-            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;app/native/assets/encodedfiles/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type">QString</span>(<span class="string">&quot;app/native/assets/encodedfiles/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
             m_fileList<span class="operator">-</span><span class="operator">&gt;</span>add(option);
         }
     }
@@ -183,12 +183,12 @@
         m_codecList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
 
         <span class="comment">// Create one entry for each codec available on the system</span>
-        foreach (<span class="type">int</span> mib<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>availableMibs()) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>codecForMib(mib);
+        foreach (<span class="type">int</span> mib<span class="operator">,</span> <span class="type">QTextCodec</span><span class="operator">::</span>availableMibs()) {
+            <span class="type">QTextCodec</span> <span class="operator">*</span>codec <span class="operator">=</span> <span class="type">QTextCodec</span><span class="operator">::</span>codecForMib(mib);
 
             Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
             option<span class="operator">-</span><span class="operator">&gt;</span>setText(codec<span class="operator">-</span><span class="operator">&gt;</span>name());
-            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(codec));
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type">QVariant</span><span class="operator">::</span>fromValue(codec));
 
             <span class="comment">// pre-select the UTF-8 codec in the DropDown</span>
             <span class="keyword">if</span> (codec<span class="operator">-</span><span class="operator">&gt;</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span>)

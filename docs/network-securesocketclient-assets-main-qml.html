@@ -71,49 +71,42 @@
     <span class="comment">// transitions between visible/non-visible nodes.</span>
     <span class="type">Page</span> {
         <span class="comment">// A container is used to gather visual items together.</span>
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// Main application control view</span>
             <span class="type">MainView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
             }
 
             <span class="comment">// Displays any ssl errors.</span>
             <span class="type">SslErrorView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_sslErrorControl</span>.<span class="name">visible</span>
             }
 
             <span class="comment">// Displays certifacte information</span>
             <span class="type">CertificateInfoView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_certificateInfoControl</span>.<span class="name">visible</span>
             }
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="number">false</span>
             }
         }

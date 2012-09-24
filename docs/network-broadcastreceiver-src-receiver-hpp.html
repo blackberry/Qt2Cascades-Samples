@@ -70,22 +70,22 @@
 
     <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>;
+    <span class="keyword">class</span> <span class="type">QUdpSocket</span>;
 
     <span class="comment">/**
      * The Receiver class handles the processing of the incoming UDP datagrams.
      * It uses a QUdpSocket to retrieve the datagrams and makes the content of
      * the datagram available to the UI via the 'status' property.
      */</span>
-    <span class="keyword">class</span> Receiver : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> Receiver : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// The property that makes the content of a received datagram available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status READ status NOTIFY statusChanged)
+        Q_PROPERTY(<span class="type">QString</span> status READ status NOTIFY statusChanged)
 
     <span class="keyword">public</span>:
-        Receiver(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        Receiver(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signal of the status property</span>
@@ -97,13 +97,13 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor method of the status property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status() <span class="keyword">const</span>;
+        <span class="type">QString</span> status() <span class="keyword">const</span>;
 
         <span class="comment">// The UDP socket object</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span> <span class="operator">*</span>m_udpSocket;
+        <span class="type">QUdpSocket</span> <span class="operator">*</span>m_udpSocket;
 
         <span class="comment">// The content of the received datagram</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_status;
+        <span class="type">QString</span> m_status;
     };
 
     <span class="preprocessor">#endif</span></pre>

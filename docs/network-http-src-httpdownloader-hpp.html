@@ -74,13 +74,13 @@
     <span class="preprocessor">#include &lt;QtCore/QUrl&gt;</span>
     <span class="preprocessor">#include &lt;QtNetwork/QNetworkAccessManager&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span>;
+    <span class="keyword">class</span> <span class="type">QFile</span>;
 
     <span class="comment">/**
      * The HttpDownloader class contains all the logic to download URLs from
      * the network and store them in a local file.
      */</span>
-    <span class="keyword">class</span> HttpDownloader : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> HttpDownloader : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -88,16 +88,16 @@
         Q_PROPERTY(<span class="type">bool</span> startDownloadPossible READ startDownloadPossible NOTIFY startDownloadPossibleChanged)
 
         <span class="comment">// Makes the status text available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusText READ statusText NOTIFY statusTextChanged)
+        Q_PROPERTY(<span class="type">QString</span> statusText READ statusText NOTIFY statusTextChanged)
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> HttpDownloader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> HttpDownloader(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
         <span class="operator">~</span>HttpDownloader();
         <span class="comment">// This method is executed when the user clicks the 'Download' button in the UI</span>
-        Q_INVOKABLE <span class="type">void</span> startDownload(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
+        Q_INVOKABLE <span class="type">void</span> startDownload(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url);
 
         <span class="comment">// The accessor methods for the properties</span>
         <span class="type">bool</span> startDownloadPossible() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusText() <span class="keyword">const</span>;
+        <span class="type">QString</span> statusText() <span class="keyword">const</span>;
         <span class="comment">// The accessor methods for the dialog controllers</span>
         MessageBoxController <span class="operator">*</span>messageBoxController() <span class="keyword">const</span>;
         AuthenticationDialogController <span class="operator">*</span>authenticationDialogController() <span class="keyword">const</span>;
@@ -114,10 +114,10 @@
         <span class="type">void</span> httpReadyRead();
 
         <span class="comment">// This method is called if authentication is required to continue the download</span>
-        <span class="type">void</span> slotAuthenticationRequired(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qauthenticator.html">QAuthenticator</a></span> <span class="operator">*</span>authenticator);
+        <span class="type">void</span> slotAuthenticationRequired(<span class="type">QNetworkReply</span><span class="operator">*</span><span class="operator">,</span> <span class="type">QAuthenticator</span> <span class="operator">*</span>authenticator);
 
         <span class="comment">// This method is called if a error occurred during the initial SSL handshake</span>
-        <span class="type">void</span> sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span><span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>errors);
+        <span class="type">void</span> sslErrors(<span class="type">QNetworkReply</span><span class="operator">*</span><span class="operator">,</span> <span class="keyword">const</span> <span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslError</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>errors);
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method to change the 'startDownloadPossible' property</span>
@@ -130,20 +130,20 @@
         <span class="type">bool</span> m_startDownloadPossible;
 
         <span class="comment">// The status text for the current download</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_statusText;
+        <span class="type">QString</span> m_statusText;
 
         <span class="comment">// The source URL of the current download</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> m_url;
+        <span class="type">QUrl</span> m_url;
 
         <span class="comment">// The target file of the current download</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> <span class="operator">*</span>m_file;
+        <span class="type">QFile</span> <span class="operator">*</span>m_file;
         <span class="comment">// The network access manager</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_qnam;
+        <span class="type">QNetworkAccessManager</span> m_qnam;
         <span class="comment">// The network reply that represents the current download</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>m_reply;
+        <span class="type">QNetworkReply</span> <span class="operator">*</span>m_reply;
 
         <span class="comment">// The file name of the target file</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_fileName;
+        <span class="type">QString</span> m_fileName;
 
         <span class="comment">// The dialog controllers</span>
         MessageBoxController m_messageBoxController;

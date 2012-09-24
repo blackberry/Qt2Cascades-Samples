@@ -70,17 +70,13 @@
     <span class="comment">// Container used to create a separator black visual line</span>
     <span class="type">Container</span> {
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;separator&quot;</span>
-        <span class="name">topMargin</span>: <span class="number">20</span>
 
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">40</span>
-            <span class="name">rightPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">topMargin</span>: <span class="number">20</span>
+        <span class="name">leftPadding</span>: <span class="number">40</span>
+        <span class="name">rightPadding</span>: <span class="number">20</span>
 
         <span class="type">ImageView</span> {
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
 
             <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/separator.png&quot;</span>
         }

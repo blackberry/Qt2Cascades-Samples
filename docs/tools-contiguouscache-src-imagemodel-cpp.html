@@ -78,14 +78,14 @@
     <span class="comment">// The number of Images it will pre-load before and after the current element</span>
     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> halfLookAhead(lookAhead<span class="operator">/</span><span class="number">2</span>);
 
-    ImageModel<span class="operator">::</span>ImageModel(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+    ImageModel<span class="operator">::</span>ImageModel(<span class="type">QObject</span> <span class="operator">*</span>parent)
         : DataModel(parent)
         <span class="operator">,</span> m_rows(bufferSize)
         <span class="operator">,</span> m_count(<span class="number">10000</span>)
     {
     }
 
-    <span class="type">int</span> ImageModel<span class="operator">::</span>childCount(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    <span class="type">int</span> ImageModel<span class="operator">::</span>childCount(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="keyword">if</span> ( indexPath<span class="operator">.</span>isEmpty() )
             <span class="keyword">return</span> m_count;
@@ -94,16 +94,16 @@
         }
     }
 
-    <span class="type">bool</span> ImageModel<span class="operator">::</span>hasChildren(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    <span class="type">bool</span> ImageModel<span class="operator">::</span>hasChildren(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="comment">// We have only one level of items (plain list)</span>
         <span class="keyword">return</span> indexPath<span class="operator">.</span>isEmpty();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> ImageModel<span class="operator">::</span>data(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    <span class="type">QVariant</span> ImageModel<span class="operator">::</span>data(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="keyword">if</span> (indexPath<span class="operator">.</span>isEmpty())
-            <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span>();
+            <span class="keyword">return</span> <span class="type">QVariant</span>();
 
         <span class="comment">// Extract the requested row from the index path</span>
         <span class="keyword">const</span> <span class="type">int</span> row <span class="operator">=</span> indexPath<span class="operator">.</span>first()<span class="operator">.</span>toInt();
@@ -114,7 +114,7 @@
         <span class="keyword">if</span> (row <span class="operator">&gt;</span> m_rows<span class="operator">.</span>lastIndex()) { <span class="comment">// If a row after the last valid index in cache is requested ...</span>
             <span class="keyword">if</span> (row <span class="operator">-</span> m_rows<span class="operator">.</span>lastIndex() <span class="operator">&gt;</span> lookAhead) { <span class="comment">// ... and the distance is larger than the look ahead ...</span>
                 <span class="comment">// ... fill the cache with values around the requested row</span>
-                cacheRows(row<span class="operator">-</span>halfLookAhead<span class="operator">,</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMin">qMin</a>(m_count<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead));
+                cacheRows(row<span class="operator">-</span>halfLookAhead<span class="operator">,</span> qMin(m_count<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead));
             } <span class="keyword">else</span> {
                 <span class="comment">// ... otherwise append new values to the cache until the requested row is reached</span>
                 <span class="keyword">while</span> (row <span class="operator">&gt;</span> m_rows<span class="operator">.</span>lastIndex()) {
@@ -124,7 +124,7 @@
         } <span class="keyword">else</span> <span class="keyword">if</span> (row <span class="operator">&lt;</span> m_rows<span class="operator">.</span>firstIndex()) { <span class="comment">// If a row before the first valid index in cache is requested ...</span>
             <span class="keyword">if</span> (m_rows<span class="operator">.</span>firstIndex() <span class="operator">-</span> row <span class="operator">&gt;</span> lookAhead) { <span class="comment">// ... and the distance is larger than the look ahead ...</span>
                 <span class="comment">// ... fill the cache with values around the requested row</span>
-                cacheRows(<a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMax">qMax</a>(<span class="number">0</span><span class="operator">,</span> row<span class="operator">-</span>halfLookAhead)<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead);
+                cacheRows(qMax(<span class="number">0</span><span class="operator">,</span> row<span class="operator">-</span>halfLookAhead)<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead);
             } <span class="keyword">else</span> {
                 <span class="comment">// ... otherwise prepend new values to the cache until the requested row is reached</span>
                 <span class="keyword">while</span> (row <span class="operator">&lt;</span> m_rows<span class="operator">.</span>firstIndex()) {
@@ -138,15 +138,15 @@
             <span class="keyword">emit</span> cachedItemCountChanged();
 
         <span class="comment">// Return the Image object for the requested row</span>
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(m_rows<span class="operator">.</span>at(row));
+        <span class="keyword">return</span> <span class="type">QVariant</span><span class="operator">::</span>fromValue(m_rows<span class="operator">.</span>at(row));
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> ImageModel<span class="operator">::</span>itemType(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    <span class="type">QString</span> ImageModel<span class="operator">::</span>itemType(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         Q_UNUSED(indexPath);
 
         <span class="comment">// This model provides only items, no headers</span>
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>();
+        <span class="keyword">return</span> <span class="type">QString</span>();
     }
 
     <span class="type">int</span> ImageModel<span class="operator">::</span>cachedItemCount() <span class="keyword">const</span>
@@ -168,7 +168,7 @@
     {
         Q_UNUSED(position);
 
-        <span class="keyword">return</span> Image(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span>(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;asset:///images/text%1.png&quot;</span>)<span class="operator">.</span>arg(position<span class="operator">%</span><span class="number">10</span>)));
+        <span class="keyword">return</span> Image(<span class="type">QUrl</span>(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;asset:///images/text%1.png&quot;</span>)<span class="operator">.</span>arg(position<span class="operator">%</span><span class="number">10</span>)));
     }</pre>
 </div>
 <!-- @@@tools/contiguouscache/src/ImageModel.cpp -->

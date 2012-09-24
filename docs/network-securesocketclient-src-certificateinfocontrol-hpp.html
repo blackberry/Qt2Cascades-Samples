@@ -77,26 +77,26 @@
      * The CertificateInfoControl represents a dialog that shows information
      * about the certificate provided by the server and the certificate chain.
      */</span>
-    <span class="keyword">class</span> CertificateInfoControl: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> CertificateInfoControl: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the list of certificates (certificate chain) available as DataModel to the UI</span>
-        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model NOTIFY modelChanged)
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model CONSTANT)
 
         <span class="comment">// Makes a textual representation of the selected certificate available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> certificateInfo READ certificateInfo NOTIFY certificateInfoChanged)
+        Q_PROPERTY(<span class="type">QString</span> certificateInfo READ certificateInfo NOTIFY certificateInfoChanged)
 
         <span class="comment">// Reports whether this dialog is visible or not</span>
         Q_PROPERTY(<span class="type">bool</span> visible READ visible WRITE setVisible NOTIFY visibleChanged)
 
     <span class="keyword">public</span>:
-        CertificateInfoControl(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        CertificateInfoControl(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods of the properties</span>
         bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>;
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> certificateInfo() <span class="keyword">const</span>;
+        <span class="type">QString</span> certificateInfo() <span class="keyword">const</span>;
 
         <span class="type">void</span> setVisible(<span class="type">bool</span> visible);
         <span class="type">bool</span> visible() <span class="keyword">const</span>;
@@ -106,26 +106,25 @@
         <span class="type">void</span> show();
 
         <span class="comment">// This method is called to set certificate chain that should be shown in the dialog</span>
-        <span class="type">void</span> setCertificateChain(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain);
+        <span class="type">void</span> setCertificateChain(<span class="keyword">const</span> <span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslCertificate</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain);
 
         <span class="comment">// This method is called when the user selects a certificate in the ListView</span>
-        <span class="type">void</span> setCurrentCertificate(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath);
+        <span class="type">void</span> setCurrentCertificate(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signals of the properties</span>
-        <span class="type">void</span> modelChanged();
         <span class="type">void</span> certificateInfoChanged();
         <span class="type">void</span> visibleChanged();
 
     <span class="keyword">private</span>:
         <span class="comment">// The certificates of the certificate chain</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span> m_chain;
+        <span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslCertificate</span><span class="operator">&gt;</span> m_chain;
 
         <span class="comment">// The DataModel that provides the certificate chain to the ListView</span>
-        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&gt;</span> m_model;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> m_model;
 
         <span class="comment">// The textual representation of the currently selected certificate</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_certificateInfo;
+        <span class="type">QString</span> m_certificateInfo;
 
         <span class="comment">// A flag for whether the dialog is currently visible</span>
         <span class="type">bool</span> m_visible;

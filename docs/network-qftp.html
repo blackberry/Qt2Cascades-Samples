@@ -43,8 +43,8 @@
 <li><a href="network-qftp-src-ftpdownloader-cpp.html">network/qftp/src/FtpDownloader.cpp</a></li>
 <li><a href="network-qftp-src-ftpdownloader-hpp.html">network/qftp/src/FtpDownloader.hpp</a></li>
 <li><a href="network-qftp-src-ftpitem-hpp.html">network/qftp/src/FtpItem.hpp</a></li>
-<li><a href="network-qftp-src-ftpitemmanager-cpp.html">network/qftp/src/FtpItemManager.cpp</a></li>
-<li><a href="network-qftp-src-ftpitemmanager-hpp.html">network/qftp/src/FtpItemManager.hpp</a></li>
+<li><a href="network-qftp-src-ftpitemprovider-cpp.html">network/qftp/src/FtpItemProvider.cpp</a></li>
+<li><a href="network-qftp-src-ftpitemprovider-hpp.html">network/qftp/src/FtpItemProvider.hpp</a></li>
 <li><a href="network-qftp-src-ftplistitem-cpp.html">network/qftp/src/FtpListItem.cpp</a></li>
 <li><a href="network-qftp-src-ftplistitem-hpp.html">network/qftp/src/FtpListItem.hpp</a></li>
 <li><a href="network-qftp-src-messageboxcontroller-cpp.html">network/qftp/src/MessageBoxController.cpp</a></li>
@@ -58,11 +58,11 @@
 <h2>Description</h2>
 <p>The FTP example demonstrates a simple FTP client that can be used to list the available files on an FTP server and download them.</p>
 <p class="centerAlign"><img src="images/ftp-example.png" alt="" /></p><p>The user of the example can enter the address or hostname of an FTP server in the text field, and then push the <tt>Connect</tt> button to connect to it. A list of the server's top-level directory is then presented in a list view. If the selected item in the view is a file, the user can download it by pushing the <tt>Download</tt> button. An item representing a directory can be touched to show the contents of that directory in the view.</p>
-<p>The functionality required for the example is implemented in the <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> class, which provides an easy, high-level interface to the file transfer protocol. FTP operations are requested through <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">QFtp::Command</a>s. The operations are asynchronous. <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> will notify us through signals when commands are started and finished.</p>
+<p>The functionality required for the example is implemented in the QFtp class, which provides an easy, high-level interface to the file transfer protocol. FTP operations are requested through QFtp::Commands. The operations are asynchronous. QFtp will notify us through signals when commands are started and finished.</p>
 <p>We have one class, <tt>FtpDownloader</tt>, which handles the FTP functionality and updates the GUI through exported properties. We will now go through its definition and implementation - focusing on the code concerning FTP. The code for managing the GUI is explained in other examples.</p>
 <a name="ftpdownloader-class-definition"></a>
 <h2>FtpDownloader Class Definition</h2>
-<p>The <tt>FtpDownloader</tt> class provides the FTP functionality. The GUI itself is defined in a QML file; <tt>FtpDownloader</tt> changes the properties of some of the GUI's controls, such as the enabled state or the content of the list view. The slots of <tt>FtpDownloader</tt> are connected to its controls, and contain the functionality for managing the FTP connection. We also connect to signals in <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a>, which tells us when the <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">commands</a> we request are finished, the progress of current commands, and information about files on the server.</p>
+<p>The <tt>FtpDownloader</tt> class provides the FTP functionality. The GUI itself is defined in a QML file; <tt>FtpDownloader</tt> changes the properties of some of the GUI's controls, such as the enabled state or the content of the list view. The slots of <tt>FtpDownloader</tt> are connected to its controls, and contain the functionality for managing the FTP connection. We also connect to signals in QFtp, which tells us when the commands we request are finished, the progress of current commands, and information about files on the server.</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>connectOrDisconnect()
     {
         <span class="comment">// This method is called whenever the user clicks on the 'Connect/Disconnect' button in the UI</span>
@@ -75,18 +75,18 @@
             m_ftp <span class="operator">=</span> <span class="number">0</span>;</pre>
 <p>We will look at each slot when we examine the <tt>FtpDownloader</tt> implementation in the next section. We also make use of a few private variables:</p>
 <pre class="cpp">        <span class="comment">// Create a new FTP client object and connect to the signals for receiving status changes</span>
-        m_ftp <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span>(<span class="keyword">this</span>);
+        m_ftp <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QFtp</span>(<span class="keyword">this</span>);
         connect(m_ftp<span class="operator">,</span> SIGNAL(commandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>))<span class="operator">,</span>
                 <span class="keyword">this</span><span class="operator">,</span> SLOT(ftpCommandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>)));
-        connect(m_ftp<span class="operator">,</span> SIGNAL(listInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(addToList(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>)));
-        connect(m_ftp<span class="operator">,</span> SIGNAL(dataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(listInfo(<span class="type">QUrlInfo</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(addToList(<span class="type">QUrlInfo</span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(dataTransferProgress(<span class="type">qint64</span><span class="operator">,</span><span class="type">qint64</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(updateDataTransferProgress(<span class="type">qint64</span><span class="operator">,</span><span class="type">qint64</span>)));
 
         <span class="comment">// Reset the model and current path before we start navigation on the FTP server</span>
         m_model<span class="operator">.</span>clear();
         m_currentPath<span class="operator">.</span>clear();</pre>
-<p>We use the <a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a> object to download files from the FTP server.</p>
+<p>We use the QFile object to download files from the FTP server.</p>
 <a name="ftpdownloader-class-implementation"></a>
 <h2>FtpDownloader Class Implementation</h2>
 <p>We move on to the slots, starting with <tt>connectOrDisconnect()</tt>.</p>
@@ -100,23 +100,23 @@
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>abort();
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
             m_ftp <span class="operator">=</span> <span class="number">0</span>;</pre>
-<p>If <tt>m_ftp</tt> is already pointing to a <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> object, we <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">QFtp::Close</a> its FTP connection and delete the object it points to. Note that we do not delete the object using standard C++ <tt>delete</tt> as we need it to finish its abort operation.</p>
+<p>If <tt>m_ftp</tt> is already pointing to a QFtp object, we QFtp::Close its FTP connection and delete the object it points to. Note that we do not delete the object using standard C++ <tt>delete</tt> as we need it to finish its abort operation.</p>
 <pre class="qml">        ...
         <span class="comment">// Create a new FTP client object and connect to the signals for receiving status changes</span>
-        m_ftp <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span>(<span class="keyword">this</span>);
+        m_ftp <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QFtp</span>(<span class="keyword">this</span>);
         connect(m_ftp<span class="operator">,</span> SIGNAL(commandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>))<span class="operator">,</span>
                 <span class="keyword">this</span><span class="operator">,</span> SLOT(ftpCommandFinished(<span class="type">int</span><span class="operator">,</span><span class="type">bool</span>)));
-        connect(m_ftp<span class="operator">,</span> SIGNAL(listInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(addToList(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span>)));
-        connect(m_ftp<span class="operator">,</span> SIGNAL(dataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(listInfo(<span class="type">QUrlInfo</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(addToList(<span class="type">QUrlInfo</span>)));
+        connect(m_ftp<span class="operator">,</span> SIGNAL(dataTransferProgress(<span class="type">qint64</span><span class="operator">,</span><span class="type">qint64</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(updateDataTransferProgress(<span class="type">qint64</span><span class="operator">,</span><span class="type">qint64</span>)));
 
         <span class="comment">// Reset the model and current path before we start navigation on the FTP server</span>
         m_model<span class="operator">.</span>clear();
         m_currentPath<span class="operator">.</span>clear();</pre>
-<p>If we get here, <tt>connectOrDisconnect()</tt> was called to establish a new FTP connection. We create a new <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> for our new connection, and connect its signals to slots in <tt>FtpDownloader</tt>. The <a href="http://qt.nokia.com/doc/4.8/qftp.html#listInfo">listInfo()</a> signal is emitted whenever information about a single file on the sever has been resolved. This signal is sent when we ask <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> to <a href="http://qt.nokia.com/doc/4.8/qftp.html#list">list()</a> the contents of a directory. Finally, the <a href="http://qt.nokia.com/doc/4.8/qftp.html#dataTransferProgress">dataTransferProgress()</a> signal is emitted repeatedly during an FTP file transfer, giving us progress reports.</p>
+<p>If we get here, <tt>connectOrDisconnect()</tt> was called to establish a new FTP connection. We create a new QFtp for our new connection, and connect its signals to slots in <tt>FtpDownloader</tt>. The listInfo() signal is emitted whenever information about a single file on the sever has been resolved. This signal is sent when we ask QFtp to list() the contents of a directory. Finally, the dataTransferProgress() signal is emitted repeatedly during an FTP file transfer, giving us progress reports.</p>
 <pre class="cpp">        <span class="comment">// Connect to the FTP server (with credentials if available) and navigate to the given path</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> url(m_url);
+        <span class="keyword">const</span> <span class="type">QUrl</span> url(m_url);
         <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isValid() <span class="operator">|</span><span class="operator">|</span> url<span class="operator">.</span>scheme()<span class="operator">.</span>toLower() <span class="operator">!</span><span class="operator">=</span> QLatin1String(<span class="string">&quot;ftp&quot;</span>)) {
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>connectToHost(m_url<span class="operator">,</span> <span class="number">21</span>);
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login();
@@ -124,7 +124,7 @@
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>connectToHost(url<span class="operator">.</span>host()<span class="operator">,</span> url<span class="operator">.</span>port(<span class="number">21</span>));
 
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>userName()<span class="operator">.</span>isEmpty())
-                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span><span class="operator">::</span>fromPercentEncoding(url<span class="operator">.</span>userName()<span class="operator">.</span>toLatin1())<span class="operator">,</span> url<span class="operator">.</span>password());
+                m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login(<span class="type">QUrl</span><span class="operator">::</span>fromPercentEncoding(url<span class="operator">.</span>userName()<span class="operator">.</span>toLatin1())<span class="operator">,</span> url<span class="operator">.</span>password());
             <span class="keyword">else</span>
                 m_ftp<span class="operator">-</span><span class="operator">&gt;</span>login();
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>path()<span class="operator">.</span>isEmpty()) {
@@ -136,12 +136,12 @@
             }
         }</pre>
 <p>The <tt>m_url</tt> contains the IP address or hostname of the server to which we want to connect. We first check that the URL is a valid FTP sever address. If it isn't, we still try to connect using the plain text in <tt>m_url</tt>. In either case, we assume that port <tt>21</tt> is used.</p>
-<p>If the URL does not contain a user name and password, we use <a href="http://qt.nokia.com/doc/4.8/qftp.html#login">QFtp::login</a>(), which will attempt to log into the FTP sever as an anonymous user. The <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> object will now notify us when it has connected to the FTP server; it will also send a signal if it fails to connect or the username and password were rejected.</p>
+<p>If the URL does not contain a user name and password, we use QFtp::login(), which will attempt to log into the FTP sever as an anonymous user. The QFtp object will now notify us when it has connected to the FTP server; it will also send a signal if it fails to connect or the username and password were rejected.</p>
 <p>We move on to the <tt>downloadFile()</tt> slot:</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>downloadFile()
     {
         <span class="comment">// Retrieve the selected item from the directory listing ListView</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> data <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
+        <span class="keyword">const</span> <span class="type">QVariant</span> data <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
         <span class="keyword">if</span> (<span class="operator">!</span>data<span class="operator">.</span>isValid()) {
             enableDownloadButton();
             <span class="keyword">return</span>;
@@ -151,14 +151,14 @@
 
         <span class="comment">// Assemble the target file name for the download</span>
         m_downloadFileName <span class="operator">=</span> currentItem<span class="operator">.</span>fileName;
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> diskFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_downloadFileName;
+        <span class="keyword">const</span> <span class="type">QString</span> diskFileName <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> m_downloadFileName;
         ...
         <span class="comment">// Try to open the target file and report an error if that's not possible</span>
-        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span>(diskFileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+        m_file <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QFile</span>(diskFileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_file<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type">QIODevice</span><span class="operator">::</span>WriteOnly)) {
             m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;FTP&quot;</span>)<span class="operator">,</span>
                     tr(<span class="string">&quot;Unable to save the file %1: %2.&quot;</span>)<span class="operator">.</span>arg(diskFileName)<span class="operator">.</span>arg(m_file<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span>
-                    tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+                    tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type">QString</span>());
             <span class="keyword">delete</span> m_file;
             m_file <span class="operator">=</span> <span class="number">0</span>;
             <span class="keyword">return</span>;
@@ -175,7 +175,7 @@
         <span class="comment">// Show the progress dialog</span>
         m_progressDialogController<span class="operator">.</span>show();
     }</pre>
-<p>We first fetch the name of the file, which we find in the selected item pointed to by <tt>m_currentIndexPath</tt>. We then start the download by using <a href="http://qt.nokia.com/doc/4.8/qftp.html#get">QFtp::get</a>(). <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> will send progress signals during the download and a signal when the download is completed.</p>
+<p>We first fetch the name of the file, which we find in the selected item pointed to by <tt>m_currentIndexPath</tt>. We then start the download by using QFtp::get(). QFtp will send progress signals during the download and a signal when the download is completed.</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>cancelDownload()
     {
         <span class="comment">// If the user wants to cancel the download, tell the FTP client about it ...</span>
@@ -189,18 +189,18 @@
         <span class="keyword">delete</span> m_file;
         m_file <span class="operator">=</span> <span class="number">0</span>;
     }</pre>
-<p><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> supports canceling the download of files. We make sure that any file that is currently being written to is closed and removed, and tidy up by deleting the file object.</p>
+<p>QFtp supports canceling the download of files. We make sure that any file that is currently being written to is closed and removed, and tidy up by deleting the file object.</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>ftpCommandFinished(<span class="type">int</span><span class="operator">,</span> <span class="type">bool</span> error)
     {
         <span class="comment">// This method is called whenever a FTP command has been processed by the FTP client</span>
 
-        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>ConnectToHost) {
+        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type">QFtp</span><span class="operator">::</span>ConnectToHost) {
             <span class="comment">// If the connect failed, show an error dialog ...</span>
             <span class="keyword">if</span> (error) {
                 m_messageBoxController<span class="operator">.</span>exec(tr(<span class="string">&quot;FTP&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Unable to connect to the FTP server &quot;</span>
                         <span class="string">&quot;at %1. Please check that the host &quot;</span>
                         <span class="string">&quot;name is correct.&quot;</span>)<span class="operator">.</span>arg(m_url)<span class="operator">,</span>
-                        tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>());
+                        tr(<span class="string">&quot;Ok&quot;</span>)<span class="operator">,</span> <span class="type">QString</span>());
                 connectOrDisconnect();
                 <span class="keyword">return</span>;
             }
@@ -214,12 +214,12 @@
 
             <span class="keyword">return</span>;
         }</pre>
-<p>The <tt>ftpCommandFinished()</tt> slot is called when <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> has finished a <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">QFtp::Command</a>. If an error occurred during the command, <a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a> will set <tt>error</tt> to one of the values in the <a href="http://qt.nokia.com/doc/4.8/qftp.html#Error-enum">QFtp::Error</a> enum; otherwise, <tt>error</tt> is zero.</p>
+<p>The <tt>ftpCommandFinished()</tt> slot is called when QFtp has finished a QFtp::Command. If an error occurred during the command, QFtp will set <tt>error</tt> to one of the values in the QFtp::Error enum; otherwise, <tt>error</tt> is zero.</p>
 <pre class="cpp">        <span class="comment">// After a successful login we immediately start with the directory listing</span>
-        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>Login)
+        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type">QFtp</span><span class="operator">::</span>Login)
             m_ftp<span class="operator">-</span><span class="operator">&gt;</span>list();</pre>
-<p>After login, the <a href="http://qt.nokia.com/doc/4.8/qftp.html#list">QFtp::list</a>() function will list the top-level directory on the server. addToList() is connected to <a href="http://qt.nokia.com/doc/4.8/qftp.html#listInfo">QFtp::listInfo</a>(), and will be invoked for each entry in that directory.</p>
-<pre class="cpp">        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>Get) {
+<p>After login, the QFtp::list() function will list the top-level directory on the server. addToList() is connected to QFtp::listInfo(), and will be invoked for each entry in that directory.</p>
+<pre class="cpp">        <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type">QFtp</span><span class="operator">::</span>Get) {
             <span class="keyword">if</span> (error) {
                 <span class="comment">// If the download failed, we update the status property ...</span>
                 m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Canceled download of %1.&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName);
@@ -233,7 +233,7 @@
             } <span class="keyword">else</span> {
                 <span class="comment">// If the download succeeded or was explicitly canceled, we just update the status property</span>
                 <span class="keyword">if</span> (m_file) {
-                    <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfileinfo.html">QFileInfo</a></span> actualDir(<span class="operator">*</span>m_file);
+                    <span class="keyword">const</span> <span class="type">QFileInfo</span> actualDir(<span class="operator">*</span>m_file);
                     m_statusText <span class="operator">=</span> tr(<span class="string">&quot;Downloaded %1 to %2.&quot;</span>)<span class="operator">.</span>arg(m_downloadFileName)<span class="operator">.</span>arg(actualDir<span class="operator">.</span>absolutePath());
                     <span class="keyword">emit</span> statusTextChanged();
 
@@ -253,8 +253,8 @@
 
             <span class="comment">// Hide the progress dialog</span>
             m_progressDialogController<span class="operator">.</span>hide();</pre>
-<p>When a <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">Get</a> command is finished, a file has finished downloading (or an error occurred during the download).</p>
-<pre class="cpp">        } <span class="keyword">else</span> <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span><span class="operator">::</span>List) {
+<p>When a Get command is finished, a file has finished downloading (or an error occurred during the download).</p>
+<pre class="cpp">        } <span class="keyword">else</span> <span class="keyword">if</span> (m_ftp<span class="operator">-</span><span class="operator">&gt;</span>currentCommand() <span class="operator">=</span><span class="operator">=</span> <span class="type">QFtp</span><span class="operator">::</span>List) {
             <span class="keyword">if</span> (m_model<span class="operator">.</span>isEmpty()) {
                 <span class="comment">/**
                  * If the model is empty after a directory listing, we add a not selectable dummy entry, so
@@ -273,9 +273,9 @@
                 <span class="keyword">emit</span> parentDirectoryAvailableChanged();
             }
         }</pre>
-<p>After a <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">List</a> command is performed, we have to check if no entries were found (in which case our <tt>addToList()</tt> function would not have been called).</p>
+<p>After a List command is performed, we have to check if no entries were found (in which case our <tt>addToList()</tt> function would not have been called).</p>
 <p>Let's continue with the <tt>addToList()</tt> slot:</p>
-<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>addToList(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span> <span class="operator">&amp;</span>urlInfo)
+<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>addToList(<span class="keyword">const</span> <span class="type">QUrlInfo</span> <span class="operator">&amp;</span>urlInfo)
     {
         <span class="comment">// Fill an FtpItem with the data from FTP directory listing ...</span>
         FtpItem item;
@@ -297,8 +297,8 @@
             <span class="keyword">emit</span> selectionPossibleChanged();
         }
     }</pre>
-<p>When a new file has been resolved during a <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">QFtp::List</a> command, this slot is invoked with a <a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a> describing the file. We create a separate row for the file in <tt>m_model</tt>.</p>
-<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>processItem(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath<span class="operator">,</span> <span class="type">bool</span> active)
+<p>When a new file has been resolved during a QFtp::List command, this slot is invoked with a QUrlInfo describing the file. We create a separate row for the file in <tt>m_model</tt>.</p>
+<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>processItem(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="keyword">if</span> (<span class="operator">!</span>m_selectionPossible)
             <span class="keyword">return</span>;
@@ -306,7 +306,7 @@
         m_currentIndexPath <span class="operator">=</span> indexPath;
         enableDownloadButton();
 
-        <span class="keyword">if</span> (<span class="operator">!</span>indexPath<span class="operator">.</span>isEmpty() <span class="operator">&amp;</span><span class="operator">&amp;</span> active) {
+        <span class="keyword">if</span> (<span class="operator">!</span>indexPath<span class="operator">.</span>isEmpty()) {
             <span class="comment">// If the user has selected an valid item in the directory listing ListView, check whether it's a directory</span>
             <span class="keyword">const</span> FtpItem item <span class="operator">=</span> m_model<span class="operator">.</span>data(indexPath)<span class="operator">.</span>value<span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span>();
             <span class="keyword">if</span> (item<span class="operator">.</span>isDirectory) {
@@ -328,7 +328,7 @@
             }
         }
     }</pre>
-<p>The <tt>processItem()</tt> slot is called when an item is touched in the list view. If the item represents a directory, we want to load the contents of that directory with <a href="http://qt.nokia.com/doc/4.8/qftp.html#list">QFtp::list</a>().</p>
+<p>The <tt>processItem()</tt> slot is called when an item is touched in the list view. If the item represents a directory, we want to load the contents of that directory with QFtp::list().</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>cdToParent()
     {
         <span class="comment">// If the user requests to go to the parent directory clear the model ...</span>
@@ -352,8 +352,8 @@
         <span class="comment">// ... and trigger a listing for the parent directory</span>
         m_ftp<span class="operator">-</span><span class="operator">&gt;</span>list();
     }</pre>
-<p><tt>cdToParent()</tt> is invoked when the user requests to go to the parent directory of the one displayed in the file list. After changing the directory, we <a href="http://qt.nokia.com/doc/4.8/qftp.html#Command-enum">QFtp::List</a> its contents.</p>
-<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> readBytes<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> totalBytes)
+<p><tt>cdToParent()</tt> is invoked when the user requests to go to the parent directory of the one displayed in the file list. After changing the directory, we QFtp::List its contents.</p>
+<pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>updateDataTransferProgress(<span class="type">qint64</span> readBytes<span class="operator">,</span> <span class="type">qint64</span> totalBytes)
     {
         <span class="comment">// Calculate the progress of the download in percent</span>
         <span class="keyword">const</span> <span class="type">float</span> progress <span class="operator">=</span> readBytes <span class="operator">/</span> (<span class="type">float</span>) totalBytes <span class="operator">*</span> <span class="number">100.0f</span>;
@@ -361,11 +361,11 @@
         <span class="comment">// Update the progress information in the progress dialog</span>
         m_progressDialogController<span class="operator">.</span>setProgress(progress);
     }</pre>
-<p>The <tt>updateDataTransferProgress()</tt> slot is called regularly by <a href="http://qt.nokia.com/doc/4.8/qftp.html#dataTransferProgress">QFtp::dataTransferProgress</a>() when a file download is in progress. We use a the progress dialog controller to show the download progression to the user. The progress dialog controller has properties that are bound to the UI elements' properties of the progress dialog in the QML file.</p>
+<p>The <tt>updateDataTransferProgress()</tt> slot is called regularly by QFtp::dataTransferProgress() when a file download is in progress. We use a the progress dialog controller to show the download progression to the user. The progress dialog controller has properties that are bound to the UI elements' properties of the progress dialog in the QML file.</p>
 <pre class="cpp">    <span class="type">void</span> FtpDownloader<span class="operator">::</span>enableDownloadButton()
     {
         <span class="comment">// Check whether the currently selected directory listing entry can be downloaded</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> itemData <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
+        <span class="keyword">const</span> <span class="type">QVariant</span> itemData <span class="operator">=</span> m_model<span class="operator">.</span>data(m_currentIndexPath);
         <span class="keyword">if</span> (itemData<span class="operator">.</span>isValid()) {
             <span class="keyword">const</span> FtpItem item <span class="operator">=</span> itemData<span class="operator">.</span>value<span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span>();
             m_downloadPossible <span class="operator">=</span> <span class="operator">!</span>item<span class="operator">.</span>isDirectory;

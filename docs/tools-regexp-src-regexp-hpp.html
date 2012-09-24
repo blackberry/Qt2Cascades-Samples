@@ -77,41 +77,41 @@
      * and output parameters available to the UI via properties.
      * Internally it uses QRegExp to do the actual processing.
      */</span>
-    <span class="keyword">class</span> RegExp: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> RegExp: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// We basically forward all the properties of a QRegExp object here</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> pattern READ pattern WRITE setPattern NOTIFY patternChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> escapedPattern READ escapedPattern NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> pattern READ pattern WRITE setPattern NOTIFY patternChanged)
+        Q_PROPERTY(<span class="type">QString</span> escapedPattern READ escapedPattern NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> caseSensitive READ caseSensitive WRITE setCaseSensitive NOTIFY caseSensitiveChanged)
         Q_PROPERTY(<span class="type">bool</span> minimal READ minimal WRITE setMinimal NOTIFY minimalChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text READ text WRITE setText NOTIFY textChanged)
+        Q_PROPERTY(<span class="type">QString</span> text READ text WRITE setText NOTIFY textChanged)
         Q_PROPERTY(<span class="type">int</span> matchIndex READ matchIndex NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">int</span> matchLength READ matchLength NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture0Available READ capture0Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture0Text READ capture0Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture0Text READ capture0Text NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture1Available READ capture1Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture1Text READ capture1Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture1Text READ capture1Text NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture2Available READ capture2Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture2Text READ capture2Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture2Text READ capture2Text NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture3Available READ capture3Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture3Text READ capture3Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture3Text READ capture3Text NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture4Available READ capture4Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture4Text READ capture4Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture4Text READ capture4Text NOTIFY regexpChanged)
         Q_PROPERTY(<span class="type">bool</span> capture5Available READ capture5Available NOTIFY regexpChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture5Text READ capture5Text NOTIFY regexpChanged)
+        Q_PROPERTY(<span class="type">QString</span> capture5Text READ capture5Text NOTIFY regexpChanged)
 
     <span class="keyword">public</span>:
-        RegExp(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        RegExp(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type">void</span> setPattern(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>pattern);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> pattern() <span class="keyword">const</span>;
+        <span class="type">void</span> setPattern(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>pattern);
+        <span class="type">QString</span> pattern() <span class="keyword">const</span>;
 
-        <span class="type">void</span> setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>PatternSyntax syntax);
+        <span class="type">void</span> setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>PatternSyntax syntax);
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> escapedPattern() <span class="keyword">const</span>;
+        <span class="type">QString</span> escapedPattern() <span class="keyword">const</span>;
 
         <span class="type">void</span> setCaseSensitive(<span class="type">bool</span> caseSensitive);
         <span class="type">bool</span> caseSensitive() <span class="keyword">const</span>;
@@ -119,30 +119,30 @@
         <span class="type">void</span> setMinimal(<span class="type">bool</span> minimal);
         <span class="type">bool</span> minimal() <span class="keyword">const</span>;
 
-        <span class="type">void</span> setText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text() <span class="keyword">const</span>;
+        <span class="type">void</span> setText(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text);
+        <span class="type">QString</span> text() <span class="keyword">const</span>;
 
         <span class="type">int</span> matchIndex() <span class="keyword">const</span>;
 
         <span class="type">int</span> matchLength() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture0Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture0Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture0Text() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture1Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture1Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture1Text() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture2Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture2Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture2Text() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture3Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture3Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture3Text() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture4Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture4Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture4Text() <span class="keyword">const</span>;
 
         <span class="type">bool</span> capture5Available() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> capture5Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> capture5Text() <span class="keyword">const</span>;
 
     Q_SIGNALS:
         <span class="comment">// The change notification methods for the properties</span>
@@ -165,22 +165,22 @@
         <span class="keyword">struct</span> Capture
         {
             <span class="type">bool</span> available;
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text;
+            <span class="type">QString</span> text;
         };
 
         <span class="comment">// The property values</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_pattern;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_escapedPattern;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qregexp.html">QRegExp</a></span><span class="operator">::</span>PatternSyntax m_patternSyntax;
+        <span class="type">QString</span> m_pattern;
+        <span class="type">QString</span> m_escapedPattern;
+        <span class="type">QRegExp</span><span class="operator">::</span>PatternSyntax m_patternSyntax;
         <span class="type">bool</span> m_caseSensitive;
         <span class="type">bool</span> m_minimal;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_text;
+        <span class="type">QString</span> m_text;
         <span class="type">int</span> m_matchIndex;
         <span class="type">int</span> m_matchLength;
         <span class="type">int</span> m_matchText;
 
         <span class="comment">// The list of captures for the current regular expression</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvector.html">QVector</a></span><span class="operator">&lt;</span>Capture<span class="operator">&gt;</span> m_captures;
+        <span class="type">QVector</span><span class="operator">&lt;</span>Capture<span class="operator">&gt;</span> m_captures;
     };
 
     <span class="preprocessor">#endif</span></pre>

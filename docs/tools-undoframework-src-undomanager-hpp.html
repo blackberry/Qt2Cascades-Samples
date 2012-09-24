@@ -71,13 +71,13 @@
     <span class="preprocessor">#include &lt;QObject&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundostack.html">QUndoStack</a></span>;
+    <span class="keyword">class</span> <span class="type">QUndoStack</span>;
 
     <span class="comment">/**
      * The UndoManager wraps an instance of QUndoStack and makes its state available
      * via properties so that we can access them within the UI.
      */</span>
-    <span class="keyword">class</span> UndoManager : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> UndoManager : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -86,17 +86,17 @@
         Q_PROPERTY(<span class="type">bool</span> canUndo READ canUndo NOTIFY canUndoChanged)
 
         <span class="comment">// These properties provide the text for the undo and redo button</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> redoText READ redoText NOTIFY redoTextChanged)
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> undoText READ undoText NOTIFY undoTextChanged)
+        Q_PROPERTY(<span class="type">QString</span> redoText READ redoText NOTIFY redoTextChanged)
+        Q_PROPERTY(<span class="type">QString</span> undoText READ undoText NOTIFY undoTextChanged)
 
     <span class="keyword">public</span>:
-        UndoManager(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        UndoManager(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods for our properties</span>
         <span class="type">bool</span> canRedo() <span class="keyword">const</span>;
         <span class="type">bool</span> canUndo() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> redoText() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> undoText() <span class="keyword">const</span>;
+        <span class="type">QString</span> redoText() <span class="keyword">const</span>;
+        <span class="type">QString</span> undoText() <span class="keyword">const</span>;
 
         <span class="comment">/**
          * This method is called by the UI whenever the user has moved a Stone.
@@ -124,7 +124,7 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The wrapped QUndoStack instance</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundostack.html">QUndoStack</a></span> <span class="operator">*</span>m_undoStack;
+        <span class="type">QUndoStack</span> <span class="operator">*</span>m_undoStack;
     };
 
     <span class="preprocessor">#endif</span></pre>

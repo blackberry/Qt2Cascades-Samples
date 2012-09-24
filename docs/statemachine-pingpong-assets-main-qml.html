@@ -69,31 +69,33 @@
 
     <span class="comment">// This page shows Layout of TextArea</span>
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
-            <span class="comment">// The container that hosts the balloons</span>
-            <span class="type">Container</span> {
-                <span class="name">objectName</span>: <span class="string">&quot;balloonsContainer&quot;</span>
+            <span class="comment">// The list view that hosts the balloons</span>
+            <span class="type">ListView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">30</span>
+                <span class="name">topPadding</span>: <span class="number">30</span>
+                <span class="name">rightPadding</span>: <span class="number">30</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">30</span>
-                    <span class="name">topPadding</span>: <span class="number">30</span>
-                    <span class="name">rightPadding</span>: <span class="number">30</span>
+                <span class="name">dataModel</span>: <span class="name">_model</span>
+
+                <span class="name">listItemComponents</span>: <span class="name">ListItemComponent</span> {
+                    <span class="name">type</span>: <span class="string">&quot;&quot;</span>
+
+                    <span class="type">Balloon</span> {
+                        <span class="name">message</span>: <span class="name">ListItemData</span>
+                    }
                 }
             }
         }

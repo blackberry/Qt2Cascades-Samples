@@ -71,60 +71,53 @@
     <span class="type">Page</span> {
 
         <span class="comment">// The root Container</span>
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// A Container is used to gather visual items together.</span>
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                 <span class="name">preferredWidth</span>: <span class="number">1000</span>
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
 
                     <span class="name">text</span>: <span class="name">_sender</span>.<span class="name">status</span>
 
                     <span class="comment">// Defines text style with custom font size</span>
                     <span class="type">textStyle</span> {
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
                         <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
-                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
-                        <span class="name">size</span>: <span class="number">35</span>
                     }
                 }
 
                 <span class="comment">// A Container for grouping the Label and TextField pair in a different Layout</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">topMargin</span>: <span class="number">30</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
 
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Label</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;TTL for multicast datagrams:&quot;</span>)
-                        <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">White</span>
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                        <span class="type">textStyle</span> {
+                            <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                            <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
                         }
                     }
 
@@ -141,15 +134,13 @@
 
                 <span class="comment">// A Container for grouping the control Buttons</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">topMargin</span>: <span class="number">30</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+                    <span class="name">leftPadding</span>: <span class="number">30</span>
+                    <span class="name">rightPadding</span>: <span class="number">30</span>
 
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">leftPadding</span>: <span class="number">30</span>
-                        <span class="name">rightPadding</span>: <span class="number">30</span>
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Button</span>
@@ -168,7 +159,7 @@
                         <span class="name">leftMargin</span>: <span class="number">100</span>
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Quit&quot;</span>)
 
-                        <span class="comment">//Quit the application on click</span>
+                        <span class="comment">// Quit the application on click</span>
                         <span class="name">onClicked</span>: <span class="name">_app</span>.<span class="name">quit</span> ()
                     }
                 }

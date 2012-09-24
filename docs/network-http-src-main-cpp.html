@@ -78,21 +78,21 @@
 
         <span class="comment">// Create the downloader object</span>
         HttpDownloader downloader;
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the HttpDownloader object and the dialog controllers available to the UI as context properties</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_authDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>authenticationDialogController());
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
 
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
 
-                <span class="comment">// Quit the application whenever 'Qt.quit()' is called inside the QML document</span>
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));
-            }
-        }
+        <span class="comment">// Make the HttpDownloader object and the dialog controllers available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_downloader&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>downloader);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_messageBox&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>messageBoxController());
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_authDialog&quot;</span><span class="operator">,</span> downloader<span class="operator">.</span>authenticationDialogController());
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="comment">// Quit the application whenever 'Qt.quit()' is called inside the QML document</span>
+        <span class="type">QObject</span><span class="operator">::</span>connect(qml<span class="operator">-</span><span class="operator">&gt;</span>documentContext()<span class="operator">-</span><span class="operator">&gt;</span>engine()<span class="operator">,</span> SIGNAL(quit())<span class="operator">,</span> <span class="operator">&amp;</span>app<span class="operator">,</span> SLOT(quit()));
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

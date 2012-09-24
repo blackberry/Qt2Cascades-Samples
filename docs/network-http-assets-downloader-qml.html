@@ -69,28 +69,30 @@
 
     <span class="comment">// Container for the Downloader visual nodes</span>
     <span class="type">Container</span> {
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">30</span>
-            <span class="name">topPadding</span>: <span class="number">20</span>
-            <span class="name">rightPadding</span>: <span class="number">30</span>
-            <span class="name">bottomPadding</span>: <span class="number">30</span>
-        }
+        <span class="name">leftPadding</span>: <span class="number">30</span>
+        <span class="name">topPadding</span>: <span class="number">20</span>
+        <span class="name">rightPadding</span>: <span class="number">30</span>
+        <span class="name">bottomPadding</span>: <span class="number">30</span>
 
         <span class="comment">// Container grouping the url label and input</span>
         <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard Label</span>
             <span class="type">Label</span> {
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">rightMargin</span>: <span class="number">10</span>
 
-                <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;URL:&quot;</span>)
-                <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">White</span>
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">spaceQuota</span>: -<span class="number">1</span>
+                }
+
+                <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;URL:&quot;</span>)
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
                 }
             }
     <span class="comment">// ![0]</span>
@@ -98,19 +100,22 @@
             <span class="type">TextField</span> {
                 <span class="name">id</span>: <span class="name">urlEdit</span>
 
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">spaceQuota</span>: <span class="number">1</span>
                 }
 
                 <span class="comment">// Default url to use</span>
                 <span class="name">text</span>: <span class="string">&quot;http://qt-project.org/&quot;</span>
-                <span class="type">textStyle</span> {
-                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
-                }
                 <span class="comment">//text: &quot;http://www.pagetutor.com/keeper/mystash/secretstuff.html&quot; // For HTTP authentication example (username is jimmy, password is page)</span>
                 <span class="comment">//text: &quot;https://qt.nokia.com&quot; // For site with SSL errors (untrusted certificate)</span>
                 <span class="comment">//text: &quot;http://www.example.com&quot; // For site which redirects</span>
+
+                <span class="type">textStyle</span> {
+                    <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                }
+
                 <span class="name">enabled</span>: <span class="name">_downloader</span>.<span class="name">startDownloadPossible</span>
             }
         }
@@ -118,11 +123,10 @@
 
         <span class="comment">// A standard TextField for the download status</span>
         <span class="type">TextField</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">50</span>
+
             <span class="name">preferredHeight</span>: <span class="number">200</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
 
             <span class="name">enabled</span>: <span class="number">false</span>
             <span class="name">backgroundVisible</span>: <span class="number">false</span>
@@ -130,19 +134,17 @@
             <span class="name">text</span>: <span class="name">_downloader</span>.<span class="name">statusText</span>
             <span class="type">textStyle</span> {
                 <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Black</span>
             }
         }
 
         <span class="comment">// Container for the application controls</span>
         <span class="type">Container</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
             <span class="name">topMargin</span>: <span class="number">30</span>
 
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-            }
-
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard Button</span>

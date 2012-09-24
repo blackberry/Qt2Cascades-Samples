@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : WordCountApp.cpp Example File (qtconcurrent/wordcount/src/WordCountApp.cpp)</title>
+  <title>Cascades : WordCount.cpp Example File (qtconcurrent/wordcount/src/WordCount.cpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">WordCountApp.cpp Example File</h1>
-<span class="small-subtitle">qtconcurrent/wordcount/src/WordCountApp.cpp</span>
-<!-- $$$qtconcurrent/wordcount/src/WordCountApp.cpp-description -->
+<h1 class="title">WordCount.cpp Example File</h1>
+<span class="small-subtitle">qtconcurrent/wordcount/src/WordCount.cpp</span>
+<!-- $$$qtconcurrent/wordcount/src/WordCount.cpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,38 +65,35 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &quot;WordCount.hpp&quot;</span>
 
-    <span class="preprocessor">#include &quot;WordCountApp.hpp&quot;</span>
-
-    <span class="preprocessor">#include &lt;numeric&gt; // for std::accumulate</span>
-
+    <span class="preprocessor">#include &lt;QtCore/QDir&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QFile&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QTime&gt;</span>
     <span class="preprocessor">#include &lt;qtconcurrentmap.h&gt;</span>
 
-    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+    <span class="preprocessor">#include &lt;numeric&gt; // for std::accumulate</span>
 
     <span class="comment">/**
      * A helper structure that maps the name of a file
      * to the number of words it contains.
      */</span>
-    <span class="keyword">typedef</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmap.html">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> WordCount;
+    <span class="keyword">typedef</span> <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> WordCountMap;
 
     <span class="comment">/**
      * A function that counts words single threaded
      * by iterating over the files sequentially.
      */</span>
-    WordCount singleThreadedWordCount(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>files)
+    WordCountMap singleThreadedWordCount(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>files)
     {
-        WordCount wordCount;
+        WordCountMap wordCount;
 
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName<span class="operator">,</span> files) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-            file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly);
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> textStream(<span class="operator">&amp;</span>file);
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName<span class="operator">,</span> files) {
+            <span class="type">QFile</span> file(fileName);
+            file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly);
+            <span class="type">QTextStream</span> textStream(<span class="operator">&amp;</span>file);
             <span class="keyword">while</span> (textStream<span class="operator">.</span>atEnd() <span class="operator">=</span><span class="operator">=</span> <span class="keyword">false</span>) {
-                foreach(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
+                foreach(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
                     wordCount<span class="operator">[</span>word<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> <span class="number">1</span>;
             }
         }
@@ -109,15 +106,15 @@
      * This function is called in parallel by several threads, therefor it
      * must be thread safe.
      */</span>
-    WordCount countWords(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+    WordCountMap countWords(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-        file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> textStream(<span class="operator">&amp;</span>file);
-        WordCount wordCount;
+        <span class="type">QFile</span> file(fileName);
+        file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly);
+        <span class="type">QTextStream</span> textStream(<span class="operator">&amp;</span>file);
+        WordCountMap wordCount;
 
         <span class="keyword">while</span> (textStream<span class="operator">.</span>atEnd() <span class="operator">=</span><span class="operator">=</span> <span class="keyword">false</span>) {
-            foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
+            foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>word<span class="operator">,</span> textStream<span class="operator">.</span>readLine()<span class="operator">.</span>split(<span class="string">&quot; &quot;</span>))
                 wordCount<span class="operator">[</span>word<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> <span class="number">1</span>;
         }
 
@@ -128,80 +125,64 @@
      * A function that adds the results from the map to the final
      * result. This functor will only be called by one thread at a time.
      */</span>
-    <span class="type">void</span> reduce(WordCount <span class="operator">&amp;</span>result<span class="operator">,</span> <span class="keyword">const</span> WordCount <span class="operator">&amp;</span>w)
+    <span class="type">void</span> reduce(WordCountMap <span class="operator">&amp;</span>result<span class="operator">,</span> <span class="keyword">const</span> WordCountMap <span class="operator">&amp;</span>w)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmapiterator.html">QMapIterator</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> i(w);
+        <span class="type">QMapIterator</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">int</span><span class="operator">&gt;</span> i(w);
         <span class="keyword">while</span> (i<span class="operator">.</span>hasNext()) {
             i<span class="operator">.</span>next();
             result<span class="operator">[</span>i<span class="operator">.</span>key()<span class="operator">]</span> <span class="operator">+</span><span class="operator">=</span> i<span class="operator">.</span>value();
         }
     }
 
-    WordCountApp<span class="operator">::</span>WordCountApp()
+    WordCount<span class="operator">::</span>WordCount()
         : m_wordCount(<span class="number">0</span>)<span class="operator">,</span> m_elapsedTime(<span class="number">0</span>)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
     {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the WordCountApp object available to the UI as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-            }
-        }
-
         <span class="comment">// Find a couple of files in the file system</span>
-        m_files <span class="operator">=</span> findFiles(<span class="string">&quot;/usr/photon/&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
-        m_files <span class="operator">+</span><span class="operator">=</span> findFiles(<span class="string">&quot;/scripts/&quot;</span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
+        m_files <span class="operator">=</span> findFiles(<span class="string">&quot;/usr/photon/&quot;</span><span class="operator">,</span> <span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
+        m_files <span class="operator">+</span><span class="operator">=</span> findFiles(<span class="string">&quot;/scripts/&quot;</span><span class="operator">,</span> <span class="type">QStringList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;*&quot;</span>);
 
         <span class="keyword">emit</span> fileCountChanged();
     }
 
-    <span class="type">int</span> WordCountApp<span class="operator">::</span>fileCount() <span class="keyword">const</span>
+    <span class="type">int</span> WordCount<span class="operator">::</span>fileCount() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_files<span class="operator">.</span>count();
     }
 
-    <span class="type">int</span> WordCountApp<span class="operator">::</span>wordCount() <span class="keyword">const</span>
+    <span class="type">int</span> WordCount<span class="operator">::</span>wordCount() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_wordCount;
     }
 
-    <span class="type">int</span> WordCountApp<span class="operator">::</span>elapsedTime() <span class="keyword">const</span>
+    <span class="type">int</span> WordCount<span class="operator">::</span>elapsedTime() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_elapsedTime;
     }
 
-    <span class="type">bool</span> WordCountApp<span class="operator">::</span>active() <span class="keyword">const</span>
+    <span class="type">bool</span> WordCount<span class="operator">::</span>active() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_active;
     }
 
-    <span class="type">void</span> WordCountApp<span class="operator">::</span>countSingleThreaded()
+    <span class="type">void</span> WordCount<span class="operator">::</span>countSingleThreaded()
     {
         <span class="comment">// Mark the application as active</span>
         m_active <span class="operator">=</span> <span class="keyword">true</span>;
         <span class="keyword">emit</span> activeChanged();
 
         <span class="comment">// Start to measure the time</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span> time;
+        <span class="type">QTime</span> time;
         time<span class="operator">.</span>start();
 
         <span class="comment">// Count the words single threaded</span>
-        <span class="keyword">const</span> WordCount total <span class="operator">=</span> singleThreadedWordCount(m_files);
+        <span class="keyword">const</span> WordCountMap total <span class="operator">=</span> singleThreadedWordCount(m_files);
 
         <span class="comment">// Update the measured time</span>
         m_elapsedTime <span class="operator">=</span> time<span class="operator">.</span>elapsed();
         <span class="keyword">emit</span> elapsedTimeChanged();
 
         <span class="comment">// Accumulate the per-file word counts to the total word count</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
+        <span class="keyword">const</span> <span class="type">QList</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
         m_wordCount <span class="operator">=</span> std<span class="operator">::</span>accumulate(counts<span class="operator">.</span>begin()<span class="operator">,</span> counts<span class="operator">.</span>end()<span class="operator">,</span> <span class="number">0</span>);
         <span class="keyword">emit</span> wordCountChanged();
 
@@ -210,25 +191,25 @@
         <span class="keyword">emit</span> activeChanged();
     }
 
-    <span class="type">void</span> WordCountApp<span class="operator">::</span>countMultiThreaded()
+    <span class="type">void</span> WordCount<span class="operator">::</span>countMultiThreaded()
     {
         <span class="comment">// Mark the application as active</span>
         m_active <span class="operator">=</span> <span class="keyword">true</span>;
         <span class="keyword">emit</span> activeChanged();
 
         <span class="comment">// Start to measure the time</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span> time;
+        <span class="type">QTime</span> time;
         time<span class="operator">.</span>start();
 
         <span class="comment">// Count the words multi-threaded by using QtConcurrent</span>
-        <span class="keyword">const</span> WordCount total <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a></span><span class="operator">::</span>mappedReduced(m_files<span class="operator">,</span> countWords<span class="operator">,</span> reduce);
+        <span class="keyword">const</span> WordCountMap total <span class="operator">=</span> <span class="type">QtConcurrent</span><span class="operator">::</span>mappedReduced(m_files<span class="operator">,</span> countWords<span class="operator">,</span> reduce);
 
         <span class="comment">// Update the measured time</span>
         m_elapsedTime <span class="operator">=</span> time<span class="operator">.</span>elapsed();
         <span class="keyword">emit</span> elapsedTimeChanged();
 
         <span class="comment">// Accumulate the per-file word counts to the total word count</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
+        <span class="keyword">const</span> <span class="type">QList</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> counts <span class="operator">=</span> total<span class="operator">.</span>values();
         m_wordCount <span class="operator">=</span> std<span class="operator">::</span>accumulate(counts<span class="operator">.</span>begin()<span class="operator">,</span> counts<span class="operator">.</span>end()<span class="operator">,</span> <span class="number">0</span>);
         <span class="keyword">emit</span> wordCountChanged();
 
@@ -237,23 +218,23 @@
         <span class="keyword">emit</span> activeChanged();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> WordCountApp<span class="operator">::</span>findFiles(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>startDir<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>filters)
+    <span class="type">QStringList</span> WordCount<span class="operator">::</span>findFiles(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>startDir<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>filters)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> names;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span> dir(startDir);
+        <span class="type">QStringList</span> names;
+        <span class="type">QDir</span> dir(startDir);
 
         <span class="comment">// Collect all files from local dir that match the filter</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>file<span class="operator">,</span> dir<span class="operator">.</span>entryList(filters<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>Files))
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>file<span class="operator">,</span> dir<span class="operator">.</span>entryList(filters<span class="operator">,</span> <span class="type">QDir</span><span class="operator">::</span>Files))
             names <span class="operator">+</span><span class="operator">=</span> startDir <span class="operator">+</span> <span class="string">&quot;/&quot;</span> <span class="operator">+</span> file;
 
         <span class="comment">// Iterate over sub-directories</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>subdir<span class="operator">,</span> dir<span class="operator">.</span>entryList(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>AllDirs <span class="operator">|</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdir.html">QDir</a></span><span class="operator">::</span>NoDotAndDotDot))
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>subdir<span class="operator">,</span> dir<span class="operator">.</span>entryList(<span class="type">QDir</span><span class="operator">::</span>AllDirs <span class="operator">|</span> <span class="type">QDir</span><span class="operator">::</span>NoDotAndDotDot))
             names <span class="operator">+</span><span class="operator">=</span> findFiles(startDir <span class="operator">+</span> <span class="string">&quot;/&quot;</span> <span class="operator">+</span> subdir<span class="operator">,</span> filters);
 
         <span class="keyword">return</span> names;
     }</pre>
 </div>
-<!-- @@@qtconcurrent/wordcount/src/WordCountApp.cpp -->
+<!-- @@@qtconcurrent/wordcount/src/WordCount.cpp -->
   <div class="ft">
     <span></span>
   </div>

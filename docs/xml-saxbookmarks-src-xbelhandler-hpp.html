@@ -77,43 +77,43 @@
      * the bookmark entries, on the tree container.
      * Its reimplemented methods from QXmlDefaultHandler are invoked by the SAX parser.
      */</span>
-    <span class="keyword">class</span> XbelHandler : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmldefaulthandler.html">QXmlDefaultHandler</a></span>
+    <span class="keyword">class</span> XbelHandler : <span class="keyword">public</span> <span class="type">QXmlDefaultHandler</span>
     {
     <span class="keyword">public</span>:
         XbelHandler(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// This method is called whenever the SAX parser processes a start element</span>
-        <span class="type">bool</span> startElement(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>namespaceURI<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>localName<span class="operator">,</span>
-                          <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>qName<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlattributes.html">QXmlAttributes</a></span> <span class="operator">&amp;</span>attributes);
+        <span class="type">bool</span> startElement(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>namespaceURI<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>localName<span class="operator">,</span>
+                          <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>qName<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QXmlAttributes</span> <span class="operator">&amp;</span>attributes);
 
         <span class="comment">// This method is called whenever the SAX parser processes an end element</span>
-        <span class="type">bool</span> endElement(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>namespaceURI<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>localName<span class="operator">,</span>
-                        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>qName);
+        <span class="type">bool</span> endElement(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>namespaceURI<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>localName<span class="operator">,</span>
+                        <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>qName);
 
         <span class="comment">// This method is called whenever the SAX parser processes characters inbetween an element</span>
-        <span class="type">bool</span> characters(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>str);
+        <span class="type">bool</span> characters(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>str);
 
         <span class="comment">// This method is called whenever the SAX parser encounters an error</span>
-        <span class="type">bool</span> fatalError(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlparseexception.html">QXmlParseException</a></span> <span class="operator">&amp;</span>exception);
+        <span class="type">bool</span> fatalError(<span class="keyword">const</span> <span class="type">QXmlParseException</span> <span class="operator">&amp;</span>exception);
 
         <span class="comment">// Returns a textual representation of the error if one occurred</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorString() <span class="keyword">const</span>;
+        <span class="type">QString</span> errorString() <span class="keyword">const</span>;
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that generates a control for a specific XBEL element</span>
-        bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>createChildItem(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>tagName);
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>createChildItem(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>tagName);
 
         <span class="comment">// The container object the controls are created in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
 
         <span class="comment">// The control that is current processed</span>
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>m_item;
 
         <span class="comment">// The characters that have been collected during the invokation of characters()</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_currentText;
+        <span class="type">QString</span> m_currentText;
 
         <span class="comment">// The textual representation of an error</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_errorStr;
+        <span class="type">QString</span> m_errorStr;
 
         <span class="comment">// A flag for whether the xbel tag has been found already</span>
         <span class="type">bool</span> m_metXbelTag;

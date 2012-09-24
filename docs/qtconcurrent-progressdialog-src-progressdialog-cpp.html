@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : ProgressDialogApp.cpp Example File (qtconcurrent/progressdialog/src/ProgressDialogApp.cpp)</title>
+  <title>Cascades : ProgressDialog.cpp Example File (qtconcurrent/progressdialog/src/ProgressDialog.cpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">ProgressDialogApp.cpp Example File</h1>
-<span class="small-subtitle">qtconcurrent/progressdialog/src/ProgressDialogApp.cpp</span>
-<!-- $$$qtconcurrent/progressdialog/src/ProgressDialogApp.cpp-description -->
+<h1 class="title">ProgressDialog.cpp Example File</h1>
+<span class="small-subtitle">qtconcurrent/progressdialog/src/ProgressDialog.cpp</span>
+<!-- $$$qtconcurrent/progressdialog/src/ProgressDialog.cpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,13 +65,9 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &quot;ProgressDialog.hpp&quot;</span>
 
-    <span class="preprocessor">#include &quot;ProgressDialogApp.hpp&quot;</span>
-
-    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+    <span class="preprocessor">#include &lt;qtconcurrentmap.h&gt;</span>
 
     <span class="comment">/**
      * The 'computation' method that is used to burn some CPU cycles.
@@ -86,27 +82,11 @@
             <span class="operator">+</span><span class="operator">+</span>v;
     }
 
-    ProgressDialogApp<span class="operator">::</span>ProgressDialogApp()
+    ProgressDialog<span class="operator">::</span>ProgressDialog()
         : m_progressMinimum(<span class="number">0</span>)
         <span class="operator">,</span> m_progressMaximum(<span class="number">0</span>)
         <span class="operator">,</span> m_progressValue(<span class="number">0</span>)
     {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the ProgressDialogApp object available to the UI as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-            }
-        }
-
         <span class="comment">// Forward state change signals from the watcher to our 'active' property</span>
         connect(<span class="operator">&amp;</span>m_futureWatcher<span class="operator">,</span> SIGNAL(started())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(activeChanged()));
         connect(<span class="operator">&amp;</span>m_futureWatcher<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(activeChanged()));
@@ -120,41 +100,41 @@
                 <span class="keyword">this</span><span class="operator">,</span> SLOT(calculationFinished()));
     }
 
-    <span class="type">int</span> ProgressDialogApp<span class="operator">::</span>numberOfCores() <span class="keyword">const</span>
+    <span class="type">int</span> ProgressDialog<span class="operator">::</span>numberOfCores() <span class="keyword">const</span>
     {
         <span class="comment">/**
          * The QtConcurrent framework uses QThreadPool::globalInstance()
          * for computation and that one uses as many thread contexts as
          * returned by QThread::idelThreadCount().
          */</span>
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span><span class="operator">::</span>idealThreadCount();
+        <span class="keyword">return</span> <span class="type">QThread</span><span class="operator">::</span>idealThreadCount();
     }
 
-    <span class="type">bool</span> ProgressDialogApp<span class="operator">::</span>active() <span class="keyword">const</span>
+    <span class="type">bool</span> ProgressDialog<span class="operator">::</span>active() <span class="keyword">const</span>
     {
         <span class="comment">// Return whether there is currently an active Future</span>
         <span class="keyword">return</span> m_futureWatcher<span class="operator">.</span>isRunning();
     }
 
-    <span class="type">int</span> ProgressDialogApp<span class="operator">::</span>progressMinimum() <span class="keyword">const</span>
+    <span class="type">int</span> ProgressDialog<span class="operator">::</span>progressMinimum() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_progressMinimum;
     }
 
-    <span class="type">int</span> ProgressDialogApp<span class="operator">::</span>progressMaximum() <span class="keyword">const</span>
+    <span class="type">int</span> ProgressDialog<span class="operator">::</span>progressMaximum() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_progressMaximum;
     }
 
-    <span class="type">int</span> ProgressDialogApp<span class="operator">::</span>progressValue() <span class="keyword">const</span>
+    <span class="type">int</span> ProgressDialog<span class="operator">::</span>progressValue() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_progressValue;
     }
 
-    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>startComputation()
+    <span class="type">void</span> ProgressDialog<span class="operator">::</span>startComputation()
     {
         <span class="comment">// Prepare the vector</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvector.html">QVector</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> vector;
+        <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> vector;
         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> <span class="number">40</span>; <span class="operator">+</span><span class="operator">+</span>i)
             vector<span class="operator">.</span>append(i);
 
@@ -163,19 +143,19 @@
          * The returned Future object is just a handle to the running operation, which
          * is executed asynchronously in separated threads.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfuture.html">QFuture</a></span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> future <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a></span><span class="operator">::</span>map(vector<span class="operator">,</span> spin);
+        <span class="keyword">const</span> <span class="type">QFuture</span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> future <span class="operator">=</span> <span class="type">QtConcurrent</span><span class="operator">::</span>map(vector<span class="operator">,</span> spin);
 
         <span class="comment">// Let the future watcher monitor the progress of this Future</span>
         m_futureWatcher<span class="operator">.</span>setFuture(future);
     }
 
-    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>cancelComputation()
+    <span class="type">void</span> ProgressDialog<span class="operator">::</span>cancelComputation()
     {
         <span class="comment">// Stop the computation</span>
         m_futureWatcher<span class="operator">.</span>cancel();
     }
 
-    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>progressRangeChanged(<span class="type">int</span> minimum<span class="operator">,</span> <span class="type">int</span> maximum)
+    <span class="type">void</span> ProgressDialog<span class="operator">::</span>progressRangeChanged(<span class="type">int</span> minimum<span class="operator">,</span> <span class="type">int</span> maximum)
     {
         m_progressMinimum <span class="operator">=</span> minimum;
         m_progressMaximum <span class="operator">=</span> maximum;
@@ -183,7 +163,7 @@
         <span class="keyword">emit</span> progressRangeChanged();
     }
 
-    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>progressValueChanged(<span class="type">int</span> value)
+    <span class="type">void</span> ProgressDialog<span class="operator">::</span>progressValueChanged(<span class="type">int</span> value)
     {
         <span class="keyword">if</span> (m_progressValue <span class="operator">=</span><span class="operator">=</span> value)
             <span class="keyword">return</span>;
@@ -192,14 +172,14 @@
         <span class="keyword">emit</span> progressValueChanged();
     }
 
-    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>calculationFinished()
+    <span class="type">void</span> ProgressDialog<span class="operator">::</span>calculationFinished()
     {
         <span class="comment">// Reset the progress indicator after calculation has finished or was canceled</span>
         m_progressValue <span class="operator">=</span> <span class="number">0</span>;
         <span class="keyword">emit</span> progressValueChanged();
     }</pre>
 </div>
-<!-- @@@qtconcurrent/progressdialog/src/ProgressDialogApp.cpp -->
+<!-- @@@qtconcurrent/progressdialog/src/ProgressDialog.cpp -->
   <div class="ft">
     <span></span>
   </div>

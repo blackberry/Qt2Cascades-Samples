@@ -76,22 +76,22 @@
      * The parsed result and any status/error messages are made available to the UI
      * via context properties.
      */</span>
-    <span class="keyword">class</span> XmlStreamLint : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> XmlStreamLint : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the result (status/error) of the check available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> result READ result NOTIFY resultChanged)
+        Q_PROPERTY(<span class="type">QString</span> result READ result NOTIFY resultChanged)
 
         <span class="comment">// Makes the formatted XML document available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> output READ output NOTIFY outputChanged)
+        Q_PROPERTY(<span class="type">QString</span> output READ output NOTIFY outputChanged)
 
     <span class="keyword">public</span>:
-        XmlStreamLint(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        XmlStreamLint(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method starts the actual validation</span>
-        <span class="type">void</span> checkXmlFile(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName);
+        <span class="type">void</span> checkXmlFile(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signals of the properties</span>
@@ -100,14 +100,14 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor methods of the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> result() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> output() <span class="keyword">const</span>;
+        <span class="type">QString</span> result() <span class="keyword">const</span>;
+        <span class="type">QString</span> output() <span class="keyword">const</span>;
 
         <span class="comment">// The status/error message of the validator</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_result;
+        <span class="type">QString</span> m_result;
 
         <span class="comment">// The formatted XML document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_output;
+        <span class="type">QString</span> m_output;
     };
 
     <span class="preprocessor">#endif</span></pre>

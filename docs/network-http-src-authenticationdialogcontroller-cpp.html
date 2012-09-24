@@ -67,22 +67,22 @@
 
     <span class="preprocessor">#include &quot;AuthenticationDialogController.hpp&quot;</span>
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> AuthenticationDialogController<span class="operator">::</span>site() <span class="keyword">const</span>
+    <span class="type">QString</span> AuthenticationDialogController<span class="operator">::</span>site() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_site;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> AuthenticationDialogController<span class="operator">::</span>user() <span class="keyword">const</span>
+    <span class="type">QString</span> AuthenticationDialogController<span class="operator">::</span>user() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_user;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> AuthenticationDialogController<span class="operator">::</span>password() <span class="keyword">const</span>
+    <span class="type">QString</span> AuthenticationDialogController<span class="operator">::</span>password() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_password;
     }
 
-    <span class="type">bool</span> AuthenticationDialogController<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>password)
+    <span class="type">bool</span> AuthenticationDialogController<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>password)
     {
         <span class="comment">// Store the passed parameters in the local properties</span>
         m_user <span class="operator">=</span> user;
@@ -99,7 +99,7 @@
         <span class="keyword">return</span> m_result;
     }
 
-    <span class="type">void</span> AuthenticationDialogController<span class="operator">::</span>continueAuthentication(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span> user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span> password)
+    <span class="type">void</span> AuthenticationDialogController<span class="operator">::</span>continueAuthentication(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span> user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span> password)
     {
         <span class="comment">// Store the passed values in local properties</span>
         m_user <span class="operator">=</span> user;

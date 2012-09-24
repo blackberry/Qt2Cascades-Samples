@@ -82,18 +82,18 @@
      * and also the QScriptEngine, which is responsible for changing the properties of
      * Board and Player according to the JavaScript input.
      */</span>
-    <span class="keyword">class</span> GameController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> GameController : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// A custom property to make error messages from the script engine available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> scriptError READ scriptError NOTIFY scriptErrorChanged)
+        Q_PROPERTY(<span class="type">QString</span> scriptError READ scriptError NOTIFY scriptErrorChanged)
 
     <span class="keyword">public</span>:
-        GameController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        GameController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor method for the script error property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> scriptError() <span class="keyword">const</span>;
+        <span class="type">QString</span> scriptError() <span class="keyword">const</span>;
 
         <span class="comment">/**
          * With this method we tell the GameController on which Container object it should
@@ -109,7 +109,7 @@
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called whenever the user clicks the 'Run Script' button in the UI</span>
-        <span class="type">void</span> run(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>script);
+        <span class="type">void</span> run(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>script);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signal for the script error property</span>
@@ -126,10 +126,10 @@
         Player <span class="operator">*</span>m_player;
 
         <span class="comment">// The script error property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_scriptError;
+        <span class="type">QString</span> m_scriptError;
 
         <span class="comment">// The global script engine of this application</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptengine.html">QScriptEngine</a></span> <span class="operator">*</span>m_scriptEngine;
+        <span class="type">QScriptEngine</span> <span class="operator">*</span>m_scriptEngine;
     };
 
     <span class="preprocessor">#endif</span></pre>

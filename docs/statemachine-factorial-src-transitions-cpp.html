@@ -76,15 +76,15 @@
      * the state machine will try to invoke this transition.
      */</span>
     FactorialLoopTransition<span class="operator">::</span>FactorialLoopTransition(Factorial <span class="operator">*</span>fact)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span>(fact<span class="operator">,</span> SIGNAL(xChanged(<span class="type">int</span>)))
+        : <span class="type">QSignalTransition</span>(fact<span class="operator">,</span> SIGNAL(xChanged(<span class="type">int</span>)))
         <span class="operator">,</span> m_fact(fact)
     {
     }
 
-    <span class="type">bool</span> FactorialLoopTransition<span class="operator">::</span>eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e)
+    <span class="type">bool</span> FactorialLoopTransition<span class="operator">::</span>eventTest(<span class="type">QEvent</span> <span class="operator">*</span>e)
     {
         <span class="comment">// Check if the base class accepts this transition</span>
-        <span class="keyword">if</span> (<span class="operator">!</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span><span class="operator">::</span>eventTest(e))
+        <span class="keyword">if</span> (<span class="operator">!</span><span class="type">QSignalTransition</span><span class="operator">::</span>eventTest(e))
             <span class="keyword">return</span> <span class="keyword">false</span>;
 
         <span class="comment">/**
@@ -92,18 +92,18 @@
          * so we cast the passed QEvent object to the special QStateMachine::SignalEvent.
          * The signal events provides access to the passed parameters via its arguments() method.
          */</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
+        <span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
 
         <span class="comment">// Allow the transition (that means return 'true') as long as x &gt; 1</span>
         <span class="keyword">return</span> se<span class="operator">-</span><span class="operator">&gt;</span>arguments()<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>toInt() <span class="operator">&gt;</span> <span class="number">1</span>;
     }
 
-    <span class="type">void</span> FactorialLoopTransition<span class="operator">::</span>onTransition(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e)
+    <span class="type">void</span> FactorialLoopTransition<span class="operator">::</span>onTransition(<span class="type">QEvent</span> <span class="operator">*</span>e)
     {
         <span class="comment">// This method is called when the transition is executed</span>
 
         <span class="comment">// Retrieve the 'x' value from the signal event and the 'fac' value from the Factorial object</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
+        <span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
         <span class="keyword">const</span> <span class="type">int</span> x <span class="operator">=</span> se<span class="operator">-</span><span class="operator">&gt;</span>arguments()<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>toInt();
         <span class="keyword">const</span> <span class="type">int</span> fac <span class="operator">=</span> m_fact<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;fac&quot;</span>)<span class="operator">.</span>toInt();
 
@@ -125,18 +125,18 @@
      * the state machine will try to invoke this transition.
      */</span>
     FactorialDoneTransition<span class="operator">::</span>FactorialDoneTransition(Factorial <span class="operator">*</span>fact)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span>(fact<span class="operator">,</span> SIGNAL(xChanged(<span class="type">int</span>)))
+        : <span class="type">QSignalTransition</span>(fact<span class="operator">,</span> SIGNAL(xChanged(<span class="type">int</span>)))
         <span class="operator">,</span> m_fact(fact)
     {
     }
 
-    <span class="type">bool</span> FactorialDoneTransition<span class="operator">::</span>eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qevent.html">QEvent</a></span> <span class="operator">*</span>e)
+    <span class="type">bool</span> FactorialDoneTransition<span class="operator">::</span>eventTest(<span class="type">QEvent</span> <span class="operator">*</span>e)
     {
         <span class="comment">// Check if the base class accepts this transition</span>
-        <span class="keyword">if</span> (<span class="operator">!</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qsignaltransition.html">QSignalTransition</a></span><span class="operator">::</span>eventTest(e))
+        <span class="keyword">if</span> (<span class="operator">!</span><span class="type">QSignalTransition</span><span class="operator">::</span>eventTest(e))
             <span class="keyword">return</span> <span class="keyword">false</span>;
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
+        <span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent <span class="operator">*</span>se <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">QStateMachine</span><span class="operator">::</span>SignalEvent<span class="operator">*</span><span class="operator">&gt;</span>(e);
 
         <span class="comment">// Allow the transition (that means return 'true') only if x &lt;= 1</span>
         <span class="keyword">return</span> se<span class="operator">-</span><span class="operator">&gt;</span>arguments()<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>toInt() <span class="operator">&lt;</span><span class="operator">=</span> <span class="number">1</span>;

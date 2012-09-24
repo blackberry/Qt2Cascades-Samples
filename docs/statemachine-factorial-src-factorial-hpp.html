@@ -76,7 +76,7 @@
      * factorial (fac) available as properties, so that they can be accessed by the
      * states and transitions and also by the UI.
      */</span>
-    <span class="keyword">class</span> Factorial : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> Factorial : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -86,7 +86,7 @@
         Q_PROPERTY(<span class="type">int</span> fac READ fac WRITE setFac NOTIFY facChanged)
 
     <span class="keyword">public</span>:
-        Factorial(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        Factorial(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods for the value properties</span>
         <span class="type">int</span> x() <span class="keyword">const</span>;

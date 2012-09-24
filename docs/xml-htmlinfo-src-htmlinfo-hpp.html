@@ -77,12 +77,12 @@
      * information about the document. These information are available to the UI
      * via properties.
      */</span>
-    <span class="keyword">class</span> HtmlInfo : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> HtmlInfo : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the title of the document available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title READ title NOTIFY infoChanged)
+        Q_PROPERTY(<span class="type">QString</span> title READ title NOTIFY infoChanged)
 
         <span class="comment">// Makes the number of paragraphs in the document available to the UI</span>
         Q_PROPERTY(<span class="type">int</span> paragraphs READ paragraphs NOTIFY infoChanged)
@@ -91,17 +91,17 @@
         Q_PROPERTY(<span class="type">int</span> links READ links NOTIFY infoChanged)
 
         <span class="comment">// Makes the link content (everything between &lt;a&gt; and &lt;/a&gt;) available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> linksContent READ linksContent NOTIFY infoChanged)
+        Q_PROPERTY(<span class="type">QString</span> linksContent READ linksContent NOTIFY infoChanged)
 
         <span class="comment">// Makes the error message available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> error READ error NOTIFY errorChanged)
+        Q_PROPERTY(<span class="type">QString</span> error READ error NOTIFY errorChanged)
 
     <span class="keyword">public</span>:
-        HtmlInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        HtmlInfo(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method starts the actual information extraction</span>
-        <span class="type">void</span> parseHtmlFile(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName);
+        <span class="type">void</span> parseHtmlFile(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signals of the properties</span>
@@ -110,18 +110,18 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor methods of the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title() <span class="keyword">const</span>;
+        <span class="type">QString</span> title() <span class="keyword">const</span>;
         <span class="type">int</span> paragraphs() <span class="keyword">const</span>;
         <span class="type">int</span> links() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> linksContent() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> error() <span class="keyword">const</span>;
+        <span class="type">QString</span> linksContent() <span class="keyword">const</span>;
+        <span class="type">QString</span> error() <span class="keyword">const</span>;
 
         <span class="comment">// The property values</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_title;
+        <span class="type">QString</span> m_title;
         <span class="type">int</span> m_paragraphs;
         <span class="type">int</span> m_links;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_linksContent;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_error;
+        <span class="type">QString</span> m_linksContent;
+        <span class="type">QString</span> m_error;
     };
 
     <span class="preprocessor">#endif</span></pre>

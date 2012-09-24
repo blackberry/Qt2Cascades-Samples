@@ -78,7 +78,7 @@
      * nested event loop. The event loop will handle all user input while
      * the dialog is open and will be quit when the dialog is closed.
      */</span>
-    <span class="keyword">class</span> DialogController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> DialogController : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -86,7 +86,7 @@
         Q_PROPERTY(<span class="type">bool</span> visible READ visible NOTIFY visibleChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> DialogController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> DialogController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// This method is called to show the dialog</span>
         <span class="type">void</span> exec();
@@ -107,7 +107,7 @@
         <span class="type">bool</span> m_visible;
 
         <span class="comment">// The nested event loop</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qeventloop.html">QEventLoop</a></span> m_localLoop;
+        <span class="type">QEventLoop</span> m_localLoop;
     };
     <span class="preprocessor">#endif</span></pre>
 </div>

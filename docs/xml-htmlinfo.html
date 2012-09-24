@@ -45,16 +45,16 @@
 <a name="description"></a>
 <h2>Description</h2>
 <p>The XML HTML Info example provides statistics about the content of HTML files.</p>
-<p class="centerAlign"><img src="images/htmlinfo-example.png" alt="" /></p><p>The files are parsed using a <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> object. If the file does not contain a well-formed XML document, a description of the error is reported.</p>
+<p class="centerAlign"><img src="images/htmlinfo-example.png" alt="" /></p><p>The files are parsed using a QXmlStreamReader object. If the file does not contain a well-formed XML document, a description of the error is reported.</p>
 <a name="basic-operation"></a>
 <h2>Basic Operation</h2>
-<p>Reading XML is handled by an instance of the <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> class, which operates on the input file object:</p>
+<p>Reading XML is handled by an instance of the QXmlStreamReader class, which operates on the input file object:</p>
 <pre class="cpp">        <span class="comment">// Create a XML stream reader on the file</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> reader(<span class="operator">&amp;</span>file);</pre>
+        <span class="type">QXmlStreamReader</span> reader(<span class="operator">&amp;</span>file);</pre>
 <p>The work of parsing and the XML and extracting statistics is done in a while loop, and is driven by input from the reader:</p>
 <pre class="cpp">        <span class="type">int</span> paragraphCount <span class="operator">=</span> <span class="number">0</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> links;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title;
+        <span class="type">QStringList</span> links;
+        <span class="type">QString</span> title;
         <span class="comment">/**
          * Read the XHTML document token by token until the end is reached.
          * For every token check whether it's one we are interested in and extract

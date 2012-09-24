@@ -73,23 +73,23 @@
     <span class="comment">// The size of the shared memory segment</span>
     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> s_memorySize <span class="operator">=</span> <span class="number">10</span> <span class="operator">*</span> <span class="number">1024</span>; <span class="comment">// 10kB</span>
 
-    FileLoaderProxy<span class="operator">::</span>FileLoaderProxy(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    FileLoaderProxy<span class="operator">::</span>FileLoaderProxy(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
         <span class="comment">// Define the key that identifies this shared memory segment</span>
-        m_sharedMemory<span class="operator">.</span>setKey(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(s_sharedKey));
+        m_sharedMemory<span class="operator">.</span>setKey(<span class="type">QString</span><span class="operator">::</span>fromLatin1(s_sharedKey));
 
         <span class="comment">// Create the shared memory segment with the given size</span>
         m_sharedMemory<span class="operator">.</span>create(s_memorySize);
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FileLoaderProxy<span class="operator">::</span>fileContent() <span class="keyword">const</span>
+    <span class="type">QString</span> FileLoaderProxy<span class="operator">::</span>fileContent() <span class="keyword">const</span>
     {
         <span class="comment">// Before we access the content of the shared memory we should lock it</span>
         m_sharedMemory<span class="operator">.</span>lock();
 
         <span class="comment">// Read out all data</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> content <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromUtf8(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(m_sharedMemory<span class="operator">.</span>data()));
+        <span class="keyword">const</span> <span class="type">QString</span> content <span class="operator">=</span> <span class="type">QString</span><span class="operator">::</span>fromUtf8(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">char</span><span class="operator">*</span><span class="operator">&gt;</span>(m_sharedMemory<span class="operator">.</span>data()));
 
         <span class="comment">// Unlock the shared memory again</span>
         m_sharedMemory<span class="operator">.</span>unlock();

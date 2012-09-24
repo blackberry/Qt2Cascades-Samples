@@ -71,13 +71,13 @@
     <span class="preprocessor">#include &lt;QStateMachine&gt;</span>
     <span class="preprocessor">#include &lt;QTimer&gt;</span>
 
-    TrafficLightController<span class="operator">::</span>TrafficLightController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    TrafficLightController<span class="operator">::</span>TrafficLightController(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_redOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_yellowOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_greenOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_paused(<span class="keyword">false</span>)
-        <span class="operator">,</span> m_timer(<span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>(<span class="keyword">this</span>))
+        <span class="operator">,</span> m_timer(<span class="keyword">new</span> <span class="type">QTimer</span>(<span class="keyword">this</span>))
     {
         <span class="comment">// Create and start the state machine</span>
         setupStateMachine();
@@ -163,19 +163,19 @@
          */</span>
 
         <span class="comment">// Create the state machine</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span> <span class="operator">*</span>machine <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span>(<span class="keyword">this</span>);
+        <span class="type">QStateMachine</span> <span class="operator">*</span>machine <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QStateMachine</span>(<span class="keyword">this</span>);
 
         <span class="comment">// Create the two top-level states</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>runningState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>pausedState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
+        <span class="type">QState</span> <span class="operator">*</span>runningState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(machine);
+        <span class="type">QState</span> <span class="operator">*</span>pausedState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(machine);
 
         <span class="comment">// Create the child states for the runningState</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>stopState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>waitState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>driveState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>slowState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>stopState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>waitState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>driveState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>slowState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span> <span class="operator">*</span>historyState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span>(runningState);
+        <span class="type">QHistoryState</span> <span class="operator">*</span>historyState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QHistoryState</span>(runningState);
 
         <span class="comment">// Define which properties should be modified when entering a state:</span>
 

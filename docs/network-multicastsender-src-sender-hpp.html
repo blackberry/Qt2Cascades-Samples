@@ -71,26 +71,26 @@
     <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
     <span class="preprocessor">#include &lt;QtNetwork/QHostAddress&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>;
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>;
+    <span class="keyword">class</span> <span class="type">QTimer</span>;
+    <span class="keyword">class</span> <span class="type">QUdpSocket</span>;
 
     <span class="comment">/**
      * The Sender class sends UDP multicast datagrams every second and makes a status
      * message available to the UI via the 'status' property.
      * The TTL of the datagrams can be changed by the user through the 'ttl' property.
      */</span>
-    <span class="keyword">class</span> Sender : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> Sender : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// The property that makes the status message available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status READ status NOTIFY statusChanged)
+        Q_PROPERTY(<span class="type">QString</span> status READ status NOTIFY statusChanged)
 
         <span class="comment">// The property that allows the user to change the TTL of the datagrams</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> ttl READ ttl WRITE setTtl NOTIFY ttlChanged)
+        Q_PROPERTY(<span class="type">QString</span> ttl READ ttl WRITE setTtl NOTIFY ttlChanged)
 
     <span class="keyword">public</span>:
-        Sender(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        Sender(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called when the user clicks the 'Start' button in the UI</span>
@@ -107,24 +107,24 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor methods of the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> ttl() <span class="keyword">const</span>;
-        <span class="type">void</span> setTtl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>ttl);
+        <span class="type">QString</span> status() <span class="keyword">const</span>;
+        <span class="type">QString</span> ttl() <span class="keyword">const</span>;
+        <span class="type">void</span> setTtl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>ttl);
 
         <span class="comment">// The UDP socket object</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span> <span class="operator">*</span>m_udpSocket;
+        <span class="type">QUdpSocket</span> <span class="operator">*</span>m_udpSocket;
 
         <span class="comment">// The timer that triggers the sending of the multicast datagrams</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span> <span class="operator">*</span>m_timer;
+        <span class="type">QTimer</span> <span class="operator">*</span>m_timer;
 
         <span class="comment">// The multicast address</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhostaddress.html">QHostAddress</a></span> m_groupAddress;
+        <span class="type">QHostAddress</span> m_groupAddress;
 
         <span class="comment">// A counter for the number of sent datagrams</span>
         <span class="type">int</span> m_messageNo;
 
         <span class="comment">// The status message</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_status;
+        <span class="type">QString</span> m_status;
 
         <span class="comment">// The time-to-live that is used for the datagrams</span>
         <span class="type">int</span> m_ttl;

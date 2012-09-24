@@ -33,8 +33,6 @@
 <p>Files:</p>
 <ul>
 <li><a href="tools-contiguouscache-assets-main-qml.html">tools/contiguouscache/assets/main.qml</a></li>
-<li><a href="tools-contiguouscache-src-contiguouscacheapp-cpp.html">tools/contiguouscache/src/ContiguousCacheApp.cpp</a></li>
-<li><a href="tools-contiguouscache-src-contiguouscacheapp-hpp.html">tools/contiguouscache/src/ContiguousCacheApp.hpp</a></li>
 <li><a href="tools-contiguouscache-src-imagemodel-cpp.html">tools/contiguouscache/src/ImageModel.cpp</a></li>
 <li><a href="tools-contiguouscache-src-imagemodel-hpp.html">tools/contiguouscache/src/ImageModel.hpp</a></li>
 <li><a href="tools-contiguouscache-src-main-cpp.html">tools/contiguouscache/src/main.cpp</a></li>
@@ -42,13 +40,13 @@
 </ul>
 <a name="description"></a>
 <h2>Description</h2>
-<p>The Contiguous Cache example shows how to use <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html">QContiguousCache</a> to manage memory usage for very large models.</p>
-<p class="centerAlign"><img src="images/contiguouscache-example.png" alt="" /></p><p>In some environments memory is limited and, even when it isn't, users still dislike an application using excessive memory. Using <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html">QContiguousCache</a> to manage a list, rather than loading the entire list into memory, allows the application to limit the amount of memory it uses, regardless of the size of the data set it accesses</p>
-<p>The simplest way to use <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html">QContiguousCache</a> is to cache as items are requested. When a view requests an item at row N it is also likely to ask for items at rows near to N.</p>
-<pre class="cpp">    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span> ImageModel<span class="operator">::</span>data(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+<p>The Contiguous Cache example shows how to use QContiguousCache to manage memory usage for very large models.</p>
+<p class="centerAlign"><img src="images/contiguouscache-example.png" alt="" /></p><p>In some environments memory is limited and, even when it isn't, users still dislike an application using excessive memory. Using QContiguousCache to manage a list, rather than loading the entire list into memory, allows the application to limit the amount of memory it uses, regardless of the size of the data set it accesses</p>
+<p>The simplest way to use QContiguousCache is to cache as items are requested. When a view requests an item at row N it is also likely to ask for items at rows near to N.</p>
+<pre class="cpp">    <span class="type">QVariant</span> ImageModel<span class="operator">::</span>data(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="keyword">if</span> (indexPath<span class="operator">.</span>isEmpty())
-            <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span>();
+            <span class="keyword">return</span> <span class="type">QVariant</span>();
 
         <span class="comment">// Extract the requested row from the index path</span>
         <span class="keyword">const</span> <span class="type">int</span> row <span class="operator">=</span> indexPath<span class="operator">.</span>first()<span class="operator">.</span>toInt();
@@ -59,7 +57,7 @@
         <span class="keyword">if</span> (row <span class="operator">&gt;</span> m_rows<span class="operator">.</span>lastIndex()) { <span class="comment">// If a row after the last valid index in cache is requested ...</span>
             <span class="keyword">if</span> (row <span class="operator">-</span> m_rows<span class="operator">.</span>lastIndex() <span class="operator">&gt;</span> lookAhead) { <span class="comment">// ... and the distance is larger than the look ahead ...</span>
                 <span class="comment">// ... fill the cache with values around the requested row</span>
-                cacheRows(row<span class="operator">-</span>halfLookAhead<span class="operator">,</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMin">qMin</a>(m_count<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead));
+                cacheRows(row<span class="operator">-</span>halfLookAhead<span class="operator">,</span> qMin(m_count<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead));
             } <span class="keyword">else</span> {
                 <span class="comment">// ... otherwise append new values to the cache until the requested row is reached</span>
                 <span class="keyword">while</span> (row <span class="operator">&gt;</span> m_rows<span class="operator">.</span>lastIndex()) {
@@ -69,7 +67,7 @@
         } <span class="keyword">else</span> <span class="keyword">if</span> (row <span class="operator">&lt;</span> m_rows<span class="operator">.</span>firstIndex()) { <span class="comment">// If a row before the first valid index in cache is requested ...</span>
             <span class="keyword">if</span> (m_rows<span class="operator">.</span>firstIndex() <span class="operator">-</span> row <span class="operator">&gt;</span> lookAhead) { <span class="comment">// ... and the distance is larger than the look ahead ...</span>
                 <span class="comment">// ... fill the cache with values around the requested row</span>
-                cacheRows(<a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMax">qMax</a>(<span class="number">0</span><span class="operator">,</span> row<span class="operator">-</span>halfLookAhead)<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead);
+                cacheRows(qMax(<span class="number">0</span><span class="operator">,</span> row<span class="operator">-</span>halfLookAhead)<span class="operator">,</span> row<span class="operator">+</span>halfLookAhead);
             } <span class="keyword">else</span> {
                 <span class="comment">// ... otherwise prepend new values to the cache until the requested row is reached</span>
                 <span class="keyword">while</span> (row <span class="operator">&lt;</span> m_rows<span class="operator">.</span>firstIndex()) {
@@ -83,7 +81,7 @@
             <span class="keyword">emit</span> cachedItemCountChanged();
 
         <span class="comment">// Return the Image object for the requested row</span>
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(m_rows<span class="operator">.</span>at(row));
+        <span class="keyword">return</span> <span class="type">QVariant</span><span class="operator">::</span>fromValue(m_rows<span class="operator">.</span>at(row));
     }
     <span class="type">void</span> ImageModel<span class="operator">::</span>cacheRows(<span class="type">int</span> from<span class="operator">,</span> <span class="type">int</span> to) <span class="keyword">const</span>
     {
@@ -100,14 +98,14 @@
     <span class="keyword">while</span> (row <span class="operator">&lt;</span> m_rows<span class="operator">.</span>firstIndex())
         m_rows<span class="operator">.</span>prepend(fetchWord(m_rows<span class="operator">.</span>firstIndex()<span class="operator">-</span><span class="number">1</span>);</pre>
 <p>However a list will often jump rows if the scroll bar is used directly, resulting in the code above causing every row between the old and new rows to be fetched.</p>
-<p>Using <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html#lastIndex">QContiguousCache::lastIndex</a>() and <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html#firstIndex">QContiguousCache::firstIndex</a>() allows the example to determine what part of the list the cache is currently caching. These values don't represent the indexes into the cache's own memory, but rather a virtual infinite array that the cache represents.</p>
-<p>By using <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html#append">QContiguousCache::append</a>() and <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html#prepend">QContiguousCache::prepend</a>() the code ensures that items that may be still on the screen are not lost when the requested row has not moved far from the current cache range. <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html#insert">QContiguousCache::insert</a>() can potentially remove more than one item from the cache as <a href="http://qt.nokia.com/doc/4.8/qcontiguouscache.html">QContiguousCache</a> does not allow for gaps. If your cache needs to quickly jump back and forth between rows with significant gaps between them consider using <a href="http://qt.nokia.com/doc/4.8/qcache.html">QCache</a> instead.</p>
+<p>Using QContiguousCache::lastIndex() and QContiguousCache::firstIndex() allows the example to determine what part of the list the cache is currently caching. These values don't represent the indexes into the cache's own memory, but rather a virtual infinite array that the cache represents.</p>
+<p>By using QContiguousCache::append() and QContiguousCache::prepend() the code ensures that items that may be still on the screen are not lost when the requested row has not moved far from the current cache range. QContiguousCache::insert() can potentially remove more than one item from the cache as QContiguousCache does not allow for gaps. If your cache needs to quickly jump back and forth between rows with significant gaps between them consider using QCache instead.</p>
 <p>And thats it. A perfectly reasonable cache, using minimal memory for a very large list.</p>
 <pre class="cpp">    Image ImageModel<span class="operator">::</span>fetchRow(<span class="type">int</span> position) <span class="keyword">const</span>
     {
         Q_UNUSED(position);
 
-        <span class="keyword">return</span> Image(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span>(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;asset:///images/text%1.png&quot;</span>)<span class="operator">.</span>arg(position<span class="operator">%</span><span class="number">10</span>)));
+        <span class="keyword">return</span> Image(<span class="type">QUrl</span>(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;asset:///images/text%1.png&quot;</span>)<span class="operator">.</span>arg(position<span class="operator">%</span><span class="number">10</span>)));
     }</pre>
 </div>
 <!-- @@@tools/contiguouscache -->

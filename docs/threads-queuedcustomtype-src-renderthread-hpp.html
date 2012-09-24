@@ -80,16 +80,16 @@
      * The transformation is executed in a separated worker thread and the result (the list of blocks) is reported
      * back to the Renderer as parameter of a signal.
      */</span>
-    <span class="keyword">class</span> RenderThread : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span>
+    <span class="keyword">class</span> RenderThread : <span class="keyword">public</span> <span class="type">QThread</span>
     {
         Q_OBJECT
 
     <span class="keyword">public</span>:
-        RenderThread(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        RenderThread(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
         <span class="operator">~</span>RenderThread();
 
         <span class="comment">// This method is called to start the transformation on the given image</span>
-        <span class="type">void</span> processImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qimage.html">QImage</a></span> <span class="operator">&amp;</span>image);
+        <span class="type">void</span> processImage(<span class="keyword">const</span> <span class="type">QImage</span> <span class="operator">&amp;</span>image);
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called whenever the user wants to stop the transformation process</span>
@@ -111,10 +111,10 @@
         <span class="type">bool</span> m_abort;
 
         <span class="comment">// A mutex to serialize the access to the m_abort flag</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmutex.html">QMutex</a></span> mutex;
+        <span class="type">QMutex</span> mutex;
 
         <span class="comment">// The image that should be transformed</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qimage.html">QImage</a></span> m_image;
+        <span class="type">QImage</span> m_image;
     };
 
     <span class="preprocessor">#endif</span></pre>

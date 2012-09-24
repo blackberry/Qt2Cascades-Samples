@@ -65,8 +65,8 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef FTPDOWNLOADER_H_</span>
-    <span class="preprocessor">#define FTPDOWNLOADER_H_</span>
+    <span class="preprocessor">#ifndef FTPDOWNLOADER_HPP</span>
+    <span class="preprocessor">#define FTPDOWNLOADER_HPP</span>
 
     <span class="preprocessor">#include &quot;FtpItem.hpp&quot;</span>
     <span class="preprocessor">#include &quot;MessageBoxController.hpp&quot;</span>
@@ -94,18 +94,18 @@
      * The low-level FTP communication is done by QFtp and network session management by
      * QNetworkConfigurationManager.
      */</span>
-    <span class="keyword">class</span> FtpDownloader : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> FtpDownloader : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the URL of the FTP server available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url READ url WRITE setUrl NOTIFY urlChanged)
+        Q_PROPERTY(<span class="type">QString</span> url READ url WRITE setUrl NOTIFY urlChanged)
 
         <span class="comment">// Makes the status message available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusText READ statusText NOTIFY statusTextChanged)
+        Q_PROPERTY(<span class="type">QString</span> statusText READ statusText NOTIFY statusTextChanged)
 
         <span class="comment">// Makes the connect message available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> connectLabel READ connectLabel NOTIFY connectLabelChanged)
+        Q_PROPERTY(<span class="type">QString</span> connectLabel READ connectLabel NOTIFY connectLabelChanged)
 
         <span class="comment">/**
          * The following properties tell the UI about the current state of the FtpDownloader.
@@ -117,7 +117,7 @@
         Q_PROPERTY(<span class="type">bool</span> selectionPossible READ selectionPossible NOTIFY selectionPossibleChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> FtpDownloader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> FtpDownloader(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
         <span class="operator">~</span>FtpDownloader();
 
         <span class="comment">// Returns the model that contains the entries of a directory listing</span>
@@ -138,7 +138,7 @@
         <span class="type">void</span> connectOrDisconnect();
 
         <span class="comment">// This method is called whenever the user has selected an item in the directory listing ListView</span>
-        <span class="type">void</span> processItem(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath<span class="operator">,</span> <span class="type">bool</span> active);
+        <span class="type">void</span> processItem(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signals of the properties</span>
@@ -158,10 +158,10 @@
         <span class="type">void</span> ftpCommandFinished(<span class="type">int</span> commandId<span class="operator">,</span> <span class="type">bool</span> error);
 
         <span class="comment">// This method is called whenever a FTP directory listing returns new items</span>
-        <span class="type">void</span> addToList(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurlinfo.html">QUrlInfo</a></span> <span class="operator">&amp;</span>urlInfo);
+        <span class="type">void</span> addToList(<span class="keyword">const</span> <span class="type">QUrlInfo</span> <span class="operator">&amp;</span>urlInfo);
 
         <span class="comment">// This method is called whenever the progress of an FTP download has changed</span>
-        <span class="type">void</span> updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> readBytes<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> totalBytes);
+        <span class="type">void</span> updateDataTransferProgress(<span class="type">qint64</span> readBytes<span class="operator">,</span> <span class="type">qint64</span> totalBytes);
 
         <span class="comment">// This method is called to signal that a download is possible</span>
         <span class="type">void</span> enableDownloadButton();
@@ -171,13 +171,13 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The accessor methods of the properties</span>
-        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusText() <span class="keyword">const</span>;
+        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url);
+        <span class="type">QString</span> url() <span class="keyword">const</span>;
+        <span class="type">QString</span> statusText() <span class="keyword">const</span>;
         <span class="type">bool</span> parentDirectoryAvailable() <span class="keyword">const</span>;
         <span class="type">bool</span> downloadPossible() <span class="keyword">const</span>;
         <span class="type">bool</span> connectPossible() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> connectLabel() <span class="keyword">const</span>;
+        <span class="type">QString</span> connectLabel() <span class="keyword">const</span>;
         <span class="type">bool</span> selectionPossible() <span class="keyword">const</span>;
 
         <span class="comment">// Establishe the connection to the FTP server</span>
@@ -187,22 +187,22 @@
         bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span> m_model;
 
         <span class="comment">// The URL of the FTP server</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_url;
+        <span class="type">QString</span> m_url;
 
         <span class="comment">// The current path we are navigating to on the FTP server</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_currentPath;
+        <span class="type">QString</span> m_currentPath;
 
         <span class="comment">// The FTP client object</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qftp.html">QFtp</a></span> <span class="operator">*</span>m_ftp;
+        <span class="type">QFtp</span> <span class="operator">*</span>m_ftp;
 
         <span class="comment">// The file to download the data to</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> <span class="operator">*</span>m_file;
+        <span class="type">QFile</span> <span class="operator">*</span>m_file;
 
         <span class="comment">// The name of the file to download data to</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_downloadFileName;
+        <span class="type">QString</span> m_downloadFileName;
 
         <span class="comment">// A textual description of the status</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_statusText;
+        <span class="type">QString</span> m_statusText;
 
         <span class="comment">// A flag for whether a parent directory is available on the FTP server</span>
         <span class="type">bool</span> m_parentDirectoryAvailable;
@@ -214,17 +214,17 @@
         <span class="type">bool</span> m_connectPossible;
 
         <span class="comment">// A textual description of the connection status</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_connectLabel;
+        <span class="type">QString</span> m_connectLabel;
 
         <span class="comment">// A flag for whether we can select a file in the directory listing ListView</span>
         <span class="type">bool</span> m_selectionPossible;
 
         <span class="comment">// The index of the currently selected item in the directory listing ListView</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> m_currentIndexPath;
+        <span class="type">QVariantList</span> m_currentIndexPath;
 
         <span class="comment">// The helper objects to handle network connectivity status</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworksession.html">QNetworkSession</a></span> <span class="operator">*</span>m_networkSession;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkconfigurationmanager.html">QNetworkConfigurationManager</a></span> m_manager;
+        <span class="type">QNetworkSession</span> <span class="operator">*</span>m_networkSession;
+        <span class="type">QNetworkConfigurationManager</span> m_manager;
 
         <span class="comment">// The dialog controllers</span>
         MessageBoxController m_messageBoxController;

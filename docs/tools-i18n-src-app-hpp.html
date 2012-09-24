@@ -68,56 +68,62 @@
     <span class="preprocessor">#ifndef APP_HPP</span>
     <span class="preprocessor">#define APP_HPP</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
-    <span class="preprocessor">#include &lt;QtCore/QMetaType&gt;</span>
-    <span class="preprocessor">#include &lt;QtCore/QMap&gt;</span>
-
     <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Event&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/TextArea&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/UiObject&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>;
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QMap&gt;</span>
+
+    <span class="keyword">class</span> <span class="type">QStringList</span>;
 
     <span class="comment">/**
      * This sample application shows how to use the internationalization infrastructure of Qt
      * to translate an application to multiple language.
      */</span>
-    <span class="keyword">class</span> App : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> App : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
+
+        Q_PROPERTY(<span class="type">QString</span> message READ message NOTIFY messageChanged)
 
     <span class="keyword">public</span>:
         App();
 
         <span class="comment">// This method is called when the user selects a different language in the UI</span>
-        Q_INVOKABLE <span class="type">void</span> setCurrentLanguage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath);
+        Q_INVOKABLE <span class="type">void</span> setCurrentLanguage(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath);
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted to trigger a re-translation of the UI</span>
+        <span class="type">void</span> retranslate();
+
+        <span class="comment">// The change notification signal of the property</span>
+        <span class="type">void</span> messageChanged();
 
     <span class="keyword">private</span>:
+        <span class="comment">// The accessor method of the property</span>
+        <span class="type">QString</span> message() <span class="keyword">const</span>;
+
         <span class="comment">// A helper method that creates the model for the language list view</span>
         <span class="type">void</span> setupLanguageModel();
 
         <span class="comment">// A helper method that finds all available translation catalogs</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> findQmFiles() <span class="keyword">const</span>;
+        <span class="type">QStringList</span> findQmFiles() <span class="keyword">const</span>;
 
         <span class="comment">// A helper method that returns the name of a language for a given catalog file</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> languageName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>qmFile) <span class="keyword">const</span>;
-
-        <span class="comment">// The main view object in the UI</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Control<span class="operator">&gt;</span> m_mainView;
-
-        <span class="comment">// The text area object in the UI</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>TextArea<span class="operator">&gt;</span> m_textArea;
+        <span class="type">QString</span> languageName(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>qmFile) <span class="keyword">const</span>;
 
         <span class="comment">// The list model that contains the language names of all available catalogs</span>
-        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&gt;</span> m_model;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">&gt;</span> m_model;
+
+        <span class="comment">// The property value</span>
+        <span class="type">QString</span> m_message;
 
         <span class="comment">// The map that maps language names to catalog file names</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmap.html">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&gt;</span> m_languageMap;
+        <span class="type">QMap</span><span class="operator">&lt;</span><span class="type">QString</span><span class="operator">,</span> <span class="type">QString</span><span class="operator">&gt;</span> m_languageMap;
 
         <span class="comment">// The translator object</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtranslator.html">QTranslator</a></span> <span class="operator">*</span>m_translator;
+        <span class="type">QTranslator</span> <span class="operator">*</span>m_translator;
     };
 
     <span class="preprocessor">#endif</span></pre>

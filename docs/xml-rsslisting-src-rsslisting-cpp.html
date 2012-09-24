@@ -82,23 +82,23 @@
     <span class="comment">/*
      Constructs an RSSListing object and connects the needed signals.
      */</span>
-    RSSListing<span class="operator">::</span>RSSListing(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    RSSListing<span class="operator">::</span>RSSListing(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_url(<span class="string">&quot;http://feeds.feedburner.com/blackberry/CAxx&quot;</span>)
         <span class="operator">,</span> m_active(<span class="keyword">false</span>)
         <span class="operator">,</span> m_currentReply(<span class="number">0</span>)
     {
         <span class="comment">// Invoke the finished() method whenever the download job has been finished</span>
-        connect(<span class="operator">&amp;</span>m_manager<span class="operator">,</span> SIGNAL(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>)));
+        connect(<span class="operator">&amp;</span>m_manager<span class="operator">,</span> SIGNAL(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>)));
     }
 
     <span class="comment">/*
      Starts the network request and connects the needed signals
      */</span>
-    <span class="type">void</span> RSSListing<span class="operator">::</span>get(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url)
+    <span class="type">void</span> RSSListing<span class="operator">::</span>get(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>url)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span> request(url);
+        <span class="type">QNetworkRequest</span> request(url);
         <span class="keyword">if</span> (m_currentReply) {
             m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>disconnect(<span class="keyword">this</span>);
             m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
@@ -107,8 +107,8 @@
         m_currentReply <span class="operator">=</span> m_manager<span class="operator">.</span>get(request);
         connect(m_currentReply<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(readyRead()));
         connect(m_currentReply<span class="operator">,</span> SIGNAL(metaDataChanged())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(metaDataChanged()));
-        connect(m_currentReply<span class="operator">,</span> SIGNAL(error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError)));
+        connect(m_currentReply<span class="operator">,</span> SIGNAL(error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError)));
     }
 
     <span class="comment">/*
@@ -128,7 +128,7 @@
 
         m_xml<span class="operator">.</span>clear();
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> url(m_url);
+        <span class="keyword">const</span> <span class="type">QUrl</span> url(m_url);
         get(url);
     }
 
@@ -138,7 +138,7 @@
      */</span>
     <span class="type">void</span> RSSListing<span class="operator">::</span>metaDataChanged()
     {
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> redirectionTarget <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span><span class="operator">::</span>RedirectionTargetAttribute)<span class="operator">.</span>toUrl();
+        <span class="keyword">const</span> <span class="type">QUrl</span> redirectionTarget <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type">QNetworkRequest</span><span class="operator">::</span>RedirectionTargetAttribute)<span class="operator">.</span>toUrl();
         <span class="keyword">if</span> (redirectionTarget<span class="operator">.</span>isValid()) {
             get(redirectionTarget);
         }
@@ -153,9 +153,9 @@
 
     <span class="type">void</span> RSSListing<span class="operator">::</span>readyRead()
     {
-        <span class="keyword">const</span> <span class="type">int</span> statusCode <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span><span class="operator">::</span>HttpStatusCodeAttribute)<span class="operator">.</span>toInt();
+        <span class="keyword">const</span> <span class="type">int</span> statusCode <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type">QNetworkRequest</span><span class="operator">::</span>HttpStatusCodeAttribute)<span class="operator">.</span>toInt();
         <span class="keyword">if</span> (statusCode <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">200</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> statusCode <span class="operator">&lt;</span> <span class="number">300</span>) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> data <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>readAll();
+            <span class="keyword">const</span> <span class="type">QByteArray</span> data <span class="operator">=</span> m_currentReply<span class="operator">-</span><span class="operator">&gt;</span>readAll();
             m_xml<span class="operator">.</span>addData(data);
         }
     }
@@ -171,7 +171,7 @@
      user interface available to the user for further input.
      */</span>
 
-    <span class="type">void</span> RSSListing<span class="operator">::</span>finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>reply)
+    <span class="type">void</span> RSSListing<span class="operator">::</span>finished(<span class="type">QNetworkReply</span> <span class="operator">*</span>reply)
     {
         Q_UNUSED(reply);
 
@@ -181,7 +181,7 @@
         <span class="keyword">emit</span> activeChanged();
     }
 
-    <span class="type">void</span> RSSListing<span class="operator">::</span>setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url)
+    <span class="type">void</span> RSSListing<span class="operator">::</span>setUrl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url)
     {
         <span class="keyword">if</span> (m_url <span class="operator">=</span><span class="operator">=</span> url)
             <span class="keyword">return</span>;
@@ -190,12 +190,12 @@
         <span class="keyword">emit</span> urlChanged();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> RSSListing<span class="operator">::</span>url() <span class="keyword">const</span>
+    <span class="type">QString</span> RSSListing<span class="operator">::</span>url() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_url;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> RSSListing<span class="operator">::</span>feeds() <span class="keyword">const</span>
+    <span class="type">QString</span> RSSListing<span class="operator">::</span>feeds() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_feeds;
     }
@@ -212,9 +212,9 @@
     {
         m_feeds<span class="operator">.</span>clear();
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> currentTag;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> linkString;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> titleString;
+        <span class="type">QString</span> currentTag;
+        <span class="type">QString</span> linkString;
+        <span class="type">QString</span> titleString;
 
         <span class="keyword">while</span> (<span class="operator">!</span>m_xml<span class="operator">.</span>atEnd()) {
             m_xml<span class="operator">.</span>readNext();
@@ -225,7 +225,7 @@
             } <span class="keyword">else</span> <span class="keyword">if</span> (m_xml<span class="operator">.</span>isEndElement()) {
                 <span class="keyword">if</span> (m_xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;item&quot;</span>) {
 
-                    m_feeds<span class="operator">.</span>append(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1\n      %2\n\n&quot;</span>)<span class="operator">.</span>arg(titleString<span class="operator">,</span> linkString));
+                    m_feeds<span class="operator">.</span>append(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1\n      %2\n\n&quot;</span>)<span class="operator">.</span>arg(titleString<span class="operator">,</span> linkString));
 
                     titleString<span class="operator">.</span>clear();
                     linkString<span class="operator">.</span>clear();
@@ -239,15 +239,15 @@
             }
         }
 
-        <span class="keyword">if</span> (m_xml<span class="operator">.</span>error() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span><span class="operator">::</span>PrematureEndOfDocumentError) {
+        <span class="keyword">if</span> (m_xml<span class="operator">.</span>error() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_xml<span class="operator">.</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type">QXmlStreamReader</span><span class="operator">::</span>PrematureEndOfDocumentError) {
             m_feeds<span class="operator">.</span>append(
-                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;XML ERROR: %1: %2&quot;</span>)<span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())<span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString()));
+                    <span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;XML ERROR: %1: %2&quot;</span>)<span class="operator">.</span>arg(m_xml<span class="operator">.</span>lineNumber())<span class="operator">.</span>arg(m_xml<span class="operator">.</span>errorString()));
         }
 
         <span class="keyword">emit</span> feedsChanged();
     }
 
-    <span class="type">void</span> RSSListing<span class="operator">::</span>error(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError)
+    <span class="type">void</span> RSSListing<span class="operator">::</span>error(<span class="type">QNetworkReply</span><span class="operator">::</span>NetworkError)
     {
         m_feeds <span class="operator">=</span> QLatin1String(<span class="string">&quot;error retrieving RSS feed&quot;</span>);
         <span class="keyword">emit</span> feedsChanged();

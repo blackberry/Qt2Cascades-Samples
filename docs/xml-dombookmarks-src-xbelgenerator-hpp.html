@@ -85,14 +85,14 @@
         XbelGenerator(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// Starts the generation of the XBEL document</span>
-        <span class="type">bool</span> write(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device);
+        <span class="type">bool</span> write(<span class="type">QIODevice</span> <span class="operator">*</span>device);
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that generates an element in the XBEL document for a control</span>
-        <span class="type">void</span> generateItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>item<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomdocument.html">QDomDocument</a></span> <span class="operator">&amp;</span>domDocument);
+        <span class="type">void</span> generateItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>item<span class="operator">,</span> <span class="type">QDomElement</span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="type">QDomDocument</span> <span class="operator">&amp;</span>domDocument);
 
         <span class="comment">// The container object the controls are located in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
     };
 
     <span class="preprocessor">#endif</span></pre>

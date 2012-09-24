@@ -76,7 +76,7 @@
      * This function is called by the script engine if the user creates new Player objects from
      * within the script. (e.g. 'var p = new Player(board)')
      */</span>
-    <span class="keyword">static</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> constructNewPlayer(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptcontext.html">QScriptContext</a></span> <span class="operator">*</span>context<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptengine.html">QScriptEngine</a></span> <span class="operator">*</span>engine)
+    <span class="keyword">static</span> <span class="type">QScriptValue</span> constructNewPlayer(<span class="type">QScriptContext</span> <span class="operator">*</span>context<span class="operator">,</span> <span class="type">QScriptEngine</span> <span class="operator">*</span>engine)
     {
         <span class="comment">/**
          * Since the Player class expects a Board object as parameter to the constructor we
@@ -89,11 +89,11 @@
         }
 
         <span class="comment">// ... otherwise we return a new Player object whose lifetime is managed by the script engine</span>
-        <span class="keyword">return</span> engine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(<span class="keyword">new</span> Player(board)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptengine.html">QScriptEngine</a></span><span class="operator">::</span>ScriptOwnership);
+        <span class="keyword">return</span> engine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(<span class="keyword">new</span> Player(board)<span class="operator">,</span> <span class="type">QScriptEngine</span><span class="operator">::</span>ScriptOwnership);
     }
 
-    GameController<span class="operator">::</span>GameController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    GameController<span class="operator">::</span>GameController(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_boardContainer(<span class="number">0</span>)
         <span class="operator">,</span> m_board(<span class="number">0</span>)
         <span class="operator">,</span> m_player(<span class="number">0</span>)
@@ -101,7 +101,7 @@
     {
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> GameController<span class="operator">::</span>scriptError() <span class="keyword">const</span>
+    <span class="type">QString</span> GameController<span class="operator">::</span>scriptError() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_scriptError;
     }
@@ -122,7 +122,7 @@
         reset();
     }
 
-    <span class="type">void</span> GameController<span class="operator">::</span><a href="http://qt.nokia.com/doc/4.8/qtextstream.html#reset">reset</a>()
+    <span class="type">void</span> GameController<span class="operator">::</span>reset()
     {
         <span class="comment">// Reset the script engine</span>
 
@@ -131,42 +131,42 @@
          * by the script engine itself, so we should not call 'delete m_scriptEngine' while it is used.
          */</span>
         m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
-        m_scriptEngine <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptengine.html">QScriptEngine</a></span>(<span class="keyword">this</span>);
+        m_scriptEngine <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QScriptEngine</span>(<span class="keyword">this</span>);
 
         <span class="comment">/**
          * Create a wrapper object for the GameController itself since we want to
          * access its reset() method from within the scripts.
          */</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> scriptController <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(<span class="keyword">this</span>);
+        <span class="type">QScriptValue</span> scriptController <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(<span class="keyword">this</span>);
 
         <span class="comment">// Export it to the script engine environment</span>
         m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>globalObject()<span class="operator">.</span>setProperty(<span class="string">&quot;controller&quot;</span><span class="operator">,</span> scriptController);
 
         <span class="comment">// Create a wrapper object for the Board object...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> scriptBoard <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(m_board);
+        <span class="type">QScriptValue</span> scriptBoard <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(m_board);
 
         <span class="comment">// ... and export it to the script engine environment</span>
         m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>globalObject()<span class="operator">.</span>setProperty(<span class="string">&quot;board&quot;</span><span class="operator">,</span> scriptBoard);
 
         <span class="comment">// Create a wrapper object for the Player object...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> scriptPlayer <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(m_player);
+        <span class="type">QScriptValue</span> scriptPlayer <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newQObject(m_player);
 
         <span class="comment">// ... and export it to the script engine environment as well</span>
         m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>globalObject()<span class="operator">.</span>setProperty(<span class="string">&quot;player&quot;</span><span class="operator">,</span> scriptPlayer);
 
         <span class="comment">// Make the constructor function for new Player objects known to the script engine environment</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> createPlayerFunc <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newFunction(constructNewPlayer);
+        <span class="type">QScriptValue</span> createPlayerFunc <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>newFunction(constructNewPlayer);
         m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>globalObject()<span class="operator">.</span>setProperty(<span class="string">&quot;Player&quot;</span><span class="operator">,</span> createPlayerFunc);
     }
 
-    <span class="type">void</span> GameController<span class="operator">::</span>run(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>script)
+    <span class="type">void</span> GameController<span class="operator">::</span>run(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>script)
     {
         <span class="comment">// Run the script that is passed in from the UI</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qscriptvalue.html">QScriptValue</a></span> result <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>evaluate(script);
+        <span class="keyword">const</span> <span class="type">QScriptValue</span> result <span class="operator">=</span> m_scriptEngine<span class="operator">-</span><span class="operator">&gt;</span>evaluate(script);
 
         <span class="comment">// Update the scriptError property</span>
         <span class="keyword">if</span> (result<span class="operator">.</span>isError()) {
-            m_scriptError <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1: %2&quot;</span>)<span class="operator">.</span>arg(result<span class="operator">.</span>property(<span class="string">&quot;lineNumber&quot;</span>)<span class="operator">.</span>toInt32())
+            m_scriptError <span class="operator">=</span> <span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;%1: %2&quot;</span>)<span class="operator">.</span>arg(result<span class="operator">.</span>property(<span class="string">&quot;lineNumber&quot;</span>)<span class="operator">.</span>toInt32())
                                                          <span class="operator">.</span>arg(result<span class="operator">.</span>toString());
         } <span class="keyword">else</span> {
             m_scriptError<span class="operator">.</span>clear();

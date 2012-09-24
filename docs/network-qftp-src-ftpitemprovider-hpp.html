@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : ContiguousCacheApp.hpp Example File (tools/contiguouscache/src/ContiguousCacheApp.hpp)</title>
+  <title>Cascades : FtpItemProvider.hpp Example File (network/qftp/src/FtpItemProvider.hpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">ContiguousCacheApp.hpp Example File</h1>
-<span class="small-subtitle">tools/contiguouscache/src/ContiguousCacheApp.hpp</span>
-<!-- $$$tools/contiguouscache/src/ContiguousCacheApp.hpp-description -->
+<h1 class="title">FtpItemProvider.hpp Example File</h1>
+<span class="small-subtitle">network/qftp/src/FtpItemProvider.hpp</span>
+<!-- $$$network/qftp/src/FtpItemProvider.hpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,29 +65,42 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef CONTIGUOUSCACHEAPP_HPP</span>
-    <span class="preprocessor">#define CONTIGUOUSCACHEAPP_HPP</span>
+    <span class="preprocessor">#ifndef FTPITEMPROVIDER_HPP</span>
+    <span class="preprocessor">#define FTPITEMPROVIDER_HPP</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Image&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/ListItemProvider&gt;</span>
 
     <span class="comment">/**
-     * In this sample application we show how to use QContiguousCache, a class
-     * that provides an efficient way of caching items for display in a user interface view.
-     * This example uses QContiguousCache inside a custom DataModel. The model provides
-     * 10000 images, however the QContiguousCache will ensure that at maximum only 50 images
-     * are kept in memory.
+     * The FtpItemProvider is used to provide custom items in the ListView that
+     * shows the result of a FTP directory listing.
      */</span>
-    <span class="keyword">class</span> ContiguousCacheApp : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> FtpItemProvider : <span class="keyword">public</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>ListItemProvider
     {
         Q_OBJECT
 
     <span class="keyword">public</span>:
-        ContiguousCacheApp();
+        <span class="keyword">explicit</span> FtpItemProvider(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="comment">// This method is called to create a new instance of a ListView item</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>VisualNode <span class="operator">*</span> createItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>ListView<span class="operator">*</span> list<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>type);
+
+        <span class="comment">// This method is called to fill an instance of a ListView item with data</span>
+        <span class="type">void</span> updateItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>ListView <span class="operator">*</span>list<span class="operator">,</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>VisualNode <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>type<span class="operator">,</span>
+                        <span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QVariant</span> <span class="operator">&amp;</span>data);
+    <span class="keyword">private</span>:
+        <span class="comment">// The image that is used for items that represent files</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Image m_fileImage;
+
+        <span class="comment">// The image that is used for items that represent directories</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Image m_folderImage;
     };
+
+    QML_DECLARE_TYPE(FtpItemProvider)
 
     <span class="preprocessor">#endif</span></pre>
 </div>
-<!-- @@@tools/contiguouscache/src/ContiguousCacheApp.hpp -->
+<!-- @@@network/qftp/src/FtpItemProvider.hpp -->
   <div class="ft">
     <span></span>
   </div>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : SharedMemoryApp.cpp Example File (ipc/sharedmemory/src/SharedMemoryApp.cpp)</title>
+  <title>Cascades : main.cpp Example File (sensors/gruedetector/src/main.cpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">SharedMemoryApp.cpp Example File</h1>
-<span class="small-subtitle">ipc/sharedmemory/src/SharedMemoryApp.cpp</span>
-<!-- $$$ipc/sharedmemory/src/SharedMemoryApp.cpp-description -->
+<h1 class="title">main.cpp Example File</h1>
+<span class="small-subtitle">sensors/gruedetector/src/main.cpp</span>
+<!-- $$$sensors/gruedetector/src/main.cpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,35 +65,49 @@
      **
      ****************************************************************************/</span>
 
+    <span class="preprocessor">#include &quot;GrueDetector.hpp&quot;</span>
+
     <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
 
-    <span class="preprocessor">#include &quot;SharedMemoryApp.hpp&quot;</span>
-    <span class="preprocessor">#include &quot;FileLoaderProxy.hpp&quot;</span>
+    <span class="preprocessor">#include &lt;QtCore/QLocale&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QTimer&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QTranslator&gt;</span>
 
     <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
-    SharedMemoryApp<span class="operator">::</span>SharedMemoryApp()
+    <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
     {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        qmlRegisterType<span class="operator">&lt;</span><span class="type">QTimer</span><span class="operator">&gt;</span>(<span class="string">&quot;Utils&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;Timer&quot;</span>);
 
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// We make the FileLoaderProxy object available as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_fileLoaderProxy&quot;</span><span class="operator">,</span> <span class="keyword">new</span> FileLoaderProxy(<span class="keyword">this</span>));
+        Application app(argc<span class="operator">,</span> argv);
 
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-            }
+        <span class="comment">// localization support</span>
+        <span class="type">QTranslator</span> translator;
+        <span class="keyword">const</span> <span class="type">QString</span> locale_string <span class="operator">=</span> <span class="type">QLocale</span>()<span class="operator">.</span>name();
+        <span class="keyword">const</span> <span class="type">QString</span> filename <span class="operator">=</span> <span class="type">QString</span>(<span class="string">&quot;gruedetector_%1&quot;</span>)<span class="operator">.</span>arg(locale_string);
+        <span class="keyword">if</span> (translator<span class="operator">.</span>load(filename<span class="operator">,</span> <span class="string">&quot;app/native/qm&quot;</span>)) {
+            app<span class="operator">.</span>installTranslator(<span class="operator">&amp;</span>translator);
         }
+
+        <span class="comment">// Create the grue detector object</span>
+        GrueDetector detector;
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>)<span class="operator">.</span>parent(<span class="operator">&amp;</span>app);
+
+        <span class="comment">// Make the GrueDetector object available to the UI as context property</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_detector&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>detector);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>
 </div>
-<!-- @@@ipc/sharedmemory/src/SharedMemoryApp.cpp -->
+<!-- @@@sensors/gruedetector/src/main.cpp -->
   <div class="ft">
     <span></span>
   </div>

@@ -71,15 +71,13 @@
     <span class="type">Container</span> {
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;folder&quot;</span>
         property <span class="type">alias</span> <span class="name">title</span>: <span class="name">titleField</span>.<span class="name">text</span>
-        <span class="name">topMargin</span>: <span class="number">20</span>
 
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">topMargin</span>: <span class="number">20</span>
+        <span class="name">leftPadding</span>: <span class="number">20</span>
 
         <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard ImageView</span>
@@ -93,8 +91,6 @@
             <span class="type">Label</span> {
                 <span class="name">id</span>: <span class="name">titleField</span>
                 <span class="name">leftMargin</span>: <span class="number">10</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                }
 
                 <span class="comment">// Defines custom text style</span>
                 <span class="type">textStyle</span> {

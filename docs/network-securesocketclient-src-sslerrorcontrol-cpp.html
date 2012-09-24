@@ -67,12 +67,12 @@
 
     <span class="preprocessor">#include &quot;SslErrorControl.hpp&quot;</span>
 
-    SslErrorControl<span class="operator">::</span>SslErrorControl(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_visible(<span class="keyword">false</span>)
+    SslErrorControl<span class="operator">::</span>SslErrorControl(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)<span class="operator">,</span> m_visible(<span class="keyword">false</span>)
     {
     }
 
-    <span class="type">void</span> SslErrorControl<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>message)
+    <span class="type">void</span> SslErrorControl<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>message)
     {
         m_message <span class="operator">=</span> message;
         <span class="keyword">emit</span> messageChanged();
@@ -99,7 +99,7 @@
         <span class="keyword">return</span> m_visible;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> SslErrorControl<span class="operator">::</span>message() <span class="keyword">const</span>
+    <span class="type">QString</span> SslErrorControl<span class="operator">::</span>message() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_message;
     }

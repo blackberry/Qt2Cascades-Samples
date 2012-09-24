@@ -72,36 +72,32 @@
         property <span class="type">string</span> <span class="name">tagName</span>: <span class="string">&quot;bookmark&quot;</span>
         property <span class="type">alias</span> <span class="name">title</span>: <span class="name">titleField</span>.<span class="name">text</span>
         property <span class="type">alias</span> <span class="name">url</span>: <span class="name">urlField</span>.<span class="name">text</span>
+
         <span class="name">topMargin</span>: <span class="number">10</span>
         <span class="name">leftMargin</span>: <span class="number">20</span>
-
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">20</span>
-        }
+        <span class="name">leftPadding</span>: <span class="number">20</span>
 
         <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard ImageView</span>
             <span class="type">ImageView</span> {
-                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/bookmark.png&quot;</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">minWidth</span>: <span class="number">82</span>
                 <span class="name">minHeight</span>: <span class="number">62</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
+
+                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/bookmark.png&quot;</span>
                 <span class="name">scalingMethod</span>: <span class="name">ScalingMethod</span>.<span class="name">AspectFit</span>
             }
 
             <span class="comment">// A standard Label for the bookmark title element</span>
             <span class="type">Label</span> {
                 <span class="name">id</span>: <span class="name">titleField</span>
+
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">leftMargin</span>: <span class="number">10</span>
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
 
                 <span class="type">textStyle</span> {
                     <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
@@ -119,11 +115,10 @@
         <span class="comment">// A standard TextField for the bookmark url attribute value</span>
         <span class="type">TextField</span> {
             <span class="name">id</span>: <span class="name">urlField</span>
+
+            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
             <span class="name">leftMargin</span>: <span class="number">10</span>
             <span class="name">visible</span>: <span class="number">false</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-            }
 
             <span class="type">textStyle</span> {
                 <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>

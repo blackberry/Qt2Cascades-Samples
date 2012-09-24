@@ -70,43 +70,37 @@
     <span class="comment">// Page showind Layout of inputs, Listview, and its controls</span>
     <span class="type">Page</span> {
         <span class="comment">// A container is used to gather visual items together.</span>
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// Displays the main view and its controls</span>
             <span class="type">Downloader</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
             }
 
             <span class="comment">// Displays the download progress</span>
             <span class="type">ProgressDialog</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_progressDialog</span>.<span class="name">visible</span>
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
             }
 
             <span class="comment">// Displays connection status/error messages</span>
             <span class="type">MessageBox</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">visible</span>: <span class="name">_messageBox</span>.<span class="name">visible</span>
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
             }
         }
     }</pre>

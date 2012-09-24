@@ -67,12 +67,12 @@
 
     <span class="preprocessor">#include &quot;MessageBoxController.hpp&quot;</span>
 
-    MessageBoxController<span class="operator">::</span>MessageBoxController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+    MessageBoxController<span class="operator">::</span>MessageBoxController(<span class="type">QObject</span> <span class="operator">*</span>parent)
         : DialogController(parent)
     {
     }
 
-    MessageBoxController<span class="operator">::</span>Result MessageBoxController<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button2Text)
+    MessageBoxController<span class="operator">::</span>Result MessageBoxController<span class="operator">::</span>exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button2Text)
     {
         <span class="comment">// Store the passed values in local properties</span>
         m_button1Text <span class="operator">=</span> button1Text;
@@ -91,22 +91,22 @@
         <span class="keyword">return</span> m_buttonResult;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> MessageBoxController<span class="operator">::</span>title() <span class="keyword">const</span>
+    <span class="type">QString</span> MessageBoxController<span class="operator">::</span>title() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_title;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> MessageBoxController<span class="operator">::</span>text() <span class="keyword">const</span>
+    <span class="type">QString</span> MessageBoxController<span class="operator">::</span>text() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_text;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> MessageBoxController<span class="operator">::</span>button1Text() <span class="keyword">const</span>
+    <span class="type">QString</span> MessageBoxController<span class="operator">::</span>button1Text() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_button1Text;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> MessageBoxController<span class="operator">::</span>button2Text() <span class="keyword">const</span>
+    <span class="type">QString</span> MessageBoxController<span class="operator">::</span>button2Text() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_button2Text;
     }

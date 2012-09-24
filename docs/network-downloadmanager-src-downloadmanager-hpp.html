@@ -76,7 +76,7 @@
     <span class="preprocessor">#include &lt;QtCore/QUrl&gt;</span>
     <span class="preprocessor">#include &lt;QtNetwork/QNetworkAccessManager&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span>;
+    <span class="keyword">class</span> <span class="type">QNetworkReply</span>;
 
     <span class="comment">/**
      * The DownloadManager encapsulates the download and saving of URLs.
@@ -84,15 +84,15 @@
      * of currently running downloads.
      * Additionally it provides progress information for the currently running download.
      */</span>
-    <span class="keyword">class</span> DownloadManager : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> DownloadManager : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes error messages available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorMessage READ errorMessage NOTIFY errorMessageChanged)
+        Q_PROPERTY(<span class="type">QString</span> errorMessage READ errorMessage NOTIFY errorMessageChanged)
 
         <span class="comment">// Makes status messages available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusMessage READ statusMessage NOTIFY statusMessageChanged)
+        Q_PROPERTY(<span class="type">QString</span> statusMessage READ statusMessage NOTIFY statusMessageChanged)
 
         <span class="comment">// Makes the number of currently running downloads available to the UI</span>
         Q_PROPERTY(<span class="type">int</span> activeDownloads READ activeDownloads NOTIFY activeDownloadsChanged)
@@ -104,22 +104,22 @@
         Q_PROPERTY(<span class="type">int</span> progressValue READ progressValue NOTIFY progressValueChanged)
 
         <span class="comment">// Makes the progress message available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> progressMessage READ progressMessage NOTIFY progressMessageChanged)
+        Q_PROPERTY(<span class="type">QString</span> progressMessage READ progressMessage NOTIFY progressMessageChanged)
 
     <span class="keyword">public</span>:
-        DownloadManager(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        DownloadManager(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorMessage() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> statusMessage() <span class="keyword">const</span>;
+        <span class="type">QString</span> errorMessage() <span class="keyword">const</span>;
+        <span class="type">QString</span> statusMessage() <span class="keyword">const</span>;
         <span class="type">int</span> activeDownloads() <span class="keyword">const</span>;
         <span class="type">int</span> progressTotal() <span class="keyword">const</span>;
         <span class="type">int</span> progressValue() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> progressMessage() <span class="keyword">const</span>;
+        <span class="type">QString</span> progressMessage() <span class="keyword">const</span>;
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called when the user starts a download by clicking the 'Download' button in the UI</span>
-        <span class="type">void</span> downloadUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
+        <span class="type">void</span> downloadUrl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>url);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signals of the properties</span>
@@ -135,7 +135,7 @@
         <span class="type">void</span> startNextDownload();
 
         <span class="comment">// This method is called whenever the progress of the current download job has changed</span>
-        <span class="type">void</span> downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> bytesReceived<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qint64-typedef">qint64</a></span> bytesTotal);
+        <span class="type">void</span> downloadProgress(<span class="type">qint64</span> bytesReceived<span class="operator">,</span> <span class="type">qint64</span> bytesTotal);
 
         <span class="comment">// This method is called whenever a download job has finished</span>
         <span class="type">void</span> downloadFinished();
@@ -145,31 +145,31 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// Enqueues a new download to the internal job queue</span>
-        <span class="type">void</span> append(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url);
+        <span class="type">void</span> append(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>url);
 
         <span class="comment">// This method determines a file name that can be used to save the given URL</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> saveFileName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url);
+        <span class="type">QString</span> saveFileName(<span class="keyword">const</span> <span class="type">QUrl</span> <span class="operator">&amp;</span>url);
 
         <span class="comment">// A helper method to collect error messages</span>
-        <span class="type">void</span> addErrorMessage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+        <span class="type">void</span> addErrorMessage(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>message);
 
         <span class="comment">// A helper method to collect status messages</span>
-        <span class="type">void</span> addStatusMessage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+        <span class="type">void</span> addStatusMessage(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>message);
 
         <span class="comment">// The network access manager that does all the network communication</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_manager;
+        <span class="type">QNetworkAccessManager</span> m_manager;
 
         <span class="comment">// The internal job queue</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qqueue.html">QQueue</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qurl.html">QUrl</a></span><span class="operator">&gt;</span> m_downloadQueue;
+        <span class="type">QQueue</span><span class="operator">&lt;</span><span class="type">QUrl</span><span class="operator">&gt;</span> m_downloadQueue;
 
         <span class="comment">// The currently running download job</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>m_currentDownload;
+        <span class="type">QNetworkReply</span> <span class="operator">*</span>m_currentDownload;
 
         <span class="comment">// The file where the downloaded data are saved</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> m_output;
+        <span class="type">QFile</span> m_output;
 
         <span class="comment">// The time when the download started (used to calculate download speed)</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span> m_downloadTime;
+        <span class="type">QTime</span> m_downloadTime;
 
         <span class="comment">// The number of finished download jobs</span>
         <span class="type">int</span> m_downloadedCount;
@@ -184,13 +184,13 @@
         <span class="type">int</span> m_progressValue;
 
         <span class="comment">// A textual representation of the current progress status</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_progressMessage;
+        <span class="type">QString</span> m_progressMessage;
 
         <span class="comment">// The list of error messages</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> m_errorMessage;
+        <span class="type">QStringList</span> m_errorMessage;
 
         <span class="comment">// The list of status messages</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> m_statusMessage;
+        <span class="type">QStringList</span> m_statusMessage;
     };
 
     <span class="preprocessor">#endif</span></pre>

@@ -51,6 +51,13 @@
             <fileToOpen>network/googlesuggest/src/googlesuggest.cpp</fileToOpen>
             <fileToOpen>network/googlesuggest/src/main.cpp</fileToOpen>
         </example>
+        <example name="Grue Detector Example" docUrl="qthelp:////sensors-gruedetector.html" projectPath="sensors/gruedetector/gruedetector.pro" imageUrl="qthelp:////images/gruedetector-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>grue,detector</tags>
+            <fileToOpen>sensors/gruedetector/assets/main.qml</fileToOpen>
+            <fileToOpen>sensors/gruedetector/src/GrueDetector.cpp</fileToOpen>
+            <fileToOpen>sensors/gruedetector/src/main.cpp</fileToOpen>
+        </example>
         <example name="HTTP Example" docUrl="qthelp:////network-http.html" projectPath="network/http/http.pro" imageUrl="qthelp:////images/http-example.png">
             <description><![CDATA[No description available]]></description>
             <tags>http</tags>
@@ -92,6 +99,7 @@
             <description><![CDATA[No description available]]></description>
             <tags>progress,dialog</tags>
             <fileToOpen>qtconcurrent/progressdialog/assets/main.qml</fileToOpen>
+            <fileToOpen>qtconcurrent/progressdialog/src/ProgressDialog.cpp</fileToOpen>
             <fileToOpen>qtconcurrent/progressdialog/src/main.cpp</fileToOpen>
         </example>
         <example name="QXmlStream Bookmarks Example" docUrl="qthelp:////xml-streambookmarks.html" projectPath="xml/streambookmarks/streambookmarks.pro" imageUrl="qthelp:////images/streambookmarks-example.png">
@@ -150,6 +158,13 @@
             <fileToOpen>threads/semaphores/assets/main.qml</fileToOpen>
             <fileToOpen>threads/semaphores/src/main.cpp</fileToOpen>
         </example>
+        <example name="Sensor Explorer Example" docUrl="qthelp:////sensors-sensorexplorer.html" projectPath="sensors/sensorexplorer/sensorexplorer.pro" imageUrl="qthelp:////images/sensorexplorer-example.png">
+            <description><![CDATA[No description available]]></description>
+            <tags>sensor,explorer</tags>
+            <fileToOpen>sensors/sensorexplorer/assets/main.qml</fileToOpen>
+            <fileToOpen>sensors/sensorexplorer/src/SensorExplorer.cpp</fileToOpen>
+            <fileToOpen>sensors/sensorexplorer/src/main.cpp</fileToOpen>
+        </example>
         <example name="Shared Memory Example" docUrl="qthelp:////ipc-sharedmemory.html" projectPath="ipc/sharedmemory/sharedmemory.pro" imageUrl="qthelp:////images/sharedmemory-example.png">
             <description><![CDATA[No description available]]></description>
             <tags>shared,memory</tags>
@@ -185,6 +200,7 @@
             <description><![CDATA[No description available]]></description>
             <tags>word,count</tags>
             <fileToOpen>qtconcurrent/wordcount/assets/main.qml</fileToOpen>
+            <fileToOpen>qtconcurrent/wordcount/src/WordCount.cpp</fileToOpen>
             <fileToOpen>qtconcurrent/wordcount/src/main.cpp</fileToOpen>
         </example>
         <example name="XML HTML Info Example" docUrl="qthelp:////xml-htmlinfo.html" projectPath="xml/htmlinfo/htmlinfo.pro" imageUrl="qthelp:////images/htmlinfo-example.png">

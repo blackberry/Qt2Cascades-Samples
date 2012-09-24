@@ -69,34 +69,28 @@
 
     <span class="comment">// Page shows a Layout of ImageView's, Label's and control Button</span>
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
-            <span class="name">preferredWidth</span>: <span class="number">768</span>
+        <span class="type">Container</span> {
 
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// Container for the title</span>
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">topMargin</span>: <span class="number">20</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+
                     <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Touch one of the images below to start rendering&quot;</span>)
 
                     <span class="comment">// Defines custom text Color and style</span>
@@ -108,12 +102,11 @@
 
                 <span class="comment">// Groups the available ImageView's for rendering</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">topMargin</span>: <span class="number">10</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard ImageView</span>
@@ -133,6 +126,7 @@
                         <span class="name">leftMargin</span>: <span class="number">30</span>
                         <span class="name">preferredWidth</span>: <span class="number">128</span>
                         <span class="name">preferredHeight</span>: <span class="number">128</span>
+
                         <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/sphere.png&quot;</span>
 
                         <span class="comment">// Render this image on touch</span>
@@ -146,6 +140,7 @@
                         <span class="name">leftMargin</span>: <span class="number">30</span>
                         <span class="name">preferredWidth</span>: <span class="number">128</span>
                         <span class="name">preferredHeight</span>: <span class="number">128</span>
+
                         <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/cylinder.png&quot;</span>
 
                         <span class="comment">// Render this image on touch</span>
@@ -159,6 +154,7 @@
                         <span class="name">leftMargin</span>: <span class="number">30</span>
                         <span class="name">preferredWidth</span>: <span class="number">128</span>
                         <span class="name">preferredHeight</span>: <span class="number">128</span>
+
                         <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/pyramid.png&quot;</span>
 
                         <span class="comment">// Render this image on touch</span>
@@ -171,24 +167,20 @@
                 <span class="comment">// Container in which the image is rendered</span>
                 <span class="type">Container</span> {
                     <span class="name">objectName</span>: <span class="string">&quot;canvas&quot;</span>
+
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">preferredWidth</span>: <span class="number">300</span>
                     <span class="name">preferredHeight</span>: <span class="number">300</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
-                    <span class="name">layout</span>: <span class="name">AbsoluteLayout</span> {
-                    }
+
+                    <span class="name">layout</span>: <span class="name">AbsoluteLayout</span> {}
                 }
 
                 <span class="comment">// Container for the app control Button</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                    <span class="name">bottomPadding</span>: <span class="number">5</span>
+
                     <span class="name">preferredWidth</span>: <span class="number">200</span>
-                    <span class="name">layout</span>: <span class="name">DockLayout</span> {
-                        <span class="name">bottomPadding</span>: <span class="number">5</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
 
                     <span class="comment">// A standard Button</span>
                     <span class="type">Button</span> {

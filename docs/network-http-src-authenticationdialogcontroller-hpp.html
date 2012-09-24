@@ -79,25 +79,25 @@
         Q_OBJECT
 
         <span class="comment">// Makes the site, the credentials are requested for, available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> site READ site NOTIFY siteChanged)
+        Q_PROPERTY(<span class="type">QString</span> site READ site NOTIFY siteChanged)
 
         <span class="comment">// Makes the user name of the credentials available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> user READ user NOTIFY userChanged)
+        Q_PROPERTY(<span class="type">QString</span> user READ user NOTIFY userChanged)
 
         <span class="comment">// Makes the password of the credentials available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> password READ password NOTIFY passwordChanged)
+        Q_PROPERTY(<span class="type">QString</span> password READ password NOTIFY passwordChanged)
 
     <span class="keyword">public</span>:
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> site() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> user() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> password() <span class="keyword">const</span>;
+        <span class="type">QString</span> site() <span class="keyword">const</span>;
+        <span class="type">QString</span> user() <span class="keyword">const</span>;
+        <span class="type">QString</span> password() <span class="keyword">const</span>;
 
         <span class="comment">// This method is executed to show the dialog</span>
-        <span class="type">bool</span> exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>password);
+        <span class="type">bool</span> exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>site<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>password);
 
         <span class="comment">// This method is called from the UI when the user has entered a user name and password</span>
-        Q_INVOKABLE <span class="type">void</span> continueAuthentication(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>password);
+        Q_INVOKABLE <span class="type">void</span> continueAuthentication(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>user<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>password);
 
         <span class="comment">// This method is called from the UI when the user wants to cancel authentication</span>
         Q_INVOKABLE <span class="type">void</span> cancel();
@@ -110,9 +110,9 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The property values</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_site;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_user;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_password;
+        <span class="type">QString</span> m_site;
+        <span class="type">QString</span> m_user;
+        <span class="type">QString</span> m_password;
 
         <span class="comment">// A flag that stores whether dialog has been canceled</span>
         <span class="type">bool</span> m_result;

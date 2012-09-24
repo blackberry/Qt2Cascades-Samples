@@ -76,32 +76,32 @@
      */</span>
     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>s_sharedKey <span class="operator">=</span> <span class="string">&quot;fileloader_shm_key&quot;</span>;
 
-    FileLoader<span class="operator">::</span>FileLoader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    FileLoader<span class="operator">::</span>FileLoader(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> FileLoader<span class="operator">::</span>status() <span class="keyword">const</span>
+    <span class="type">QString</span> FileLoader<span class="operator">::</span>status() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_status;
     }
 
-    <span class="type">void</span> FileLoader<span class="operator">::</span>loadFile(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+    <span class="type">void</span> FileLoader<span class="operator">::</span>loadFile(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName)
     {
         <span class="comment">// Try to open the file ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/files/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly)) {
+        <span class="type">QFile</span> file(<span class="type">QString</span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/files/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly)) {
             m_status <span class="operator">=</span> tr(<span class="string">&quot;Unable to open file: %1&quot;</span>)<span class="operator">.</span>arg(file<span class="operator">.</span>errorString());
             <span class="keyword">emit</span> statusChanged();
             <span class="keyword">return</span>;
         }
 
         <span class="comment">// ... and read its complete content into a temporary variable</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> content <span class="operator">=</span> file<span class="operator">.</span>readAll();
+        <span class="keyword">const</span> <span class="type">QByteArray</span> content <span class="operator">=</span> file<span class="operator">.</span>readAll();
         file<span class="operator">.</span>close();
 
         <span class="comment">// Try to attach to the shared memory segment with the given key</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsharedmemory.html">QSharedMemory</a></span> sharedMemory(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(s_sharedKey));
+        <span class="type">QSharedMemory</span> sharedMemory(<span class="type">QString</span><span class="operator">::</span>fromLatin1(s_sharedKey));
         <span class="keyword">if</span> (<span class="operator">!</span>sharedMemory<span class="operator">.</span>attach()) {
             m_status <span class="operator">=</span> tr(<span class="string">&quot;Unable to attach to shared memory: %1&quot;</span>)<span class="operator">.</span>arg(sharedMemory<span class="operator">.</span>errorString());
             <span class="keyword">emit</span> statusChanged();

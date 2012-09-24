@@ -68,38 +68,32 @@
     import bb.cascades 1.0
 
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
-
-            <span class="name">preferredWidth</span>: <span class="number">768</span>
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="comment">// The top-level container</span>
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">30</span>
-                    <span class="name">topPadding</span>: <span class="number">30</span>
-                    <span class="name">rightPadding</span>: <span class="number">30</span>
-                    <span class="name">bottomPadding</span>: <span class="number">30</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">30</span>
+                <span class="name">topPadding</span>: <span class="number">30</span>
+                <span class="name">rightPadding</span>: <span class="number">30</span>
+                <span class="name">bottomPadding</span>: <span class="number">30</span>
 
                 <span class="comment">// The button at the top</span>
                 <span class="type">Button</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: -<span class="number">1</span>
                     }
 
@@ -112,8 +106,9 @@
 
                 <span class="comment">// Shows the file content</span>
                 <span class="type">TextArea</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
 

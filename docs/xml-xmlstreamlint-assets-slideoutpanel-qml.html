@@ -78,33 +78,27 @@
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/slideout_background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">20</span>
-                    <span class="name">rightPadding</span>: <span class="number">20</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">20</span>
+                <span class="name">rightPadding</span>: <span class="number">20</span>
 
                 <span class="comment">// The standard ListView holding the HTML file selections</span>
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+                <span class="type">ListView</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
 
-                    <span class="name">objectName</span>: <span class="string">&quot;listView&quot;</span>
                     <span class="name">dataModel</span>: <span class="name">_model</span>
 
                     <span class="name">listItemComponents</span>: <span class="name">ListItemComponent</span> {
@@ -115,24 +109,27 @@
                     }
 
                     <span class="comment">// Set and parse the HTML file on selection</span>
-                    <span class="name">onSelectionChanged</span>: <span class="name">_app</span>.<span class="name">setFileName</span> (<span class="name">indexPath</span>)
+                    <span class="name">onTriggered</span>: {
+                        <span class="name">clearSelection</span>();
+                        <span class="name">select</span>(<span class="name">indexPath</span>);
+
+                        <span class="name">_app</span>.<span class="name">setFileName</span> (<span class="name">indexPath</span>)
+                    }
                 }
 
                 <span class="type">Label</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                     <span class="name">topMargin</span>: <span class="number">30</span>
                     <span class="name">preferredHeight</span>: <span class="number">130</span>
-
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                    }
 
                     <span class="name">text</span>: <span class="name">_app</span>.<span class="name">fileTitle</span>
 
                     <span class="type">textStyle</span> {
-                        <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
                         <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BigText</span>
                         <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                        <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
                     }
 
                     <span class="name">onTouch</span>: {
@@ -145,9 +142,7 @@
         }
 
         <span class="type">ImageView</span> {
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
 
             <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/shadow.png&quot;</span>
             <span class="name">translationY</span>: -<span class="number">7</span>

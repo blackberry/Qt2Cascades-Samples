@@ -37,8 +37,6 @@
 <ul>
 <li><a href="statemachine-trafficlight-assets-trafficlight-qml.html">statemachine/trafficlight/assets/TrafficLight.qml</a></li>
 <li><a href="statemachine-trafficlight-assets-main-qml.html">statemachine/trafficlight/assets/main.qml</a></li>
-<li><a href="statemachine-trafficlight-src-trafficlightapp-cpp.html">statemachine/trafficlight/src/TrafficLightApp.cpp</a></li>
-<li><a href="statemachine-trafficlight-src-trafficlightapp-hpp.html">statemachine/trafficlight/src/TrafficLightApp.hpp</a></li>
 <li><a href="statemachine-trafficlight-src-trafficlightcontroller-cpp.html">statemachine/trafficlight/src/TrafficLightController.cpp</a></li>
 <li><a href="statemachine-trafficlight-src-trafficlightcontroller-hpp.html">statemachine/trafficlight/src/TrafficLightController.hpp</a></li>
 <li><a href="statemachine-trafficlight-src-main-cpp.html">statemachine/trafficlight/src/main.cpp</a></li>
@@ -46,12 +44,12 @@
 </ul>
 <a name="description"></a>
 <h2>Description</h2>
-<p>The Traffic Light example shows how to use <a href="http://qt.nokia.com/doc/4.8/statemachine-api.html">The State Machine Framework</a> to implement the control flow of a traffic light.</p>
+<p>The Traffic Light example shows how to use The State Machine Framework to implement the control flow of a traffic light.</p>
 <p class="centerAlign"><img src="images/trafficlight-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a>, <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> and <a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a> classes to model our business logic with a state machine.</p>
+<p>In this example we'll learn how to use the QStateMachine, QState and QHistoryState classes to model our business logic with a state machine.</p>
 <p>The state chart that describes the business logic looks like the following:</p>
-<p class="centerAlign"><img src="images/trafficlight-statechart-example.png" alt="" /></p><p>We have the two top-level states 'runningState' and 'pausedState' and the user can switch between them by clicking the 'Pause' button. The 'runningState' has four child states: 'stopState', 'waitState', 'driveState' and 'slowState' which represent the four possible phases of a traffic light. The transition between these four states is triggered via the <tt>timeout()</tt> signal of a <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a>. The history state, that is entered when coming back from the 'pausedState', ensures that the state will be activated which has been active when the 'runningState' was left before.</p>
+<p class="centerAlign"><img src="images/trafficlight-statechart-example.png" alt="" /></p><p>We have the two top-level states 'runningState' and 'pausedState' and the user can switch between them by clicking the 'Pause' button. The 'runningState' has four child states: 'stopState', 'waitState', 'driveState' and 'slowState' which represent the four possible phases of a traffic light. The transition between these four states is triggered via the <tt>timeout()</tt> signal of a QTimer. The history state, that is entered when coming back from the 'pausedState', ensures that the state will be activated which has been active when the 'runningState' was left before.</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The UI of this sample application consists of a traffic light, a 'Pause' and a 'Quit' button.</p>
@@ -75,11 +73,11 @@
 <p>The traffic light is implemented in TrafficLight.qml and instantiated inside main.qml</p>
 <pre class="qml">                    <span class="type">TrafficLight</span> {
                         <span class="name">id</span>: <span class="name">trafficLight</span>
+
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">controller</span>: <span class="name">_trafficLightController</span>
-                        <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                        }
                     }</pre>
 <p>The TrafficLight object has a custom property 'controller' which points to the TrafficLightController object. All three colors of the TrafficLight are implemented as <tt>ImageViews</tt> that show different images depending on their state (on/off). The background image contains the colors that represent the 'off' state and the 'on' state is represented by overlay images</p>
 <pre class="qml">        <span class="comment">// The red light.</span>
@@ -117,8 +115,8 @@
 <p>To switch a color on or off we simple change the opacity of the overlay image. In this example the opacity properties are bound against the appropriated properties of the TrafficLightController object.</p>
 <a name="trafficlightcontroller"></a>
 <h2>TrafficLightController</h2>
-<p>The <tt>TrafficLightController</tt> is the central class of this application. It contains the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a> instance that drives the business logic and provides the properties that represent the state of the single traffic light colors</p>
-<pre class="cpp">    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+<p>The <tt>TrafficLightController</tt> is the central class of this application. It contains the QStateMachine instance that drives the business logic and provides the properties that represent the state of the single traffic light colors</p>
+<pre class="cpp">    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -130,13 +128,13 @@
         <span class="comment">// the state property that reflects whether the traffic light is currently paused</span>
         Q_PROPERTY(<span class="type">bool</span> paused READ paused WRITE setPaused NOTIFY pausedChanged)</pre>
 <p>Inside the constructor of <tt>TrafficLightController</tt> we initialize the properties with their default values, set up the state machine and start the timer that is used to trigger the transitions between the traffic light phases.</p>
-<pre class="cpp">    TrafficLightController<span class="operator">::</span>TrafficLightController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+<pre class="cpp">    TrafficLightController<span class="operator">::</span>TrafficLightController(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
         <span class="operator">,</span> m_redOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_yellowOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_greenOn(<span class="keyword">false</span>)
         <span class="operator">,</span> m_paused(<span class="keyword">false</span>)
-        <span class="operator">,</span> m_timer(<span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>(<span class="keyword">this</span>))
+        <span class="operator">,</span> m_timer(<span class="keyword">new</span> <span class="type">QTimer</span>(<span class="keyword">this</span>))
     {
         <span class="comment">// Create and start the state machine</span>
         setupStateMachine();
@@ -144,7 +142,7 @@
         <span class="comment">// Start the timer to trigger state changes</span>
         m_timer<span class="operator">-</span><span class="operator">&gt;</span>start();
     }</pre>
-<p>Inside <tt>setupStateMachine()</tt> we create the <a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a> object and all the <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> objects.</p>
+<p>Inside <tt>setupStateMachine()</tt> we create the QStateMachine object and all the QState objects.</p>
 <pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>setupStateMachine()
     {
         <span class="comment">/**
@@ -165,19 +163,19 @@
          */</span>
 
         <span class="comment">// Create the state machine</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span> <span class="operator">*</span>machine <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstatemachine.html">QStateMachine</a></span>(<span class="keyword">this</span>);
+        <span class="type">QStateMachine</span> <span class="operator">*</span>machine <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QStateMachine</span>(<span class="keyword">this</span>);
 
         <span class="comment">// Create the two top-level states</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>runningState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>pausedState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(machine);
+        <span class="type">QState</span> <span class="operator">*</span>runningState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(machine);
+        <span class="type">QState</span> <span class="operator">*</span>pausedState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(machine);
 
         <span class="comment">// Create the child states for the runningState</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>stopState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>waitState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>driveState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span> <span class="operator">*</span>slowState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a></span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>stopState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>waitState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>driveState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
+        <span class="type">QState</span> <span class="operator">*</span>slowState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QState</span>(runningState);
 
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span> <span class="operator">*</span>historyState <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhistorystate.html">QHistoryState</a></span>(runningState);
+        <span class="type">QHistoryState</span> <span class="operator">*</span>historyState <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QHistoryState</span>(runningState);
 
         <span class="comment">// Define which properties should be modified when entering a state:</span>
 
@@ -240,7 +238,7 @@
         <span class="comment">// Start the state machine</span>
         machine<span class="operator">-</span><span class="operator">&gt;</span>start();
     }</pre>
-<p>The <a href="http://qt.nokia.com/doc/4.8/qstate.html#assignProperty">assignProperty()</a> calls on the <a href="http://qt.nokia.com/doc/4.8/qstate.html">QState</a> objects ensure that whenever the state is entered, the given value will be assigned to the named property on the passed object. So whenever the 'driveState' is entered, the 'greenOn' property of the TrafficLightController object will be set to <tt>true</tt>, in all other states to <tt>false</tt>. When the 'greenOn' property is changed, the properties setter method <tt>setGreenOn()</tt> will be invoked.</p>
+<p>The assignProperty() calls on the QState objects ensure that whenever the state is entered, the given value will be assigned to the named property on the passed object. So whenever the 'driveState' is entered, the 'greenOn' property of the TrafficLightController object will be set to <tt>true</tt>, in all other states to <tt>false</tt>. When the 'greenOn' property is changed, the properties setter method <tt>setGreenOn()</tt> will be invoked.</p>
 <pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>setGreenOn(<span class="type">bool</span> on)
     {
         <span class="keyword">if</span> (m_greenOn <span class="operator">!</span><span class="operator">=</span> on) {
@@ -249,7 +247,7 @@
         }
     }</pre>
 <p>Inside this method we check whether the state has changed, and only if that's the case we update the internal state and emit the change notification signal.</p>
-<p>The next step inside <tt>setupStateMachine()</tt> is to wire up the states with transitions. As trigger for the transitions between the traffic light phases the <a href="http://qt.nokia.com/doc/4.8/qtimer.html#timeout">timeout()</a> signal of the <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a> object is used. For the transitions between 'runningState' and 'pausedState' the <tt>pauseRequested()</tt> signal of the <tt>TrafficLightController</tt> object is used, which is emitted whenever the user clicks on the 'Pause' button</p>
+<p>The next step inside <tt>setupStateMachine()</tt> is to wire up the states with transitions. As trigger for the transitions between the traffic light phases the timeout() signal of the QTimer object is used. For the transitions between 'runningState' and 'pausedState' the <tt>pauseRequested()</tt> signal of the <tt>TrafficLightController</tt> object is used, which is emitted whenever the user clicks on the 'Pause' button</p>
 <pre class="cpp">    <span class="type">void</span> TrafficLightController<span class="operator">::</span>pause()
     {
         <span class="keyword">emit</span> pauseRequested();

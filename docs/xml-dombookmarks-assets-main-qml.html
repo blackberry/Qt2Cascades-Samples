@@ -69,14 +69,12 @@
 
     <span class="comment">// Page shows the loading and saving of XBEL files using the DOM parser</span>
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
@@ -84,19 +82,23 @@
             <span class="type">Container</span> {
                 <span class="name">id</span>: <span class="name">root</span>
 
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="comment">// Container grouping application Button controls</span>
                 <span class="type">Container</span> {
                     <span class="name">id</span>: <span class="name">menuContainer</span>
+
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
+
+                    <span class="name">leftPadding</span>: <span class="number">10</span>
+                    <span class="name">topPadding</span>: <span class="number">10</span>
+                    <span class="name">rightPadding</span>: <span class="number">10</span>
+                    <span class="name">bottomPadding</span>: <span class="number">10</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-                        <span class="name">leftPadding</span>: <span class="number">10</span>
-                        <span class="name">topPadding</span>: <span class="number">10</span>
-                        <span class="name">rightPadding</span>: <span class="number">10</span>
-                        <span class="name">bottomPadding</span>: <span class="number">10</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Button</span>
@@ -154,23 +156,26 @@
                         }
                     }
                 }
+
                 <span class="type">Container</span> {
                     <span class="name">background</span>: <span class="name">Color</span>.<span class="name">DarkGray</span>
+
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
+
+                    <span class="name">leftPadding</span>: <span class="number">10</span>
+                    <span class="name">rightPadding</span>: <span class="number">10</span>
+                    <span class="name">bottomPadding</span>: <span class="number">10</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-                        <span class="name">leftPadding</span>: <span class="number">10</span>
-                        <span class="name">rightPadding</span>: <span class="number">10</span>
-                        <span class="name">bottomPadding</span>: <span class="number">10</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Label for displaying the action status</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -193,17 +198,11 @@
                     }
                     <span class="type">Container</span> {
                         <span class="name">objectName</span>: <span class="string">&quot;treeContainer&quot;</span>
-                        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                            <span class="name">leftPadding</span>: <span class="number">10</span>
-                            <span class="name">rightPadding</span>: <span class="number">10</span>
-                            <span class="name">bottomPadding</span>: <span class="number">10</span>
-                        }
-                    }
-                }
 
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">leftPadding</span>: <span class="number">10</span>
+                        <span class="name">rightPadding</span>: <span class="number">10</span>
+                        <span class="name">bottomPadding</span>: <span class="number">10</span>
+                    }
                 }
             }
         }

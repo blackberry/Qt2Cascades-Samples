@@ -79,10 +79,10 @@
     App<span class="operator">::</span>App()
     {
         <span class="comment">// Load the main QML file and make the App object available as context property</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
         <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
             qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
+            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
             <span class="keyword">if</span> (appPage) {
                 Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
@@ -92,7 +92,7 @@
         }
     }
 
-    <span class="type">void</span> App<span class="operator">::</span>load(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+    <span class="type">void</span> App<span class="operator">::</span>load(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName)
     {
         <span class="comment">// Do sanity check</span>
         <span class="keyword">if</span> (<span class="operator">!</span>m_treeContainer)
@@ -109,9 +109,9 @@
         XbelParser parser(m_treeContainer);
 
         <span class="comment">// Open the XBEL file which the user has selected</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(<span class="string">&quot;app/native/assets/&quot;</span> <span class="operator">+</span> fileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly))
-            <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qWarning">qWarning</a>(<span class="string">&quot;unable to open file&quot;</span>);
+        <span class="type">QFile</span> file(<span class="string">&quot;app/native/assets/&quot;</span> <span class="operator">+</span> fileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly))
+            qWarning(<span class="string">&quot;unable to open file&quot;</span>);
 
         <span class="comment">// Parse XBEL file and generate the bookmark controls</span>
         <span class="keyword">const</span> <span class="type">bool</span> ok <span class="operator">=</span> parser<span class="operator">.</span>parse(<span class="operator">&amp;</span>file);
@@ -135,11 +135,11 @@
         m_status <span class="operator">=</span> tr(<span class="string">&quot;Saving...&quot;</span>);
         <span class="keyword">emit</span> statusChanged();
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName(<span class="string">&quot;tmp/dombookmarks.xbel&quot;</span>);
+        <span class="keyword">const</span> <span class="type">QString</span> fileName(<span class="string">&quot;tmp/dombookmarks.xbel&quot;</span>);
 
         <span class="comment">// Open the target file where the modified XBEL document will be written to</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-        file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly);
+        <span class="type">QFile</span> file(fileName);
+        file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>WriteOnly);
 
         <span class="comment">// Create the XBEL generator on the tree container and let it generate the XBEL document from the bookmark controls</span>
         XbelGenerator generator(m_treeContainer);
@@ -154,7 +154,7 @@
         <span class="keyword">emit</span> statusChanged();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> App<span class="operator">::</span>status() <span class="keyword">const</span>
+    <span class="type">QString</span> App<span class="operator">::</span>status() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_status;
     }</pre>

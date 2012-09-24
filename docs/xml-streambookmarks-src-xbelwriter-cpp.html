@@ -76,7 +76,7 @@
         m_xml<span class="operator">.</span>setAutoFormatting(<span class="keyword">true</span>);
     }
 
-    <span class="type">bool</span> XbelWriter<span class="operator">::</span>writeFile(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    <span class="type">bool</span> XbelWriter<span class="operator">::</span>writeFile(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         m_xml<span class="operator">.</span>setDevice(device);
 
@@ -105,8 +105,8 @@
          * Retrieve the tag name and title from the control.
          * These two properties have been set on the controls by the XbelReader.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> tagName <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
 
         <span class="comment">// Depending on the tag name write a new element to the XBEL document</span>
         <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>) {
@@ -121,7 +121,7 @@
             m_xml<span class="operator">.</span>writeEndElement();
         } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>) {
             m_xml<span class="operator">.</span>writeStartElement(tagName);
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
+            <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> container<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isEmpty())
                 m_xml<span class="operator">.</span>writeAttribute(<span class="string">&quot;href&quot;</span><span class="operator">,</span> url);
             m_xml<span class="operator">.</span>writeTextElement(<span class="string">&quot;title&quot;</span><span class="operator">,</span> title);

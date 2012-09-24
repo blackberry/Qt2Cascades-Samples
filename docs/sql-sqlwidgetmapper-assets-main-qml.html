@@ -69,48 +69,39 @@
 
     <span class="comment">// Page shows layout of TextField's bound to database data</span>
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">20</span>
-                    <span class="name">rightPadding</span>: <span class="number">20</span>
-                    <span class="name">topPadding</span>: <span class="number">20</span>
-                    <span class="name">bottomPadding</span>: <span class="number">20</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">20</span>
+                <span class="name">rightPadding</span>: <span class="number">20</span>
+                <span class="name">topPadding</span>: <span class="number">20</span>
+                <span class="name">bottomPadding</span>: <span class="number">20</span>
 
                 <span class="comment">// Groups the label and corresponding TextField</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">bottomPadding</span>: <span class="number">20</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-                        <span class="name">bottomPadding</span>: <span class="number">20</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Label</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">preferredWidth</span>: <span class="number">200</span>
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                        }
 
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;First Name&quot;</span>)
 
@@ -124,9 +115,11 @@
                     <span class="comment">// Standard TextField</span>
                     <span class="type">TextField</span> {
                         <span class="name">objectName</span>: <span class="string">&quot;firstNameField&quot;</span>
+
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">leftMargin</span>: <span class="number">10</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -138,20 +131,17 @@
 
                 <span class="comment">// Groups the label and corresponding TextField</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">bottomPadding</span>: <span class="number">20</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-                        <span class="name">bottomPadding</span>: <span class="number">20</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Label</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">preferredWidth</span>: <span class="number">200</span>
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                        }
 
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Last Name&quot;</span>)
 
@@ -165,8 +155,10 @@
                     <span class="comment">// A standard TextField</span>
                     <span class="type">TextField</span> {
                         <span class="name">objectName</span>: <span class="string">&quot;lastNameField&quot;</span>
+
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -178,20 +170,17 @@
 
                 <span class="comment">// Groups the label and corresponding TextArea</span>
                 <span class="type">Container</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                    <span class="name">bottomPadding</span>: <span class="number">20</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
-                        <span class="name">bottomPadding</span>: <span class="number">20</span>
-                    }
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Label</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">preferredWidth</span>: <span class="number">200</span>
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                        }
 
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Quote&quot;</span>)
 
@@ -205,9 +194,11 @@
                     <span class="comment">// A standard TextArea</span>
                     <span class="type">TextArea</span> {
                         <span class="name">objectName</span>: <span class="string">&quot;quoteField&quot;</span>
+
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">preferredHeight</span>: <span class="number">350</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -219,17 +210,17 @@
 
                 <span class="comment">// Groups the application control Buttons</span>
                 <span class="type">Container</span> {
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    }
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+
                     <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                        <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                     }
 
                     <span class="comment">// A standard Button</span>
                     <span class="type">Button</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -240,13 +231,13 @@
 
                         <span class="comment">// Enable Button if there is previous data</span>
                         <span class="name">enabled</span>: <span class="name">_dataMapper</span>.<span class="name">currentIndex</span> <span class="operator">!=</span> <span class="number">0</span>
-
                     }
 
                     <span class="comment">// A standard Label</span>
                     <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
 
@@ -254,17 +245,20 @@
 
                         <span class="comment">// Defines custom text Color</span>
                         <span class="type">textStyle</span> {
-                            <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                            <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
                             <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                            <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
                         }
                     }
 
                     <span class="comment">// A standard Button</span>
                     <span class="type">Button</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
                         <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                             <span class="name">spaceQuota</span>: <span class="number">1</span>
                         }
+
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Next&quot;</span>)
 
                         <span class="comment">// Go to next data on click</span>
@@ -272,7 +266,6 @@
 
                         <span class="comment">// Enable Button only if there is more data</span>
                         <span class="name">enabled</span>: (<span class="name">_dataMapper</span>.<span class="name">currentIndex</span> <span class="operator">&lt;</span> (<span class="name">_dataMapper</span>.<span class="name">count</span> <span class="operator">-</span> <span class="number">1</span>))
-
                     }
                 }
             }

@@ -68,46 +68,40 @@
     import bb.cascades 1.0
 
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">30</span>
-                    <span class="name">topPadding</span>: <span class="number">20</span>
-                    <span class="name">rightPadding</span>: <span class="number">30</span>
-                    <span class="name">bottomPadding</span>: <span class="number">30</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">30</span>
+                <span class="name">topPadding</span>: <span class="number">20</span>
+                <span class="name">rightPadding</span>: <span class="number">30</span>
+                <span class="name">bottomPadding</span>: <span class="number">30</span>
 
                 <span class="type">TextField</span> {
                     <span class="name">id</span>: <span class="name">search</span>
                     <span class="name">text</span>: <span class="string">&quot;&quot;</span>
                     <span class="name">hintText</span>: <span class="name">qsTr</span> (<span class="string">&quot;Search Google!&quot;</span>)
 
-                    <span class="comment">// Inform the App object about the new input whenever the input text changes</span>
-                    <span class="name">onTextChanging</span>: <span class="name">_app</span>.<span class="name">input</span> <span class="operator">=</span> <span class="name">text</span>
+                    <span class="comment">// Inform the GoogleSuggest object about the new input whenever the input text changes</span>
+                    <span class="name">onTextChanging</span>: <span class="name">_googleSuggest</span>.<span class="name">input</span> <span class="operator">=</span> <span class="name">text</span>
                 }
 
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+                <span class="type">ListView</span> {
                     <span class="name">id</span>: <span class="name">suggestions</span>
 
                     <span class="name">topMargin</span>: <span class="number">10</span>
 
-                    <span class="name">dataModel</span>: <span class="name">_app</span>.<span class="name">model</span>
+                    <span class="name">dataModel</span>: <span class="name">_googleSuggest</span>.<span class="name">model</span>
 
                     <span class="name">listItemComponents</span>: [
                         <span class="type">ListItemComponent</span> {
@@ -115,13 +109,13 @@
                             <span class="type">StandardListItem</span> {
                                 <span class="name">title</span>: <span class="name">ListItemData</span>.<span class="name">suggestion</span>
                                 <span class="name">status</span>: <span class="name">ListItemData</span>.<span class="name">hits</span>
-                                <span class="name">reserveImageSpace</span>: <span class="number">false</span>
+                                <span class="name">imageSpaceReserved</span>: <span class="number">false</span>
                             }
                         }
                     ]
 
-                    <span class="comment">// Connect the 'clearSelection' signal of the App object against the 'clearSelection' slot of the ListView</span>
-                    <span class="name">onCreationCompleted</span>: <span class="name">_app</span>.<span class="name">clearSelection</span>.<span class="name">connect</span>(<span class="name">suggestions</span>.<span class="name">clearSelection</span>)
+                    <span class="comment">// Connect the 'clearSelection' signal of the GoogleSuggest object against the 'clearSelection' slot of the ListView</span>
+                    <span class="name">onCreationCompleted</span>: <span class="name">_googleSuggest</span>.<span class="name">clearSelection</span>.<span class="name">connect</span>(<span class="name">suggestions</span>.<span class="name">clearSelection</span>)
                 }
             }
         }

@@ -65,17 +65,37 @@
      **
      ****************************************************************************/</span>
 
+    <span class="preprocessor">#include &quot;UndoManager.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
 
-    <span class="preprocessor">#include &quot;UndoFrameworkApp.hpp&quot;</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
-    <span class="keyword">using</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Application;
-
+    <span class="comment">/**
+     * This sample application shows how to use the undo/redo framework that is
+     * provided by Qt.
+     * The user can move around gaming pieces on a board and undo/redo the moves
+     * by clicking the 'Undo' or 'Redo' button.
+     */</span>
     <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
     {
         Application app(argc<span class="operator">,</span> argv);
 
-        UndoFrameworkApp mainApp;
+        <span class="comment">// Create the undo manager</span>
+        UndoManager manager;
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// Make the UndoManager and Application object available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_undoManager&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>manager);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>app);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

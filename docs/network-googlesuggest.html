@@ -42,35 +42,34 @@
 </ul>
 <a name="description"></a>
 <h2>Description</h2>
-<p>The Google Suggest example demonstrates how to use the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> class to obtain a list of suggestions from the Google search engine as the user types into a TextField.</p>
-<p class="centerAlign"><img src="images/googlesuggest-example.png" alt="" /></p><p>The application makes use of the <tt>get</tt> function in <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a> to post a request and obtain the result of the search query sent to the Google search engine. The results returned are put into a <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a>.</p>
-<p>This example is built up by a TextField as the search box, and a <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> used to store the suggestions.</p>
+<p>The Google Suggest example demonstrates how to use the QNetworkAccessManager class to obtain a list of suggestions from the Google search engine as the user types into a TextField.</p>
+<p class="centerAlign"><img src="images/googlesuggest-example.png" alt="" /></p><p>The application makes use of the <tt>get</tt> function in QNetworkAccessManager to post a request and obtain the result of the search query sent to the Google search engine. The results returned are put into a ListView.</p>
+<p>This example is built up by a TextField as the search box, and a ListView used to store the suggestions.</p>
 <a name="googlesuggest-class-declaration"></a>
 <h2>GoogleSuggest Class Declaration</h2>
 <p>This class implements slots for various signals and a number of functions to display the search results and to determent when and how to perform the search.</p>
-<pre class="cpp">    <span class="keyword">class</span> GoogleSuggest: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+<pre class="cpp">    <span class="keyword">class</span> GoogleSuggest: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// This property is used to set the input text from the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> input READ input WRITE setInput NOTIFY inputChanged)
+        Q_PROPERTY(<span class="type">QString</span> input READ input WRITE setInput NOTIFY inputChanged)
 
         <span class="comment">// This property makes the model that contains the results available to the UI</span>
-        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model NOTIFY modelChanged)
+        Q_PROPERTY(bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model READ model CONSTANT)
 
     <span class="keyword">public</span>:
         GoogleSuggest();
 
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> input() <span class="keyword">const</span>;
-        <span class="type">void</span> setInput(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>input);
+        <span class="type">QString</span> input() <span class="keyword">const</span>;
+        <span class="type">void</span> setInput(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>input);
 
         bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>;
 
     Q_SIGNALS:
-        <span class="comment">// The change notification signals of the properties</span>
+        <span class="comment">// The change notification signal of the property</span>
         <span class="type">void</span> inputChanged();
-        <span class="type">void</span> modelChanged();
 
         <span class="comment">// This signal is emitted to trigger the ListView to clear its selection</span>
         <span class="type">void</span> clearSelection();
@@ -80,68 +79,62 @@
         <span class="type">void</span> autoSuggest();
 
         <span class="comment">// This method is called when the query provides new data</span>
-        <span class="type">void</span> handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>reply);
+        <span class="type">void</span> handleNetworkData(<span class="type">QNetworkReply</span> <span class="operator">*</span>reply);
 
         <span class="comment">// This method adds the parsed choices/hits information to the data model</span>
-        <span class="type">void</span> showCompletions(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>hits);
+        <span class="type">void</span> showCompletions(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>hits);
 
     <span class="keyword">private</span>:
         <span class="comment">// The data model that contains the choices/hits information</span>
         <span class="keyword">mutable</span> bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QMapListDataModel</span> m_model;
 
         <span class="comment">// The network manager that handles the communication with the web service</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_networkManager;
+        <span class="type">QNetworkAccessManager</span> m_networkManager;
 
         <span class="comment">// The time object to delay the start of the query</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span> m_timer;
+        <span class="type">QTimer</span> m_timer;
 
         <span class="comment">// The data the user has typed in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_input;
+        <span class="type">QString</span> m_input;
     };</pre>
-<p>The class connects to a TextField and uses a <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> to display the results. Both are defined in the QML. A <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a> controls the start of the network requests that are executed using a <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a>.</p>
+<p>The class connects to a TextField and uses a ListView to display the results. Both are defined in the QML. A QTimer controls the start of the network requests that are executed using a QNetworkAccessManager.</p>
 <pre class="qml">    import bb.cascades 1.0
 
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">30</span>
-                    <span class="name">topPadding</span>: <span class="number">20</span>
-                    <span class="name">rightPadding</span>: <span class="number">30</span>
-                    <span class="name">bottomPadding</span>: <span class="number">30</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">30</span>
+                <span class="name">topPadding</span>: <span class="number">20</span>
+                <span class="name">rightPadding</span>: <span class="number">30</span>
+                <span class="name">bottomPadding</span>: <span class="number">30</span>
 
                 <span class="type">TextField</span> {
                     <span class="name">id</span>: <span class="name">search</span>
                     <span class="name">text</span>: <span class="string">&quot;&quot;</span>
                     <span class="name">hintText</span>: <span class="name">qsTr</span> (<span class="string">&quot;Search Google!&quot;</span>)
 
-                    <span class="comment">// Inform the App object about the new input whenever the input text changes</span>
-                    <span class="name">onTextChanging</span>: <span class="name">_app</span>.<span class="name">input</span> <span class="operator">=</span> <span class="name">text</span>
+                    <span class="comment">// Inform the GoogleSuggest object about the new input whenever the input text changes</span>
+                    <span class="name">onTextChanging</span>: <span class="name">_googleSuggest</span>.<span class="name">input</span> <span class="operator">=</span> <span class="name">text</span>
                 }
 
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+                <span class="type">ListView</span> {
                     <span class="name">id</span>: <span class="name">suggestions</span>
 
                     <span class="name">topMargin</span>: <span class="number">10</span>
 
-                    <span class="name">dataModel</span>: <span class="name">_app</span>.<span class="name">model</span>
+                    <span class="name">dataModel</span>: <span class="name">_googleSuggest</span>.<span class="name">model</span>
 
                     <span class="name">listItemComponents</span>: [
                         <span class="type">ListItemComponent</span> {
@@ -149,13 +142,13 @@
                             <span class="type">StandardListItem</span> {
                                 <span class="name">title</span>: <span class="name">ListItemData</span>.<span class="name">suggestion</span>
                                 <span class="name">status</span>: <span class="name">ListItemData</span>.<span class="name">hits</span>
-                                <span class="name">reserveImageSpace</span>: <span class="number">false</span>
+                                <span class="name">imageSpaceReserved</span>: <span class="number">false</span>
                             }
                         }
                     ]
 
-                    <span class="comment">// Connect the 'clearSelection' signal of the App object against the 'clearSelection' slot of the ListView</span>
-                    <span class="name">onCreationCompleted</span>: <span class="name">_app</span>.<span class="name">clearSelection</span>.<span class="name">connect</span>(<span class="name">suggestions</span>.<span class="name">clearSelection</span>)
+                    <span class="comment">// Connect the 'clearSelection' signal of the GoogleSuggest object against the 'clearSelection' slot of the ListView</span>
+                    <span class="name">onCreationCompleted</span>: <span class="name">_googleSuggest</span>.<span class="name">clearSelection</span>.<span class="name">connect</span>(<span class="name">suggestions</span>.<span class="name">clearSelection</span>)
                 }
             }
         }
@@ -168,18 +161,10 @@
     <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
     <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>GSUGGEST_URL <span class="operator">=</span> <span class="string">&quot;http://google.com/complete/search?output=toolbar&amp;q=%1&quot;</span>;</pre>
-<p>We start off by setting up the QML layout we'll be using. We also expose the class to the layout so we can access it from the QML. We do this with the <tt>setContextProperty</tt> method of <tt>QmlDocument</tt>.</p>
-<p>We then set up the main scene which is created from our QML.</p>
-<p>A single-shot <a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a> is used to start the request when the user has stopped typing for 500 ms.</p>
+<p>A single-shot QTimer is used to start the request when the user has stopped typing for 500 ms.</p>
 <p>Finally, we connect the networkManagers <tt>finished()</tt> signal with the <tt>handleNetworkData()</tt> slot to handle the incoming data.</p>
 <pre class="cpp">    GoogleSuggest<span class="operator">::</span>GoogleSuggest()
     {
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;main.qml&quot;</span>);
-        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-
-        AbstractPane <span class="operator">*</span>root <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(root);
-
         <span class="comment">// We use a timer that goes off after 500ms to trigger</span>
         <span class="comment">// actually retrieving the suggestions</span>
         m_timer<span class="operator">.</span>setSingleShot(<span class="keyword">true</span>);
@@ -188,11 +173,11 @@
         connect(<span class="operator">&amp;</span>m_timer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(autoSuggest()));
 
         <span class="comment">// Hook this signal so we get our network requests</span>
-        connect(<span class="operator">&amp;</span>m_networkManager<span class="operator">,</span> SIGNAL(finished(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>))<span class="operator">,</span>
-                <span class="keyword">this</span><span class="operator">,</span> SLOT(handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span><span class="operator">*</span>)));
+        connect(<span class="operator">&amp;</span>m_networkManager<span class="operator">,</span> SIGNAL(finished(<span class="type">QNetworkReply</span><span class="operator">*</span>))<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(handleNetworkData(<span class="type">QNetworkReply</span><span class="operator">*</span>)));
     }</pre>
-<p>The <tt>showCompletion()</tt> function updates the data model connected to our <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a>. It takes two QStringLists, one with the suggested search terms and the other with the corresponding number of hits.</p>
-<pre class="cpp">    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>showCompletions(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> <span class="operator">&amp;</span>hits)
+<p>The <tt>showCompletion()</tt> function updates the data model connected to our ListView. It takes two QStringLists, one with the suggested search terms and the other with the corresponding number of hits.</p>
+<pre class="cpp">    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>showCompletions(<span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>choices<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>hits)
     {
         <span class="keyword">emit</span> clearSelection();
 
@@ -202,14 +187,14 @@
             <span class="keyword">return</span>;
 
         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> choices<span class="operator">.</span>count(); <span class="operator">+</span><span class="operator">+</span>i) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantMap-typedef">QVariantMap</a></span> item;
+            <span class="type">QVariantMap</span> item;
 
-            item<span class="operator">[</span><span class="string">&quot;suggestion&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(choices<span class="operator">[</span>i<span class="operator">]</span>);
-            item<span class="operator">[</span><span class="string">&quot;hits&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(hits<span class="operator">[</span>i<span class="operator">]</span>);
+            item<span class="operator">[</span><span class="string">&quot;suggestion&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type">QString</span>(choices<span class="operator">[</span>i<span class="operator">]</span>);
+            item<span class="operator">[</span><span class="string">&quot;hits&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="type">QString</span>(hits<span class="operator">[</span>i<span class="operator">]</span>);
             m_model<span class="operator">.</span>append(item);
         }
     }</pre>
-<p>The <tt>autoSuggest()</tt> slot is called when the timer times out, and uses the text in the TextField to build the complete search query. The query is then passed to the <a href="http://qt.nokia.com/doc/4.8/qnetworkaccessmanager.html">QNetworkAccessManager</a>'s <tt>get()</tt> function to start the request.</p>
+<p>The <tt>autoSuggest()</tt> slot is called when the timer times out, and uses the text in the TextField to build the complete search query. The query is then passed to the QNetworkAccessManager's <tt>get()</tt> function to start the request.</p>
 <pre class="cpp">    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>autoSuggest()
     {
         <span class="keyword">if</span> (m_input<span class="operator">.</span>isEmpty()) {
@@ -217,23 +202,23 @@
             <span class="keyword">return</span>;
         }
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(GSUGGEST_URL)<span class="operator">.</span>arg(m_input);
+        <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> <span class="type">QString</span><span class="operator">::</span>fromLatin1(GSUGGEST_URL)<span class="operator">.</span>arg(m_input);
 
-        m_networkManager<span class="operator">.</span>get(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkrequest.html">QNetworkRequest</a></span>(url));
+        m_networkManager<span class="operator">.</span>get(<span class="type">QNetworkRequest</span>(url));
     }</pre>
-<p>To extract the data from the reply we use the <tt>readAll()</tt> function, which is inherited from <a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a> and returns a <a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a>. Since this data is encoded in XML we can use a <a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a> to traverse the data and extract the search result as QStrings, which we can stream into two QStringLists used to populate the popup.</p>
-<p>Finally, we schedule the <a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a> object for deletion using the <tt>deleteLater</tt> function.</p>
-<pre class="cpp">    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>handleNetworkData(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>networkReply)
+<p>To extract the data from the reply we use the <tt>readAll()</tt> function, which is inherited from QIODevice and returns a QByteArray. Since this data is encoded in XML we can use a QXmlStreamReader to traverse the data and extract the search result as QStrings, which we can stream into two QStringLists used to populate the popup.</p>
+<p>Finally, we schedule the QNetworkReply object for deletion using the <tt>deleteLater</tt> function.</p>
+<pre class="cpp">    <span class="type">void</span> GoogleSuggest<span class="operator">::</span>handleNetworkData(<span class="type">QNetworkReply</span> <span class="operator">*</span>networkReply)
     {
         <span class="keyword">if</span> (<span class="operator">!</span>networkReply<span class="operator">-</span><span class="operator">&gt;</span>error()) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> choices;
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> hits;
+            <span class="type">QStringList</span> choices;
+            <span class="type">QStringList</span> hits;
 
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> response(networkReply<span class="operator">-</span><span class="operator">&gt;</span>readAll());
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> xml(response);
+            <span class="keyword">const</span> <span class="type">QByteArray</span> response(networkReply<span class="operator">-</span><span class="operator">&gt;</span>readAll());
+            <span class="type">QXmlStreamReader</span> xml(response);
             <span class="keyword">while</span> (<span class="operator">!</span>xml<span class="operator">.</span>atEnd()) {
                 xml<span class="operator">.</span>readNext();
-                <span class="keyword">if</span> (xml<span class="operator">.</span>tokenType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span><span class="operator">::</span>StartElement) {
+                <span class="keyword">if</span> (xml<span class="operator">.</span>tokenType() <span class="operator">=</span><span class="operator">=</span> <span class="type">QXmlStreamReader</span><span class="operator">::</span>StartElement) {
                     <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;suggestion&quot;</span>) {
                         choices <span class="operator">&lt;</span><span class="operator">&lt;</span> xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;data&quot;</span>)<span class="operator">.</span>toString();
                     } <span class="keyword">else</span> <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;num_queries&quot;</span>) {

@@ -71,21 +71,21 @@
     <span class="preprocessor">#include &lt;QObject&gt;</span>
     <span class="preprocessor">#include &lt;QSharedMemory&gt;</span>
 
-    <span class="keyword">class</span> FileLoader : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> FileLoader : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status READ status NOTIFY statusChanged)
+        Q_PROPERTY(<span class="type">QString</span> status READ status NOTIFY statusChanged)
 
     <span class="keyword">public</span>:
-        FileLoader(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        FileLoader(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// Accessor method for the status property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> status() <span class="keyword">const</span>;
+        <span class="type">QString</span> status() <span class="keyword">const</span>;
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is called when the user selects a file to load</span>
-        <span class="type">void</span> loadFile(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName);
+        <span class="type">void</span> loadFile(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signal of the status property</span>
@@ -93,7 +93,7 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// A textual description of the current status of the FileLoader</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_status;
+        <span class="type">QString</span> m_status;
     };
 
     <span class="preprocessor">#endif</span></pre>

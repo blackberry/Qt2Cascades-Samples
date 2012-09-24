@@ -70,7 +70,7 @@
 
     <span class="preprocessor">#include &lt;QObject&gt;</span>
 
-    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>;
+    <span class="keyword">class</span> <span class="type">QTimer</span>;
 
     <span class="comment">/**
      * TrafficLightController
@@ -83,7 +83,7 @@
      * The states of the single lights of the traffic light are made available via
      * properties, so that the UI can bind against them directly.
      */</span>
-    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -96,7 +96,7 @@
         Q_PROPERTY(<span class="type">bool</span> paused READ paused WRITE setPaused NOTIFY pausedChanged)
 
     <span class="keyword">public</span>:
-        TrafficLightController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        TrafficLightController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// accessor methods for the state properties</span>
         <span class="type">bool</span> redOn() <span class="keyword">const</span>;
@@ -143,7 +143,7 @@
         <span class="type">bool</span> m_paused;
 
         <span class="comment">// the timer that triggers the state changes</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span> <span class="operator">*</span>m_timer;
+        <span class="type">QTimer</span> <span class="operator">*</span>m_timer;
     };
 
     <span class="preprocessor">#endif</span></pre>

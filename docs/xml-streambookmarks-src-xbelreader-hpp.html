@@ -85,10 +85,10 @@
         XbelReader(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>treeContainer);
 
         <span class="comment">// Starts the parsing of the XBEL document</span>
-        <span class="type">bool</span> read(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device);
+        <span class="type">bool</span> read(<span class="type">QIODevice</span> <span class="operator">*</span>device);
 
         <span class="comment">// Returns a textual representation of the error if one occurred</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> errorString() <span class="keyword">const</span>;
+        <span class="type">QString</span> errorString() <span class="keyword">const</span>;
 
     <span class="keyword">private</span>:
         <span class="comment">// A helper method that parses the root element of a XBEL document</span>
@@ -110,10 +110,10 @@
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>createChildItem(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>parent);
 
         <span class="comment">// The XML stream reader that is used to parse the XBEL document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> m_xml;
+        <span class="type">QXmlStreamReader</span> m_xml;
 
         <span class="comment">// The container object the controls are created in</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
+        <span class="type">QPointer</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Container<span class="operator">&gt;</span> m_treeContainer;
     };
 
     <span class="preprocessor">#endif</span></pre>

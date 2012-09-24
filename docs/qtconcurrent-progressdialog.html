@@ -26,7 +26,7 @@
 <li class="level1"><a href="#description">Description</a></li>
 <li class="level1"><a href="#overview">Overview</a></li>
 <li class="level1"><a href="#the-ui">The UI</a></li>
-<li class="level1"><a href="#progressdialogapp">ProgressDialogApp</a></li>
+<li class="level1"><a href="#progressdialog">ProgressDialog</a></li>
 </ul>
 </div>
 <h1 class="title">Progress Dialog Example</h1>
@@ -36,81 +36,63 @@
 <p>Files:</p>
 <ul>
 <li><a href="qtconcurrent-progressdialog-assets-main-qml.html">qtconcurrent/progressdialog/assets/main.qml</a></li>
-<li><a href="qtconcurrent-progressdialog-src-progressdialogapp-cpp.html">qtconcurrent/progressdialog/src/ProgressDialogApp.cpp</a></li>
-<li><a href="qtconcurrent-progressdialog-src-progressdialogapp-hpp.html">qtconcurrent/progressdialog/src/ProgressDialogApp.hpp</a></li>
+<li><a href="qtconcurrent-progressdialog-src-progressdialog-cpp.html">qtconcurrent/progressdialog/src/ProgressDialog.cpp</a></li>
+<li><a href="qtconcurrent-progressdialog-src-progressdialog-hpp.html">qtconcurrent/progressdialog/src/ProgressDialog.hpp</a></li>
 <li><a href="qtconcurrent-progressdialog-src-main-cpp.html">qtconcurrent/progressdialog/src/main.cpp</a></li>
 <li><a href="qtconcurrent-progressdialog-progressdialog-pro.html">qtconcurrent/progressdialog/progressdialog.pro</a></li>
 </ul>
 <a name="description"></a>
 <h2>Description</h2>
-<p>The <a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a> Progress Dialog example shows how to use the <a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html">QFutureWatcher</a> class to monitor the progress of a long-running operation.</p>
+<p>The QtConcurrent Progress Dialog example shows how to use the QFutureWatcher class to monitor the progress of a long-running operation.</p>
 <p class="centerAlign"><img src="images/progressdialog-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qfuture.html">QFuture</a> class of the <a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a> module to execute a long lasting operation in a separated thread and how to monitor the progress and state with the <a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html">QFutureWatcher</a> class.</p>
+<p>In this example we'll learn how to use the QFuture class of the QtConcurrent module to execute a long lasting operation in a separated thread and how to monitor the progress and state with the QFutureWatcher class.</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The UI of this sample application consists of two buttons, one to start the operation and one to cancel it. The progress of the operation is visualized by a progress bar. Above the two buttons is a label that shows the number of CPU cores that are used for the calculation.</p>
-<p>The business logic of the application is encapsulated in the class ProgressDialogApp, which is exported to the UI as '_app'.</p>
+<p>The business logic of the application is encapsulated in the class ProgressDialog, which is exported to the UI as '<a href="#progressdialog">_progressDialog</a>'.</p>
 <pre class="qml">                <span class="type">Label</span> {
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
 
-                    <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Run the computation on %1 cores&quot;</span>).<span class="name">arg</span>(<span class="name">_app</span>.<span class="name">numberOfCores</span>)
-                    <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">White</span>
-                    <span class="name">textStyle</span>.base: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">TitleText</span>
+                    <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Run the computation on %1 cores&quot;</span>).<span class="name">arg</span>(<span class="name">_progressDialog</span>.<span class="name">numberOfCores</span>)
+                    <span class="type">textStyle</span> {
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">TitleText</span>
+                    }
                 }</pre>
-<p>The text of the label contains a placeholder, which gets substituted with the number of cores as reported by the ProgressDialogApp object.</p>
+<p>The text of the label contains a placeholder, which gets substituted with the number of cores as reported by the ProgressDialog object.</p>
 <pre class="qml">                    <span class="type">Button</span> {
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Start&quot;</span>)
-                        <span class="name">enabled</span>: !<span class="name">_app</span>.<span class="name">active</span>
-                        <span class="name">onClicked</span>: <span class="name">_app</span>.<span class="name">startComputation</span>()
+                        <span class="name">enabled</span>: !<span class="name">_progressDialog</span>.<span class="name">active</span>
+                        <span class="name">onClicked</span>: <span class="name">_progressDialog</span>.<span class="name">startComputation</span>()
                     }
 
                     <span class="type">Button</span> {
                         <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Cancel&quot;</span>)
-                        <span class="name">enabled</span>: <span class="name">_app</span>.<span class="name">active</span>
-                        <span class="name">onClicked</span>: <span class="name">_app</span>.<span class="name">cancelComputation</span>()
+                        <span class="name">enabled</span>: <span class="name">_progressDialog</span>.<span class="name">active</span>
+                        <span class="name">onClicked</span>: <span class="name">_progressDialog</span>.<span class="name">cancelComputation</span>()
                     }</pre>
-<p>When the user clicks the 'Start' or 'Cancel' button, the startComputation() and cancelComputation() slots of the ProgressDialogApp object are invoked. Additionally the state of the buttons changes depending on whether a calculation is running or not.</p>
+<p>When the user clicks the 'Start' or 'Cancel' button, the startComputation() and cancelComputation() slots of the ProgressDialog object are invoked. Additionally the state of the buttons changes depending on whether a calculation is running or not.</p>
 <pre class="qml">                <span class="type">ProgressIndicator</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                     <span class="name">topMargin</span>: <span class="number">40</span>
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
 
                     <span class="comment">// Show the progress bar only when computation is running</span>
-                    <span class="name">opacity</span>: <span class="name">_app</span>.<span class="name">active</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+                    <span class="name">opacity</span>: <span class="name">_progressDialog</span>.<span class="name">active</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
 
-                    <span class="name">fromValue</span>: <span class="name">_app</span>.<span class="name">progressMinimum</span>
-                    <span class="name">toValue</span>: <span class="name">_app</span>.<span class="name">progressMaximum</span>
-                    <span class="name">value</span>: <span class="name">_app</span>.<span class="name">progressValue</span>
+                    <span class="name">fromValue</span>: <span class="name">_progressDialog</span>.<span class="name">progressMinimum</span>
+                    <span class="name">toValue</span>: <span class="name">_progressDialog</span>.<span class="name">progressMaximum</span>
+                    <span class="name">value</span>: <span class="name">_progressDialog</span>.<span class="name">progressValue</span>
                 }</pre>
 <p>The progress properties of the progress bar (provided by Cascades' ProgressIndicator class) are bound against the progress properties of the ProgressDialog app object, so that they get updated automatically. The progress bar is only visible while the calculation is running.</p>
-<a name="progressdialogapp"></a>
-<h2>ProgressDialogApp</h2>
-<p>The ProgressDialogApp is the central class in this sample application that contains all the business logic. It provides the two slots to start and cancel the calculation and properties that reflect the state and progress of the calculation. ProgressDialogApp contains a <a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html">QFutureWatcher</a> as member variable, which is used to monitor the progress and state of a <a href="http://qt.nokia.com/doc/4.8/qfuture.html">QFuture</a> instance. For this the signals of the future watcher are connected against private slots inside the constructor of ProgressDialogApp, after the main.qml file has been loaded.</p>
-<pre class="cpp">    ProgressDialogApp<span class="operator">::</span>ProgressDialogApp()
+<a name="progressdialog"></a>
+<h2>ProgressDialog</h2>
+<p>The ProgressDialog is the central class in this sample application that contains all the business logic. It provides the two slots to start and cancel the calculation and properties that reflect the state and progress of the calculation. ProgressDialog contains a QFutureWatcher as member variable, which is used to monitor the progress and state of a QFuture instance. For this the signals of the future watcher are connected against private slots inside the constructor of ProgressDialog.</p>
+<pre class="cpp">    ProgressDialog<span class="operator">::</span>ProgressDialog()
         : m_progressMinimum(<span class="number">0</span>)
         <span class="operator">,</span> m_progressMaximum(<span class="number">0</span>)
         <span class="operator">,</span> m_progressValue(<span class="number">0</span>)
     {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the ProgressDialogApp object available to the UI as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
-
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
-
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-            }
-        }
-
         <span class="comment">// Forward state change signals from the watcher to our 'active' property</span>
         connect(<span class="operator">&amp;</span>m_futureWatcher<span class="operator">,</span> SIGNAL(started())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(activeChanged()));
         connect(<span class="operator">&amp;</span>m_futureWatcher<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(activeChanged()));
@@ -124,10 +106,10 @@
                 <span class="keyword">this</span><span class="operator">,</span> SLOT(calculationFinished()));
     }</pre>
 <p>When the user clicks the 'Start' button in the UI, the startCalculation() slot is invoked</p>
-<pre class="cpp">    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>startComputation()
+<pre class="cpp">    <span class="type">void</span> ProgressDialog<span class="operator">::</span>startComputation()
     {
         <span class="comment">// Prepare the vector</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvector.html">QVector</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> vector;
+        <span class="type">QVector</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> vector;
         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> <span class="number">40</span>; <span class="operator">+</span><span class="operator">+</span>i)
             vector<span class="operator">.</span>append(i);
 
@@ -136,12 +118,12 @@
          * The returned Future object is just a handle to the running operation, which
          * is executed asynchronously in separated threads.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfuture.html">QFuture</a></span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> future <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a></span><span class="operator">::</span>map(vector<span class="operator">,</span> spin);
+        <span class="keyword">const</span> <span class="type">QFuture</span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> future <span class="operator">=</span> <span class="type">QtConcurrent</span><span class="operator">::</span>map(vector<span class="operator">,</span> spin);
 
         <span class="comment">// Let the future watcher monitor the progress of this Future</span>
         m_futureWatcher<span class="operator">.</span>setFuture(future);
     }</pre>
-<p>Inside this slot, a vector is filled with some dummy value that act as input values for the calculation. Then the actual calculation is started by calling <a href="http://qt.nokia.com/doc/4.8/qtconcurrentmap.html#map">QtConcurrent::map()</a>. This method from the <a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a> module takes a container and a function as parameters and executes the function once for each entry in the container in a separated thread. The function we use in this example just burns some CPU cycles:</p>
+<p>Inside this slot, a vector is filled with some dummy value that act as input values for the calculation. Then the actual calculation is started by calling QtConcurrent::map(). This method from the QtConcurrent module takes a container and a function as parameters and executes the function once for each entry in the container in a separated thread. The function we use in this example just burns some CPU cycles:</p>
 <pre class="cpp">    <span class="type">void</span> spin(<span class="type">int</span> <span class="operator">&amp;</span>iteration)
     {
         Q_UNUSED(iteration)
@@ -151,23 +133,23 @@
         <span class="keyword">for</span> (<span class="type">int</span> j <span class="operator">=</span> <span class="number">0</span>; j <span class="operator">&lt;</span> work; <span class="operator">+</span><span class="operator">+</span>j)
             <span class="operator">+</span><span class="operator">+</span>v;
     }</pre>
-<p>However the call to <a href="http://qt.nokia.com/doc/4.8/qtconcurrentmap.html#map">QtConcurrent::map()</a> does not block until the calculation has finished but returns a <a href="http://qt.nokia.com/doc/4.8/qfuture.html">QFuture</a> object instead, which acts as a handle to monitor the progress and state of the calculation.</p>
+<p>However the call to QtConcurrent::map() does not block until the calculation has finished but returns a QFuture object instead, which acts as a handle to monitor the progress and state of the calculation.</p>
 <p>We set the returned future on the future watcher member variable and now the future watcher will emit the appropriated signals as soon as the future changes its progress or state.</p>
-<p>When the user wants to cancel the calculation and clicks on the 'Cancel' button, then the cancelCalculation() slot is invoked, which calls <a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html#cancel">cancel()</a> on the <a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html">QFutureWatcher</a> object. This will cause the running calculation (and the used threads) to terminate.</p>
-<pre class="cpp">    <span class="type">void</span> ProgressDialogApp<span class="operator">::</span>cancelComputation()
+<p>When the user wants to cancel the calculation and clicks on the 'Cancel' button, then the cancelCalculation() slot is invoked, which calls cancel() on the QFutureWatcher object. This will cause the running calculation (and the used threads) to terminate.</p>
+<pre class="cpp">    <span class="type">void</span> ProgressDialog<span class="operator">::</span>cancelComputation()
     {
         <span class="comment">// Stop the computation</span>
         m_futureWatcher<span class="operator">.</span>cancel();
     }</pre>
-<p>Internally the <a href="http://qt.nokia.com/doc/4.8/qtconcurrent.html">QtConcurrent</a> module uses the <a href="http://qt.nokia.com/doc/4.8/qthreadpool.html">QThreadPool</a> class for distributing the calculation over multiple threads. The thread pool uses as many threads in parallel as returned by <a href="http://qt.nokia.com/doc/4.8/qthread.html#idealThreadCount">QThread::idealThreadCount()</a>, which by default is the number of cores of the device the application is running on. The 'numberOfCores' property uses the same value:</p>
-<pre class="cpp">    <span class="type">int</span> ProgressDialogApp<span class="operator">::</span>numberOfCores() <span class="keyword">const</span>
+<p>Internally the QtConcurrent module uses the QThreadPool class for distributing the calculation over multiple threads. The thread pool uses as many threads in parallel as returned by QThread::idealThreadCount(), which by default is the number of cores of the device the application is running on. The 'numberOfCores' property uses the same value:</p>
+<pre class="cpp">    <span class="type">int</span> ProgressDialog<span class="operator">::</span>numberOfCores() <span class="keyword">const</span>
     {
         <span class="comment">/**
          * The QtConcurrent framework uses QThreadPool::globalInstance()
          * for computation and that one uses as many thread contexts as
          * returned by QThread::idelThreadCount().
          */</span>
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span><span class="operator">::</span>idealThreadCount();
+        <span class="keyword">return</span> <span class="type">QThread</span><span class="operator">::</span>idealThreadCount();
     }</pre>
 </div>
 <!-- @@@qtconcurrent/progressdialog -->

@@ -85,13 +85,13 @@
         Block(<span class="keyword">const</span> Block <span class="operator">&amp;</span>other);
         <span class="operator">~</span>Block();
 
-        Block(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qrect.html">QRect</a></span> <span class="operator">&amp;</span>rect<span class="operator">,</span> <span class="keyword">const</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color <span class="operator">&amp;</span>color);
+        Block(<span class="keyword">const</span> <span class="type">QRect</span> <span class="operator">&amp;</span>rect<span class="operator">,</span> <span class="keyword">const</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color <span class="operator">&amp;</span>color);
 
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Color color() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qrect.html">QRect</a></span> rect() <span class="keyword">const</span>;
+        <span class="type">QRect</span> rect() <span class="keyword">const</span>;
 
     <span class="keyword">private</span>:
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qrect.html">QRect</a></span> m_rect;
+        <span class="type">QRect</span> m_rect;
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Color m_color;
     };
 
@@ -100,7 +100,7 @@
      * It makes our custom Block class known to the Qt meta type system.
      * That allows us to store a Block object inside a QVariant.
      */</span>
-    <a href="http://qt.nokia.com/doc/4.8/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a> (Block);
+    Q_DECLARE_METATYPE (Block);
 
     <span class="preprocessor">#endif</span></pre>
 </div>

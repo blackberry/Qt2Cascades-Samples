@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : ProgressDialogApp.hpp Example File (qtconcurrent/progressdialog/src/ProgressDialogApp.hpp)</title>
+  <title>Cascades : ProgressDialog.hpp Example File (qtconcurrent/progressdialog/src/ProgressDialog.hpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">ProgressDialogApp.hpp Example File</h1>
-<span class="small-subtitle">qtconcurrent/progressdialog/src/ProgressDialogApp.hpp</span>
-<!-- $$$qtconcurrent/progressdialog/src/ProgressDialogApp.hpp-description -->
+<h1 class="title">ProgressDialog.hpp Example File</h1>
+<span class="small-subtitle">qtconcurrent/progressdialog/src/ProgressDialog.hpp</span>
+<!-- $$$qtconcurrent/progressdialog/src/ProgressDialog.hpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,8 +65,8 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef PROGRESSDIALOGAPP_HPP</span>
-    <span class="preprocessor">#define PROGRESSDIALOGAPP_HPP</span>
+    <span class="preprocessor">#ifndef PROGRESSDIALOG_HPP</span>
+    <span class="preprocessor">#define PROGRESSDIALOG_HPP</span>
 
     <span class="preprocessor">#include &lt;QtCore/QFutureWatcher&gt;</span>
     <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
@@ -79,7 +79,7 @@
      * A progress bar shows the current progress of the computation and the user
      * can cancel the computation at any point in time.
      */</span>
-    <span class="keyword">class</span> ProgressDialogApp : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> ProgressDialog : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -99,7 +99,7 @@
         Q_PROPERTY(<span class="type">int</span> progressValue READ progressValue NOTIFY progressValueChanged)
 
     <span class="keyword">public</span>:
-        ProgressDialogApp();
+        ProgressDialog();
 
         <span class="comment">// The accessor methods for the properties</span>
         <span class="type">int</span> numberOfCores() <span class="keyword">const</span>;
@@ -134,7 +134,7 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The future watcher that provides monitoring for the currently running computation</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfuturewatcher.html">QFutureWatcher</a></span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> m_futureWatcher;
+        <span class="type">QFutureWatcher</span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> m_futureWatcher;
 
         <span class="comment">// The minimum progress value</span>
         <span class="type">int</span> m_progressMinimum;
@@ -148,7 +148,7 @@
 
     <span class="preprocessor">#endif</span></pre>
 </div>
-<!-- @@@qtconcurrent/progressdialog/src/ProgressDialogApp.hpp -->
+<!-- @@@qtconcurrent/progressdialog/src/ProgressDialog.hpp -->
   <div class="ft">
     <span></span>
   </div>

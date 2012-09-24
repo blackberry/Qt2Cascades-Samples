@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : SharedMemoryApp.hpp Example File (ipc/sharedmemory/src/SharedMemoryApp.hpp)</title>
+  <title>Cascades : GrueDetector.cpp Example File (sensors/gruedetector/src/GrueDetector.cpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">SharedMemoryApp.hpp Example File</h1>
-<span class="small-subtitle">ipc/sharedmemory/src/SharedMemoryApp.hpp</span>
-<!-- $$$ipc/sharedmemory/src/SharedMemoryApp.hpp-description -->
+<h1 class="title">GrueDetector.cpp Example File</h1>
+<span class="small-subtitle">sensors/gruedetector/src/GrueDetector.cpp</span>
+<!-- $$$sensors/gruedetector/src/GrueDetector.cpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,28 +65,58 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#ifndef SHAREDMEMORYAPP_HPP</span>
-    <span class="preprocessor">#define SHAREDMEMORYAPP_HPP</span>
+    <span class="preprocessor">#include &quot;GrueDetector.hpp&quot;</span>
 
-    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QDebug&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QTimer&gt;</span>
 
-    <span class="comment">/**
-     * This sample application shows how to use QSharedMemory to share memory
-     * between two processes. In this example the main process (sharedmemory) creates
-     * a shared memory segment and waits for a second process (sharedmemory_loader)
-     * to fill the shared memory with data.
-     */</span>
-    <span class="keyword">class</span> SharedMemoryApp : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    GrueDetector<span class="operator">::</span>GrueDetector(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
+        <span class="operator">,</span> m_chance(<span class="number">0</span>)
+        <span class="operator">,</span> m_darkTimer(<span class="keyword">new</span> <span class="type">QTimer</span>(<span class="keyword">this</span>))
     {
-        Q_OBJECT
+        <span class="comment">// At first we have to connect to the sensor backend...</span>
+        <span class="keyword">if</span> (<span class="operator">!</span>m_sensor<span class="operator">.</span>connectToBackend()) {
+            qWarning() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Cannot connect to light sensor backend!&quot;</span>;
+        }
 
-    <span class="keyword">public</span>:
-        SharedMemoryApp();
-    };
+        <span class="comment">// ... and then add a filter that will process the reported data</span>
+        m_sensor<span class="operator">.</span>addFilter(<span class="keyword">this</span>);
 
-    <span class="preprocessor">#endif</span></pre>
+        <span class="comment">// Start the gathering of data</span>
+        m_sensor<span class="operator">.</span>start();
+
+        connect(m_darkTimer<span class="operator">,</span> SIGNAL(timeout())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(increaseChance()));
+    }
+
+    <span class="type">bool</span> GrueDetector<span class="operator">::</span>filter(<span class="type">QLightReading</span> <span class="operator">*</span>reading)
+    {
+        <span class="keyword">if</span> (reading<span class="operator">-</span><span class="operator">&gt;</span>lux() <span class="operator">&lt;</span> <span class="number">100</span>) { <span class="comment">// Dark enough for meeting a Grue</span>
+            <span class="keyword">if</span> (<span class="operator">!</span>m_darkTimer<span class="operator">-</span><span class="operator">&gt;</span>isActive())
+                m_darkTimer<span class="operator">-</span><span class="operator">&gt;</span>start(<span class="number">1000</span>);
+        } <span class="keyword">else</span> { <span class="comment">// everything is fine...</span>
+            m_darkTimer<span class="operator">-</span><span class="operator">&gt;</span>stop();
+            m_chance <span class="operator">=</span> <span class="number">0</span>;
+            <span class="keyword">emit</span> chanceChanged();
+        }
+
+        <span class="comment">// Do no further processing of the sensor data</span>
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="type">void</span> GrueDetector<span class="operator">::</span>increaseChance()
+    {
+        <span class="comment">// Increase the chance put keep it at 100% max</span>
+        m_chance <span class="operator">=</span> qBound(<span class="number">0</span><span class="operator">,</span> m_chance <span class="operator">+</span> <span class="number">10</span><span class="operator">,</span> <span class="number">100</span>);
+        <span class="keyword">emit</span> chanceChanged();
+    }
+
+    <span class="type">int</span> GrueDetector<span class="operator">::</span>chance() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_chance;
+    }</pre>
 </div>
-<!-- @@@ipc/sharedmemory/src/SharedMemoryApp.hpp -->
+<!-- @@@sensors/gruedetector/src/GrueDetector.cpp -->
   <div class="ft">
     <span></span>
   </div>

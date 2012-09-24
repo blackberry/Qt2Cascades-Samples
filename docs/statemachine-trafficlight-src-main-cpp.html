@@ -65,17 +65,37 @@
      **
      ****************************************************************************/</span>
 
+    <span class="preprocessor">#include &quot;TrafficLightController.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
 
-    <span class="preprocessor">#include &quot;TrafficLightApp.hpp&quot;</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
-    <span class="keyword">using</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Application;
-
+    <span class="comment">/**
+     * This sample app focuses on how to drive the business logic of an application
+     * with the help of a state machine.
+     * We show how to setup a state machine and how to map the business logic to the single states.
+     * Furthermore it is shown how the state changes are reflected in the UI.
+     */</span>
     <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
     {
         Application app(argc<span class="operator">,</span> argv);
 
-        TrafficLightApp mainApp;
+        <span class="comment">// Create the traffic light controller object</span>
+        TrafficLightController controller;
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// We make the TrafficLightController and Application object available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_trafficLightController&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>controller);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>app);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

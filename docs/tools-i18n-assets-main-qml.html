@@ -71,23 +71,19 @@
     <span class="comment">// as the canvas for displaying the selection</span>
 
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="comment">// Container contents transformed by selection</span>
                 <span class="type">MainView</span> {
@@ -101,24 +97,27 @@
 
                     <span class="name">layout</span>: <span class="name">DockLayout</span> {}
                     <span class="comment">// A standard ListView listing the various language selections</span>
-                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+                    <span class="type">ListView</span> {
                         <span class="name">id</span>: <span class="name">languageSelector</span>
 
-                        <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Bottom</span>
-                        }
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Bottom</span>
 
                         <span class="name">dataModel</span>: <span class="name">_model</span>
 
                         <span class="name">listItemComponents</span>: <span class="name">ListItemComponent</span> {
                             <span class="type">StandardListItem</span> {
                                 <span class="name">description</span>: <span class="name">ListItem</span>.<span class="name">data</span>
-                                <span class="name">reserveImageSpace</span>: <span class="number">false</span>
+                                <span class="name">imageSpaceReserved</span>: <span class="number">false</span>
                             }
                         }
 
-                        <span class="name">onSelectionChanged</span>: <span class="name">_app</span>.<span class="name">setCurrentLanguage</span> (<span class="name">indexPath</span>)
+                        <span class="name">onTriggered</span>: {
+                            <span class="name">clearSelection</span>();
+                            <span class="name">select</span>(<span class="name">indexPath</span>);
+
+                            <span class="name">_app</span>.<span class="name">setCurrentLanguage</span> (<span class="name">indexPath</span>)
+                        }
                     }
                 }
 

@@ -71,32 +71,32 @@
     <span class="preprocessor">#include &lt;QtCore/QStringList&gt;</span>
     <span class="preprocessor">#include &lt;QtCore/QXmlStreamReader&gt;</span>
 
-    HtmlInfo<span class="operator">::</span>HtmlInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    HtmlInfo<span class="operator">::</span>HtmlInfo(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
     }
 
-    <span class="type">void</span> HtmlInfo<span class="operator">::</span>parseHtmlFile(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>fileName)
+    <span class="type">void</span> HtmlInfo<span class="operator">::</span>parseHtmlFile(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>fileName)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
+        <span class="type">QFile</span> file(fileName);
 
         <span class="comment">// Reset the error flag</span>
         m_error<span class="operator">.</span>clear();
         <span class="keyword">emit</span> errorChanged();
 
         <span class="comment">// Try to open the XHTML document and report an error if it fails</span>
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly)) {
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly)) {
             m_error <span class="operator">=</span> tr(<span class="string">&quot;Couldn't open the file.&quot;</span>);
             <span class="keyword">emit</span> errorChanged();
             <span class="keyword">return</span>;
         }
 
         <span class="comment">// Create a XML stream reader on the file</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qxmlstreamreader.html">QXmlStreamReader</a></span> reader(<span class="operator">&amp;</span>file);
+        <span class="type">QXmlStreamReader</span> reader(<span class="operator">&amp;</span>file);
 
         <span class="type">int</span> paragraphCount <span class="operator">=</span> <span class="number">0</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> links;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title;
+        <span class="type">QStringList</span> links;
+        <span class="type">QString</span> title;
         <span class="comment">/**
          * Read the XHTML document token by token until the end is reached.
          * For every token check whether it's one we are interested in and extract
@@ -131,7 +131,7 @@
         <span class="keyword">emit</span> infoChanged();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> HtmlInfo<span class="operator">::</span>title() <span class="keyword">const</span>
+    <span class="type">QString</span> HtmlInfo<span class="operator">::</span>title() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_title;
     }
@@ -146,12 +146,12 @@
         <span class="keyword">return</span> m_links;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> HtmlInfo<span class="operator">::</span>linksContent() <span class="keyword">const</span>
+    <span class="type">QString</span> HtmlInfo<span class="operator">::</span>linksContent() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_linksContent;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> HtmlInfo<span class="operator">::</span>error() <span class="keyword">const</span>
+    <span class="type">QString</span> HtmlInfo<span class="operator">::</span>error() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_error;
     }</pre>

@@ -70,8 +70,8 @@
     <span class="preprocessor">#include &lt;QtCore/QTimer&gt;</span>
     <span class="preprocessor">#include &lt;QtNetwork/QUdpSocket&gt;</span>
 
-    Sender<span class="operator">::</span>Sender(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    Sender<span class="operator">::</span>Sender(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
     {
         <span class="comment">/**
          * Initialize the 'status' property with no data, it won't
@@ -80,13 +80,13 @@
         m_status <span class="operator">=</span> <span class="string">&quot;&quot;</span>;
 
         <span class="comment">// Create the timer that triggers the broadcast of the datagrams</span>
-        m_timer <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>(<span class="keyword">this</span>);
+        m_timer <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QTimer</span>(<span class="keyword">this</span>);
 
         <span class="comment">/**
          * Create the UDP socket object.
          * Note: In opposite to a TCP socket we don't have to establish a network connection.
          */</span>
-        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>(<span class="keyword">this</span>);
+        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QUdpSocket</span>(<span class="keyword">this</span>);
 
         <span class="comment">// Initialize the datagram counter</span>
         m_messageNo <span class="operator">=</span> <span class="number">1</span>;
@@ -111,18 +111,18 @@
         <span class="keyword">emit</span> statusChanged();
 
         <span class="comment">// Assemble the content of the datagram</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> datagram <span class="operator">=</span> <span class="string">&quot;Broadcast message &quot;</span>
-                <span class="operator">+</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span><span class="operator">::</span>number(m_messageNo);
+        <span class="keyword">const</span> <span class="type">QByteArray</span> datagram <span class="operator">=</span> <span class="string">&quot;Broadcast message &quot;</span>
+                <span class="operator">+</span> <span class="type">QByteArray</span><span class="operator">::</span>number(m_messageNo);
 
         <span class="comment">// Broadcast a datagram with the given content to port 45454</span>
         m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>writeDatagram(datagram<span class="operator">.</span>data()<span class="operator">,</span> datagram<span class="operator">.</span>size()<span class="operator">,</span>
-                <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhostaddress.html">QHostAddress</a></span><span class="operator">::</span>Broadcast<span class="operator">,</span> <span class="number">45454</span>);
+                <span class="type">QHostAddress</span><span class="operator">::</span>Broadcast<span class="operator">,</span> <span class="number">45454</span>);
 
         <span class="comment">// Increase the datagram counter, so that the next sent datagram will have a different content</span>
         <span class="operator">+</span><span class="operator">+</span>m_messageNo;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> Sender<span class="operator">::</span>status() <span class="keyword">const</span>
+    <span class="type">QString</span> Sender<span class="operator">::</span>status() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_status;
     }</pre>

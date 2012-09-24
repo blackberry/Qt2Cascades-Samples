@@ -81,19 +81,19 @@
     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> DataSize <span class="operator">=</span> <span class="number">100000</span>;
 
     <span class="comment">// The size of the buffer that is used to deliver data from the producer to the consumer</span>
-    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> BufferSize <span class="operator">=</span> <span class="number">1900</span>;
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> BufferSize <span class="operator">=</span> <span class="number">1700</span>;
 
     <span class="comment">// The buffer that is used to deliver data from the producer to the consumer</span>
     <span class="keyword">static</span> <span class="type">char</span> buffer<span class="operator">[</span>BufferSize<span class="operator">]</span>;
 
     <span class="comment">// The two semaphores that are used to synchronize the access between producer and consumer to the shared buffer</span>
-    <span class="keyword">static</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsemaphore.html">QSemaphore</a></span> freeBytes(BufferSize);
-    <span class="keyword">static</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qsemaphore.html">QSemaphore</a></span> usedBytes;
+    <span class="keyword">static</span> <span class="type">QSemaphore</span> freeBytes(BufferSize);
+    <span class="keyword">static</span> <span class="type">QSemaphore</span> usedBytes;
 
     <span class="comment">/**
      * The Producer fills the shared buffer with data in a separated worker thread.
      */</span>
-    <span class="keyword">class</span> Producer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span>
+    <span class="keyword">class</span> Producer : <span class="keyword">public</span> <span class="type">QThread</span>
     {
     <span class="keyword">public</span>:
         <span class="type">void</span> run()
@@ -101,7 +101,7 @@
             <span class="comment">// This code is executed in the worker thread</span>
 
             <span class="comment">// Initialize the random number generator</span>
-            qsrand(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span>)<span class="operator">.</span>secsTo(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qtime.html">QTime</a></span><span class="operator">::</span>currentTime()));
+            qsrand(<span class="type">QTime</span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span>)<span class="operator">.</span>secsTo(<span class="type">QTime</span><span class="operator">::</span>currentTime()));
 
             <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> DataSize; <span class="operator">+</span><span class="operator">+</span>i) {
                 <span class="comment">// Decrement the 'counter' of free bytes. This will block this thread if no free bytes are available</span>
@@ -120,7 +120,7 @@
      * The Consumer reads the data from the shared buffer in a separated worker thread and
      * publishes the read data to the UI.
      */</span>
-    <span class="keyword">class</span> Consumer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span>
+    <span class="keyword">class</span> Consumer : <span class="keyword">public</span> <span class="type">QThread</span>
     {
         Q_OBJECT
 
@@ -134,7 +134,7 @@
                 usedBytes<span class="operator">.</span>acquire();
 
                 <span class="comment">// Read out one byte from the shared buffer</span>
-                <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text(buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span>);
+                <span class="keyword">const</span> <span class="type">QString</span> text(buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span>);
 
                 <span class="comment">// Increment the 'counter' of free bytes. This will unblock the Producer if it was waiting for writing new data</span>
                 freeBytes<span class="operator">.</span>release();
@@ -148,29 +148,29 @@
         }
 
     Q_SIGNALS:
-        <span class="type">void</span> stringConsumed(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text);
+        <span class="type">void</span> stringConsumed(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text);
     };
 
     <span class="comment">/**
      * The TextBuffer is a helper class that collects the data emitted by the Consumer
      * and makes them available to the UI via the 'text' property.
      */</span>
-    <span class="keyword">class</span> TextBuffer : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> TextBuffer : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
         <span class="comment">// Makes the consumed data available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text READ text NOTIFY textChanged)
+        Q_PROPERTY(<span class="type">QString</span> text READ text NOTIFY textChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> TextBuffer(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> TextBuffer(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// The accessor method of the text property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text() <span class="keyword">const</span>;
+        <span class="type">QString</span> text() <span class="keyword">const</span>;
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is invoked whenever the Consumer reports new data</span>
-        <span class="type">void</span> appendText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text);
+        <span class="type">void</span> appendText(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text);
 
     Q_SIGNALS:
         <span class="comment">// The change notification signal of the text property</span>
@@ -178,20 +178,20 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The text property</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_text;
+        <span class="type">QString</span> m_text;
     };
 
-    TextBuffer<span class="operator">::</span>TextBuffer(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-            : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
+    TextBuffer<span class="operator">::</span>TextBuffer(<span class="type">QObject</span> <span class="operator">*</span>parent)
+            : <span class="type">QObject</span>(parent)
     {
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> TextBuffer<span class="operator">::</span>text() <span class="keyword">const</span>
+    <span class="type">QString</span> TextBuffer<span class="operator">::</span>text() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_text;
     }
 
-    <span class="type">void</span> TextBuffer<span class="operator">::</span>appendText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text)
+    <span class="type">void</span> TextBuffer<span class="operator">::</span>appendText(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text)
     {
         <span class="comment">// Append the new data from the Consumer to our internal buffer</span>
         m_text <span class="operator">+</span><span class="operator">=</span> text;
@@ -221,22 +221,23 @@
         TextBuffer textBuffer;
 
         <span class="comment">// Append the new data to the TextBuffer whenever the Consumer has consumed some data</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>consumer<span class="operator">,</span> SIGNAL(stringConsumed(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&amp;</span>))<span class="operator">,</span>
-                         <span class="operator">&amp;</span>textBuffer<span class="operator">,</span> SLOT(appendText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span><span class="operator">&amp;</span>))<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qt.html">Qt</a></span><span class="operator">::</span>BlockingQueuedConnection);
+        <span class="type">QObject</span><span class="operator">::</span>connect(<span class="operator">&amp;</span>consumer<span class="operator">,</span> SIGNAL(stringConsumed(<span class="keyword">const</span> <span class="type">QString</span><span class="operator">&amp;</span>))<span class="operator">,</span>
+                         <span class="operator">&amp;</span>textBuffer<span class="operator">,</span> SLOT(appendText(<span class="keyword">const</span> <span class="type">QString</span><span class="operator">&amp;</span>))<span class="operator">,</span> <span class="type">Qt</span><span class="operator">::</span>BlockingQueuedConnection);
 
-        QmlDocument <span class="operator">*</span> <span class="keyword">const</span> qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// Make the TextBuffer available to the UI as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_textBuffer&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>textBuffer);
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
 
-                <span class="comment">// Start the producer and consumer thread</span>
-                producer<span class="operator">.</span>start();
-                consumer<span class="operator">.</span>start();
-            }
-        }
+        <span class="comment">// Make the TextBuffer object available to the UI as context property</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_textBuffer&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>textBuffer);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="comment">// Start the producer and consumer thread</span>
+        producer<span class="operator">.</span>start();
+        consumer<span class="operator">.</span>start();
+
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }
 

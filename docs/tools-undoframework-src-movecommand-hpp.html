@@ -76,11 +76,11 @@
      *  and reimplements the two virtual methods redo() and undo(). These two methods will
      *  be called by the QUndoStack whenever the user requested to undo or redo some action.
      */</span>
-    <span class="keyword">class</span> MoveCommand : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundocommand.html">QUndoCommand</a></span>
+    <span class="keyword">class</span> MoveCommand : <span class="keyword">public</span> <span class="type">QUndoCommand</span>
     {
     <span class="keyword">public</span>:
         <span class="comment">// Pass all parameters that the command need to fulfill its task in the constructor</span>
-        MoveCommand(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundocommand.html">QUndoCommand</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        MoveCommand(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QPoint</span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QPoint</span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type">QUndoCommand</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="keyword">virtual</span> <span class="type">void</span> redo();
         <span class="keyword">virtual</span> <span class="type">void</span> undo();
@@ -90,8 +90,8 @@
         bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>m_control;
 
         <span class="comment">// The start and end point of the move operation in local coordinates</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> m_sourcePoint;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> m_targetPoint;
+        <span class="type">QPoint</span> m_sourcePoint;
+        <span class="type">QPoint</span> m_targetPoint;
     };
 
     <span class="preprocessor">#endif</span></pre>

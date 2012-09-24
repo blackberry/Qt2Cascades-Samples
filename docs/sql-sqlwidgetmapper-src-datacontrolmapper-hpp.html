@@ -80,7 +80,7 @@
      * DataControlMapper can be used to create data-aware controls by mapping them to rows of a data model.
      * Everytime the current index changes, each control is updated with data from the model.
      */</span>
-    <span class="keyword">class</span> DataControlMapper: <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> DataControlMapper: <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -94,7 +94,7 @@
         Q_PROPERTY(<span class="type">int</span> count READ count NOTIFY countChanged)
 
     <span class="keyword">public</span>:
-        DataControlMapper(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        DataControlMapper(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="operator">~</span>DataControlMapper();
 
@@ -104,14 +104,14 @@
          * The data will be set on well-known properties depending on the type of the control
          * (e.g. 'text' property for Label).
          */</span>
-        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section);
+        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>section);
 
         <span class="comment">/**
          * This method creates a mapping between a control and a section identifier.
          * For a SQL model the section identifier is the column name.
          * The data will be set on the property with the given name.
          */</span>
-        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> <span class="operator">&amp;</span>propertyName);
+        <span class="type">void</span> addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>section<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QByteArray</span> <span class="operator">&amp;</span>propertyName);
 
         <span class="comment">/**
          * Removes all mappings that have been created before with addMapping().
@@ -126,13 +126,13 @@
         <span class="type">int</span> count() <span class="keyword">const</span>;
 
         <span class="comment">// Returns the property name that is used to update values for the given control</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> mappedPropertyName(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
+        <span class="type">QByteArray</span> mappedPropertyName(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
 
         <span class="comment">// Returns the section identifier that is mapped to the given control</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> mappedSection(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
+        <span class="type">QString</span> mappedSection(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control) <span class="keyword">const</span>;
 
         <span class="comment">// Returns the control that is mapped to the given section identifier</span>
-        bb<span class="operator">::</span>cascades<span class="operator">::</span>Control<span class="operator">*</span> mappedControlAt(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>section) <span class="keyword">const</span>;
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Control<span class="operator">*</span> mappedControlAt(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>section) <span class="keyword">const</span>;
 
         <span class="comment">// Returns the data model the DataControlMapper works on</span>
         bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>;

@@ -71,20 +71,20 @@
 
     <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
-    MoveCommand<span class="operator">::</span>MoveCommand(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundocommand.html">QUndoCommand</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundocommand.html">QUndoCommand</a></span>(parent)
+    MoveCommand<span class="operator">::</span>MoveCommand(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QPoint</span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QPoint</span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type">QUndoCommand</span> <span class="operator">*</span>parent)
+        : <span class="type">QUndoCommand</span>(parent)
         <span class="operator">,</span> m_control(control)
         <span class="operator">,</span> m_sourcePoint(source)
         <span class="operator">,</span> m_targetPoint(target)
     {
         <span class="comment">// Extract the title property that has been set on the Stone control in the QML file</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> m_control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> m_control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
 
         <span class="comment">/**
          * Set a meaningful text for this command. This text will be used by QUndoStack::undoText() and QUndoStack::redoText()
          * when this command is on the top of the stack.
          */</span>
-        setText(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;Move %1&quot;</span>)<span class="operator">.</span>arg(title));
+        setText(<span class="type">QString</span>(<span class="string">&quot;Move %1&quot;</span>)<span class="operator">.</span>arg(title));
     }
 
     <span class="type">void</span> MoveCommand<span class="operator">::</span>redo()

@@ -82,19 +82,19 @@
         Q_OBJECT
 
         <span class="comment">// Makes the title of the message box available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title READ title NOTIFY titleChanged)
+        Q_PROPERTY(<span class="type">QString</span> title READ title NOTIFY titleChanged)
 
         <span class="comment">// Makes the text of the message box available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text READ text NOTIFY textChanged)
+        Q_PROPERTY(<span class="type">QString</span> text READ text NOTIFY textChanged)
 
         <span class="comment">// Makes the text of the first button available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> button1Text READ button1Text NOTIFY button1TextChanged)
+        Q_PROPERTY(<span class="type">QString</span> button1Text READ button1Text NOTIFY button1TextChanged)
 
         <span class="comment">// Makes the text of the second button available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> button2Text READ button2Text NOTIFY button2TextChanged)
+        Q_PROPERTY(<span class="type">QString</span> button2Text READ button2Text NOTIFY button2TextChanged)
 
     <span class="keyword">public</span>:
-        <span class="keyword">explicit</span> MessageBoxController(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="keyword">explicit</span> MessageBoxController(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
         <span class="comment">/**
          * Describes the two buttons of the dialog.
          */</span>
@@ -105,13 +105,13 @@
         };
 
         <span class="comment">// Shows the message box with the given title, text and the two buttons</span>
-        Result exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>button2Text);
+        Result exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button1Text<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>button2Text);
 
         <span class="comment">// The accessor methods for the properties</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> button1Text() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> button2Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> title() <span class="keyword">const</span>;
+        <span class="type">QString</span> text() <span class="keyword">const</span>;
+        <span class="type">QString</span> button1Text() <span class="keyword">const</span>;
+        <span class="type">QString</span> button2Text() <span class="keyword">const</span>;
 
         <span class="comment">// This method is invoked when the user clicks the first button in the UI</span>
         Q_INVOKABLE <span class="type">void</span> button1Clicked();
@@ -128,16 +128,16 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The title of the message box</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_title;
+        <span class="type">QString</span> m_title;
 
         <span class="comment">// The text of the message box</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_text;
+        <span class="type">QString</span> m_text;
 
         <span class="comment">// The text of the first button of the message box</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_button1Text;
+        <span class="type">QString</span> m_button1Text;
 
         <span class="comment">// The text of the second button of the message box</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_button2Text;
+        <span class="type">QString</span> m_button2Text;
 
         <span class="comment">// The button that has been pressed to close the message box</span>
         Result m_buttonResult;

@@ -77,7 +77,7 @@
      * be verified by the client. In this case the user is asked for accept the
      * certificate or abort the connection.
      */</span>
-    <span class="keyword">class</span> SslErrorControl : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>
+    <span class="keyword">class</span> SslErrorControl : <span class="keyword">public</span> <span class="type">QObject</span>
     {
         Q_OBJECT
 
@@ -85,17 +85,17 @@
         Q_PROPERTY(<span class="type">bool</span> visible READ visible NOTIFY visibleChanged)
 
         <span class="comment">// Makes the message of the dialog available to the UI</span>
-        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> message READ message NOTIFY messageChanged)
+        Q_PROPERTY(<span class="type">QString</span> message READ message NOTIFY messageChanged)
 
     <span class="keyword">public</span>:
-        SslErrorControl(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        SslErrorControl(<span class="type">QObject</span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
 
         <span class="comment">// Executes the dialog and shows the given error message</span>
-        <span class="type">void</span> exec(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+        <span class="type">void</span> exec(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>message);
 
         <span class="comment">// The accessor methods of the properties</span>
         <span class="type">bool</span> visible() <span class="keyword">const</span>;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> message() <span class="keyword">const</span>;
+        <span class="type">QString</span> message() <span class="keyword">const</span>;
 
     <span class="keyword">public</span> Q_SLOTS:
         <span class="comment">// This method is invoked from the UI if the user wants to ignore the SSL errors</span>
@@ -120,12 +120,12 @@
 
     <span class="keyword">private</span>:
         <span class="comment">// The nested event loop that is used to block execution flow while the dialog is shown</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qeventloop.html">QEventLoop</a></span> m_eventLoop;
+        <span class="type">QEventLoop</span> m_eventLoop;
 
         <span class="comment">// The property values</span>
         <span class="type">bool</span> m_ignoreSslErrors;
         <span class="type">bool</span> m_visible;
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> m_message;
+        <span class="type">QString</span> m_message;
     };
 
     <span class="preprocessor">#endif</span></pre>

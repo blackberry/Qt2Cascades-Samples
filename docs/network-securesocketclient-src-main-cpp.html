@@ -65,17 +65,47 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &quot;App.hpp&quot;</span>
+    <span class="preprocessor">#include &quot;CertificateInfoControl.hpp&quot;</span>
+    <span class="preprocessor">#include &quot;SslClient.hpp&quot;</span>
 
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
     <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
 
-    <span class="keyword">using</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades<span class="operator">::</span>Application;
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
 
+    <span class="comment">/**
+     * This sample application shows how to setup a SSL-secured network connection,
+     * handle SSL-handshake errors and retrieve information about the used certificates.
+     *
+     * The user specify an URL to connect to and the application will try to create an SSL-secured
+     * connection. If the connection has been established successfully, the user can send commands
+     * and receive responses.
+     */</span>
     <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
     {
         Application app(argc<span class="operator">,</span> argv);
 
-        App mainApp;
+        <span class="comment">// Create the certificate info control object</span>
+        CertificateInfoControl certificateInfoControl;
+
+        <span class="comment">// Create the SSL client object</span>
+        SslClient sslClient;
+
+        <span class="type">QObject</span><span class="operator">::</span>connect(<span class="operator">&amp;</span>sslClient<span class="operator">,</span> SIGNAL(viewCertificateChainRequested())<span class="operator">,</span> <span class="operator">&amp;</span>certificateInfoControl<span class="operator">,</span> SLOT(show()));
+        <span class="type">QObject</span><span class="operator">::</span>connect(<span class="operator">&amp;</span>sslClient<span class="operator">,</span> SIGNAL(certificateChainChanged(<span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslCertificate</span><span class="operator">&gt;</span>))<span class="operator">,</span> <span class="operator">&amp;</span>certificateInfoControl<span class="operator">,</span> SLOT(setCertificateChain(<span class="type">QList</span><span class="operator">&lt;</span><span class="type">QSslCertificate</span><span class="operator">&gt;</span>)));
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// Make the business logic objects available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_certificateInfoControl&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>certificateInfoControl);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_sslClient&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>sslClient);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_sslErrorControl&quot;</span><span class="operator">,</span> sslClient<span class="operator">.</span>sslErrorControl());
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
         <span class="keyword">return</span> Application<span class="operator">::</span>exec();
     }</pre>

@@ -74,14 +74,14 @@
     {
     }
 
-    <span class="type">bool</span> XbelGenerator<span class="operator">::</span>write(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    <span class="type">bool</span> XbelGenerator<span class="operator">::</span>write(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         <span class="comment">// Create a new DOM document</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomdocument.html">QDomDocument</a></span> domDocument(<span class="string">&quot;xbel&quot;</span>);
+        <span class="type">QDomDocument</span> domDocument(<span class="string">&quot;xbel&quot;</span>);
         domDocument<span class="operator">.</span>appendChild(domDocument<span class="operator">.</span>createProcessingInstruction(<span class="string">&quot;xml&quot;</span><span class="operator">,</span> <span class="string">&quot;version=\&quot;1.0\&quot; encoding=\&quot;utf-8\&quot;&quot;</span>));
 
         <span class="comment">// Add the root element with the necessary 'xbel' element and version attribute</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> rootElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;xbel&quot;</span>);
+        <span class="type">QDomElement</span> rootElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;xbel&quot;</span>);
         rootElement<span class="operator">.</span>setAttribute(<span class="string">&quot;version&quot;</span><span class="operator">,</span> <span class="string">&quot;1.0&quot;</span>);
         domDocument<span class="operator">.</span>appendChild(rootElement);
 
@@ -92,29 +92,29 @@
         <span class="keyword">const</span> <span class="type">int</span> IndentWidth <span class="operator">=</span> <span class="number">4</span>;
 
         <span class="comment">// Use a text stream to write out the DOM document in a nicely formatted way</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> stream(device);
+        <span class="type">QTextStream</span> stream(device);
         stream<span class="operator">.</span>setCodec(<span class="string">&quot;UTF-8&quot;</span>);
         domDocument<span class="operator">.</span>save(stream<span class="operator">,</span> IndentWidth);
 
         <span class="keyword">return</span> <span class="keyword">true</span>;
     }
 
-    <span class="type">void</span> XbelGenerator<span class="operator">::</span>generateItem(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomdocument.html">QDomDocument</a></span> <span class="operator">&amp;</span>domDocument)
+    <span class="type">void</span> XbelGenerator<span class="operator">::</span>generateItem(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="type">QDomElement</span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="type">QDomDocument</span> <span class="operator">&amp;</span>domDocument)
     {
         <span class="comment">/**
          * Retrieve the tag name and title from the control.
          * These two properties have been set on the controls by the XbelParser.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> tagName <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
 
         <span class="comment">// Depending on the tag name generate a new DOM element in the XBEL document</span>
         <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> folderElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;folder&quot;</span>);
+            <span class="type">QDomElement</span> folderElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;folder&quot;</span>);
             folderElement<span class="operator">.</span>setAttribute(<span class="string">&quot;folded&quot;</span><span class="operator">,</span> <span class="string">&quot;no&quot;</span>);
 
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomtext.html">QDomText</a></span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
+            <span class="type">QDomElement</span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
+            <span class="type">QDomText</span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
             titleElement<span class="operator">.</span>appendChild(titleText);
             folderElement<span class="operator">.</span>appendChild(titleElement);
 
@@ -125,20 +125,20 @@
 
             parent<span class="operator">.</span>appendChild(folderElement);
         } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
+            <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
 
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> bookmarkElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;bookmark&quot;</span>);
+            <span class="type">QDomElement</span> bookmarkElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;bookmark&quot;</span>);
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isEmpty())
                 bookmarkElement<span class="operator">.</span>setAttribute(<span class="string">&quot;href&quot;</span><span class="operator">,</span> url);
 
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomtext.html">QDomText</a></span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
+            <span class="type">QDomElement</span> titleElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;title&quot;</span>);
+            <span class="type">QDomText</span> titleText <span class="operator">=</span> domDocument<span class="operator">.</span>createTextNode(title);
             titleElement<span class="operator">.</span>appendChild(titleText);
             bookmarkElement<span class="operator">.</span>appendChild(titleElement);
 
             parent<span class="operator">.</span>appendChild(bookmarkElement);
         } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;separator&quot;</span>) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qdomelement.html">QDomElement</a></span> separatorElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;separator&quot;</span>);
+            <span class="type">QDomElement</span> separatorElement <span class="operator">=</span> domDocument<span class="operator">.</span>createElement(<span class="string">&quot;separator&quot;</span>);
             parent<span class="operator">.</span>appendChild(separatorElement);
         }
     }</pre>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cascades : ContiguousCacheApp.cpp Example File (tools/contiguouscache/src/ContiguousCacheApp.cpp)</title>
+  <title>Cascades : WordCount.hpp Example File (qtconcurrent/wordcount/src/WordCount.hpp)</title>
   <link rel="stylesheet" type="text/css" href="style/offline.css" />
 </head>
 <body>
@@ -19,9 +19,9 @@
   </div>
 </div>
 <div class="content mainContent">
-<h1 class="title">ContiguousCacheApp.cpp Example File</h1>
-<span class="small-subtitle">tools/contiguouscache/src/ContiguousCacheApp.cpp</span>
-<!-- $$$tools/contiguouscache/src/ContiguousCacheApp.cpp-description -->
+<h1 class="title">WordCount.hpp Example File</h1>
+<span class="small-subtitle">qtconcurrent/wordcount/src/WordCount.hpp</span>
+<!-- $$$qtconcurrent/wordcount/src/WordCount.hpp-description -->
 <div class="descr"> <a name="details"></a>
 <pre class="cpp">    <span class="comment">/****************************************************************************
      **
@@ -65,36 +65,77 @@
      **
      ****************************************************************************/</span>
 
-    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
-    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#ifndef WORDCOUNT_HPP</span>
+    <span class="preprocessor">#define WORDCOUNT_HPP</span>
 
-    <span class="preprocessor">#include &quot;ContiguousCacheApp.hpp&quot;</span>
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QStringList&gt;</span>
 
-    <span class="preprocessor">#include &quot;ImageModel.hpp&quot;</span>
-
-    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
-
-    ContiguousCacheApp<span class="operator">::</span>ContiguousCacheApp()
+    <span class="comment">/**
+     * This sample application shows how to use the QtConcurrent framework
+     * to improve the throughput of an algorithm by parallelizing it.
+     * The application counts the words inside a list of files, either sequentially
+     * or in parallel and shows the elapsed time for that operation.
+     */</span>
+    <span class="keyword">class</span> WordCount : <span class="keyword">public</span> <span class="type">QObject</span>
     {
-        <span class="comment">// Here we create a QMLDocument and load it, we are using build patterns.</span>
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
+        Q_OBJECT
 
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">// We make the ImageModel object available as context property</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_dataModel&quot;</span><span class="operator">,</span> <span class="keyword">new</span> ImageModel(<span class="keyword">this</span>));
+        <span class="comment">// Makes the number of files that are scanned available to the UI</span>
+        Q_PROPERTY(<span class="type">int</span> fileCount READ fileCount NOTIFY fileCountChanged)
 
-            <span class="comment">// The application Page is created from QML.</span>
-            AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        <span class="comment">// Makes the number of counted words available to the UI</span>
+        Q_PROPERTY(<span class="type">int</span> wordCount READ wordCount NOTIFY wordCountChanged)
 
-            <span class="keyword">if</span> (appPage) {
-                <span class="comment">// Create the application scene.</span>
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
-            }
-        }
-    }</pre>
+        <span class="comment">// Makes the time that was needed for counting available to the UI</span>
+        Q_PROPERTY(<span class="type">int</span> elapsedTime READ elapsedTime NOTIFY elapsedTimeChanged)
+
+        <span class="comment">// Makes the state of the application available to the UI</span>
+        Q_PROPERTY(<span class="type">bool</span> active READ active NOTIFY activeChanged)
+
+    <span class="keyword">public</span>:
+        WordCount();
+
+        <span class="comment">// The accessor methods for the properties</span>
+        <span class="type">int</span> fileCount() <span class="keyword">const</span>;
+        <span class="type">int</span> wordCount() <span class="keyword">const</span>;
+        <span class="type">int</span> elapsedTime() <span class="keyword">const</span>;
+        <span class="type">bool</span> active() <span class="keyword">const</span>;
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This methods is invoked when the user clicks the 'Single Threaded' button</span>
+        <span class="type">void</span> countSingleThreaded();
+
+        <span class="comment">// This methods is invoked when the user clicks the 'Multi Threaded' button</span>
+        <span class="type">void</span> countMultiThreaded();
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signals of the properties</span>
+        <span class="type">void</span> fileCountChanged();
+        <span class="type">void</span> wordCountChanged();
+        <span class="type">void</span> elapsedTimeChanged();
+        <span class="type">void</span> activeChanged();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// A helper method that scans a directory for files matching a given filter</span>
+        <span class="type">QStringList</span> findFiles(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>startDir<span class="operator">,</span> <span class="keyword">const</span> <span class="type">QStringList</span> <span class="operator">&amp;</span>filters);
+
+        <span class="comment">// The list of files that are scanned</span>
+        <span class="type">QStringList</span> m_files;
+
+        <span class="comment">// The number of words that has been counted</span>
+        <span class="type">int</span> m_wordCount;
+
+        <span class="comment">// The time that was needed for the counting</span>
+        <span class="type">int</span> m_elapsedTime;
+
+        <span class="comment">// A flag for whether the application is currently counting words</span>
+        <span class="type">bool</span> m_active;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
 </div>
-<!-- @@@tools/contiguouscache/src/ContiguousCacheApp.cpp -->
+<!-- @@@qtconcurrent/wordcount/src/WordCount.hpp -->
   <div class="ft">
     <span></span>
   </div>

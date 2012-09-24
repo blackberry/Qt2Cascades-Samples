@@ -74,7 +74,7 @@
     {
     }
 
-    <span class="type">bool</span> XbelGenerator<span class="operator">::</span>write(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span> <span class="operator">*</span>device)
+    <span class="type">bool</span> XbelGenerator<span class="operator">::</span>write(<span class="type">QIODevice</span> <span class="operator">*</span>device)
     {
         <span class="comment">// Set the output device on the stream</span>
         m_stream<span class="operator">.</span>setDevice(device);
@@ -95,24 +95,24 @@
         <span class="keyword">return</span> <span class="keyword">true</span>;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelGenerator<span class="operator">::</span>indent(<span class="type">int</span> depth)
+    <span class="type">QString</span> XbelGenerator<span class="operator">::</span>indent(<span class="type">int</span> depth)
     {
         <span class="keyword">const</span> <span class="type">int</span> IndentSize <span class="operator">=</span> <span class="number">4</span>;
-        <span class="keyword">return</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(IndentSize <span class="operator">*</span> depth<span class="operator">,</span> <span class="char">' '</span>);
+        <span class="keyword">return</span> <span class="type">QString</span>(IndentSize <span class="operator">*</span> depth<span class="operator">,</span> <span class="char">' '</span>);
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelGenerator<span class="operator">::</span>escapedText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>str)
+    <span class="type">QString</span> XbelGenerator<span class="operator">::</span>escapedText(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>str)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> result <span class="operator">=</span> str;
+        <span class="type">QString</span> result <span class="operator">=</span> str;
         result<span class="operator">.</span>replace(<span class="string">&quot;&amp;&quot;</span><span class="operator">,</span> <span class="string">&quot;&amp;amp;&quot;</span>);
         result<span class="operator">.</span>replace(<span class="string">&quot;&lt;&quot;</span><span class="operator">,</span> <span class="string">&quot;&amp;lt;&quot;</span>);
         result<span class="operator">.</span>replace(<span class="string">&quot;&gt;&quot;</span><span class="operator">,</span> <span class="string">&quot;&amp;gt;&quot;</span>);
         <span class="keyword">return</span> result;
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> XbelGenerator<span class="operator">::</span>escapedAttribute(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>str)
+    <span class="type">QString</span> XbelGenerator<span class="operator">::</span>escapedAttribute(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>str)
     {
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> result <span class="operator">=</span> escapedText(str);
+        <span class="type">QString</span> result <span class="operator">=</span> escapedText(str);
         result<span class="operator">.</span>replace(<span class="string">&quot;\&quot;&quot;</span><span class="operator">,</span> <span class="string">&quot;&amp;quot;&quot;</span>);
         result<span class="operator">.</span>prepend(<span class="string">&quot;\&quot;&quot;</span>);
         result<span class="operator">.</span>append(<span class="string">&quot;\&quot;&quot;</span>);
@@ -125,8 +125,8 @@
          * Retrieve the tag name and title from the control.
          * These two properties have been set on the controls by the XbelHandler.
          */</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> tagName <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> title <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> tagName <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;tagName&quot;</span>)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> title <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
 
         <span class="comment">// Depending on the tag name write a new element to the XBEL document</span>
         <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;folder&quot;</span>) {
@@ -141,7 +141,7 @@
 
             m_stream <span class="operator">&lt;</span><span class="operator">&lt;</span> indent(depth) <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;&lt;/folder&gt;\n&quot;</span>;
         } <span class="keyword">else</span> <span class="keyword">if</span> (tagName <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;bookmark&quot;</span>) {
-            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> url <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
+            <span class="keyword">const</span> <span class="type">QString</span> url <span class="operator">=</span> control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;url&quot;</span>)<span class="operator">.</span>toString();
 
             m_stream <span class="operator">&lt;</span><span class="operator">&lt;</span> indent(depth) <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;&lt;bookmark&quot;</span>;
             <span class="keyword">if</span> (<span class="operator">!</span>url<span class="operator">.</span>isEmpty())

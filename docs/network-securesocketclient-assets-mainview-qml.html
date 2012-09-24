@@ -69,11 +69,9 @@
 
     <span class="comment">// Container grouping all visual nodes for the main view</span>
     <span class="type">Container</span> {
-        <span class="name">layout</span>: <span class="name">StackLayout</span> {
-            <span class="name">leftPadding</span>: <span class="number">30</span>
-            <span class="name">topPadding</span>: <span class="number">30</span>
-            <span class="name">rightPadding</span>: <span class="number">30</span>
-        }
+        <span class="name">leftPadding</span>: <span class="number">30</span>
+        <span class="name">topPadding</span>: <span class="number">30</span>
+        <span class="name">rightPadding</span>: <span class="number">30</span>
 
         <span class="comment">// TextStyleDefinition to be used in different AbstractTextControl's to achieve same text look.</span>
         <span class="name">attachedObjects</span>: [
@@ -84,39 +82,30 @@
             }
         ]
 
-        <span class="comment">// A standard Label</span>
-        <span class="type">Label</span> {
-            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Host name:&quot;</span>)
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
-                <span class="name">spaceQuota</span>: -<span class="number">1</span>
-            }
-            <span class="type">textStyle</span> {
-                <span class="name">base</span>: <span class="name">labelTsd</span>.<span class="name">style</span>
-            }
-        }
-
         <span class="comment">// A Container to group the url and its corresponding TextField</span>
         <span class="type">Container</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">10</span>
             <span class="name">bottomMargin</span>: <span class="number">10</span>
 
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
-
             <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
             }
 
             <span class="comment">// A standard TextField</span>
             <span class="type">TextField</span> {
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">leftMargin</span>: <span class="number">10</span>
                 <span class="name">rightMargin</span>: <span class="number">5</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">spaceQuota</span>: <span class="number">1</span>
                 }
+
+                <span class="name">hintText</span>: <span class="name">qsTr</span> (<span class="string">&quot;Enter host name&quot;</span>)
+                <span class="name">text</span>: <span class="string">&quot;www.blackberry.com&quot;</span>
+
+                <span class="name">inputMode</span>: <span class="name">TextFieldInputMode</span>.<span class="name">Url</span>
 
                 <span class="comment">// Save url on input</span>
                 <span class="name">onTextChanging</span>: <span class="name">_sslClient</span>.<span class="name">hostName</span> <span class="operator">=</span> <span class="name">text</span>
@@ -124,44 +113,39 @@
 
             <span class="comment">// A standard ImageView</span>
             <span class="type">ImageView</span> {
-                <span class="name">imageSource</span>: <span class="string">&quot;asset:///encrypted.png&quot;</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                 <span class="name">preferredWidth</span>: <span class="number">32</span>
                 <span class="name">preferredHeight</span>: <span class="number">32</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">spaceQuota</span>: -<span class="number">1</span>
                 }
 
                 <span class="comment">// Visibility control</span>
                 <span class="name">visible</span>: <span class="name">_sslClient</span>.<span class="name">sessionActive</span>
 
+                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/encrypted.png&quot;</span>
+
                 <span class="comment">// Display certificate info view on touch</span>
                 <span class="name">onTouch</span>: <span class="name">_certificateInfoControl</span>.<span class="name">visible</span> <span class="operator">=</span> <span class="number">true</span>
             }
         }
 
-        <span class="comment">// A standard Label</span>
-        <span class="type">Label</span> {
-            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Port:&quot;</span>)
-            <span class="type">textStyle</span> {
-                <span class="name">base</span>: <span class="name">labelTsd</span>.<span class="name">style</span>
-            }
-        }
-
         <span class="comment">// A standard TextField</span>
         <span class="type">TextField</span> {
+            <span class="name">hintText</span>: <span class="name">qsTr</span> (<span class="string">&quot;Enter port number&quot;</span>)
+            <span class="name">text</span>: <span class="string">&quot;443&quot;</span>
+
             <span class="comment">// Save port on input</span>
             <span class="name">onTextChanging</span>: <span class="name">_sslClient</span>.<span class="name">port</span> <span class="operator">=</span> <span class="name">text</span>
         }
 
         <span class="comment">// A standard Button</span>
         <span class="type">Button</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
             <span class="name">topMargin</span>: <span class="number">30</span>
             <span class="name">bottomMargin</span>: <span class="number">10</span>
             <span class="name">maxHeight</span>: <span class="number">100</span>
-            <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-            }
 
             <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Connect to host&quot;</span>)
 
@@ -171,24 +155,23 @@
 
         <span class="comment">// Groups the nodes for displaying connection details and connection communication controls.</span>
         <span class="type">Container</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
             <span class="name">leftMargin</span>: <span class="number">20</span>
             <span class="name">topMargin</span>: <span class="number">20</span>
+
             <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
                 <span class="name">spaceQuota</span>: <span class="number">1</span>
             }
 
             <span class="comment">// A standard Label</span>
             <span class="type">Label</span> {
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Active session&quot;</span>)
                 <span class="type">textStyle</span> {
                     <span class="name">base</span>: <span class="name">labelTsd</span>.<span class="name">style</span>
-                    <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                    <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
                 }
             }
 
@@ -203,24 +186,23 @@
 
             <span class="comment">// A standard Label</span>
             <span class="type">Label</span> {
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
 
                 <span class="comment">// Displays cipher information upon successful connection</span>
                 <span class="name">text</span>: <span class="name">_sslClient</span>.<span class="name">cipher</span>
                 <span class="type">textStyle</span> {
                     <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
-                    <span class="name">alignment</span>: <span class="name">TextAlignment</span>.<span class="name">Center</span>
+                    <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
                     <span class="name">color</span>: <span class="name">Color</span>.<span class="name">Red</span>
                 }
             }
 
             <span class="comment">// A standard TextArea</span>
             <span class="type">TextArea</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
                     <span class="name">spaceQuota</span>: <span class="number">7</span>
                 }
 
@@ -236,14 +218,16 @@
 
             <span class="comment">// Groups the input and Button for data sending</span>
             <span class="type">Container</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                 <span class="name">topMargin</span>: <span class="number">10</span>
                 <span class="name">bottomMargin</span>: <span class="number">10</span>
+
                 <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                     <span class="name">spaceQuota</span>: <span class="number">2</span>
                 }
+
                 <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">layoutDirection</span>: <span class="name">LayoutDirection</span>.<span class="name">LeftToRight</span>
+                    <span class="name">orientation</span>: <span class="name">LayoutOrientation</span>.<span class="name">LeftToRight</span>
                 }
 
                 <span class="comment">// Enable these controls only when connection has been established</span>
@@ -251,39 +235,44 @@
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
-                    <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Input:&quot;</span>)
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
 
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: -<span class="number">1</span>
                     }
 
+                    <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Input:&quot;</span>)
                     <span class="type">textStyle</span> {
                         <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                        <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
                     }
                 }
 
                 <span class="comment">// A standard TextField</span>
                 <span class="type">TextField</span> {
                     <span class="name">id</span>: <span class="name">inputField</span>
+
+                    <span class="name">text</span>: <span class="string">&quot;GET / HTTP/1.0&quot;</span>
+
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">leftMargin</span>: <span class="number">10</span>
 
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
                 }
 
                 <span class="comment">// A standard Button</span>
                 <span class="type">Button</span> {
+                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                     <span class="name">leftMargin</span>: <span class="number">10</span>
-                    <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Send&quot;</span>)
                     <span class="name">preferredWidth</span>: <span class="number">250</span>
 
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
                         <span class="name">spaceQuota</span>: -<span class="number">1</span>
                     }
+
+                    <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Send&quot;</span>)
 
                     <span class="comment">// Send input data on click</span>
                     <span class="name">onClicked</span>: {

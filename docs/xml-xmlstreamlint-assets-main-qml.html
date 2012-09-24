@@ -70,35 +70,29 @@
     <span class="comment">// Page shows different HTML file selections in a ListView that will be parsed using a xml</span>
     <span class="comment">// reader and statistics about the file will be displayed</span>
     <span class="type">Page</span> {
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="comment">// The background image</span>
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">ScrollView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="type">scrollViewProperties</span> {
                     <span class="name">scrollMode</span>: <span class="name">ScrollMode</span>.<span class="name">Vertical</span>
                 }
 
                 <span class="type">Container</span> {
-                    <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                        <span class="name">topPadding</span>: <span class="number">150</span>
-                        <span class="name">leftPadding</span>: <span class="number">30</span>
-                        <span class="name">rightPadding</span>: <span class="number">30</span>
-                    }
+                    <span class="name">topPadding</span>: <span class="number">150</span>
+                    <span class="name">leftPadding</span>: <span class="number">30</span>
+                    <span class="name">rightPadding</span>: <span class="number">30</span>
 
                     <span class="comment">// A standard TextArea for displaying the result</span>
                     <span class="type">TextArea</span> {
@@ -140,10 +134,8 @@
             }
 
             <span class="type">SlideoutPanel</span> {
-                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Top</span>
 
                 <span class="name">translationY</span>: -<span class="number">444</span>
 

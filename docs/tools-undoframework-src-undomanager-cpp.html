@@ -71,15 +71,15 @@
 
     <span class="preprocessor">#include &lt;QUndoStack&gt;</span>
 
-    UndoManager<span class="operator">::</span>UndoManager(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)
-        <span class="operator">,</span> m_undoStack(<span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qundostack.html">QUndoStack</a></span>(<span class="keyword">this</span>))
+    UndoManager<span class="operator">::</span>UndoManager(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)
+        <span class="operator">,</span> m_undoStack(<span class="keyword">new</span> <span class="type">QUndoStack</span>(<span class="keyword">this</span>))
     {
         <span class="comment">// We connect the signals from the QUndoStack directly to our own signals ...</span>
         connect(m_undoStack<span class="operator">,</span> SIGNAL(canRedoChanged(<span class="type">bool</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(canRedoChanged()));
         connect(m_undoStack<span class="operator">,</span> SIGNAL(canUndoChanged(<span class="type">bool</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(canUndoChanged()));
-        connect(m_undoStack<span class="operator">,</span> SIGNAL(redoTextChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(redoTextChanged()));
-        connect(m_undoStack<span class="operator">,</span> SIGNAL(undoTextChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(undoTextChanged()));
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(redoTextChanged(<span class="type">QString</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(redoTextChanged()));
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(undoTextChanged(<span class="type">QString</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(undoTextChanged()));
     }
 
     <span class="type">bool</span> UndoManager<span class="operator">::</span>canRedo() <span class="keyword">const</span>
@@ -93,12 +93,12 @@
         <span class="keyword">return</span> m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>canUndo();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> UndoManager<span class="operator">::</span>redoText() <span class="keyword">const</span>
+    <span class="type">QString</span> UndoManager<span class="operator">::</span>redoText() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>redoText();
     }
 
-    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> UndoManager<span class="operator">::</span>undoText() <span class="keyword">const</span>
+    <span class="type">QString</span> UndoManager<span class="operator">::</span>undoText() <span class="keyword">const</span>
     {
         <span class="keyword">return</span> m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>undoText();
     }
@@ -120,7 +120,7 @@
          * it on the QUndoStack.
          * The stack will take ownership of the command object, and will delete it when it's no longer used.
          */</span>
-        m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>push(<span class="keyword">new</span> MoveCommand(control<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span>(sourceX<span class="operator">,</span> sourceY)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qpoint.html">QPoint</a></span>(targetX<span class="operator">,</span> targetY)));
+        m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>push(<span class="keyword">new</span> MoveCommand(control<span class="operator">,</span> <span class="type">QPoint</span>(sourceX<span class="operator">,</span> sourceY)<span class="operator">,</span> <span class="type">QPoint</span>(targetX<span class="operator">,</span> targetY)));
     }</pre>
 </div>
 <!-- @@@tools/undoframework/src/UndoManager.cpp -->

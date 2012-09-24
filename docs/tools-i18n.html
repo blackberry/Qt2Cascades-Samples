@@ -48,31 +48,34 @@
 <p>The Internationalization (I18N) example demonstrates Qt's support for translated text. Developers can write the initial application text in one language, and translations can be provided later without any modifications to the code.</p>
 <p class="centerAlign"><img src="images/i18n-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the internationalization features provided by Qt to switch the texts in the UI between multiple translations. We'll learn how to use <a href="http://qt.nokia.com/doc/4.8/qtranslator.html">QTranslator</a> to load a translation catalog and how to mark user visible texts for translation.</p>
+<p>In this example we'll learn how to use the internationalization features provided by Qt to switch the texts in the UI between multiple translations. We'll learn how to use QTranslator to load a translation catalog and how to mark user visible texts for translation.</p>
 <a name="ui"></a>
 <h2>UI</h2>
-<p>The sample application consists of a <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> at the bottom where the user can select a language, and a couple of text-containing controls at the top which adapt the translation of their text according to the selected language.</p>
+<p>The sample application consists of a ListView at the bottom where the user can select a language, and a couple of text-containing controls at the top which adapt the translation of their text according to the selected language.</p>
 <pre class="qml">                    <span class="comment">// A standard ListView listing the various language selections</span>
-                    <span class="type"><a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a></span> {
+                    <span class="type">ListView</span> {
                         <span class="name">id</span>: <span class="name">languageSelector</span>
 
-                        <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                            <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Bottom</span>
-                        }
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Bottom</span>
 
                         <span class="name">dataModel</span>: <span class="name">_model</span>
 
                         <span class="name">listItemComponents</span>: <span class="name">ListItemComponent</span> {
                             <span class="type">StandardListItem</span> {
                                 <span class="name">description</span>: <span class="name">ListItem</span>.<span class="name">data</span>
-                                <span class="name">reserveImageSpace</span>: <span class="number">false</span>
+                                <span class="name">imageSpaceReserved</span>: <span class="number">false</span>
                             }
                         }
 
-                        <span class="name">onSelectionChanged</span>: <span class="name">_app</span>.<span class="name">setCurrentLanguage</span> (<span class="name">indexPath</span>)
+                        <span class="name">onTriggered</span>: {
+                            <span class="name">clearSelection</span>();
+                            <span class="name">select</span>(<span class="name">indexPath</span>);
+
+                            <span class="name">_app</span>.<span class="name">setCurrentLanguage</span> (<span class="name">indexPath</span>)
+                        }
                     }</pre>
-<p>The <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> uses a data model '_model' that is exported from C++ to the UI and whenever the user selects a language, the setCurrentLanguage() slot of the application object is invoked.</p>
+<p>The ListView uses a data model '_model' that is exported from C++ to the UI and whenever the user selects a language, the setCurrentLanguage() slot of the application object is invoked.</p>
 <pre class="qml">                <span class="comment">// Container contents transformed by selection</span>
                 <span class="type">MainView</span> {
                     <span class="name">minHeight</span>: <span class="number">960</span>
@@ -86,8 +89,10 @@
             <span class="name">perspectiveLabel</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">qsTr</span> (<span class="string">&quot;Perspective&quot;</span>);
             <span class="name">isometricLabel</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">qsTr</span> (<span class="string">&quot;Isometric&quot;</span>);
             <span class="name">obliqueLabel</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">qsTr</span> (<span class="string">&quot;Oblique&quot;</span>);
-        }</pre>
-<p>MainView.qml contains a top-level function that translates all user visible texts from its source language (normally english) to their target language by using the <a href="http://qt.nokia.com/doc/4.8/qdeclarativei18n.html">qsTr()</a> function.</p>
+        }
+
+        <span class="name">onCreationCompleted</span>: <span class="name">_app</span>.<span class="name">retranslate</span>.<span class="name">connect</span>(<span class="name">retranslate</span>)</pre>
+<p>MainView.qml contains a top-level function that translates all user visible texts from its source language (normally english) to their target language by using the qsTr() function. The function is connected against the retranslate() signal of the <tt>App</tt> object, so whenever <tt>App</tt> emits the signal, the function is invoked automatically.</p>
 <a name="app"></a>
 <h2>App</h2>
 <p>The App class contains all the business logic of the application and is also responsible for initializing the UI.</p>
@@ -96,66 +101,43 @@
     {
         setupLanguageModel();
 
-        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create()<span class="operator">.</span>load(<span class="string">&quot;main.qml&quot;</span>);
-        <span class="keyword">if</span> (<span class="operator">!</span>qml<span class="operator">-</span><span class="operator">&gt;</span>hasErrors()) {
-            <span class="comment">/**
-             * Make the language model available as context properties,
-             * it is used by the ListView in the UI.
-             */</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>m_model);
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
 
-            <span class="comment">/**
-             * Make the App object available to the UI as well, so that its setCurrentLanguage()
-             * method can be invoked from there.
-             */</span>
-            qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+        <span class="comment">// Make the language model and App object available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>m_model);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
 
-            Page <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootNode<span class="operator">&lt;</span>Page<span class="operator">&gt;</span>();
-            <span class="keyword">if</span> (appPage) {
-                Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
 
-                <span class="comment">/**
-                 * Lookup the main view and text area controls in the QML tree and store them
-                 * in our member variables.
-                 * Note: We use QPointers here for m_mainView and m_textArea, so we can always
-                 *       check whether the objects have been deleted by the UI in the meantime.
-                 */</span>
-                m_mainView <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;mainView&quot;</span>);
-                m_textArea <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>TextArea<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;textArea&quot;</span>);
-
-                <span class="comment">// Pre-select the second entry - English</span>
-                setCurrentLanguage(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span>(<span class="number">1</span>));
-            }
-        }
+        <span class="comment">// Pre-select the second entry - English</span>
+        setCurrentLanguage(<span class="type">QVariantList</span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type">QVariant</span>(<span class="number">1</span>));
     }</pre>
-<p>Inside the constructor we load the 'main.qml' file to initialize the UI and we export the data model that contains the languages and the 'App' object to the UI, so that these two objects are accessible from within the 'main.qml' file. After the root node of the UI has been constructed, we lookup the C++ objects that represent the MainView.qml and its contained TextView control. This lookup is done by using the <a href="http://qt.nokia.com/doc/4.8/qobject.html#findChild">findChild()</a> method on the root node and passing the names that have been specified for the 'objectName' properties in the QML file:</p>
-<pre class="qml">            <span class="comment">// A standard TextArea</span>
-            <span class="type">TextArea</span> {
-                <span class="name">id</span>: <span class="name">textArea</span>
-                <span class="name">objectName</span>: <span class="string">&quot;textArea&quot;</span></pre>
-<p>In the last step we pre-select a language by calling the setCurrentLanguage() method with an index path pointing to the second entry in the data model.</p>
+<p>Inside the constructor we load the 'main.qml' file to initialize the UI and we export the data model that contains the languages and the 'App' object to the UI, so that these two objects are accessible from within the 'main.qml' file. Afterwards we pre-select a language by calling the setCurrentLanguage() method with an index path pointing to the second entry in the data model.</p>
 <p>The model itself setup inside the setupLanguageModel() method:</p>
 <pre class="cpp">    <span class="type">void</span> App<span class="operator">::</span>setupLanguageModel()
     {
         <span class="comment">// Retrieve a list of all available translation catalog files ...</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> qmFiles <span class="operator">=</span> findQmFiles();
+        <span class="keyword">const</span> <span class="type">QStringList</span> qmFiles <span class="operator">=</span> findQmFiles();
 
         <span class="comment">// ... fill the internal language name -&gt; catalog file map ...</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>qmFile<span class="operator">,</span> qmFiles) {
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>qmFile<span class="operator">,</span> qmFiles) {
             m_languageMap<span class="operator">.</span>insert(languageName(qmFile)<span class="operator">,</span> qmFile);
         }
 
         <span class="comment">// ... and also fill the language model with the language names.</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>language<span class="operator">,</span> m_languageMap<span class="operator">.</span>keys()) {
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>language<span class="operator">,</span> m_languageMap<span class="operator">.</span>keys()) {
             m_model <span class="operator">&lt;</span><span class="operator">&lt;</span> language;
         }
     }</pre>
-<p>We first retrieve the list of all qm files (the translation catalogs, one for each language) that are shipped with this sample application and then we insert them into a map with the language name as key and the path to the qm file as value. The language name is additionally appended to 'm_model', a QListDataModel&lt;<a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a>&gt; that is used as data model by the <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> in the UI.</p>
-<p>Now the application is initialized and the user can start to switch the languages. Whenever the selection of the <a href="http://qt.nokia.com/doc/4.8/qml-listview.html">ListView</a> changes, the setCurrentLanguage() slot of the application object is invoked:</p>
-<pre class="cpp">    <span class="type">void</span> App<span class="operator">::</span>setCurrentLanguage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+<p>We first retrieve the list of all qm files (the translation catalogs, one for each language) that are shipped with this sample application and then we insert them into a map with the language name as key and the path to the qm file as value. The language name is additionally appended to 'm_model', a QListDataModel&lt;QString&gt; that is used as data model by the ListView in the UI.</p>
+<p>Now the application is initialized and the user can start to switch the languages. Whenever the selection of the ListView changes, the setCurrentLanguage() slot of the application object is invoked:</p>
+<pre class="cpp">    <span class="type">void</span> App<span class="operator">::</span>setCurrentLanguage(<span class="keyword">const</span> <span class="type">QVariantList</span> <span class="operator">&amp;</span>indexPath)
     {
         <span class="comment">// Retrieve the currently selected language</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> language <span class="operator">=</span> m_model<span class="operator">.</span>data(indexPath)<span class="operator">.</span>toString();
+        <span class="keyword">const</span> <span class="type">QString</span> language <span class="operator">=</span> m_model<span class="operator">.</span>data(indexPath)<span class="operator">.</span>toString();
 
         <span class="comment">// First remove any previous installed translator ...</span>
         <span class="keyword">if</span> (m_translator) {
@@ -165,35 +147,30 @@
         }
 
         <span class="comment">// ... then create and install a new translator for the selected language ...</span>
-        m_translator <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtranslator.html">QTranslator</a></span>(<span class="keyword">this</span>);
+        m_translator <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QTranslator</span>(<span class="keyword">this</span>);
         m_translator<span class="operator">-</span><span class="operator">&gt;</span>load(m_languageMap<span class="operator">.</span>value(language));
 
         qApp<span class="operator">-</span><span class="operator">&gt;</span>installTranslator(m_translator);
 
         <span class="comment">// ... and trigger the translation of the texts inside the UI.</span>
-        <span class="keyword">if</span> (m_mainView) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qmetaobject.html">QMetaObject</a></span><span class="operator">::</span>invokeMethod(m_mainView<span class="operator">,</span> <span class="string">&quot;retranslate&quot;</span>);
+        <span class="keyword">emit</span> retranslate();
+
+        m_message<span class="operator">.</span>clear();
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; listEntries<span class="operator">[</span>i<span class="operator">]</span>; <span class="operator">+</span><span class="operator">+</span>i) {
+            <span class="comment">/**
+             * The static string literals, that have been marked to be translated with
+             * QT_TRANSLATE_NOOP above, are eventually translated here.
+             * Note: The context identifier ('MainView' here) must match with the context identifier
+             *       that is used in the QT_TRANSLATE_NOOP declaration.
+             */</span>
+            m_message <span class="operator">+</span><span class="operator">=</span> qApp<span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> listEntries<span class="operator">[</span>i<span class="operator">]</span>) <span class="operator">+</span> <span class="string">&quot;\n&quot;</span>;
         }
 
-        <span class="keyword">if</span> (m_textArea) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> text;
-            <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; listEntries<span class="operator">[</span>i<span class="operator">]</span>; <span class="operator">+</span><span class="operator">+</span>i) {
-                <span class="comment">/**
-                 * The static string literals, that have been marked to be translated with
-                 * QT_TRANSLATE_NOOP above, are eventually translated here.
-                 * Note: The context identifier ('MainView' here) must match with the context identifier
-                 *       that is used in the QT_TRANSLATE_NOOP declaration.
-                 */</span>
-                text <span class="operator">+</span><span class="operator">=</span> qApp<span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> listEntries<span class="operator">[</span>i<span class="operator">]</span>) <span class="operator">+</span> <span class="string">&quot;\n&quot;</span>;
-            }
-
-            m_textArea<span class="operator">-</span><span class="operator">&gt;</span>setText(text);
-        }
+        <span class="keyword">emit</span> messageChanged();
     }</pre>
-<p>With the passed index path we can retrieve the language, the user has selected, from the model. Befor we load the translation catalog for the new language, we remove any previous loaded catalog and delete its associated <a href="http://qt.nokia.com/doc/4.8/qtranslator.html">QTranslator</a> object.</p>
-<p>Since the <a href="http://qt.nokia.com/doc/4.8/qtranslator.html">QTranslator</a> expects the path to the qm file as parameter, we look up the path for the newly selected language in the map we have filled previously in setupLanguageModel().</p>
-<p>Afterwards the new translator object can be installed on the global application object. Unfortunately just installing the translator does not update the texts, that has been wrapped with <a href="http://qt.nokia.com/doc/4.8/qdeclarativei18n.html">qsTr()</a> inside the QML files, automatically. That is because qsTr() is a function and the translation is only done at the point when the function is invoked. However, as previously seen, our MainView.qml contains a top-level function that calls the qsTr() functions and assigns the results to the 'text' properties of the controls, so we can simply call this top-level function to trigger the retranslation.</p>
-<p>Invoking a JavaScript function from C++ can be done with the <a href="http://qt.nokia.com/doc/4.8/qmetaobject.html#invokeMethod">QMetaObject::invokeMethod()</a> method, which expects the pointer to the C++ object that represents the QML object with the JavaScript function and the name of the JavaScript function.</p>
+<p>With the passed index path we can retrieve the language, the user has selected, from the model. Befor we load the translation catalog for the new language, we remove any previous loaded catalog and delete its associated QTranslator object.</p>
+<p>Since the QTranslator expects the path to the qm file as parameter, we look up the path for the newly selected language in the map we have filled previously in setupLanguageModel().</p>
+<p>Afterwards the new translator object can be installed on the global application object. Unfortunately just installing the translator does not update the texts, that has been wrapped with qsTr() inside the QML files, automatically. That is because qsTr() is a function and the translation is only done at the point when the function is invoked. However, as previously seen, our MainView.qml contains a top-level function that calls the qsTr() functions and assigns the results to the 'text' properties of the controls, so we can simply invoke this top-level function by emitting the retranslate() signal which is connected against this top-level function.</p>
 <p>It is also possible to translate text that can not be wrapped with qsTr(), for example if the texts are part of a table structure:</p>
 <pre class="cpp">    <span class="comment">/**
      * These static string literals will be used later on.
@@ -206,7 +183,7 @@
         QT_TRANSLATE_NOOP(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> <span class="string">&quot;Third&quot;</span>)<span class="operator">,</span>
         <span class="number">0</span>
     };</pre>
-<p>In this case the <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#QT_TRANSLATE_NOOP">QT_TRANSLATE_NOOP</a>() macro can be used to mark text as a candidate for translation. The actual translation is then done by calling <a href="http://qt.nokia.com/doc/4.8/qcoreapplication.html#translate">translate()</a> on the global application object like done in setCurrentLanguage() for the content of the TextArea control.</p>
+<p>In this case the QT_TRANSLATE_NOOP() macro can be used to mark text as a candidate for translation. The actual translation is then done by calling translate() on the global application object like done in setCurrentLanguage() for the content of the TextArea control.</p>
 </div>
 <!-- @@@tools/i18n -->
   <div class="ft">

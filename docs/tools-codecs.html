@@ -38,8 +38,6 @@
 <li><a href="tools-codecs-assets-main-qml.html">tools/codecs/assets/main.qml</a></li>
 <li><a href="tools-codecs-src-codeccontroller-cpp.html">tools/codecs/src/CodecController.cpp</a></li>
 <li><a href="tools-codecs-src-codeccontroller-hpp.html">tools/codecs/src/CodecController.hpp</a></li>
-<li><a href="tools-codecs-src-codecsapp-cpp.html">tools/codecs/src/CodecsApp.cpp</a></li>
-<li><a href="tools-codecs-src-codecsapp-hpp.html">tools/codecs/src/CodecsApp.hpp</a></li>
 <li><a href="tools-codecs-src-main-cpp.html">tools/codecs/src/main.cpp</a></li>
 <li><a href="tools-codecs-codecs-pro.html">tools/codecs/codecs.pro</a></li>
 </ul>
@@ -48,13 +46,13 @@
 <p>The Codecs example demonstrates the principles behind importing text using codecs to ensure that characters are encoded properly, avoiding loss of data and retaining the correct symbols used in various scripts.</p>
 <p class="centerAlign"><img src="images/codecs-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a> class to decode raw data from a file and show them on the screen.</p>
+<p>In this example we'll learn how to use the QTextCodec class to decode raw data from a file and show them on the screen.</p>
 <a name="the-ui"></a>
 <h2>The UI</h2>
 <p>The sample application provides an UI with two DropDown controls in a row to select a file and a codec and below a TextArea where the decoded content of the selected file is shown. All the business logic is encapsulated in the C++ class CodecController which has been exported to the UI under the name '<a href="#codeccontroller">_codecController</a>'.</p>
 <pre class="qml">                    <span class="type">DropDown</span> {
                         <span class="name">id</span>: <span class="name">fileList</span>
-                        <span class="name">title</span>: <span class="string">&quot;File&quot;</span>
+                        <span class="name">title</span>: <span class="name">qsTr</span> (<span class="string">&quot;File&quot;</span>)
 
                         <span class="name">onSelectedIndexChanged</span>: {
                             <span class="comment">// Trigger an update of the decoded file content</span>
@@ -64,7 +62,7 @@
 
                     <span class="type">DropDown</span> {
                         <span class="name">id</span>: <span class="name">codecList</span>
-                        <span class="name">title</span>: <span class="string">&quot;Codec&quot;</span>
+                        <span class="name">title</span>: <span class="name">qsTr</span> (<span class="string">&quot;Codec&quot;</span>)
 
                         <span class="name">onSelectedIndexChanged</span>: {
                             <span class="comment">// Trigger an update of the decoded file content</span>
@@ -80,8 +78,9 @@
 <p>Since the CodecController is also responsible for filling the DropDown controls with the list of available files and codecs, we have to set the 'fileList' and 'codecList' properties of the CodecController. This is done inside the signal handler for the creationCompleted() signal, which is emitted after the top-level control in main.qml has been created and initialized.</p>
 <pre class="qml">                <span class="comment">// Shows the decoded file content</span>
                 <span class="type">TextArea</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+
                     <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
                         <span class="name">spaceQuota</span>: <span class="number">1</span>
                     }
 
@@ -97,7 +96,7 @@
         <span class="keyword">if</span> (<span class="operator">!</span>m_fileList)
             <span class="keyword">return</span>;
 
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span> fileNames <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstringlist.html">QStringList</a></span>()
+        <span class="keyword">const</span> <span class="type">QStringList</span> fileNames <span class="operator">=</span> <span class="type">QStringList</span>()
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-1.txt&quot;</span>
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-15.txt&quot;</span>
             <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-16.txt&quot;</span>
@@ -109,10 +108,10 @@
         m_fileList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
 
         <span class="comment">// Create one entry for each file</span>
-        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName<span class="operator">,</span> fileNames) {
+        foreach (<span class="keyword">const</span> <span class="type">QString</span> fileName<span class="operator">,</span> fileNames) {
             Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
             option<span class="operator">-</span><span class="operator">&gt;</span>setText(fileName);
-            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span>(<span class="string">&quot;app/native/assets/encodedfiles/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type">QString</span>(<span class="string">&quot;app/native/assets/encodedfiles/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
             m_fileList<span class="operator">-</span><span class="operator">&gt;</span>add(option);
         }
     }</pre>
@@ -127,12 +126,12 @@
         m_codecList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
 
         <span class="comment">// Create one entry for each codec available on the system</span>
-        foreach (<span class="type">int</span> mib<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>availableMibs()) {
-            <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>codecForMib(mib);
+        foreach (<span class="type">int</span> mib<span class="operator">,</span> <span class="type">QTextCodec</span><span class="operator">::</span>availableMibs()) {
+            <span class="type">QTextCodec</span> <span class="operator">*</span>codec <span class="operator">=</span> <span class="type">QTextCodec</span><span class="operator">::</span>codecForMib(mib);
 
             Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
             option<span class="operator">-</span><span class="operator">&gt;</span>setText(codec<span class="operator">-</span><span class="operator">&gt;</span>name());
-            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(codec));
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type">QVariant</span><span class="operator">::</span>fromValue(codec));
 
             <span class="comment">// pre-select the UTF-8 codec in the DropDown</span>
             <span class="keyword">if</span> (codec<span class="operator">-</span><span class="operator">&gt;</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span>)
@@ -141,7 +140,7 @@
             m_codecList<span class="operator">-</span><span class="operator">&gt;</span>add(option);
         }
     }</pre>
-<p>Here we iterate over the list of available codecs that are provided by Qt on this system and add one entry to the DropDown for each codec. As text for the entry we use the codec name and as value the pointer to the actual <a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a> object that represents this codec. In addition we preselect the UTF-8 codec.</p>
+<p>Here we iterate over the list of available codecs that are provided by Qt on this system and add one entry to the DropDown for each codec. As text for the entry we use the codec name and as value the pointer to the actual QTextCodec object that represents this codec. In addition we preselect the UTF-8 codec.</p>
 <p>When the user selects a file or codec from the DropDown controls, the updateFileContent() slot will be invoked:</p>
 <pre class="cpp">    <span class="type">void</span> CodecController<span class="operator">::</span>updateFileContent()
     {
@@ -158,16 +157,16 @@
         <span class="keyword">const</span> Option <span class="operator">*</span>selectedCodecOption <span class="operator">=</span> m_codecList<span class="operator">-</span><span class="operator">&gt;</span>at(m_codecList<span class="operator">-</span><span class="operator">&gt;</span>selectedIndex());
 
         <span class="comment">// Extract the values associated with the selected Options</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> fileName <span class="operator">=</span> selectedFileOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>toString();
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> selectedCodecOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a></span><span class="operator">*</span><span class="operator">&gt;</span>();
+        <span class="keyword">const</span> <span class="type">QString</span> fileName <span class="operator">=</span> selectedFileOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>toString();
+        <span class="type">QTextCodec</span> <span class="operator">*</span>codec <span class="operator">=</span> selectedCodecOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">QTextCodec</span><span class="operator">*</span><span class="operator">&gt;</span>();
 
         <span class="comment">// Open the selected file ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qfile.html">QFile</a></span> file(fileName);
-        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly))
+        <span class="type">QFile</span> file(fileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type">QIODevice</span><span class="operator">::</span>ReadOnly))
             <span class="keyword">return</span>;
 
         <span class="comment">// ... set a QTextStream with the selected codec on it ...</span>
-        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a></span> stream(<span class="operator">&amp;</span>file);
+        <span class="type">QTextStream</span> stream(<span class="operator">&amp;</span>file);
         stream<span class="operator">.</span>setAutoDetectUnicode(<span class="keyword">false</span>);
         stream<span class="operator">.</span>setCodec(codec);
 
@@ -176,7 +175,7 @@
 
         <span class="keyword">emit</span> fileContentChanged();
     }</pre>
-<p>In this method we first check which file and codec the user has selected in the DropDown controls and extract the file path and the <a href="http://qt.nokia.com/doc/4.8/qtextcodec.html">QTextCodec</a> object from the Option objects. Afterwards we try to open the selected file and set a <a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a> on it. The <a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a> allows us to read data from the file and decode them on-the-fly. For that we have to tell <a href="http://qt.nokia.com/doc/4.8/qtextstream.html">QTextStream</a> which codec should be used, which is done by calling <a href="http://qt.nokia.com/doc/4.8/qtextstream.html#setCodec">setCodec()</a> on it.</p>
+<p>In this method we first check which file and codec the user has selected in the DropDown controls and extract the file path and the QTextCodec object from the Option objects. Afterwards we try to open the selected file and set a QTextStream on it. The QTextStream allows us to read data from the file and decode them on-the-fly. For that we have to tell QTextStream which codec should be used, which is done by calling setCodec() on it.</p>
 <p>Now we read the complete content of the file into the 'fileContent' property and emit the change notification signal, so that the UI will update the content of the TextArea.</p>
 </div>
 <!-- @@@tools/codecs -->

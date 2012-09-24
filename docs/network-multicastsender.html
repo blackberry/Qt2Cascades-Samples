@@ -45,7 +45,7 @@
 <p>The Multicast Sender example shows how to send information to multiple clients in a multicast group.</p>
 <p class="centerAlign"><img src="images/multicastsender-example.png" alt="" /></p><a name="overview"></a>
 <h2>Overview</h2>
-<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> class to send and receive multicast messages on the network.</p>
+<p>In this example we'll learn how to use the QUdpSocket class to send and receive multicast messages on the network.</p>
 <p>The example application is splitted in two executables, multicastsender and <a href="network-multicastreceiver.html">multicastreceiver</a>. While the multicastsender allows the user to start the multicasting of messages on the local network, the <a href="network-multicastreceiver.html">multicastreceiver</a> will listen on the local network for these messages and display the received ones in the UI.</p>
 <a name="sender"></a>
 <h2>Sender</h2>
@@ -64,17 +64,14 @@
 <p>The 'status' property of the Sender object is bound against a Label control to visualize the current progress and status information of the sender.</p>
 <pre class="qml">                <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
-                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                    }
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
 
                     <span class="name">text</span>: <span class="name">_sender</span>.<span class="name">status</span>
 
                     <span class="comment">// Defines text style with custom font size</span>
                     <span class="type">textStyle</span> {
+                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
                         <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
-                        <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
-                        <span class="name">size</span>: <span class="number">35</span>
                     }
                 }</pre>
 <p>Additionally the the 'ttl' property of the Sender object is bound against a TextField control and is updated whenever the text of the TextField is changed by the user.</p>
@@ -87,12 +84,12 @@
                         <span class="comment">// On text input store the text</span>
                         <span class="name">onTextChanging</span>: <span class="name">_sender</span>.<span class="name">ttl</span> <span class="operator">=</span> <span class="name">text</span>
                     }</pre>
-<p>Inside the constructor of Sender we initialize the 'status' property, the counter for the number of sent messages and a timer object. This timer object is used to trigger the multicasting of the messages in an interval of 1 second. Additionally the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> object is created, which encapsulates the low-level network access. The address of the multicast group is hard-coded to 239.255.43.21 here and will be used by the <a href="network-multicastreceiver.html">multicastreceiver</a> as well.</p>
-<pre class="cpp">    Sender<span class="operator">::</span>Sender(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_ttl(<span class="number">0</span>)
+<p>Inside the constructor of Sender we initialize the 'status' property, the counter for the number of sent messages and a timer object. This timer object is used to trigger the multicasting of the messages in an interval of 1 second. Additionally the QUdpSocket object is created, which encapsulates the low-level network access. The address of the multicast group is hard-coded to 239.255.43.21 here and will be used by the <a href="network-multicastreceiver.html">multicastreceiver</a> as well.</p>
+<pre class="cpp">    Sender<span class="operator">::</span>Sender(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QObject</span>(parent)<span class="operator">,</span> m_ttl(<span class="number">0</span>)
     {
         <span class="comment">// Initialize the multicast address</span>
-        m_groupAddress <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qhostaddress.html">QHostAddress</a></span>(<span class="string">&quot;239.255.43.21&quot;</span>);
+        m_groupAddress <span class="operator">=</span> <span class="type">QHostAddress</span>(<span class="string">&quot;239.255.43.21&quot;</span>);
 
         <span class="comment">/**
          * Initialize the 'status' property with some data, it will
@@ -101,10 +98,10 @@
         m_status <span class="operator">=</span> tr(<span class="string">&quot;Ready to multicast datagrams to group %1 on port 45454&quot;</span>)<span class="operator">.</span>arg(m_groupAddress<span class="operator">.</span>toString());
 
         <span class="comment">// Create the timer that triggers the sending of the multicast datagrams</span>
-        m_timer <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qtimer.html">QTimer</a></span>(<span class="keyword">this</span>);
+        m_timer <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QTimer</span>(<span class="keyword">this</span>);
 
         <span class="comment">// Create the UDP socket object.</span>
-        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a></span>(<span class="keyword">this</span>);
+        m_udpSocket <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QUdpSocket</span>(<span class="keyword">this</span>);
 
         <span class="comment">// Initialize the datagram counter</span>
         m_messageNo <span class="operator">=</span> <span class="number">1</span>;
@@ -124,7 +121,7 @@
         <span class="comment">// Start the timer with an interval of 1 second</span>
         m_timer<span class="operator">-</span><span class="operator">&gt;</span>start(<span class="number">1000</span>);
     }</pre>
-<p>Inside sendDatagram() the actual work is done. At first the 'status' property is updated with the progress information and its change notification signal is emitted to let the UI update all property bindings where 'status' is involved in. In a second step the datagram content is assembled and afterwards it is multicasted over the network by calling <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html#writeDatagram">writeDatagram()</a> on the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> object. Additionally to the datagram content and size we also pass the address of the multicast group and the port number, which is hard-coded to 45454 in this example.</p>
+<p>Inside sendDatagram() the actual work is done. At first the 'status' property is updated with the progress information and its change notification signal is emitted to let the UI update all property bindings where 'status' is involved in. In a second step the datagram content is assembled and afterwards it is multicasted over the network by calling writeDatagram() on the QUdpSocket object. Additionally to the datagram content and size we also pass the address of the multicast group and the port number, which is hard-coded to 45454 in this example.</p>
 <pre class="cpp">    <span class="type">void</span> Sender<span class="operator">::</span>sendDatagram()
     {
         <span class="comment">// Update the status message and signal that it has changed</span>
@@ -132,7 +129,7 @@
         <span class="keyword">emit</span> statusChanged();
 
         <span class="comment">// Assemble the content of the datagram</span>
-        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span> datagram <span class="operator">=</span> <span class="string">&quot;Multicast message &quot;</span> <span class="operator">+</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qbytearray.html">QByteArray</a></span><span class="operator">::</span>number(m_messageNo);
+        <span class="keyword">const</span> <span class="type">QByteArray</span> datagram <span class="operator">=</span> <span class="string">&quot;Multicast message &quot;</span> <span class="operator">+</span> <span class="type">QByteArray</span><span class="operator">::</span>number(m_messageNo);
 
         <span class="comment">// Send the multicast datagram with the given content to port 45454</span>
         m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>writeDatagram(datagram<span class="operator">.</span>data()<span class="operator">,</span> datagram<span class="operator">.</span>size()<span class="operator">,</span> m_groupAddress<span class="operator">,</span> <span class="number">45454</span>);
@@ -140,8 +137,8 @@
         <span class="comment">// Increase the datagram counter, so that the next sent datagram will have a different content</span>
         <span class="operator">+</span><span class="operator">+</span>m_messageNo;
     }</pre>
-<p>If the user changes the content of the TTL (time-to-live) field in the UI, setTtl() will be called with the content of the TextField as parameter. If the entered value is really a number and it differs from the current TTL we update the TTL property of the <a href="http://qt.nokia.com/doc/4.8/qudpsocket.html">QUdpSocket</a> object and signal that the 'ttl' property has changed.</p>
-<pre class="cpp">    <span class="type">void</span> Sender<span class="operator">::</span>setTtl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qstring.html">QString</a></span> <span class="operator">&amp;</span>ttlString)
+<p>If the user changes the content of the TTL (time-to-live) field in the UI, setTtl() will be called with the content of the TextField as parameter. If the entered value is really a number and it differs from the current TTL we update the TTL property of the QUdpSocket object and signal that the 'ttl' property has changed.</p>
+<pre class="cpp">    <span class="type">void</span> Sender<span class="operator">::</span>setTtl(<span class="keyword">const</span> <span class="type">QString</span> <span class="operator">&amp;</span>ttlString)
     {
         <span class="type">bool</span> ok <span class="operator">=</span> <span class="keyword">false</span>;
 
@@ -156,7 +153,7 @@
         m_ttl <span class="operator">=</span> ttl;
 
         <span class="comment">// ... and set it on the multicast UDP socket.</span>
-        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>setSocketOption(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>MulticastTtlOption<span class="operator">,</span> m_ttl);
+        m_udpSocket<span class="operator">-</span><span class="operator">&gt;</span>setSocketOption(<span class="type">QAbstractSocket</span><span class="operator">::</span>MulticastTtlOption<span class="operator">,</span> m_ttl);
 
         <span class="keyword">emit</span> ttlChanged();
     }</pre>

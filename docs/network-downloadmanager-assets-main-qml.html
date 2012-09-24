@@ -71,41 +71,34 @@
     <span class="type">Page</span> {
 
         <span class="comment">// The root Container</span>
-        <span class="name">content</span>: <span class="name">Container</span> {
+        <span class="type">Container</span> {
             <span class="name">layout</span>: <span class="name">DockLayout</span> {}
 
             <span class="type">ImageView</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
                 <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
             }
 
             <span class="type">Container</span> {
-                <span class="name">layoutProperties</span>: <span class="name">DockLayoutProperties</span> {
-                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                    <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
-                }
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
 
-                <span class="name">layout</span>: <span class="name">StackLayout</span> {
-                    <span class="name">leftPadding</span>: <span class="number">30</span>
-                    <span class="name">topPadding</span>: <span class="number">20</span>
-                    <span class="name">rightPadding</span>: <span class="number">30</span>
-                }
+                <span class="name">leftPadding</span>: <span class="number">30</span>
+                <span class="name">topPadding</span>: <span class="number">20</span>
+                <span class="name">rightPadding</span>: <span class="number">30</span>
 
                 <span class="comment">// A Container to group the url TextField with its download Button</span>
                 <span class="type">Container</span> {
                     <span class="comment">// A standard TextField for the url address</span>
                     <span class="type">TextField</span> {
-                        <span class="name">id</span>: <span class="name">url</span>
+                        <span class="name">id</span>: <span class="name">urlField</span>
+
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+
                         <span class="name">hintText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enter URL to download&quot;</span>)
                         <span class="name">text</span>: <span class="string">&quot;http://www.winkde.org/pub/kde/ports/win32/installer/kdewin-installer-gui-latest.exe&quot;</span>
-
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
-                        }
 
                         <span class="comment">// Disable the control button upon text input</span>
                         <span class="name">onTextChanging</span>: {
@@ -116,39 +109,45 @@
                     <span class="comment">// A standard button</span>
                     <span class="type">Button</span> {
                         <span class="name">id</span>: <span class="name">downloadButton</span>
+
+                        <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
                         <span class="name">topMargin</span>: <span class="number">50</span>
-                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
-                            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
-                        }
 
                         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Download&quot;</span>)
 
                         <span class="comment">// Start download from url on click</span>
-                        <span class="name">onClicked</span>: <span class="name">_manager</span>.<span class="name">downloadUrl</span> (<span class="name">url</span>.<span class="name">text</span>)
+                        <span class="name">onClicked</span>: <span class="name">_manager</span>.<span class="name">downloadUrl</span> (<span class="name">urlField</span>.<span class="name">text</span>)
                     }
                 }
 
                 <span class="comment">// Custom Container for displaying download progress as a bar</span>
                 <span class="type">ProgressBar</span> {
+                    <span class="name">topMargin</span>: <span class="number">10</span>
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+
                     <span class="name">total</span>: <span class="name">_manager</span>.<span class="name">progressTotal</span>
                     <span class="name">value</span>: <span class="name">_manager</span>.<span class="name">progressValue</span>
                     <span class="name">message</span>: <span class="name">_manager</span>.<span class="name">progressMessage</span>
-                    <span class="name">topMargin</span>: <span class="number">10</span>
-                    <span class="name">leftMargin</span>: <span class="number">10</span>
                 }
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
+                    <span class="name">topMargin</span>: <span class="number">10</span>
+                    <span class="name">leftMargin</span>: <span class="number">10</span>
+
                     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Active Downloads: &quot;</span>) <span class="operator">+</span> (<span class="name">_manager</span>.<span class="name">activeDownloads</span> <span class="operator">==</span> <span class="number">0</span> ? <span class="string">&quot;none&quot;</span> : <span class="name">_manager</span>.<span class="name">activeDownloads</span>)
-                    <span class="name">topMargin</span>: <span class="number">10</span>
-                    <span class="name">leftMargin</span>: <span class="number">10</span>
+                    <span class="name">textStyle</span>.base: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">Black</span>
                 }
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
-                    <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Status:&quot;</span>)
                     <span class="name">topMargin</span>: <span class="number">10</span>
                     <span class="name">leftMargin</span>: <span class="number">10</span>
+
+                    <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Status:&quot;</span>)
+                    <span class="name">textStyle</span>.base: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">Black</span>
                 }
 
                 <span class="comment">// A standard TextArea for the download status output</span>
@@ -170,8 +169,11 @@
 
                 <span class="comment">// A standard Label</span>
                 <span class="type">Label</span> {
-                    <span class="name">text</span>: <span class="string">&quot;Errors:&quot;</span>
                     <span class="name">leftMargin</span>: <span class="number">10</span>
+
+                    <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Errors:&quot;</span>)
+                    <span class="name">textStyle</span>.base: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">BodyText</span>
+                    <span class="name">textStyle</span>.color: <span class="name">Color</span>.<span class="name">Black</span>
                 }
 
                 <span class="comment">// A standard TextArea for displaying error output</span>

@@ -67,8 +67,8 @@
 
     <span class="preprocessor">#include &quot;renderthread.hpp&quot;</span>
 
-    RenderThread<span class="operator">::</span>RenderThread(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
-        : <span class="type"><a href="http://qt.nokia.com/doc/4.8/qthread.html">QThread</a></span>(parent)
+    RenderThread<span class="operator">::</span>RenderThread(<span class="type">QObject</span> <span class="operator">*</span>parent)
+        : <span class="type">QThread</span>(parent)
     {
         m_abort <span class="operator">=</span> <span class="keyword">false</span>;
     }
@@ -88,7 +88,7 @@
         wait();
     }
 
-    <span class="type">void</span> RenderThread<span class="operator">::</span>processImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.8/qimage.html">QImage</a></span> <span class="operator">&amp;</span>image)
+    <span class="type">void</span> RenderThread<span class="operator">::</span>processImage(<span class="keyword">const</span> <span class="type">QImage</span> <span class="operator">&amp;</span>image)
     {
         <span class="keyword">if</span> (image<span class="operator">.</span>isNull())
             <span class="keyword">return</span>;
@@ -108,32 +108,32 @@
         <span class="comment">// Note: The content of this method is executed inside the worker thread!</span>
 
         <span class="comment">// Iterate over the image pixel-by-pixel and calculate the color of the blocks</span>
-        <span class="type">int</span> size <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMax">qMax</a>(m_image<span class="operator">.</span>width() <span class="operator">/</span> <span class="number">20</span><span class="operator">,</span> m_image<span class="operator">.</span>height() <span class="operator">/</span> <span class="number">20</span>);
+        <span class="type">int</span> size <span class="operator">=</span> qMax(m_image<span class="operator">.</span>width() <span class="operator">/</span> <span class="number">20</span><span class="operator">,</span> m_image<span class="operator">.</span>height() <span class="operator">/</span> <span class="number">20</span>);
         <span class="keyword">for</span> (<span class="type">int</span> s <span class="operator">=</span> size; s <span class="operator">&gt;</span> <span class="number">10</span>; <span class="operator">-</span><span class="operator">-</span>s) {
             <span class="keyword">for</span> (<span class="type">int</span> c <span class="operator">=</span> <span class="number">0</span>; c <span class="operator">&lt;</span> <span class="number">400</span>; <span class="operator">+</span><span class="operator">+</span>c) {
-                <span class="type">int</span> x1 <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMax">qMax</a>(<span class="number">0</span><span class="operator">,</span> (qrand() <span class="operator">%</span> m_image<span class="operator">.</span>width()) <span class="operator">-</span> s <span class="operator">/</span> <span class="number">2</span>);
-                <span class="type">int</span> x2 <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMin">qMin</a>(x1 <span class="operator">+</span> s <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> m_image<span class="operator">.</span>width());
-                <span class="type">int</span> y1 <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMax">qMax</a>(<span class="number">0</span><span class="operator">,</span> (qrand() <span class="operator">%</span> m_image<span class="operator">.</span>height()) <span class="operator">-</span> s <span class="operator">/</span> <span class="number">2</span>);
-                <span class="type">int</span> y2 <span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qtglobal.html#qMin">qMin</a>(y1 <span class="operator">+</span> s <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> m_image<span class="operator">.</span>height());
+                <span class="type">int</span> x1 <span class="operator">=</span> qMax(<span class="number">0</span><span class="operator">,</span> (qrand() <span class="operator">%</span> m_image<span class="operator">.</span>width()) <span class="operator">-</span> s <span class="operator">/</span> <span class="number">2</span>);
+                <span class="type">int</span> x2 <span class="operator">=</span> qMin(x1 <span class="operator">+</span> s <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> m_image<span class="operator">.</span>width());
+                <span class="type">int</span> y1 <span class="operator">=</span> qMax(<span class="number">0</span><span class="operator">,</span> (qrand() <span class="operator">%</span> m_image<span class="operator">.</span>height()) <span class="operator">-</span> s <span class="operator">/</span> <span class="number">2</span>);
+                <span class="type">int</span> y2 <span class="operator">=</span> qMin(y1 <span class="operator">+</span> s <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> m_image<span class="operator">.</span>height());
                 <span class="type">int</span> n <span class="operator">=</span> <span class="number">0</span>;
                 <span class="type">int</span> red <span class="operator">=</span> <span class="number">0</span>;
                 <span class="type">int</span> green <span class="operator">=</span> <span class="number">0</span>;
                 <span class="type">int</span> blue <span class="operator">=</span> <span class="number">0</span>;
                 <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> y1; i <span class="operator">&lt;</span> y2; <span class="operator">+</span><span class="operator">+</span>i) {
                     <span class="keyword">for</span> (<span class="type">int</span> j <span class="operator">=</span> x1; j <span class="operator">&lt;</span> x2; <span class="operator">+</span><span class="operator">+</span>j) {
-                        <span class="type"><a href="http://qt.nokia.com/doc/4.8/qcolor.html#QRgb-typedef">QRgb</a></span> pixel <span class="operator">=</span> m_image<span class="operator">.</span>pixel(j<span class="operator">,</span> i);
-                        red <span class="operator">+</span><span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qcolor.html#qRed">qRed</a>(pixel);
-                        green <span class="operator">+</span><span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qcolor.html#qGreen">qGreen</a>(pixel);
-                        blue <span class="operator">+</span><span class="operator">=</span> <a href="http://qt.nokia.com/doc/4.8/qcolor.html#qBlue">qBlue</a>(pixel);
+                        <span class="type">QRgb</span> pixel <span class="operator">=</span> m_image<span class="operator">.</span>pixel(j<span class="operator">,</span> i);
+                        red <span class="operator">+</span><span class="operator">=</span> qRed(pixel);
+                        green <span class="operator">+</span><span class="operator">=</span> qGreen(pixel);
+                        blue <span class="operator">+</span><span class="operator">=</span> qBlue(pixel);
                         n <span class="operator">+</span><span class="operator">=</span> <span class="number">1</span>;
                     }
                 }
-                <span class="keyword">if</span> (<a href="http://qt.nokia.com/doc/4.8/qcolor.html#qAlpha">qAlpha</a>(m_image<span class="operator">.</span>pixel(x1<span class="operator">,</span> y1)) <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>) { <span class="comment">// ignore transparent pixels</span>
+                <span class="keyword">if</span> (qAlpha(m_image<span class="operator">.</span>pixel(x1<span class="operator">,</span> y1)) <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>) { <span class="comment">// ignore transparent pixels</span>
                     <span class="comment">// Create a corresponding color object</span>
                     <span class="keyword">const</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color color <span class="operator">=</span> bb<span class="operator">::</span>cascades<span class="operator">::</span>Color<span class="operator">::</span>fromRGBA(red <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> green <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> blue <span class="operator">/</span> n <span class="operator">/</span> <span class="number">255.0</span><span class="operator">,</span> <span class="number">1.0</span>);
 
                     <span class="comment">// Create a block of the current block size</span>
-                    Block block(<span class="type"><a href="http://qt.nokia.com/doc/4.8/qrect.html">QRect</a></span>(x1<span class="operator">,</span> y1<span class="operator">,</span> x2 <span class="operator">-</span> x1 <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> y2 <span class="operator">-</span> y1 <span class="operator">+</span> <span class="number">1</span>)<span class="operator">,</span> color);
+                    Block block(<span class="type">QRect</span>(x1<span class="operator">,</span> y1<span class="operator">,</span> x2 <span class="operator">-</span> x1 <span class="operator">+</span> <span class="number">1</span><span class="operator">,</span> y2 <span class="operator">-</span> y1 <span class="operator">+</span> <span class="number">1</span>)<span class="operator">,</span> color);
 
                     <span class="comment">// Send the result by emitting the signal</span>
                     <span class="keyword">emit</span> sendBlock(block);
