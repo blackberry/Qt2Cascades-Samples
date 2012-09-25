@@ -83,7 +83,7 @@ void FileLoader::loadFile(const QString &fileName)
     // Try to attach to the shared memory segment with the given key
     QSharedMemory sharedMemory(QString::fromLatin1(s_sharedKey));
     if (!sharedMemory.attach()) {
-        m_status = tr("Unable to attach to shared memory: %1").arg(sharedMemory.errorString());
+        m_status = tr("Unable to attach to shared memory: %1\nPlease start the sharedmemory sample application!").arg(sharedMemory.errorString());
         emit statusChanged();
         return;
     }

@@ -69,7 +69,9 @@ QString FileLoaderProxy::fileContent() const
     m_sharedMemory.lock();
 
     // Read out all data
-    const QString content = QString::fromUtf8(static_cast<char*>(m_sharedMemory.data()));
+    QString content = QString::fromUtf8(static_cast<char*>(m_sharedMemory.data()));
+    if (content.isEmpty())
+        content = tr("No file loaded yet, please use sharedmemory_loader sample application to load one.");
 
     // Unlock the shared memory again
     m_sharedMemory.unlock();
