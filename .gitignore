@@ -18,8 +18,8 @@
 */translations/*.qm
  
 /.settings/
-*/arm/
-*/x86/
+*/*/arm/
+*/*/x86/
 .metadata/*
 /.metadata/
 192.*
