@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : DownloadManager.cpp Example File (downloadmanager/src/DownloadManager.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">DownloadManager.cpp Example File</h1>
+<span class="small-subtitle">downloadmanager/src/DownloadManager.cpp</span>
+<!-- $$$downloadmanager/src/DownloadManager.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;DownloadManager.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QFileInfo&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QTimer&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkReply&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkRequest&gt;</span>
+
+    DownloadManager<span class="operator">::</span>DownloadManager(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_currentDownload(<span class="number">0</span>)<span class="operator">,</span> m_downloadedCount(<span class="number">0</span>)<span class="operator">,</span> m_totalCount(<span class="number">0</span>)<span class="operator">,</span> m_progressTotal(<span class="number">0</span>)<span class="operator">,</span> m_progressValue(<span class="number">0</span>)
+    {
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> DownloadManager<span class="operator">::</span>errorMessage() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_errorMessage<span class="operator">.</span>join(<span class="string">&quot;\n&quot;</span>);
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> DownloadManager<span class="operator">::</span>statusMessage() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_statusMessage<span class="operator">.</span>join(<span class="string">&quot;\n&quot;</span>);
+    }
+
+    <span class="type">int</span> DownloadManager<span class="operator">::</span>activeDownloads() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_downloadQueue<span class="operator">.</span>count();
+    }
+
+    <span class="type">int</span> DownloadManager<span class="operator">::</span>progressTotal() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_progressTotal;
+    }
+
+    <span class="type">int</span> DownloadManager<span class="operator">::</span>progressValue() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_progressValue;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> DownloadManager<span class="operator">::</span>progressMessage() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_progressMessage;
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>url)
+    {
+        append(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qurl.html">QUrl</a></span>(url));
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>append(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url)
+    {
+        <span class="comment">/**
+         * If there is no job in the queue at the moment or we do
+         * not process any job currently, then we trigger the processing
+         * of the next job.
+         */</span>
+        <span class="keyword">if</span> (m_downloadQueue<span class="operator">.</span>isEmpty() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>m_currentDownload)
+            <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtimer.html">QTimer</a></span><span class="operator">::</span>singleShot(<span class="number">0</span><span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(startNextDownload()));
+
+        <span class="comment">// Enqueue the new URL to the job queue</span>
+        m_downloadQueue<span class="operator">.</span>enqueue(url);
+        <span class="keyword">emit</span> activeDownloadsChanged();
+
+        <span class="comment">// Increment the total number of jobs</span>
+        <span class="operator">+</span><span class="operator">+</span>m_totalCount;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> DownloadManager<span class="operator">::</span>saveFileName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url)
+    {
+        <span class="comment">// First extract the path component from the URL ...</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> path <span class="operator">=</span> url<span class="operator">.</span>path();
+
+        <span class="comment">// ... and then extract the file name.</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> basename <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qfileinfo.html">QFileInfo</a></span>(path)<span class="operator">.</span>fileName();
+
+        <span class="keyword">if</span> (basename<span class="operator">.</span>isEmpty())
+            basename <span class="operator">=</span> <span class="string">&quot;download&quot;</span>;
+
+        <span class="comment">// Replace the file name with 'download' if the URL provides no file name.</span>
+        basename <span class="operator">=</span> <span class="string">&quot;tmp/&quot;</span> <span class="operator">+</span> basename; <span class="comment">// locate in tmp directory</span>
+
+        <span class="comment">/**
+         * Check if the file name exists already, if so, append an increasing number and test again.
+         */</span>
+        <span class="keyword">if</span> (<span class="type"><a href="http://qt.nokia.com/doc/4.7/qfile.html">QFile</a></span><span class="operator">::</span>exists(basename)) {
+            <span class="comment">// already exists, don't overwrite</span>
+            <span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>;
+            basename <span class="operator">+</span><span class="operator">=</span> <span class="char">'.'</span>;
+            <span class="keyword">while</span> (<span class="type"><a href="http://qt.nokia.com/doc/4.7/qfile.html">QFile</a></span><span class="operator">::</span>exists(basename <span class="operator">+</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">::</span>number(i)))
+                <span class="operator">+</span><span class="operator">+</span>i;
+
+            basename <span class="operator">+</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">::</span>number(i);
+        }
+
+        <span class="keyword">return</span> basename;
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>addErrorMessage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message)
+    {
+        m_errorMessage<span class="operator">.</span>append(message);
+        <span class="keyword">emit</span> errorMessageChanged();
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>addStatusMessage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message)
+    {
+        m_statusMessage<span class="operator">.</span>append(message);
+        <span class="keyword">emit</span> statusMessageChanged();
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>startNextDownload()
+    {
+        <span class="comment">// If the queue is empty just add a new status message</span>
+        <span class="keyword">if</span> (m_downloadQueue<span class="operator">.</span>isEmpty()) {
+            addStatusMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;%1/%2 files downloaded successfully&quot;</span>)<span class="operator">.</span>arg(m_downloadedCount)<span class="operator">.</span>arg(m_totalCount));
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Otherwise dequeue the first job from the queue ...</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qurl.html">QUrl</a></span> url <span class="operator">=</span> m_downloadQueue<span class="operator">.</span>dequeue();
+
+        <span class="comment">// ... and determine a local file name where the result can be stored.</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> filename <span class="operator">=</span> saveFileName(url);
+
+        <span class="comment">// Open the file with this file name for writing</span>
+        m_output<span class="operator">.</span>setFileName(filename);
+        <span class="keyword">if</span> (<span class="operator">!</span>m_output<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qiodevice.html">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+            addErrorMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;Problem opening save file '%1' for download '%2': %3&quot;</span>)<span class="operator">.</span>arg(filename<span class="operator">,</span> url<span class="operator">.</span>toString()<span class="operator">,</span> m_output<span class="operator">.</span>errorString()));
+
+            startNextDownload();
+            <span class="keyword">return</span>; <span class="comment">// skip this download</span>
+        }
+
+        <span class="comment">// Now create the network request for the URL ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkrequest.html">QNetworkRequest</a></span> request(url);
+
+        <span class="comment">// ... and start the download.</span>
+        m_currentDownload <span class="operator">=</span> m_manager<span class="operator">.</span>get(request);
+
+        <span class="comment">// Connect against the necessary signals to get informed about progress and status changes</span>
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span>))<span class="operator">,</span>
+                SLOT(downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span><span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span>)));
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> SLOT(downloadFinished()));
+        connect(m_currentDownload<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span> SLOT(downloadReadyRead()));
+
+        <span class="comment">// Add a status message</span>
+        addStatusMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;Downloading %1...&quot;</span>)<span class="operator">.</span>arg(url<span class="operator">.</span>toString()));
+
+        <span class="comment">// Start the timer so that we can calculate the download speed later on</span>
+        m_downloadTime<span class="operator">.</span>start();
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span> bytesReceived<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span> bytesTotal)
+    {
+        <span class="comment">// Update the properties with the new progress values</span>
+        m_progressTotal <span class="operator">=</span> bytesTotal;
+        m_progressValue <span class="operator">=</span> bytesReceived;
+        <span class="keyword">emit</span> progressTotalChanged();
+        <span class="keyword">emit</span> progressValueChanged();
+
+        <span class="comment">// Calculate the download speed ...</span>
+        <span class="type">double</span> speed <span class="operator">=</span> bytesReceived <span class="operator">*</span> <span class="number">1000.0</span> <span class="operator">/</span> m_downloadTime<span class="operator">.</span>elapsed();
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> unit;
+        <span class="keyword">if</span> (speed <span class="operator">&lt;</span> <span class="number">1024</span>) {
+            unit <span class="operator">=</span> <span class="string">&quot;bytes/sec&quot;</span>;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (speed <span class="operator">&lt;</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) {
+            speed <span class="operator">/</span><span class="operator">=</span> <span class="number">1024</span>;
+            unit <span class="operator">=</span> <span class="string">&quot;kB/s&quot;</span>;
+        } <span class="keyword">else</span> {
+            speed <span class="operator">/</span><span class="operator">=</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>;
+            unit <span class="operator">=</span> <span class="string">&quot;MB/s&quot;</span>;
+        }
+
+        <span class="comment">// ... and update the progress message.</span>
+        m_progressMessage <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;%1 %2&quot;</span>)<span class="operator">.</span>arg(speed<span class="operator">,</span> <span class="number">3</span><span class="operator">,</span> <span class="char">'f'</span><span class="operator">,</span> <span class="number">1</span>)<span class="operator">.</span>arg(unit);
+        <span class="keyword">emit</span> progressMessageChanged();
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadFinished()
+    {
+        <span class="comment">// Reset the progress information when the download has finished</span>
+        m_progressTotal <span class="operator">=</span> <span class="number">0</span>;
+        m_progressValue <span class="operator">=</span> <span class="number">0</span>;
+        m_progressMessage<span class="operator">.</span>clear();
+        <span class="keyword">emit</span> progressValueChanged();
+        <span class="keyword">emit</span> progressTotalChanged();
+        <span class="keyword">emit</span> progressMessageChanged();
+
+        <span class="comment">// Close the file where the data have been written</span>
+        m_output<span class="operator">.</span>close();
+
+        <span class="comment">// Add a status or error message</span>
+        <span class="keyword">if</span> (m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>error()) {
+            addErrorMessage(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;Failed: %1&quot;</span>)<span class="operator">.</span>arg(m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>errorString()));
+        } <span class="keyword">else</span> {
+            addStatusMessage(<span class="string">&quot;Succeeded.&quot;</span>);
+            <span class="operator">+</span><span class="operator">+</span>m_downloadedCount;
+        }
+
+        <span class="comment">/**
+         * We can't call 'delete m_currentDownload' here, because this method might have been invoked directly as result of a signal
+         * emission of the network reply object.
+         */</span>
+        m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+        m_currentDownload <span class="operator">=</span> <span class="number">0</span>;
+        <span class="keyword">emit</span> activeDownloadsChanged();
+
+        <span class="comment">// Trigger the execution of the next job</span>
+        startNextDownload();
+    }
+
+    <span class="type">void</span> DownloadManager<span class="operator">::</span>downloadReadyRead()
+    {
+        <span class="comment">// Whenever new data are available on the network reply, write them out to the result file</span>
+        m_output<span class="operator">.</span>write(m_currentDownload<span class="operator">-</span><span class="operator">&gt;</span>readAll());
+    }</pre>
+</div>
+<!-- @@@downloadmanager/src/DownloadManager.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

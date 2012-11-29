@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : app.cpp Example File (i18n/src/app.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">app.cpp Example File</h1>
+<span class="small-subtitle">i18n/src/app.cpp</span>
+<!-- $$$i18n/src/app.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Control&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Page&gt;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QStringList&gt;</span>
+
+    <span class="preprocessor">#include &quot;app.hpp&quot;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    <span class="comment">/**
+     * These static string literals will be used later on.
+     * We use QT_TRANSLATE_NOOP here to just mark them as 'must-be-translated'
+     * so that lupdate can extract them from the source code.
+     */</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> listEntries<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+        QT_TRANSLATE_NOOP(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> <span class="string">&quot;First&quot;</span>)<span class="operator">,</span>
+        QT_TRANSLATE_NOOP(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> <span class="string">&quot;Second&quot;</span>)<span class="operator">,</span>
+        QT_TRANSLATE_NOOP(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> <span class="string">&quot;Third&quot;</span>)<span class="operator">,</span>
+        <span class="number">0</span>
+    };
+
+    App<span class="operator">::</span>App()
+        : m_translator(<span class="number">0</span>)
+    {
+        setupLanguageModel();
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// Make the language model and App object available to the UI as context properties</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>m_model);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_app&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="comment">// Pre-select the second entry - English</span>
+        setCurrentLanguage(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span>(<span class="number">1</span>));
+    }
+
+    <span class="type">void</span> App<span class="operator">::</span>setCurrentLanguage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath)
+    {
+        <span class="comment">// Retrieve the currently selected language</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> language <span class="operator">=</span> m_model<span class="operator">.</span>data(indexPath)<span class="operator">.</span>toString();
+
+        <span class="comment">// First remove any previous installed translator ...</span>
+        <span class="keyword">if</span> (m_translator) {
+            qApp<span class="operator">-</span><span class="operator">&gt;</span>removeTranslator(m_translator);
+            <span class="keyword">delete</span> m_translator;
+            m_translator <span class="operator">=</span> <span class="number">0</span>;
+        }
+
+        <span class="comment">// ... then create and install a new translator for the selected language ...</span>
+        m_translator <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtranslator.html">QTranslator</a></span>(<span class="keyword">this</span>);
+        m_translator<span class="operator">-</span><span class="operator">&gt;</span>load(m_languageMap<span class="operator">.</span>value(language));
+
+        qApp<span class="operator">-</span><span class="operator">&gt;</span>installTranslator(m_translator);
+
+        <span class="comment">// ... and trigger the translation of the texts inside the UI.</span>
+        <span class="keyword">emit</span> retranslate();
+
+        m_message<span class="operator">.</span>clear();
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; listEntries<span class="operator">[</span>i<span class="operator">]</span>; <span class="operator">+</span><span class="operator">+</span>i) {
+            <span class="comment">/**
+             * The static string literals, that have been marked to be translated with
+             * QT_TRANSLATE_NOOP above, are eventually translated here.
+             * Note: The context identifier ('MainView' here) must match with the context identifier
+             *       that is used in the QT_TRANSLATE_NOOP declaration.
+             */</span>
+            m_message <span class="operator">+</span><span class="operator">=</span> qApp<span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> listEntries<span class="operator">[</span>i<span class="operator">]</span>) <span class="operator">+</span> <span class="string">&quot;\n&quot;</span>;
+        }
+
+        <span class="keyword">emit</span> messageChanged();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> App<span class="operator">::</span>message() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_message;
+    }
+
+    <span class="type">void</span> App<span class="operator">::</span>setupLanguageModel()
+    {
+        <span class="comment">// Retrieve a list of all available translation catalog files ...</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span> qmFiles <span class="operator">=</span> findQmFiles();
+
+        <span class="comment">// ... fill the internal language name -&gt; catalog file map ...</span>
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>qmFile<span class="operator">,</span> qmFiles) {
+            m_languageMap<span class="operator">.</span>insert(languageName(qmFile)<span class="operator">,</span> qmFile);
+        }
+
+        <span class="comment">// ... and also fill the language model with the language names.</span>
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>language<span class="operator">,</span> m_languageMap<span class="operator">.</span>keys()) {
+            m_model <span class="operator">&lt;</span><span class="operator">&lt;</span> language;
+        }
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span> App<span class="operator">::</span>findQmFiles() <span class="keyword">const</span>
+    {
+        <span class="comment">/**
+         * Setup a QDir object that lists the content of the 'translations' directory.
+         * The translations directory does not exists in the file system here but in the Qt Resource
+         * system (that means the files are embedded inside the executable), therefor the
+         * directory name is prefixed with ':/'.
+         */</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qdir.html">QDir</a></span> dir(<span class="string">&quot;:/translations&quot;</span>);
+
+        <span class="comment">// Retrieve all files ending with '.qm' sorted by name</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span> fileNames <span class="operator">=</span> dir<span class="operator">.</span>entryList(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span>(<span class="string">&quot;*.qm&quot;</span>)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qdir.html">QDir</a></span><span class="operator">::</span>Files<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qdir.html">QDir</a></span><span class="operator">::</span>Name);
+
+        <span class="comment">// Iterate over the list and expand the file names to file paths</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html#QMutableStringListIterator-typedef">QMutableStringListIterator</a></span> it(fileNames);
+        <span class="keyword">while</span> (it<span class="operator">.</span>hasNext()) {
+            it<span class="operator">.</span>next();
+            it<span class="operator">.</span>setValue(dir<span class="operator">.</span>filePath(it<span class="operator">.</span>value()));
+        }
+
+        <span class="keyword">return</span> fileNames;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> App<span class="operator">::</span>languageName(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>qmFile) <span class="keyword">const</span>
+    {
+        <span class="comment">/**
+         * Create a temporary translator object and return the translated version of
+         * the source string 'English'. In these example catalogs, this source string
+         * has been translated to the language of the catalog (e.g. in i18n_de.qm 'English'
+         * is translated to 'Deutsch' which means 'German').
+         */</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtranslator.html">QTranslator</a></span> translator;
+        translator<span class="operator">.</span>load(qmFile);
+
+        <span class="keyword">return</span> translator<span class="operator">.</span>translate(<span class="string">&quot;MainView&quot;</span><span class="operator">,</span> <span class="string">&quot;English&quot;</span>);
+    }</pre>
+</div>
+<!-- @@@i18n/src/app.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

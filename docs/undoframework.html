@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- undoframework.qdoc -->
+  <title>Cascades : Undo Framework Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li><a href="http://qt.nokia.com/doc/4.7/all-examples.html">Examples</a></li>
+<li>Undo Framework Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-undo-framework">The Undo Framework</a></li>
+<li class="level1"><a href="#the-ui">The UI</a></li>
+<li class="level1"><a href="#movecommand">MoveCommand</a></li>
+<li class="level1"><a href="#undomanager">UndoManager</a></li>
+</ul>
+</div>
+<h1 class="title">Undo Framework Example</h1>
+<span class="subtitle"></span>
+<!-- $$$undoframework-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="undoframework-assets-board-qml.html">undoframework/assets/Board.qml</a></li>
+<li><a href="undoframework-assets-stone-qml.html">undoframework/assets/Stone.qml</a></li>
+<li><a href="undoframework-assets-main-qml.html">undoframework/assets/main.qml</a></li>
+<li><a href="undoframework-src-movecommand-cpp.html">undoframework/src/MoveCommand.cpp</a></li>
+<li><a href="undoframework-src-movecommand-hpp.html">undoframework/src/MoveCommand.hpp</a></li>
+<li><a href="undoframework-src-undomanager-cpp.html">undoframework/src/UndoManager.cpp</a></li>
+<li><a href="undoframework-src-undomanager-hpp.html">undoframework/src/UndoManager.hpp</a></li>
+<li><a href="undoframework-src-main-cpp.html">undoframework/src/main.cpp</a></li>
+<li><a href="undoframework-undoframework-pro.html">undoframework/undoframework.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Undo Framework example shows how to implement undo/redo functionality with the Qt undo framework.</p>
+<p class="centerAlign"><img src="images/undoframework-example.png" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a> and <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a> classes to track user actions and allow to undo and redo them. The user can move gaming pieces on a board, where each move will be tracked, and then undo and redo the single moves by clicking the 'Undo' and 'Redo' buttons.</p>
+<a name="the-undo-framework"></a>
+<h2>The Undo Framework</h2>
+<p>In the Qt undo framework, all actions that the user performs are implemented in classes that inherit <a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a>. An undo command class knows how to both <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#redo">redo()</a> - or just do the first time - and <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#undo">undo()</a> an action. For each action the user performs, a command is placed on a <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>. Since the stack contains all commands executed (stacked in chronological order) on the document, it can roll the state of the document backwards and forwards by undoing and redoing its commands. See the <a href="http://qt.nokia.com/doc/4.7/qundo.html">overview document</a> for a high-level introduction to the undo framework.</p>
+<a name="the-ui"></a>
+<h2>The UI</h2>
+<p>The UI of this sample application consists of a game board, where the movable gaming pieces are located on, and two buttons, one to undo a move and one to redo a move.</p>
+<p>The business logic of the application is encapsulated in the class UndoManager, which is exported to the UI as '<a href="#undomanager">_undoManager</a>'.</p>
+<p>Inside the main.qml the game board is instantiated (the implementation is located in Board.qml)</p>
+<pre class="qml">                <span class="comment">// The board</span>
+                <span class="type">Board</span> {
+                    <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Center</span>
+
+                    <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                        <span class="name">spaceQuota</span>: <span class="number">1</span>
+                    }
+                }</pre>
+<p>and the two buttons</p>
+<pre class="qml">                    <span class="type">Button</span> {
+                        <span class="name">preferredWidth</span>: <span class="number">500</span>
+                        <span class="name">text</span>: <span class="name">_undoManager</span>.<span class="name">undoText</span> <span class="operator">==</span> <span class="string">&quot;&quot;</span> ? <span class="name">qsTr</span> (<span class="string">&quot;Undo&quot;</span>) : <span class="name">qsTr</span> (<span class="string">&quot;Undo '%1'&quot;</span>).<span class="name">arg</span>(<span class="name">_undoManager</span>.<span class="name">undoText</span>)
+                        <span class="name">enabled</span>: <span class="name">_undoManager</span>.<span class="name">canUndo</span>
+                        <span class="name">onClicked</span>: <span class="name">_undoManager</span>.<span class="name">undo</span>()
+                    }
+
+                    <span class="type">Button</span> {
+                        <span class="name">preferredWidth</span>: <span class="number">500</span>
+                        <span class="name">text</span>: <span class="name">_undoManager</span>.<span class="name">redoText</span> <span class="operator">==</span> <span class="string">&quot;&quot;</span> ? <span class="name">qsTr</span> (<span class="string">&quot;Redo&quot;</span>) : <span class="name">qsTr</span> (<span class="string">&quot;Redo '%1'&quot;</span>).<span class="name">arg</span>(<span class="name">_undoManager</span>.<span class="name">redoText</span>)
+                        <span class="name">enabled</span>: <span class="name">_undoManager</span>.<span class="name">canRedo</span>
+                        <span class="name">onClicked</span>: <span class="name">_undoManager</span>.<span class="name">redo</span>()
+                    }</pre>
+<p>Whenever the user clicks the 'Undo' or 'Redo' button, the undo() and redo() slots of the UndoManager object are invoked. The state of the buttons depends on the 'canUndo' and 'canRedo' properties of the UndoManager, which reflect whether there are undo commands located on the internal <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>. The text of the buttons is adapted to the title of the undo command that is currently located on the internal <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>.</p>
+<pre class="qml">            <span class="type">Stone</span> {
+                <span class="name">id</span>: <span class="name">firstStone</span>
+                <span class="name">layoutProperties</span>: <span class="name">AbsoluteLayoutProperties</span> {
+                    <span class="name">positionX</span>: <span class="number">102</span>
+                    <span class="name">positionY</span>: <span class="number">102</span>
+                }
+
+                <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+                <span class="name">title</span>: <span class="name">qsTr</span> (<span class="string">&quot;First Stone&quot;</span>)
+
+                <span class="name">onMoved</span>: <span class="name">_undoManager</span>.<span class="name">createMoveCommand</span>(<span class="name">firstStone</span>, <span class="name">sourceX</span>, <span class="name">sourceY</span>, <span class="name">targetX</span>, <span class="name">targetY</span>)
+            }</pre>
+<p>The Board.qml contains a Container with four Stone elements (implemented inside Stone.qml) inside an AbsoluteLayout. The Stone object provides a signal moved() which is emitted whenever the user moves the Stone object on the screen.</p>
+<pre class="qml">        <span class="comment">// This signal is emitted after each move operation</span>
+        signal <span class="type">moved</span>(int sourceX, int sourceY, int targetX, int targetY)</pre>
+<p>We implement a signal handler here that invokes the createMoveCommand() slot of the UndoManager object and passes the five parameters</p>
+<ul>
+<li>The Stone object that has been moved</li>
+<li>The x coordinate where the move started</li>
+<li>The y coordinate where the move started</li>
+<li>The x coordinate where the move ended</li>
+<li>The y coordinate where the move ended</li>
+</ul>
+<p>The UndoManager object uses these information to push a new undo command on the internal <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>.</p>
+<a name="movecommand"></a>
+<h2>MoveCommand</h2>
+<p>The MoveCommand represents one move action the user has done. It inherits from <a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a> and reimplements the virtual methods <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#undo">undo()</a> and <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#redo">redo()</a>. Additionally it stores the Stone object that should be moved, the title of this action and the source and target position.</p>
+<pre class="cpp">    <span class="keyword">class</span> MoveCommand : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a></span>
+    {
+    <span class="keyword">public</span>:
+        <span class="comment">// Pass all parameters that the command need to fulfill its task in the constructor</span>
+        MoveCommand(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="keyword">virtual</span> <span class="type">void</span> redo();
+        <span class="keyword">virtual</span> <span class="type">void</span> undo();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The (Stone) control that should be moved</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>m_control;
+
+        <span class="comment">// The start and end point of the move operation in local coordinates</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> m_sourcePoint;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> m_targetPoint;
+    };</pre>
+<p>Inside the constructor of MoveCommand we retrieve the title property of the associated Stone object and set it as the description text for this command.</p>
+<pre class="cpp">    MoveCommand<span class="operator">::</span>MoveCommand(Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>source<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span> <span class="operator">&amp;</span>target<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qundocommand.html">QUndoCommand</a></span>(parent)
+        <span class="operator">,</span> m_control(control)
+        <span class="operator">,</span> m_sourcePoint(source)
+        <span class="operator">,</span> m_targetPoint(target)
+    {
+        <span class="comment">// Extract the title property that has been set on the Stone control in the QML file</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> title <span class="operator">=</span> m_control<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;title&quot;</span>)<span class="operator">.</span>toString();
+
+        <span class="comment">/**
+         * Set a meaningful text for this command. This text will be used by QUndoStack::undoText() and QUndoStack::redoText()
+         * when this command is on the top of the stack.
+         */</span>
+        setText(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;Move %1&quot;</span>)<span class="operator">.</span>arg(title));
+    }</pre>
+<p>The implementation of the <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#undo">undo()</a> method just changes the x and y coordinates of the Stone object back to the source position.</p>
+<pre class="cpp">    <span class="type">void</span> MoveCommand<span class="operator">::</span>undo()
+    {
+        <span class="comment">/**
+         * This method is called when the user triggers the undo of a command.
+         * We simply retrieve the AbsoluteLayoutProperties object of our Stone control and
+         * set it back to its source position.
+         */</span>
+        AbsoluteLayoutProperties <span class="operator">*</span>properties <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>AbsoluteLayoutProperties<span class="operator">*</span><span class="operator">&gt;</span>(m_control<span class="operator">-</span><span class="operator">&gt;</span>layoutProperties());
+        <span class="keyword">if</span> (properties) {
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionX(m_sourcePoint<span class="operator">.</span>x());
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionY(m_sourcePoint<span class="operator">.</span>y());
+        }
+    }</pre>
+<p>The implementation of the <a href="http://qt.nokia.com/doc/4.7/qundocommand.html#redo">redo()</a> method changes the x and y coordinates of the Stone object back to the target position.</p>
+<pre class="cpp">    <span class="type">void</span> MoveCommand<span class="operator">::</span>redo()
+    {
+        <span class="comment">/**
+         * This method is called when the user triggers the redo of a command.
+         * We simply retrieve the AbsoluteLayoutProperties object of our Stone control and
+         * set it to the target position.
+         */</span>
+        AbsoluteLayoutProperties <span class="operator">*</span>properties <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>AbsoluteLayoutProperties<span class="operator">*</span><span class="operator">&gt;</span>(m_control<span class="operator">-</span><span class="operator">&gt;</span>layoutProperties());
+        <span class="keyword">if</span> (properties) {
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionX(m_targetPoint<span class="operator">.</span>x());
+            properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionY(m_targetPoint<span class="operator">.</span>y());
+        }
+    }</pre>
+<a name="undomanager"></a>
+<h2>UndoManager</h2>
+<p>The UndoManager is a thin wrapper around the <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a> class. It provides a convenience method to push a new MoveCommand on the stack and it makes all the state information of the stack available to the UI via properties.</p>
+<pre class="cpp">    UndoManager<span class="operator">::</span>UndoManager(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_undoStack(<span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a></span>(<span class="keyword">this</span>))
+    {
+        <span class="comment">// We connect the signals from the QUndoStack directly to our own signals ...</span>
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(canRedoChanged(<span class="type">bool</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(canRedoChanged()));
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(canUndoChanged(<span class="type">bool</span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(canUndoChanged()));
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(redoTextChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(redoTextChanged()));
+        connect(m_undoStack<span class="operator">,</span> SIGNAL(undoTextChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SIGNAL(undoTextChanged()));
+    }</pre>
+<p>Inside the constructor of UndoManager, the internal <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a> object is allocated and the state change notification signals of the stack are forwarded to the change notification signals of the UndoManager's properties.</p>
+<pre class="cpp">    <span class="type">bool</span> UndoManager<span class="operator">::</span>canRedo() <span class="keyword">const</span>
+    {
+        <span class="comment">// ... and also just forward the getter methods to the QUndoStack</span>
+        <span class="keyword">return</span> m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>canRedo();
+    }</pre>
+<p>The accessor methods of UndoManager's properties just forward the calls to the appropriated methods of <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a></p>
+<pre class="cpp">    <span class="type">void</span> UndoManager<span class="operator">::</span>redo()
+    {
+        m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>redo();
+    }</pre>
+<p>The undo() and redo() slots of the UndoManager object also just call the <a href="http://qt.nokia.com/doc/4.7/qundostack.html#undo">undo()</a> and <a href="http://qt.nokia.com/doc/4.7/qundostack.html#redo">redo()</a> methods of the <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>.</p>
+<pre class="cpp">    <span class="type">void</span> UndoManager<span class="operator">::</span>createMoveCommand(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="type">int</span> sourceX<span class="operator">,</span> <span class="type">int</span> sourceY<span class="operator">,</span> <span class="type">int</span> targetX<span class="operator">,</span> <span class="type">int</span> targetY)
+    {
+        <span class="comment">/**
+         * We simply create a new instance of a MoveCommand, pass all needed data to its constructor and push
+         * it on the QUndoStack.
+         * The stack will take ownership of the command object, and will delete it when it's no longer used.
+         */</span>
+        m_undoStack<span class="operator">-</span><span class="operator">&gt;</span>push(<span class="keyword">new</span> MoveCommand(control<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span>(sourceX<span class="operator">,</span> sourceY)<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpoint.html">QPoint</a></span>(targetX<span class="operator">,</span> targetY)));
+    }</pre>
+<p>The createMoveCommand() method of the UndoManager creates a new MoveCommand object, passes in the parameters it received from the call in the QML file, and pushes the object onto the <a href="http://qt.nokia.com/doc/4.7/qundostack.html">QUndoStack</a>. The stack takes ownership of the command and will delete it when it is no longer needed.</p>
+</div>
+<!-- @@@undoframework -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

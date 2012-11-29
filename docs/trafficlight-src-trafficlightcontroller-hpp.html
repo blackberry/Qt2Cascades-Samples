@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : TrafficLightController.hpp Example File (trafficlight/src/TrafficLightController.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">TrafficLightController.hpp Example File</h1>
+<span class="small-subtitle">trafficlight/src/TrafficLightController.hpp</span>
+<!-- $$$trafficlight/src/TrafficLightController.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef TRAFFICLIGHTCONTROLLER_HPP</span>
+    <span class="preprocessor">#define TRAFFICLIGHTCONTROLLER_HPP</span>
+
+    <span class="preprocessor">#include &lt;QObject&gt;</span>
+
+    <span class="keyword">class</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtimer.html">QTimer</a></span>;
+
+    <span class="comment">/**
+     * TrafficLightController
+     *
+     * The class that contains the business logic of the application.
+     * It represents a traffic light that automatically switches between the three
+     * colors red, yellow and green.
+     * The control flow is orchestrated by a QStateMachine, which can be paused in
+     * execution.
+     * The states of the single lights of the traffic light are made available via
+     * properties, so that the UI can bind against them directly.
+     */</span>
+    <span class="keyword">class</span> TrafficLightController : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// the state properties for the single lights</span>
+        Q_PROPERTY(<span class="type">bool</span> redOn READ redOn WRITE setRedOn NOTIFY redOnChanged)
+        Q_PROPERTY(<span class="type">bool</span> yellowOn READ yellowOn WRITE setYellowOn NOTIFY yellowOnChanged)
+        Q_PROPERTY(<span class="type">bool</span> greenOn READ greenOn WRITE setGreenOn NOTIFY greenOnChanged)
+
+        <span class="comment">// the state property that reflects whether the traffic light is currently paused</span>
+        Q_PROPERTY(<span class="type">bool</span> paused READ paused WRITE setPaused NOTIFY pausedChanged)
+
+    <span class="keyword">public</span>:
+        TrafficLightController(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+        <span class="comment">// accessor methods for the state properties</span>
+        <span class="type">bool</span> redOn() <span class="keyword">const</span>;
+        <span class="type">void</span> setRedOn(<span class="type">bool</span> on);
+
+        <span class="type">bool</span> yellowOn() <span class="keyword">const</span>;
+        <span class="type">void</span> setYellowOn(<span class="type">bool</span> on);
+
+        <span class="type">bool</span> greenOn() <span class="keyword">const</span>;
+        <span class="type">void</span> setGreenOn(<span class="type">bool</span> on);
+
+        <span class="type">bool</span> paused() <span class="keyword">const</span>;
+        <span class="type">void</span> setPaused(<span class="type">bool</span> paused);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">/**
+         * This slot is called by the UI to pause/continue the traffic light
+         */</span>
+        <span class="type">void</span> pause();
+
+    Q_SIGNALS:
+        <span class="comment">// change notification signals for the state properties</span>
+        <span class="type">void</span> redOnChanged();
+        <span class="type">void</span> yellowOnChanged();
+        <span class="type">void</span> greenOnChanged();
+        <span class="type">void</span> pausedChanged();
+
+        <span class="comment">/**
+         * This signal is emitted when the pause() slot is invoked and is used
+         * by the internal state machine only.
+         */</span>
+        <span class="type">void</span> pauseRequested();
+
+    <span class="keyword">private</span>:
+        <span class="comment">/**
+         * Creates the internal state machine.
+         */</span>
+        <span class="type">void</span> setupStateMachine();
+
+        <span class="comment">// state property variables</span>
+        <span class="type">bool</span> m_redOn;
+        <span class="type">bool</span> m_yellowOn;
+        <span class="type">bool</span> m_greenOn;
+        <span class="type">bool</span> m_paused;
+
+        <span class="comment">// the timer that triggers the state changes</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtimer.html">QTimer</a></span> <span class="operator">*</span>m_timer;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@trafficlight/src/TrafficLightController.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

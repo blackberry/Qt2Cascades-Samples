@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : renderer.cpp Example File (queuedcustomtype/src/renderer.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">renderer.cpp Example File</h1>
+<span class="small-subtitle">queuedcustomtype/src/renderer.cpp</span>
+<!-- $$$queuedcustomtype/src/renderer.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;renderer.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbsoluteLayoutProperties&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades;
+
+    Renderer<span class="operator">::</span>Renderer(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)<span class="operator">,</span> m_active(<span class="keyword">false</span>)
+    {
+        <span class="comment">/**
+         * We use only one RenderThread object in this example, so only one
+         * image can be transformed at a time.
+         */</span>
+        m_thread <span class="operator">=</span> <span class="keyword">new</span> RenderThread();
+
+        <span class="comment">// Connect the signals of the render thread against our own slots.</span>
+        connect(m_thread<span class="operator">,</span> SIGNAL(finished())<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(threadFinished()));
+        connect(m_thread<span class="operator">,</span> SIGNAL(sendBlock(Block))<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> SLOT(addBlock(Block)));
+    }
+
+    <span class="type">void</span> Renderer<span class="operator">::</span>setCanvas(bb<span class="operator">::</span>cascades<span class="operator">::</span>Container <span class="operator">*</span>container)
+    {
+        m_container <span class="operator">=</span> container;
+    }
+
+    <span class="type">void</span> Renderer<span class="operator">::</span>loadImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>name)
+    {
+        <span class="comment">// Remove all blocks (from a previous transformation) from the canvas container</span>
+        m_container<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
+
+        <span class="comment">// Load the image from the file system and scale it down to 300x300 pixels</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> image;
+        image<span class="operator">.</span>load(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">::</span>fromLatin1(<span class="string">&quot;app/native/assets/images/%1&quot;</span>)<span class="operator">.</span>arg(name));
+        image <span class="operator">=</span> image<span class="operator">.</span>scaled(<span class="number">300</span><span class="operator">,</span> <span class="number">300</span>);
+
+        <span class="comment">// Start the transformation of the image</span>
+        m_thread<span class="operator">-</span><span class="operator">&gt;</span>processImage(image);
+
+        <span class="comment">// Adapt the 'active' property to the new state</span>
+        m_active <span class="operator">=</span> <span class="keyword">true</span>;
+        <span class="keyword">emit</span> activeChanged();
+    }
+
+    <span class="type">void</span> Renderer<span class="operator">::</span>stop()
+    {
+        <span class="comment">// Trigger the abortion of the worker thread</span>
+        m_thread<span class="operator">-</span><span class="operator">&gt;</span>stopProcess();
+    }
+
+    <span class="type">void</span> Renderer<span class="operator">::</span>addBlock(<span class="keyword">const</span> Block <span class="operator">&amp;</span>block)
+    {
+        <span class="comment">/**
+         * We represent each block by a 'pixel' Container object with the same
+         * geometry and color as the block.
+         * The pixel containers are placed on the canvas container.
+         */</span>
+        Container <span class="operator">*</span>pixel <span class="operator">=</span> <span class="keyword">new</span> Container(m_container);
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setBackground(block<span class="operator">.</span>color());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setPreferredWidth(block<span class="operator">.</span>rect()<span class="operator">.</span>width());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setPreferredHeight(block<span class="operator">.</span>rect()<span class="operator">.</span>height());
+
+        AbsoluteLayoutProperties <span class="operator">*</span>properties <span class="operator">=</span> <span class="keyword">new</span> AbsoluteLayoutProperties;
+        properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionX(block<span class="operator">.</span>rect()<span class="operator">.</span>x());
+        properties<span class="operator">-</span><span class="operator">&gt;</span>setPositionY(block<span class="operator">.</span>rect()<span class="operator">.</span>y());
+        pixel<span class="operator">-</span><span class="operator">&gt;</span>setLayoutProperties(properties);
+    }
+
+    <span class="type">void</span> Renderer<span class="operator">::</span>threadFinished()
+    {
+        <span class="comment">// Reset the 'active' property whenever the worker thread has finished.</span>
+        m_active <span class="operator">=</span> <span class="keyword">false</span>;
+        <span class="keyword">emit</span> activeChanged();
+    }
+
+    <span class="type">bool</span> Renderer<span class="operator">::</span>active() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_active;
+    }</pre>
+</div>
+<!-- @@@queuedcustomtype/src/renderer.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

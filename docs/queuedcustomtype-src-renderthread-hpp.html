@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : renderthread.hpp Example File (queuedcustomtype/src/renderthread.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">renderthread.hpp Example File</h1>
+<span class="small-subtitle">queuedcustomtype/src/renderthread.hpp</span>
+<!-- $$$queuedcustomtype/src/renderthread.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef RENDERTHREAD_HPP</span>
+    <span class="preprocessor">#define RENDERTHREAD_HPP</span>
+
+    <span class="preprocessor">#include &quot;block.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QMutex&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QThread&gt;</span>
+    <span class="preprocessor">#include &lt;QtGui/QImage&gt;</span>
+
+    <span class="comment">/**
+     * The RenderThread class takes an image as input and transforms it into a list of colored rectangles (blocks)
+     * that depicts the image in a more abstract way.
+     * The transformation is executed in a separated worker thread and the result (the list of blocks) is reported
+     * back to the Renderer as parameter of a signal.
+     */</span>
+    <span class="keyword">class</span> RenderThread : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qthread.html">QThread</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        RenderThread(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="operator">~</span>RenderThread();
+
+        <span class="comment">// This method is called to start the transformation on the given image</span>
+        <span class="type">void</span> processImage(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> <span class="operator">&amp;</span>image);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is called whenever the user wants to stop the transformation process</span>
+        <span class="type">void</span> stopProcess();
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted whenever a new block has been calculated</span>
+        <span class="type">void</span> sendBlock(<span class="keyword">const</span> Block <span class="operator">&amp;</span>block);
+
+    <span class="keyword">protected</span>:
+        <span class="comment">/**
+         * This method is reimplemented from the QThread class. The content of this
+         * method will be executed in the worker thread.
+         */</span>
+        <span class="type">void</span> run();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// A flag to signal the worker thread that it should terminate itself</span>
+        <span class="type">bool</span> m_abort;
+
+        <span class="comment">// A mutex to serialize the access to the m_abort flag</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qmutex.html">QMutex</a></span> mutex;
+
+        <span class="comment">// The image that should be transformed</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qimage.html">QImage</a></span> m_image;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@queuedcustomtype/src/renderthread.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

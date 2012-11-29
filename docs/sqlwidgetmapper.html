@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- sqlwidgetmapper.qdoc -->
+  <title>Cascades : SQL Widget Mapper Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li><a href="http://qt.nokia.com/doc/4.7/all-examples.html">Examples</a></li>
+<li>SQL Widget Mapper Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-ui">The UI</a></li>
+<li class="level1"><a href="#controldatamapper">ControlDataMapper</a></li>
+</ul>
+</div>
+<h1 class="title">SQL Widget Mapper Example</h1>
+<span class="subtitle"></span>
+<!-- $$$sqlwidgetmapper-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="sqlwidgetmapper-assets-main-qml.html">sqlwidgetmapper/assets/main.qml</a></li>
+<li><a href="sqlwidgetmapper-src-datacontrolmapper-cpp.html">sqlwidgetmapper/src/datacontrolmapper.cpp</a></li>
+<li><a href="sqlwidgetmapper-src-datacontrolmapper-hpp.html">sqlwidgetmapper/src/datacontrolmapper.hpp</a></li>
+<li><a href="sqlwidgetmapper-src-main-cpp.html">sqlwidgetmapper/src/main.cpp</a></li>
+<li><a href="sqlwidgetmapper-sqlwidgetmapper-pro.html">sqlwidgetmapper/sqlwidgetmapper.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The SQL Widget Mapper example shows how to use a DataControlMapper to map information from a database to controls in a form.</p>
+<p class="centerAlign"><img src="images/sqlwidgetmapper-example.png" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to access an SQLite database and map the single rows of a SQL table to a set of Cascades controls.</p>
+<p>While the standard way in Cascades of visualizing data from a SQL database is to display them in a <a href="http://qt.nokia.com/doc/4.7/qml-listview.html">ListView</a>, there might be use cases where you want to display and edit one row at a time. Such a functionality can be implemented in a reusable component, which will be done in this sample application.</p>
+<a name="the-ui"></a>
+<h2>The UI</h2>
+<p>The UI of this example consists of three text fields that show the first name, last name and a quote. These data come from a SQLite database. Additionally the UI provides a 'Previous' and 'Next' button that are used to navigate between the database entries. A status label shows the current and the total number of quotes.</p>
+<p>The business logic of the application is encapsulated in the class DataControlMapper, which is exported to the UI as '_dataMapper'.</p>
+<p>The text fields in the QML file have all the 'objectName' property set, so that they can be referenced from within C++.</p>
+<pre class="qml">                    <span class="comment">// A standard Button</span>
+                    <span class="type">Button</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
+                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                            <span class="name">spaceQuota</span>: <span class="number">1</span>
+                        }
+
+                        <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Previous&quot;</span>)
+
+                        <span class="comment">// Go to previous data on click</span>
+                        <span class="name">onClicked</span>: <span class="name">_dataMapper</span>.<span class="name">toPrevious</span> ()
+
+                        <span class="comment">// Enable Button if there is previous data</span>
+                        <span class="name">enabled</span>: <span class="name">_dataMapper</span>.<span class="name">currentIndex</span> <span class="operator">!=</span> <span class="number">0</span>
+                    }</pre>
+<p>Whenever the user clicks the 'Previous' button, the toPrevious() slot of the DataControlMapper object is invoked. The button is only enabled if the current row is not the first one.</p>
+<pre class="qml">                    <span class="comment">// A standard Button</span>
+                    <span class="type">Button</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
+                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                            <span class="name">spaceQuota</span>: <span class="number">1</span>
+                        }
+
+                        <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Next&quot;</span>)
+
+                        <span class="comment">// Go to next data on click</span>
+                        <span class="name">onClicked</span>: <span class="name">_dataMapper</span>.<span class="name">toNext</span> ()
+
+                        <span class="comment">// Enable Button only if there is more data</span>
+                        <span class="name">enabled</span>: (<span class="name">_dataMapper</span>.<span class="name">currentIndex</span> <span class="operator">&lt;</span> (<span class="name">_dataMapper</span>.<span class="name">count</span> <span class="operator">-</span> <span class="number">1</span>))
+                    }</pre>
+<p>Whenever the user clicks the 'Next' button, the toNext() slot of the DataControlMapper object is invoked. The button is only enabled if the current row is not the last one.</p>
+<pre class="qml">                    <span class="comment">// A standard Label</span>
+                    <span class="type">Label</span> {
+                        <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+
+                        <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                            <span class="name">spaceQuota</span>: <span class="number">1</span>
+                        }
+
+                        <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;%1/%2&quot;</span>).<span class="name">arg</span>(<span class="name">_dataMapper</span>.<span class="name">currentIndex</span> <span class="operator">+</span> <span class="number">1</span>).<span class="name">arg</span>(<span class="name">_dataMapper</span>.<span class="name">count</span>)
+
+                        <span class="comment">// Defines custom text Color</span>
+                        <span class="type">textStyle</span> {
+                            <span class="name">base</span>: <span class="name">SystemDefaults</span>.<span class="name">TextStyles</span>.<span class="name">SmallText</span>
+                            <span class="name">color</span>: <span class="name">Color</span>.<span class="name">White</span>
+                            <span class="name">textAlign</span>: <span class="name">TextAlign</span>.<span class="name">Center</span>
+                        }
+                    }</pre>
+<p>The text of the status label is assembled from the 'currentIndex' and 'count' properties of the DataControlMapper.</p>
+<a name="controldatamapper"></a>
+<h2>ControlDataMapper</h2>
+<p>The <a href="#controldatamapper">ControlDataMapper</a> is the central class in this application and contains all the business logic of mapping entries from a data model to a set of Cascades controls. It has been designed to be reusable, so any data model can be used, not only one based on a SQLite database.</p>
+<p>The <a href="#controldatamapper">ControlDataMapper</a> has the semantics of a cursor that can be moved between the rows of a data model. It provides methods to jump to the first or last row and methods to go to the next or previous row. The single fields (sections) of a row can be bound against Cascades controls. The <a href="#controldatamapper">ControlDataMapper</a> will update the content of the controls automatically with the data from the current row.</p>
+<p>For this purpose the <a href="#controldatamapper">ControlDataMapper</a> contains a list of mapping objects that have the following structure:</p>
+<pre class="cpp">    <span class="keyword">struct</span> Mapping
+    {
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qpointer.html">QPointer</a></span><span class="operator">&lt;</span>Control<span class="operator">&gt;</span> control;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> section;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qbytearray.html">QByteArray</a></span> propertyName;
+    };</pre>
+<p>The 'control' is a pointer to the Cascades control that is associated with this mapping, the 'section' is the field name in the current row that should be mapped, and the 'propertyName' is the name of the property in 'control' that should be set.</p>
+<p>After we created a new instance of the DataControlMapper in our application, we set the model it should work with. Now we can load the main.qml file, create the UI objects and lookup the text fields that we have marked with the 'objectName' properties.</p>
+<p>In the next step the mappings between the Cascades controls and the section names (in this case the column names of the SQL table) can be configured.</p>
+<pre class="cpp">        <span class="comment">// Create a DataControlMapper and let it work on the DataSetModel</span>
+        DataControlMapper mapper;
+        mapper<span class="operator">.</span>setModel(<span class="operator">&amp;</span>model);
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+
+        <span class="comment">// Make the DataControlMapper available to the UI as context property</span>
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_dataMapper&quot;</span><span class="operator">,</span> <span class="operator">&amp;</span>mapper);
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="keyword">if</span> (appPage) {
+            <span class="comment">// Lookup the controls that should contain the content of a row from the SQL data</span>
+            Control <span class="operator">*</span>firstNameField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;firstNameField&quot;</span>);
+            Control <span class="operator">*</span>lastNameField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;lastNameField&quot;</span>);
+            Control <span class="operator">*</span>quoteField <span class="operator">=</span> appPage<span class="operator">-</span><span class="operator">&gt;</span>findChild<span class="operator">&lt;</span>Control<span class="operator">*</span><span class="operator">&gt;</span>(<span class="string">&quot;quoteField&quot;</span>);
+
+            <span class="comment">// Define the mapping between control and column name</span>
+            mapper<span class="operator">.</span>addMapping(firstNameField<span class="operator">,</span> <span class="string">&quot;firstname&quot;</span>);
+            mapper<span class="operator">.</span>addMapping(lastNameField<span class="operator">,</span> <span class="string">&quot;lastname&quot;</span>);
+            mapper<span class="operator">.</span>addMapping(quoteField<span class="operator">,</span> <span class="string">&quot;quote&quot;</span>);
+        }</pre>
+<p>The addMapping() call will determine the type of the Cascades control and call an overloaded addMapping() method with the default property names for the specific control type.</p>
+<pre class="cpp">    <span class="type">void</span> DataControlMapper<span class="operator">::</span>addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>section)
+    {
+        <span class="comment">// If no property name is provided, we use the well-known ones, depending on the control type</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qbytearray.html">QByteArray</a></span> propertyName;
+        <span class="keyword">if</span> (qobject_cast<span class="operator">&lt;</span>CheckBox<span class="operator">*</span><span class="operator">&gt;</span>(control))
+            propertyName <span class="operator">=</span> <span class="string">&quot;checked&quot;</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (qobject_cast<span class="operator">&lt;</span>ImageView<span class="operator">*</span><span class="operator">&gt;</span>(control))
+            propertyName <span class="operator">=</span> <span class="string">&quot;image&quot;</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (qobject_cast<span class="operator">&lt;</span>Label<span class="operator">*</span><span class="operator">&gt;</span>(control))
+            propertyName <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (qobject_cast<span class="operator">&lt;</span>TextArea<span class="operator">*</span><span class="operator">&gt;</span>(control))
+            propertyName <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (qobject_cast<span class="operator">&lt;</span>TextField<span class="operator">*</span><span class="operator">&gt;</span>(control))
+            propertyName <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;
+
+        addMapping(control<span class="operator">,</span> section<span class="operator">,</span> propertyName);
+    }</pre>
+<p>The overloaded addMapping() method will check whether a mapping for the given control exists already and updates the mapping information, otherwise it adds a new mapping to the internal list.</p>
+<pre class="cpp">    <span class="type">void</span> DataControlMapper<span class="operator">::</span>addMapping(bb<span class="operator">::</span>cascades<span class="operator">::</span>Control <span class="operator">*</span>control<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>section<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qbytearray.html">QByteArray</a></span> <span class="operator">&amp;</span>propertyName)
+    {
+        <span class="comment">// Check whether we have configured a mapping for this control already ...</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> d<span class="operator">-</span><span class="operator">&gt;</span>m_mappings<span class="operator">.</span>count(); <span class="operator">+</span><span class="operator">+</span>i) {
+            Mapping <span class="operator">&amp;</span>mapping <span class="operator">=</span> d<span class="operator">-</span><span class="operator">&gt;</span>m_mappings<span class="operator">[</span>i<span class="operator">]</span>;
+            <span class="keyword">if</span> (mapping<span class="operator">.</span>control <span class="operator">=</span><span class="operator">=</span> control) {
+                <span class="comment">// ... in this case just update this mapping with the new section/propertyName values ...</span>
+                d<span class="operator">-</span><span class="operator">&gt;</span>updateMapping(mapping<span class="operator">,</span> control<span class="operator">,</span> section<span class="operator">,</span> propertyName);
+
+                <span class="comment">// ... and trigger an update of the control content.</span>
+                d<span class="operator">-</span><span class="operator">&gt;</span>update();
+                <span class="keyword">return</span>;
+            }
+        }
+
+        <span class="comment">// Otherwise create a new mapping ...</span>
+        Mapping mapping;
+        d<span class="operator">-</span><span class="operator">&gt;</span>updateMapping(mapping<span class="operator">,</span> control<span class="operator">,</span> section<span class="operator">,</span> propertyName);
+        d<span class="operator">-</span><span class="operator">&gt;</span>m_mappings<span class="operator">.</span>append(mapping);
+
+        <span class="comment">// ... and trigger an update of the control content.</span>
+        d<span class="operator">-</span><span class="operator">&gt;</span>update();
+    }</pre>
+<p>Whenever the mapping has changed or the current index (cursor) has been changed, the update() method is called.</p>
+<pre class="cpp">    <span class="type">void</span> DataControlMapperPrivate<span class="operator">::</span>update()
+    {
+        <span class="comment">// First some sanity checks</span>
+        <span class="keyword">if</span> (<span class="operator">!</span>m_model)
+            <span class="keyword">return</span>;
+
+        <span class="keyword">if</span> (m_mappings<span class="operator">.</span>isEmpty())
+            <span class="keyword">return</span>;
+
+        <span class="keyword">if</span> (m_currentIndex <span class="operator">=</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>)
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Extract the data for the current index (row) from the model</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span> data <span class="operator">=</span> m_model<span class="operator">-</span><span class="operator">&gt;</span>data(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span>(m_currentIndex));
+
+        <span class="comment">// We assume that the model returns one QVariantMap object per model entry (that's the case for most models)</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantMap-typedef">QVariantMap</a></span> map <span class="operator">=</span> data<span class="operator">.</span>toMap();
+        <span class="keyword">if</span> (map<span class="operator">.</span>isEmpty()) {
+            <a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qWarning">qWarning</a>(<span class="string">&quot;received incompatible record from model&quot;</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Iterate over all available mappings</span>
+        foreach (<span class="keyword">const</span> Mapping <span class="operator">&amp;</span>mapping<span class="operator">,</span> m_mappings) {
+            <span class="comment">// Extract the actual value for the section identifier from the model data</span>
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span> value <span class="operator">=</span> map<span class="operator">.</span>value(mapping<span class="operator">.</span>section);
+            <span class="keyword">if</span> (mapping<span class="operator">.</span>control) {
+                <span class="comment">// Update the control's content by setting the property to the value</span>
+                mapping<span class="operator">.</span>control<span class="operator">-</span><span class="operator">&gt;</span>setProperty(mapping<span class="operator">.</span>propertyName<span class="operator">,</span> value);
+            }
+        }
+    }</pre>
+<p>This method retrieves the data of the current index from the data model. The returned value is expected to be a <a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantMap-typedef">QVariantMap</a> where the keys are the same names as used for the 'section' property in the mappings. For the SQL model that will be the column names of a SQL table. Now the update() method iterates over all available mappings, extracts the value for the mapped section from the data model and sets the value of the specified property on the Cascades control.</p>
+<pre class="cpp">    <span class="type">void</span> DataControlMapper<span class="operator">::</span>toFirst()
+    {
+        setCurrentIndex(<span class="number">0</span>);
+    }</pre>
+<p>The navigation methods (e.g&#x2e; toFirst()) just call the setCurrentIndex() method with the appropriated new index.</p>
+<pre class="cpp">    <span class="type">void</span> DataControlMapper<span class="operator">::</span>setCurrentIndex(<span class="type">int</span> index)
+    {
+        <span class="comment">// Sanity check</span>
+        <span class="keyword">if</span> (<span class="operator">!</span>d<span class="operator">-</span><span class="operator">&gt;</span>m_model)
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Get the number of top-level rows of the model ...</span>
+        <span class="keyword">const</span> <span class="type">int</span> rowCount <span class="operator">=</span> d<span class="operator">-</span><span class="operator">&gt;</span>m_model<span class="operator">-</span><span class="operator">&gt;</span>childCount(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span>());
+
+        <span class="comment">// ... and ignore invalid indexes.</span>
+        <span class="keyword">if</span> (index <span class="operator">&lt;</span> <span class="number">0</span> <span class="operator">|</span><span class="operator">|</span> index <span class="operator">&gt;</span><span class="operator">=</span> rowCount)
+            <span class="keyword">return</span>;
+
+        d<span class="operator">-</span><span class="operator">&gt;</span>m_currentIndex <span class="operator">=</span> index;
+        d<span class="operator">-</span><span class="operator">&gt;</span>update();
+        <span class="keyword">emit</span> currentIndexChanged(d<span class="operator">-</span><span class="operator">&gt;</span>m_currentIndex);
+    }</pre>
+<p>Inside setCurrentIndex() we only do some sanity checks to avoid an out-of-range access, update the member variable that contains the current index with the new value and call update() again to update the content of the mapped Cascades controls.</p>
+</div>
+<!-- @@@sqlwidgetmapper -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

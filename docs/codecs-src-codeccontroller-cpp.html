@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : CodecController.cpp Example File (codecs/src/CodecController.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">CodecController.cpp Example File</h1>
+<span class="small-subtitle">codecs/src/CodecController.cpp</span>
+<!-- $$$codecs/src/CodecController.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;CodecController.hpp&quot;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> bb<span class="operator">::</span>cascades;
+
+    <a href="http://qt.nokia.com/doc/4.7/qmetatype.html#Q_DECLARE_METATYPE">Q_DECLARE_METATYPE</a>(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span><span class="operator">*</span>)
+
+    CodecController<span class="operator">::</span>CodecController(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_fileList(<span class="number">0</span>)
+        <span class="operator">,</span> m_codecList(<span class="number">0</span>)
+    {
+    }
+
+    <span class="type">void</span> CodecController<span class="operator">::</span>setFileList(DropDown <span class="operator">*</span>fileList)
+    {
+        <span class="keyword">if</span> (m_fileList <span class="operator">!</span><span class="operator">=</span> fileList) {
+            m_fileList <span class="operator">=</span> fileList;
+
+            fillFileList();
+
+            <span class="keyword">emit</span> fileListChanged();
+        }
+    }
+
+    DropDown<span class="operator">*</span> CodecController<span class="operator">::</span>fileList() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_fileList;
+    }
+
+    <span class="type">void</span> CodecController<span class="operator">::</span>setCodecList(DropDown <span class="operator">*</span>codecList)
+    {
+        <span class="keyword">if</span> (m_codecList <span class="operator">!</span><span class="operator">=</span> codecList) {
+            m_codecList <span class="operator">=</span> codecList;
+
+            fillCodecList();
+
+            <span class="keyword">emit</span> codecListChanged();
+        }
+    }
+
+    DropDown<span class="operator">*</span> CodecController<span class="operator">::</span>codecList() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_codecList;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> CodecController<span class="operator">::</span>fileContent() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_fileContent;
+    }
+
+    <span class="type">void</span> CodecController<span class="operator">::</span>updateFileContent()
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_fileList <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>m_codecList)
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Check whether the user has selected a file already</span>
+        <span class="keyword">const</span> <span class="type">int</span> selectedIndex <span class="operator">=</span> m_fileList<span class="operator">-</span><span class="operator">&gt;</span>selectedIndex();
+        <span class="keyword">if</span> (selectedIndex <span class="operator">=</span><span class="operator">=</span> DropDown<span class="operator">::</span>SelectedIndexNone)
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Retrieve the selected Options from the file and codec DropDowns</span>
+        <span class="keyword">const</span> Option <span class="operator">*</span>selectedFileOption <span class="operator">=</span> m_fileList<span class="operator">-</span><span class="operator">&gt;</span>at(selectedIndex);
+        <span class="keyword">const</span> Option <span class="operator">*</span>selectedCodecOption <span class="operator">=</span> m_codecList<span class="operator">-</span><span class="operator">&gt;</span>at(m_codecList<span class="operator">-</span><span class="operator">&gt;</span>selectedIndex());
+
+        <span class="comment">// Extract the values associated with the selected Options</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> fileName <span class="operator">=</span> selectedFileOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>toString();
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> selectedCodecOption<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span><span class="operator">*</span><span class="operator">&gt;</span>();
+
+        <span class="comment">// Open the selected file ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qfile.html">QFile</a></span> file(fileName);
+        <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qiodevice.html">QIODevice</a></span><span class="operator">::</span>ReadOnly))
+            <span class="keyword">return</span>;
+
+        <span class="comment">// ... set a QTextStream with the selected codec on it ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextstream.html">QTextStream</a></span> stream(<span class="operator">&amp;</span>file);
+        stream<span class="operator">.</span>setAutoDetectUnicode(<span class="keyword">false</span>);
+        stream<span class="operator">.</span>setCodec(codec);
+
+        <span class="comment">// ... and read out the decoded content</span>
+        m_fileContent <span class="operator">=</span> stream<span class="operator">.</span>readAll();
+
+        <span class="keyword">emit</span> fileContentChanged();
+    }
+
+    <span class="type">void</span> CodecController<span class="operator">::</span>fillFileList()
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_fileList)
+            <span class="keyword">return</span>;
+
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span> fileNames <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstringlist.html">QStringList</a></span>()
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-1.txt&quot;</span>
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;iso-8859-15.txt&quot;</span>
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-16.txt&quot;</span>
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-16be.txt&quot;</span>
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-16le.txt&quot;</span>
+            <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;utf-8.txt&quot;</span>;
+
+        <span class="comment">// Clear the file DropDown</span>
+        m_fileList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
+
+        <span class="comment">// Create one entry for each file</span>
+        foreach (<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> fileName<span class="operator">,</span> fileNames) {
+            Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
+            option<span class="operator">-</span><span class="operator">&gt;</span>setText(fileName);
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;app/native/assets/encodedfiles/%1&quot;</span>)<span class="operator">.</span>arg(fileName));
+            m_fileList<span class="operator">-</span><span class="operator">&gt;</span>add(option);
+        }
+    }
+
+    <span class="type">void</span> CodecController<span class="operator">::</span>fillCodecList()
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_codecList)
+            <span class="keyword">return</span>;
+
+        <span class="comment">// Clear the codec DropDown</span>
+        m_codecList<span class="operator">-</span><span class="operator">&gt;</span>removeAll();
+
+        <span class="comment">// Create one entry for each codec available on the system</span>
+        foreach (<span class="type">int</span> mib<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>availableMibs()) {
+            <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span> <span class="operator">*</span>codec <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtextcodec.html">QTextCodec</a></span><span class="operator">::</span>codecForMib(mib);
+
+            Option <span class="operator">*</span>option <span class="operator">=</span> <span class="keyword">new</span> Option;
+            option<span class="operator">-</span><span class="operator">&gt;</span>setText(codec<span class="operator">-</span><span class="operator">&gt;</span>name());
+            option<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span><span class="operator">::</span>fromValue(codec));
+
+            <span class="comment">// pre-select the UTF-8 codec in the DropDown</span>
+            <span class="keyword">if</span> (codec<span class="operator">-</span><span class="operator">&gt;</span>name() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;UTF-8&quot;</span>)
+                option<span class="operator">-</span><span class="operator">&gt;</span>setSelected(<span class="keyword">true</span>);
+
+            m_codecList<span class="operator">-</span><span class="operator">&gt;</span>add(option);
+        }
+    }</pre>
+</div>
+<!-- @@@codecs/src/CodecController.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

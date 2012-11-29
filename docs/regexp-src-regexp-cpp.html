@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : regexp.cpp Example File (regexp/src/regexp.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">regexp.cpp Example File</h1>
+<span class="small-subtitle">regexp/src/regexp.cpp</span>
+<!-- $$$regexp/src/regexp.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &quot;regexp.hpp&quot;</span>
+
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">int</span> s_capturesCount <span class="operator">=</span> <span class="number">6</span>;
+
+    RegExp<span class="operator">::</span>RegExp(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_pattern(<span class="string">&quot;[A-Za-z_]+([A-Za-z_0-9]*)&quot;</span>)
+        <span class="operator">,</span> m_patternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a></span><span class="operator">::</span>RegExp)
+        <span class="operator">,</span> m_caseSensitive(<span class="keyword">true</span>)
+        <span class="operator">,</span> m_minimal(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_text(<span class="string">&quot;(10 + delta4) * 32&quot;</span>)
+        <span class="operator">,</span> m_matchIndex(<span class="operator">-</span><span class="number">1</span>)
+        <span class="operator">,</span> m_matchLength(<span class="operator">-</span><span class="number">1</span>)
+    {
+        <span class="comment">// Initialize the list of captures with 'no captures available'</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> s_capturesCount; <span class="operator">+</span><span class="operator">+</span>i) {
+            Capture capture;
+            capture<span class="operator">.</span>available <span class="operator">=</span> <span class="keyword">false</span>;
+
+            m_captures <span class="operator">&lt;</span><span class="operator">&lt;</span> capture;
+        }
+
+        <span class="comment">// Start initial processing</span>
+        refresh();
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>setPattern(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>pattern)
+    {
+        <span class="keyword">if</span> (m_pattern <span class="operator">=</span><span class="operator">=</span> pattern)
+            <span class="keyword">return</span>;
+
+        m_pattern <span class="operator">=</span> pattern;
+        refresh();
+
+        <span class="keyword">emit</span> patternChanged();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>pattern() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_pattern;
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>setPatternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a></span><span class="operator">::</span>PatternSyntax syntax)
+    {
+        <span class="keyword">if</span> (m_patternSyntax <span class="operator">=</span><span class="operator">=</span> syntax)
+            <span class="keyword">return</span>;
+
+        m_patternSyntax <span class="operator">=</span> syntax;
+        refresh();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>escapedPattern() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_escapedPattern;
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>setCaseSensitive(<span class="type">bool</span> caseSensitive)
+    {
+        <span class="keyword">if</span> (m_caseSensitive <span class="operator">=</span><span class="operator">=</span> caseSensitive)
+            <span class="keyword">return</span>;
+
+        m_caseSensitive <span class="operator">=</span> caseSensitive;
+        refresh();
+
+        <span class="keyword">emit</span> caseSensitiveChanged();
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>caseSensitive() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_caseSensitive;
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>setMinimal(<span class="type">bool</span> minimal)
+    {
+        <span class="keyword">if</span> (m_minimal <span class="operator">=</span><span class="operator">=</span> minimal)
+            <span class="keyword">return</span>;
+
+        m_minimal <span class="operator">=</span> minimal;
+        refresh();
+
+        <span class="keyword">emit</span> minimalChanged();
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>minimal() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_minimal;
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>setText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>text)
+    {
+        <span class="keyword">if</span> (m_text <span class="operator">=</span><span class="operator">=</span> text)
+            <span class="keyword">return</span>;
+
+        m_text <span class="operator">=</span> text;
+        refresh();
+
+        <span class="keyword">emit</span> textChanged();
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_text;
+    }
+
+    <span class="type">int</span> RegExp<span class="operator">::</span>matchIndex() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_matchIndex;
+    }
+
+    <span class="type">int</span> RegExp<span class="operator">::</span>matchLength() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_matchLength;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture0Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture0Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture1Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">1</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture1Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">1</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture2Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">2</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture2Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">2</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture3Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">3</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture3Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">3</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture4Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">4</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture4Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">4</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">bool</span> RegExp<span class="operator">::</span>capture5Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">5</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture5Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">5</span>)<span class="operator">.</span>text;
+    }
+
+    <span class="type">void</span> RegExp<span class="operator">::</span>refresh()
+    {
+        <span class="comment">// Create the escaped version of the pattern string ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> escaped <span class="operator">=</span> m_pattern;
+        escaped<span class="operator">.</span>replace(<span class="string">&quot;\\&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\\&quot;</span>);
+        escaped<span class="operator">.</span>replace(<span class="string">&quot;\&quot;&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\&quot;&quot;</span>);
+        escaped<span class="operator">.</span>prepend(<span class="string">&quot;\&quot;&quot;</span>);
+        escaped<span class="operator">.</span>append(<span class="string">&quot;\&quot;&quot;</span>);
+
+        <span class="comment">// ... and store it.</span>
+        m_escapedPattern <span class="operator">=</span> escaped;
+
+        <span class="comment">// Create a temporary QRegExp object with the current pattern as parameter</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a></span> regexp(m_pattern);
+
+        <span class="comment">// Configure the QRegExp object according to the other input parameters</span>
+        regexp<span class="operator">.</span>setCaseSensitivity(m_caseSensitive <span class="operator">?</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qt.html">Qt</a></span><span class="operator">::</span>CaseSensitive : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qt.html">Qt</a></span><span class="operator">::</span>CaseInsensitive);
+        regexp<span class="operator">.</span>setMinimal(m_minimal);
+        regexp<span class="operator">.</span>setPatternSyntax(m_patternSyntax);
+
+        <span class="comment">// Do the actual pattern matching against the input string (m_text) ...</span>
+        m_matchIndex <span class="operator">=</span> regexp<span class="operator">.</span>indexIn(m_text);
+
+        <span class="comment">// ... and fill the output parameters with the new values.</span>
+        m_matchLength <span class="operator">=</span> regexp<span class="operator">.</span>matchedLength();
+
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> s_capturesCount; <span class="operator">+</span><span class="operator">+</span>i) {
+            m_captures<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>available <span class="operator">=</span> (i <span class="operator">&lt;</span><span class="operator">=</span> regexp<span class="operator">.</span>captureCount());
+            m_captures<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>text <span class="operator">=</span> regexp<span class="operator">.</span>cap(i);
+        }
+
+        <span class="comment">// Notify the UI that the output parameters have changed</span>
+        <span class="keyword">emit</span> regexpChanged();
+    }</pre>
+</div>
+<!-- @@@regexp/src/regexp.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>
