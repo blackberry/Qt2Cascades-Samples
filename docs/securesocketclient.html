@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- securesocketclient.qdoc -->
+  <title>Cascades : Secure Socket Client Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li><a href="http://qt.nokia.com/doc/4.7/all-examples.html">Examples</a></li>
+<li>Secure Socket Client Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-ui">The UI</a></li>
+<li class="level1"><a href="#sslclient">SslClient</a></li>
+<li class="level1"><a href="#certificateinfocontrol">CertificateInfoControl</a></li>
+</ul>
+</div>
+<h1 class="title">Secure Socket Client Example</h1>
+<span class="subtitle"></span>
+<!-- $$$securesocketclient-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="securesocketclient-assets-certificateinfoview-qml.html">securesocketclient/assets/CertificateInfoView.qml</a></li>
+<li><a href="securesocketclient-assets-mainview-qml.html">securesocketclient/assets/MainView.qml</a></li>
+<li><a href="securesocketclient-assets-sslerrorview-qml.html">securesocketclient/assets/SslErrorView.qml</a></li>
+<li><a href="securesocketclient-assets-main-qml.html">securesocketclient/assets/main.qml</a></li>
+<li><a href="securesocketclient-src-certificateinfocontrol-cpp.html">securesocketclient/src/CertificateInfoControl.cpp</a></li>
+<li><a href="securesocketclient-src-certificateinfocontrol-hpp.html">securesocketclient/src/CertificateInfoControl.hpp</a></li>
+<li><a href="securesocketclient-src-sslclient-cpp.html">securesocketclient/src/SslClient.cpp</a></li>
+<li><a href="securesocketclient-src-sslclient-hpp.html">securesocketclient/src/SslClient.hpp</a></li>
+<li><a href="securesocketclient-src-sslerrorcontrol-cpp.html">securesocketclient/src/SslErrorControl.cpp</a></li>
+<li><a href="securesocketclient-src-sslerrorcontrol-hpp.html">securesocketclient/src/SslErrorControl.hpp</a></li>
+<li><a href="securesocketclient-src-main-cpp.html">securesocketclient/src/main.cpp</a></li>
+<li><a href="securesocketclient-securesocketclient-pro.html">securesocketclient/securesocketclient.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Secure Socket Client example shows how to use <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> to communicate over an encrypted (SSL) connection. It also demonstrates how to deal with authenticity problems, and how to display security and certificate information.</p>
+<p>The following screenshot shows a connection established with a Web server. The string &quot;GET&quot; was sent.</p>
+<p class="centerAlign"><img src="images/securesocketclient-example.png" /></p><p>The following screenshot shows the certificate chain of the Web server.</p>
+<p class="centerAlign"><img src="images/securesocketclient-certificatechain.png" /></p><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> class to set up an secured network connection and how to use the <a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a> class to retrieve information about the certificates that are involved in the secured connection.</p>
+<a name="the-ui"></a>
+<h2>The UI</h2>
+<p>The UI of this sample application consists of the main view (MainView.qml), an error dialog (SslErrorView.qml) and a certificate info dialog (CertificateInfoView.qml). In the main view the user can type in a host name and a port number and click the 'Connect to host' button to set up a secured connection to the given host. If the server certificate could not be validated, the error dialog shows up where the user can either ignore the error and continue or terminate the connection. After the connection has been established, an input text field and the 'Send' button in the main view become enabled and the user can send commands over the encrypted connection. Next to the host name input field an lock icon will appear that the user can click to bring up the certificate info dialog.</p>
+<p>The business logic of the application is encapsulated in the class SslClient, which is exported to the UI as '<a href="#sslclient">_sslClient</a>'.</p>
+<pre class="qml">        <span class="comment">// A container is used to gather visual items together.</span>
+        <span class="type">Container</span> {
+            <span class="name">layout</span>: <span class="name">DockLayout</span> {}
+
+            <span class="comment">// The background image</span>
+            <span class="type">ImageView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
+                <span class="name">imageSource</span>: <span class="string">&quot;asset:///images/background.png&quot;</span>
+            }
+
+            <span class="comment">// Main application control view</span>
+            <span class="type">MainView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+            }
+
+            <span class="comment">// Displays any ssl errors.</span>
+            <span class="type">SslErrorView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
+                <span class="name">visible</span>: <span class="name">_sslErrorControl</span>.<span class="name">visible</span>
+            }
+
+            <span class="comment">// Displays certifacte information</span>
+            <span class="type">CertificateInfoView</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
+                <span class="name">visible</span>: <span class="name">_certificateInfoControl</span>.<span class="name">visible</span>
+            }
+            <span class="type">Container</span> {
+                <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Fill</span>
+
+                <span class="name">visible</span>: <span class="number">false</span>
+            }
+        }</pre>
+<p>The main.qml contains a container with a <tt>DockLayout</tt> where the main view, error dialog and certificate info dialog are stacked on top of each other. The two dialogs are hidden by default and will only be visible if the bound 'visible' property of their controllers (exported C++ objects) become <tt>true</tt>.</p>
+<p>Whenever the user types in a host name, the 'hostName' property of the <tt>SslClient</tt> object is updated.</p>
+<pre class="qml">            <span class="comment">// A standard TextField</span>
+            <span class="type">TextField</span> {
+                <span class="name">verticalAlignment</span>: <span class="name">VerticalAlignment</span>.<span class="name">Center</span>
+                <span class="name">leftMargin</span>: <span class="number">10</span>
+                <span class="name">rightMargin</span>: <span class="number">5</span>
+
+                <span class="name">layoutProperties</span>: <span class="name">StackLayoutProperties</span> {
+                    <span class="name">spaceQuota</span>: <span class="number">1</span>
+                }
+
+                <span class="name">hintText</span>: <span class="name">qsTr</span> (<span class="string">&quot;Enter host name&quot;</span>)
+                <span class="name">text</span>: <span class="string">&quot;www.blackberry.com&quot;</span>
+
+                <span class="name">inputMode</span>: <span class="name">TextFieldInputMode</span>.<span class="name">Url</span>
+
+                <span class="comment">// Save url on input</span>
+                <span class="name">onTextChanging</span>: <span class="name">_sslClient</span>.<span class="name">hostName</span> <span class="operator">=</span> <span class="name">text</span>
+            }</pre>
+<p>If the user clicks the 'Connect to host' button, the <tt>secureConnect()</tt> slot of the <tt>SslClient</tt> object is invoked.</p>
+<pre class="qml">        <span class="comment">// A standard Button</span>
+        <span class="type">Button</span> {
+            <span class="name">horizontalAlignment</span>: <span class="name">HorizontalAlignment</span>.<span class="name">Fill</span>
+            <span class="name">topMargin</span>: <span class="number">30</span>
+            <span class="name">bottomMargin</span>: <span class="number">10</span>
+            <span class="name">maxHeight</span>: <span class="number">100</span>
+
+            <span class="name">text</span>: <span class="name">qsTr</span> (<span class="string">&quot;Connect to host&quot;</span>)
+
+            <span class="comment">// Connect to url on click</span>
+            <span class="name">onClicked</span>: <span class="name">_sslClient</span>.<span class="name">secureConnect</span> ()
+        }</pre>
+<a name="sslclient"></a>
+<h2>SslClient</h2>
+<p>The SslClient encapsulates the business logic of this application. It handles the low-level communication with the server via <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> and mediates the input and output with the UI.</p>
+<p>In the constructor we create a <tt>SslErrorControl</tt> object, which controls the state of the error dialog, and connect its signals against the private slots of <tt>SslClient</tt> to be informed about user input from the error dialog.</p>
+<pre class="cpp">    SslClient<span class="operator">::</span>SslClient(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_socket(<span class="number">0</span>)
+        <span class="operator">,</span> m_sslErrorControl(<span class="keyword">new</span> SslErrorControl(<span class="keyword">this</span>))
+        <span class="operator">,</span> m_hostName(<span class="string">&quot;www.blackberry.com&quot;</span>)
+        <span class="operator">,</span> m_port(<span class="number">443</span>)
+        <span class="operator">,</span> m_sessionActive(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_cipher(<span class="string">&quot;&lt;none&gt;&quot;</span>)
+    {
+        <span class="comment">// User input to the SSL error dialog is forwarded to us via signals</span>
+        connect(m_sslErrorControl<span class="operator">,</span> SIGNAL(ignoreSslErrors())<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SLOT(ignoreSslErrors()));
+
+        connect(m_sslErrorControl<span class="operator">,</span> SIGNAL(viewCertificateChainRequested())<span class="operator">,</span>
+                <span class="keyword">this</span><span class="operator">,</span> SIGNAL(viewCertificateChainRequested()));
+    }</pre>
+<p>Whenever the user clicks the 'Connect to host' button, the <tt>secureConnect()</tt> slot of the <tt>SslClient</tt> object is invoked.</p>
+<pre class="cpp">    <span class="type">void</span> SslClient<span class="operator">::</span>secureConnect()
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_socket) {
+            <span class="comment">// Create a new SSL socket and connect against its signals to receive notifications about state changes</span>
+            m_socket <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a></span>(<span class="keyword">this</span>);
+            connect(m_socket<span class="operator">,</span> SIGNAL(stateChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>SocketState))<span class="operator">,</span>
+                    <span class="keyword">this</span><span class="operator">,</span> SLOT(socketStateChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>SocketState)));
+            connect(m_socket<span class="operator">,</span> SIGNAL(encrypted())<span class="operator">,</span>
+                    <span class="keyword">this</span><span class="operator">,</span> SLOT(socketEncrypted()));
+            connect(m_socket<span class="operator">,</span> SIGNAL(sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span>))<span class="operator">,</span>
+                    <span class="keyword">this</span><span class="operator">,</span> SLOT(sslErrors(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslerror.html">QSslError</a></span><span class="operator">&gt;</span>)));
+            connect(m_socket<span class="operator">,</span> SIGNAL(readyRead())<span class="operator">,</span>
+                    <span class="keyword">this</span><span class="operator">,</span> SLOT(socketReadyRead()));
+        }
+
+        <span class="comment">// Trigger the SSL-handshake</span>
+        m_socket<span class="operator">-</span><span class="operator">&gt;</span>connectToHostEncrypted(m_hostName<span class="operator">,</span> m_port);
+
+        updateEnabledState();
+    }</pre>
+<p>Inside this method we create a <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> object (if it doesn't exists yet) and connect against its signals to be informed about state changes (e.g&#x2e; connection established or peer closed connection), when the SSL-handshake has finished and when new data arrived over the network.</p>
+<p>The call to <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html#connectToHostEncrypted">connectToHostEncrypted()</a> on the <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> object starts the actual SSL-handshake.</p>
+<pre class="cpp">    <span class="type">void</span> SslClient<span class="operator">::</span>socketStateChanged(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>SocketState state)
+    {
+        <span class="keyword">if</span> (m_sslErrorControl<span class="operator">-</span><span class="operator">&gt;</span>visible())
+            <span class="keyword">return</span>; <span class="comment">// We won't react to state changes while the SSL error dialog is visible</span>
+
+        updateEnabledState();
+
+        <span class="keyword">if</span> (state <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstractsocket.html">QAbstractSocket</a></span><span class="operator">::</span>UnconnectedState) {
+            <span class="comment">// If the SSL socket has been disconnected, we delete the socket</span>
+            m_cipher <span class="operator">=</span> <span class="string">&quot;&lt;none&gt;&quot;</span>;
+            <span class="keyword">emit</span> cipherChanged();
+
+            m_socket<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+            m_socket <span class="operator">=</span> <span class="number">0</span>;
+        }
+    }</pre>
+<p>The <tt>socketStateChanged()</tt> slot is invoked whenever the <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> notifies a state change. Inside this slot we update the connection state properties (done inside <tt>updateEnabledState()</tt>) and if the peer disconnected, we clean up the <a href="http://qt.nokia.com/doc/4.7/qsslsocket.html">QSslSocket</a> object.</p>
+<pre class="cpp">    <span class="type">void</span> SslClient<span class="operator">::</span>socketEncrypted()
+    {
+        <span class="keyword">if</span> (<span class="operator">!</span>m_socket)
+            <span class="keyword">return</span>; <span class="comment">// Might have disconnected already</span>
+
+        <span class="comment">// We started a new connection, so clear the response from previous connections</span>
+        m_response<span class="operator">.</span>clear();
+        <span class="keyword">emit</span> responseChanged();
+
+        <span class="comment">// Retrieve the information about the used cipher and update the property</span>
+        <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslcipher.html">QSslCipher</a></span> cipher <span class="operator">=</span> m_socket<span class="operator">-</span><span class="operator">&gt;</span>sessionCipher();
+        m_cipher <span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>(<span class="string">&quot;%1, %2 (%3/%4)&quot;</span>)<span class="operator">.</span>arg(cipher<span class="operator">.</span>authenticationMethod())
+                <span class="operator">.</span>arg(cipher<span class="operator">.</span>name())
+                <span class="operator">.</span>arg(cipher<span class="operator">.</span>usedBits())
+                <span class="operator">.</span>arg(cipher<span class="operator">.</span>supportedBits());
+
+        <span class="keyword">emit</span> cipherChanged();
+
+        <span class="comment">// Tell the CertificateInfoControl about the certificate chain of this connection</span>
+        <span class="keyword">emit</span> certificateChainChanged(m_socket<span class="operator">-</span><span class="operator">&gt;</span>peerCertificateChain());
+    }</pre>
+<p>The <tt>socketEncrypted()</tt> slot is invoked after the SSL-handshake has succeeded. Inside this slot we retrieve the information about what <a href="http://qt.nokia.com/doc/4.7/qsslcipher.html">cipher</a> is used for the secured connection and we make the <a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">certificate</a> information available to the certificate info dialog via a signal/slot connection.</p>
+<a name="certificateinfocontrol"></a>
+<h2>CertificateInfoControl</h2>
+<p>The CertificateInfoControl represents a dialog that shows information about the certificate provided by the server and the certificate chain. It manages the 'visible' property of the dialog and provides a Cascades <tt>DataModel</tt> with the certificate information that can be plugged into a <tt>ListView</tt> in the UI.</p>
+<pre class="cpp">    <span class="type">void</span> CertificateInfoControl<span class="operator">::</span>setCertificateChain(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qlist.html">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>chain)
+    {
+        m_chain <span class="operator">=</span> chain;
+
+        <span class="comment">// Clear the model ...</span>
+        m_model<span class="operator">.</span>clear();
+
+        <span class="comment">// ... and add a new entry for each certificate from the chain to the model</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> m_chain<span class="operator">.</span>size(); <span class="operator">+</span><span class="operator">+</span>i) {
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a></span> <span class="operator">&amp;</span>cert <span class="operator">=</span> m_chain<span class="operator">.</span>at(i);
+            <span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> chainInformation <span class="operator">=</span> tr(<span class="string">&quot;%1%2 (%3)&quot;</span>)<span class="operator">.</span>arg(<span class="operator">!</span>i <span class="operator">?</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>() : tr(<span class="string">&quot;Issued by: &quot;</span>))
+                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>Organization))
+                    <span class="operator">.</span>arg(cert<span class="operator">.</span>subjectInfo(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a></span><span class="operator">::</span>CommonName));
+
+            m_model<span class="operator">.</span>append(chainInformation);
+        }
+
+        <span class="comment">// Pre-select the first certificate in the list</span>
+        setCurrentCertificate(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html">QVariant</a></span>(<span class="number">0</span>));
+    }
+
+    bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> CertificateInfoControl<span class="operator">::</span>model() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> <span class="keyword">const_cast</span><span class="operator">&lt;</span>bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span><span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span><span class="operator">&gt;</span><span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>m_model);
+    }</pre>
+<p>The <tt>setCertificateChain()</tt> method is invoked after the SSL-handshake succeeded. The passed list of <a href="http://qt.nokia.com/doc/4.7/qsslcertificate.html">QSslCertificate</a> objects represents the certificate chain that is used to secure this connection. We iterate over the list and extract all important information that we store inside a <tt>QListDataModel</tt>. This data model is made available as property, so that it can easily be used within the UI as data source for a <tt>ListView</tt>.</p>
+</div>
+<!-- @@@securesocketclient -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

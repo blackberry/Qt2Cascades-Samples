@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- regexp.qdoc -->
+  <title>Cascades : Regular Expressions Example</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+<li><a href="http://qt.nokia.com/doc/4.7/all-examples.html">Examples</a></li>
+<li>Regular Expressions Example</li>
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<div class="toc">
+<h3><a name="toc">Contents</a></h3>
+<ul>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#the-ui">The UI</a></li>
+<li class="level1"><a href="#regexp">RegExp</a></li>
+</ul>
+</div>
+<h1 class="title">Regular Expressions Example</h1>
+<span class="subtitle"></span>
+<!-- $$$regexp-description -->
+<div class="descr"> <a name="details"></a>
+<p>Files:</p>
+<ul>
+<li><a href="regexp-assets-main-qml.html">regexp/assets/main.qml</a></li>
+<li><a href="regexp-src-app-cpp.html">regexp/src/app.cpp</a></li>
+<li><a href="regexp-src-app-hpp.html">regexp/src/app.hpp</a></li>
+<li><a href="regexp-src-regexp-cpp.html">regexp/src/regexp.cpp</a></li>
+<li><a href="regexp-src-regexp-hpp.html">regexp/src/regexp.hpp</a></li>
+<li><a href="regexp-src-main-cpp.html">regexp/src/main.cpp</a></li>
+<li><a href="regexp-regexp-pro.html">regexp/regexp.pro</a></li>
+</ul>
+<a name="description"></a>
+<h2>Description</h2>
+<p>The Regular Expressions (RegExp) example shows how regular expressions in Qt are applied to text by providing an environment in which new regular expressions can be created and tested on custom text strings.</p>
+<div class="centerAlign"><p><img src="images/regexp-example.png" /> <img src="images/regexp-example1.png" /></p>
+</div><a name="overview"></a>
+<h2>Overview</h2>
+<p>In this example we'll learn how to use the <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> class to find substrings inside a text that matches a given pattern (regular expression).</p>
+<a name="the-ui"></a>
+<h2>The UI</h2>
+<p>The UI of this sample application consists of two text fields in the 'Inputs' section, where the user can type in the pattern and the text. Additionally there are controls that can be used to configure various properties of the regular expression (e.g&#x2e; whether the lookup should be case sensitive, which pattern syntax should be used etc.)&#x2e; In the 'Outputs' section there are labels that show at which position the matching substring is located in the text, how long the matching substring is and what the matching substring looks like.</p>
+<p>The business logic of the application is encapsulated in the class RegExp, which is exported to the UI as '<a href="#regexp">_regexp</a>'.</p>
+<pre class="qml">                        <span class="comment">// A standard TextField for the regular expression pattern</span>
+                        <span class="type">TextField</span> {
+                            <span class="name">leftMargin</span>: <span class="number">10</span>
+                            <span class="name">topMargin</span>: <span class="number">10</span>
+                            <span class="name">preferredWidth</span>: <span class="number">500</span>
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">pattern</span>
+                            <span class="name">onTextChanging</span>: <span class="name">_regexp</span>.<span class="name">pattern</span> <span class="operator">=</span> <span class="name">text</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }</pre>
+<p>The 'text' properties of the pattern text field and source text field are bound against the appropriated properties of the RegExp object, and whenever the user changes the text inside the text fields, the properties of RegExp are updated.</p>
+<pre class="qml">                        <span class="comment">// A standard Label</span>
+                        <span class="type">Label</span> {
+
+                            <span class="comment">// Displays the regular expression pattern input from above TextField</span>
+                            <span class="name">text</span>: <span class="name">_regexp</span>.<span class="name">escapedPattern</span>
+                            <span class="type">textStyle</span> {
+                                <span class="name">base</span>: <span class="name">tsd</span>.<span class="name">style</span>
+                            }
+                        }</pre>
+<p>The 'text' properties of the output related labels are also bound against the appropriated properties of the RegExp object, so whenever RegExp changes its result, the labels will be updated automatically.</p>
+<a name="regexp"></a>
+<h2>RegExp</h2>
+<p>The RegExp class encapsulates the business logic of this application. It's a thin wrapper around <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> that provides properties, so that data can be set and read from within the UI.</p>
+<p>All matching substrings (called captures) that the internal <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> object finds are stored inside the RegExp class as a list of Capture objects:</p>
+<pre class="cpp">        <span class="keyword">struct</span> Capture
+        {
+            <span class="type">bool</span> available;
+            <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> text;
+        };</pre>
+<p>Inside the constructor of RegExp all the member variables are initialized and the 'available' property of all Capture objects is set to 'false' to represent the initial 'pattern is not matching' state.</p>
+<pre class="cpp">    RegExp<span class="operator">::</span>RegExp(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent)
+        : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+        <span class="operator">,</span> m_pattern(<span class="string">&quot;[A-Za-z_]+([A-Za-z_0-9]*)&quot;</span>)
+        <span class="operator">,</span> m_patternSyntax(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a></span><span class="operator">::</span>RegExp)
+        <span class="operator">,</span> m_caseSensitive(<span class="keyword">true</span>)
+        <span class="operator">,</span> m_minimal(<span class="keyword">false</span>)
+        <span class="operator">,</span> m_text(<span class="string">&quot;(10 + delta4) * 32&quot;</span>)
+        <span class="operator">,</span> m_matchIndex(<span class="operator">-</span><span class="number">1</span>)
+        <span class="operator">,</span> m_matchLength(<span class="operator">-</span><span class="number">1</span>)
+    {
+        <span class="comment">// Initialize the list of captures with 'no captures available'</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> s_capturesCount; <span class="operator">+</span><span class="operator">+</span>i) {
+            Capture capture;
+            capture<span class="operator">.</span>available <span class="operator">=</span> <span class="keyword">false</span>;
+
+            m_captures <span class="operator">&lt;</span><span class="operator">&lt;</span> capture;
+        }
+
+        <span class="comment">// Start initial processing</span>
+        refresh();
+    }</pre>
+<p>The call to refresh() will calculate all matching substrings according to the current configuration of the regular expression.</p>
+<pre class="cpp">    <span class="type">void</span> RegExp<span class="operator">::</span>refresh()
+    {
+        <span class="comment">// Create the escaped version of the pattern string ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> escaped <span class="operator">=</span> m_pattern;
+        escaped<span class="operator">.</span>replace(<span class="string">&quot;\\&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\\&quot;</span>);
+        escaped<span class="operator">.</span>replace(<span class="string">&quot;\&quot;&quot;</span><span class="operator">,</span> <span class="string">&quot;\\\&quot;&quot;</span>);
+        escaped<span class="operator">.</span>prepend(<span class="string">&quot;\&quot;&quot;</span>);
+        escaped<span class="operator">.</span>append(<span class="string">&quot;\&quot;&quot;</span>);
+
+        <span class="comment">// ... and store it.</span>
+        m_escapedPattern <span class="operator">=</span> escaped;
+
+        <span class="comment">// Create a temporary QRegExp object with the current pattern as parameter</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a></span> regexp(m_pattern);
+
+        <span class="comment">// Configure the QRegExp object according to the other input parameters</span>
+        regexp<span class="operator">.</span>setCaseSensitivity(m_caseSensitive <span class="operator">?</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qt.html">Qt</a></span><span class="operator">::</span>CaseSensitive : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qt.html">Qt</a></span><span class="operator">::</span>CaseInsensitive);
+        regexp<span class="operator">.</span>setMinimal(m_minimal);
+        regexp<span class="operator">.</span>setPatternSyntax(m_patternSyntax);
+
+        <span class="comment">// Do the actual pattern matching against the input string (m_text) ...</span>
+        m_matchIndex <span class="operator">=</span> regexp<span class="operator">.</span>indexIn(m_text);
+
+        <span class="comment">// ... and fill the output parameters with the new values.</span>
+        m_matchLength <span class="operator">=</span> regexp<span class="operator">.</span>matchedLength();
+
+        <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> s_capturesCount; <span class="operator">+</span><span class="operator">+</span>i) {
+            m_captures<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>available <span class="operator">=</span> (i <span class="operator">&lt;</span><span class="operator">=</span> regexp<span class="operator">.</span>captureCount());
+            m_captures<span class="operator">[</span>i<span class="operator">]</span><span class="operator">.</span>text <span class="operator">=</span> regexp<span class="operator">.</span>cap(i);
+        }
+
+        <span class="comment">// Notify the UI that the output parameters have changed</span>
+        <span class="keyword">emit</span> regexpChanged();
+    }</pre>
+<p>Inside the refresh() method the first step is to update the escaped version of the pattern and store it in the 'escapedPattern' property. In the second step we create a <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> object with the pattern as it has been typed in by the user. Now we configure the <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> object according to the properties of the RegExp object. The call to <a href="http://qt.nokia.com/doc/4.7/qregexp.html#indexIn">indexIn()</a> does the actual pattern matching against the input text. As a return value we get either '-1' if the text doesn't match the pattern or the offset where the matching substring starts.</p>
+<p>The <a href="http://qt.nokia.com/doc/4.7/qregexp.html#matchedLength">matchedLength()</a> method of the <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> class returns the length of the matching substring, that we simply store in the associated property of the RegExp object.</p>
+<p>To update the captures, we iterate over all Capture objects in the internal list and update them with the values returned by the <a href="http://qt.nokia.com/doc/4.7/qregexp.html#cap">cap()</a> method of the <a href="http://qt.nokia.com/doc/4.7/qregexp.html">QRegExp</a> object.</p>
+<p>As last step we emit the regexpChanged() signal to notify the UI that all properties of the RegExp object have been changed.</p>
+<p>The setter methods of all input properties of the RegExp object follow always the same scheme:</p>
+<ol class="A">
+<li>Check whether the new value equals the current value, if so ignore it and return</li>
+<li>Update the current value with the new one</li>
+<li>Call refresh() to calculate the matching substrings</li>
+<li>Emit the change notification signal for this property</li>
+</ol>
+<pre class="cpp">    <span class="type">void</span> RegExp<span class="operator">::</span>setText(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>text)
+    {
+        <span class="keyword">if</span> (m_text <span class="operator">=</span><span class="operator">=</span> text)
+            <span class="keyword">return</span>;
+
+        m_text <span class="operator">=</span> text;
+        refresh();
+
+        <span class="keyword">emit</span> textChanged();
+    }</pre>
+<p><b>Note:</b> The check whether the new value equals the current value should <b>always</b> be done inside a property setter method, to avoid the unnecessary emission of the changed signal. This improves the performance (since property bindings in the UI won't be reevaluated unnecessarily) and avoids possible update loops.</p>
+<pre class="cpp">    <span class="type">bool</span> RegExp<span class="operator">::</span>capture0Available() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>available;
+    }
+
+    <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> RegExp<span class="operator">::</span>capture0Text() <span class="keyword">const</span>
+    {
+        <span class="keyword">return</span> m_captures<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>text;
+    }</pre>
+<p>The getter methods of the properties of the RegExp object simply return the values of the member variables that have been updated inside refresh().</p>
+</div>
+<!-- @@@regexp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : rsslisting.hpp Example File (rsslisting/src/rsslisting.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">rsslisting.hpp Example File</h1>
+<span class="small-subtitle">rsslisting/src/rsslisting.hpp</span>
+<!-- $$$rsslisting/src/rsslisting.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef RSSLISTING_HPP</span>
+    <span class="preprocessor">#define RSSLISTING_HPP</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QBuffer&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QUrl&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QXmlStreamReader&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkAccessManager&gt;</span>
+    <span class="preprocessor">#include &lt;QtNetwork/QNetworkReply&gt;</span>
+
+    <span class="comment">/**
+     * The RSSListing class encapsulates the download and parsing of
+     * the RSS feed. The feed URL and the extracted articles are available
+     * to the UI via properties.
+     */</span>
+    <span class="keyword">class</span> RSSListing : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// The URL where the RSS feed is downloaded from</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> url READ url WRITE setUrl NOTIFY urlChanged)
+
+        <span class="comment">// Makes the extracted articles available to the UI</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> feeds READ feeds NOTIFY feedsChanged)
+
+        <span class="comment">// Makes the state of the RSSListing available to the UI</span>
+        Q_PROPERTY(<span class="type">bool</span> active READ active NOTIFY activeChanged)
+
+    <span class="keyword">public</span>:
+        RSSListing(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>object <span class="operator">=</span> <span class="number">0</span>);
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is invoked from the UI to start the download of the RSS feed</span>
+        <span class="type">void</span> fetch();
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signals of the properties</span>
+        <span class="type">void</span> urlChanged();
+        <span class="type">void</span> feedsChanged();
+        <span class="type">void</span> activeChanged();
+
+    <span class="keyword">private</span> Q_SLOTS:
+        <span class="comment">// This method is called when the feed has been downloaded</span>
+        <span class="type">void</span> finished(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>reply);
+
+        <span class="comment">// This method is called whenever new data from the feed have been received</span>
+        <span class="type">void</span> readyRead();
+
+        <span class="comment">// This method is called when the meta data of the HTTP connection have changed (e.g. the server sent a redirect response)</span>
+        <span class="type">void</span> metaDataChanged();
+
+        <span class="comment">// This method is called if an network related error occurred</span>
+        <span class="type">void</span> error(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkreply.html">QNetworkReply</a></span><span class="operator">::</span>NetworkError);
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The accessor methods of the properties</span>
+        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> url() <span class="keyword">const</span>;
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> feeds() <span class="keyword">const</span>;
+
+        <span class="type">bool</span> active() <span class="keyword">const</span>;
+
+        <span class="comment">// This method parses the RSS feed after it has been downloaded</span>
+        <span class="type">void</span> parseXml();
+
+        <span class="comment">// This method triggers the actual download of the RSS feed</span>
+        <span class="type">void</span> get(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qurl.html">QUrl</a></span> <span class="operator">&amp;</span>url);
+
+        <span class="comment">// The property values</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_url;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_feeds;
+        <span class="type">bool</span> m_active;
+
+        <span class="comment">// The XML stream reader that is used to extract the articles from the RSS feed</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qxmlstreamreader.html">QXmlStreamReader</a></span> m_xml;
+
+        <span class="comment">// The network manager that is used to download the RSS feed</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkaccessmanager.html">QNetworkAccessManager</a></span> m_manager;
+
+        <span class="comment">// The network reply that represents the current download job</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkreply.html">QNetworkReply</a></span> <span class="operator">*</span>m_currentReply;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@rsslisting/src/rsslisting.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>

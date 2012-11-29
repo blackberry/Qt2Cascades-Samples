@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : main.cpp Example File (pingpong/src/main.cpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">main.cpp Example File</h1>
+<span class="small-subtitle">pingpong/src/main.cpp</span>
+<!-- $$$pingpong/src/main.cpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/AbstractPane&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/Application&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
+    <span class="preprocessor">#include &lt;bb/cascades/QmlDocument&gt;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QAbstractTransition&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QState&gt;</span>
+    <span class="preprocessor">#include &lt;QtCore/QStateMachine&gt;</span>
+
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="operator">::</span>bb<span class="operator">::</span>cascades;
+
+    <span class="comment">/**
+     * The BalloonCreator adds balloon information to the model whenever the
+     * 'pinger', 'pingTransition' or 'pongTransition' emit a notification.
+     */</span>
+    <span class="keyword">class</span> BalloonCreator : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        <span class="keyword">explicit</span> BalloonCreator(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>)
+            : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>(parent)
+            <span class="operator">,</span> m_model(<span class="keyword">new</span> <span class="type">QStringListDataModel</span>())
+        {
+            m_model<span class="operator">-</span><span class="operator">&gt;</span>setParent(<span class="keyword">this</span>);
+        }
+
+        bb<span class="operator">::</span>cascades<span class="operator">::</span>DataModel<span class="operator">*</span> model() <span class="keyword">const</span>
+        {
+            <span class="keyword">return</span> m_model;
+        }
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This slot is called whenever a new notification from pinger, pingTransition or pongTransition is received</span>
+        <span class="type">void</span> notify(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message)
+        {
+            <span class="comment">// Show 10 balloons at maximum</span>
+            <span class="keyword">if</span> (m_model<span class="operator">-</span><span class="operator">&gt;</span>childCount(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span>()) <span class="operator">=</span><span class="operator">=</span> <span class="number">10</span>)
+                m_model<span class="operator">-</span><span class="operator">&gt;</span>clear();
+
+            m_model<span class="operator">-</span><span class="operator">&gt;</span>append(message);
+        }
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The model that contains</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QStringListDataModel</span><span class="operator">*</span> m_model;
+    };
+
+    <span class="comment">/**
+     * The PingEvent class is a custom event that is sent by the pinger state
+     * to the state machine to trigger a transition to the ponger state.
+     */</span>
+    <span class="keyword">class</span> PingEvent : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span>
+    {
+    <span class="keyword">public</span>:
+        PingEvent()
+            : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span>(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>Type(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>User <span class="operator">+</span> <span class="number">2</span>))
+        {
+        }
+    };
+
+    <span class="comment">/**
+     * The PongEvent class is a custom event that is sent by the ponger state
+     * to the state machine to trigger a transition to the pinger state.
+     */</span>
+    <span class="keyword">class</span> PongEvent : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span>
+    {
+    <span class="keyword">public</span>:
+        PongEvent()
+            : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span>(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>Type(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>User <span class="operator">+</span> <span class="number">3</span>))
+        {
+        }
+    };
+
+    <span class="comment">/**
+     * The Pinger class is a custom state that sends a PingEvent to
+     * the state machine whenever it is entered.
+     */</span>
+    <span class="keyword">class</span> Pinger : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        Pinger(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span> <span class="operator">*</span>parent)
+            : <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span>(parent)
+        {
+        }
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted whenever the state is entered</span>
+        <span class="type">void</span> notify(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+
+    <span class="keyword">protected</span>:
+        <span class="comment">/**
+         * This method is reimplemented from the QState class.
+         * It is called whenever this state is entered.
+         * Note: In this example it will start the ping/pong between the two transitions
+         *       by sending the initial PingEvent.
+         */</span>
+        <span class="keyword">virtual</span> <span class="type">void</span> onEntry(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span> <span class="operator">*</span>)
+        {
+            <span class="comment">// Post a PingEvent to the state machine ...</span>
+            machine()<span class="operator">-</span><span class="operator">&gt;</span>postEvent(<span class="keyword">new</span> PingEvent());
+
+            <span class="comment">// ... and add balloon to the screen.</span>
+            <span class="keyword">emit</span> notify(<span class="string">&quot;ping&quot;</span>);
+        }
+    };
+
+    <span class="comment">/**
+     * The PongTransition is activated whenever the state machine receives a PongEvent.
+     * In that case it will send a PingEvent to the state machine.
+     */</span>
+    <span class="keyword">class</span> PongTransition : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstracttransition.html">QAbstractTransition</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        PongTransition()
+        {
+        }
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted whenever the transition is executed</span>
+        <span class="type">void</span> notify(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+
+    <span class="keyword">protected</span>:
+        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span> <span class="operator">*</span>e)
+        {
+            <span class="comment">// Allow this transition only if the event is a PongEvent</span>
+            <span class="keyword">return</span> (e<span class="operator">-</span><span class="operator">&gt;</span>type() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>User <span class="operator">+</span> <span class="number">3</span>);
+        }
+
+        <span class="keyword">virtual</span> <span class="type">void</span> onTransition(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span> <span class="operator">*</span>)
+        {
+            <span class="comment">// Post a PingEvent to the state machine with a delay of 500ms  ...</span>
+            machine()<span class="operator">-</span><span class="operator">&gt;</span>postDelayedEvent(<span class="keyword">new</span> PingEvent()<span class="operator">,</span> <span class="number">500</span>);
+
+            <span class="comment">// ... and add a balloon to the screen.</span>
+            <span class="keyword">emit</span> notify(<span class="string">&quot;ping&quot;</span>);
+        }
+    };
+
+    <span class="comment">/**
+     * The PingTransition is activated whenever the state machine receives a PingEvent.
+     * In that case it will send a PongEvent to the state machine.
+     */</span>
+    <span class="keyword">class</span> PingTransition : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qabstracttransition.html">QAbstractTransition</a></span>
+    {
+        Q_OBJECT
+
+    <span class="keyword">public</span>:
+        PingTransition()
+        {
+        }
+
+    Q_SIGNALS:
+        <span class="comment">// This signal is emitted whenever the transition is executed</span>
+        <span class="type">void</span> notify(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>message);
+
+    <span class="keyword">protected</span>:
+        <span class="keyword">virtual</span> <span class="type">bool</span> eventTest(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span> <span class="operator">*</span>e)
+        {
+            <span class="comment">// Allow this transition only if the event is a PingEvent</span>
+            <span class="keyword">return</span> (e<span class="operator">-</span><span class="operator">&gt;</span>type() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span><span class="operator">::</span>User <span class="operator">+</span> <span class="number">2</span>);
+        }
+
+        <span class="keyword">virtual</span> <span class="type">void</span> onTransition(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qevent.html">QEvent</a></span> <span class="operator">*</span>)
+        {
+            <span class="comment">// Post a PongEvent to the state machine with a delay of 500ms  ...</span>
+            machine()<span class="operator">-</span><span class="operator">&gt;</span>postDelayedEvent(<span class="keyword">new</span> PongEvent()<span class="operator">,</span> <span class="number">500</span>);
+
+            <span class="comment">// ... and add a balloon to the screen.</span>
+            <span class="keyword">emit</span> notify(<span class="string">&quot;pong&quot;</span>);
+        }
+    };
+
+    <span class="comment">/**
+     * In this sample application a state machine is used to alternate between two actions (showing a 'Ping?' and 'Pong!' balloon in the UI).
+     * To trigger the transitions between the two actions, custom events are used instead of signals.
+     */</span>
+    Q_DECL_EXPORT <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+    {
+        Application app(argc<span class="operator">,</span> argv);
+
+        <span class="comment">// Create the state machine</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstatemachine.html">QStateMachine</a></span> machine;
+
+        <span class="comment">/**
+         * Create the group state as parallel state.
+         * That means its two child states 'pinger' and 'ponger'
+         * will both be entered by the state machine at the same time.
+         */</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span> <span class="operator">*</span>group <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span>(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span><span class="operator">::</span>ParallelStates);
+        group<span class="operator">-</span><span class="operator">&gt;</span>setObjectName(<span class="string">&quot;group&quot;</span>);
+
+        <span class="comment">// Create the pinger state ...</span>
+        Pinger <span class="operator">*</span>pinger <span class="operator">=</span> <span class="keyword">new</span> Pinger(group);
+        pinger<span class="operator">-</span><span class="operator">&gt;</span>setObjectName(<span class="string">&quot;pinger&quot;</span>);
+
+        <span class="comment">// ... and add a PongTransition to it.</span>
+        PongTransition <span class="operator">*</span>pongTransition <span class="operator">=</span> <span class="keyword">new</span> PongTransition();
+        pinger<span class="operator">-</span><span class="operator">&gt;</span>addTransition(pongTransition);
+
+        <span class="comment">// Create the ponger state ...</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span> <span class="operator">*</span>ponger <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstate.html">QState</a></span>(group);
+        ponger<span class="operator">-</span><span class="operator">&gt;</span>setObjectName(<span class="string">&quot;ponger&quot;</span>);
+
+        <span class="comment">// ... and add a PingTransition to it.</span>
+        PingTransition <span class="operator">*</span>pingTransition <span class="operator">=</span> <span class="keyword">new</span> PingTransition();
+        ponger<span class="operator">-</span><span class="operator">&gt;</span>addTransition(pingTransition);
+
+        <span class="comment">// Add the group state to the state machine ...</span>
+        machine<span class="operator">.</span>addState(group);
+
+        <span class="comment">// ... and mark it as initial state.</span>
+        machine<span class="operator">.</span>setInitialState(group);
+
+        <span class="comment">// Start the state machine</span>
+        machine<span class="operator">.</span>start();
+
+        BalloonCreator balloonCreator;
+
+        <span class="comment">// Load the UI description from main.qml</span>
+        QmlDocument <span class="operator">*</span>qml <span class="operator">=</span> QmlDocument<span class="operator">::</span>create(<span class="string">&quot;asset:///main.qml&quot;</span>);
+        qml<span class="operator">-</span><span class="operator">&gt;</span>setContextProperty(<span class="string">&quot;_model&quot;</span><span class="operator">,</span> balloonCreator<span class="operator">.</span>model());
+
+        <span class="comment">// Create the application scene</span>
+        AbstractPane <span class="operator">*</span>appPage <span class="operator">=</span> qml<span class="operator">-</span><span class="operator">&gt;</span>createRootObject<span class="operator">&lt;</span>AbstractPane<span class="operator">&gt;</span>();
+        Application<span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>setScene(appPage);
+
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span><span class="operator">::</span>connect(pinger<span class="operator">,</span> SIGNAL(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>))<span class="operator">,</span>
+                         <span class="operator">&amp;</span>balloonCreator<span class="operator">,</span> SLOT(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>)));
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span><span class="operator">::</span>connect(pingTransition<span class="operator">,</span> SIGNAL(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>))<span class="operator">,</span>
+                         <span class="operator">&amp;</span>balloonCreator<span class="operator">,</span> SLOT(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>)));
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span><span class="operator">::</span>connect(pongTransition<span class="operator">,</span> SIGNAL(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>))<span class="operator">,</span>
+                         <span class="operator">&amp;</span>balloonCreator<span class="operator">,</span> SLOT(notify(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span>)));
+
+        <span class="keyword">return</span> Application<span class="operator">::</span>exec();
+    }
+
+    <span class="preprocessor">#include &quot;main.moc&quot;</span></pre>
+</div>
+<!-- @@@pingpong/src/main.cpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>
