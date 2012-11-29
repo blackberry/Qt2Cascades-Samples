@@ -27,7 +27,7 @@
 
 /*!
     \page htmlinfo
-    \example xml/htmlinfo
+    \example htmlinfo
     \title XML HTML Info Example
 
     \section1 Description
@@ -45,12 +45,12 @@
     Reading XML is handled by an instance of the QXmlStreamReader class, which
     operates on the input file object:
 
-    \snippet xml/htmlinfo/src/htmlinfo.cpp 0
+    \snippet htmlinfo/src/htmlinfo.cpp 0
 
     The work of parsing and the XML and extracting statistics is done in a
     while loop, and is driven by input from the reader:
 
-    \snippet xml/htmlinfo/src/htmlinfo.cpp 1
+    \snippet htmlinfo/src/htmlinfo.cpp 1
 
     If more input is available, the next token from the input file is read
     and parsed. The program then looks for the specific element types,
@@ -59,7 +59,7 @@
     When there is no more input, the loop terminates. If an error occurred,
     it is reported to the UI:
 
-    \snippet xml/htmlinfo/src/htmlinfo.cpp 2
+    \snippet htmlinfo/src/htmlinfo.cpp 2
 
     If no error occurred, the example makes the statistics available to the UI.
 */

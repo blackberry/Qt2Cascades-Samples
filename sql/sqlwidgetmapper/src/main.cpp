@@ -59,7 +59,7 @@ using namespace bb::data;
  * set of controls in the UI and allows the user to navigate throught the rows of the table
  * and update the contents of the controls automatically.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

@@ -27,7 +27,7 @@
 
 /*!
     \page regexp
-    \example tools/regexp
+    \example regexp
     \title Regular Expressions Example
 
     \section1 Description
@@ -55,12 +55,12 @@
     The business logic of the application is encapsulated in the class RegExp, which is
     exported to the UI as '_regexp'.
 
-    \snippet tools/regexp/assets/main.qml 0
+    \snippet regexp/assets/main.qml 0
 
     The 'text' properties of the pattern text field and source text field are bound against the appropriated properties
     of the RegExp object, and whenever the user changes the text inside the text fields, the properties of RegExp are updated.
 
-    \snippet tools/regexp/assets/main.qml 1
+    \snippet regexp/assets/main.qml 1
 
     The 'text' properties of the output related labels are also bound against the appropriated properties of the RegExp
     object, so whenever RegExp changes its result, the labels will be updated automatically.
@@ -72,17 +72,17 @@
     All matching substrings (called captures) that the internal QRegExp object finds are stored inside the RegExp
     class as a list of Capture objects:
 
-    \snippet tools/regexp/src/regexp.hpp 0
+    \snippet regexp/src/regexp.hpp 0
 
     Inside the constructor of RegExp all the member variables are initialized and the 'available' property of all
     Capture objects is set to 'false' to represent the initial 'pattern is not matching' state.
 
-    \snippet tools/regexp/src/regexp.cpp 0
+    \snippet regexp/src/regexp.cpp 0
 
     The call to refresh() will calculate all matching substrings according to the current configuration of the
     regular expression.
 
-    \snippet tools/regexp/src/regexp.cpp 3
+    \snippet regexp/src/regexp.cpp 3
 
     Inside the refresh() method the first step is to update the escaped version of the pattern and store it in
     the 'escapedPattern' property. In the second step we create a QRegExp object with the pattern as it has been
@@ -108,13 +108,13 @@
         \o Emit the change notification signal for this property
       \endlist
 
-    \snippet tools/regexp/src/regexp.cpp 1
+    \snippet regexp/src/regexp.cpp 1
 
     \bold{Note:} The check whether the new value equals the current value should \bold{always} be done inside a property
     setter method, to avoid the unnecessary emission of the changed signal. This improves the performance (since property
     bindings in the UI won't be reevaluated unnecessarily) and avoids possible update loops.
 
-    \snippet tools/regexp/src/regexp.cpp 2
+    \snippet regexp/src/regexp.cpp 2
 
     The getter methods of the properties of the RegExp object simply return the values of the member variables that
     have been updated inside refresh().

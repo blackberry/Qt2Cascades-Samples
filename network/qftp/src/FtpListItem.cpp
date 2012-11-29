@@ -54,7 +54,7 @@ FtpListItem::FtpListItem(Container *parent)
 
     Container *textContents = new Container();
     m_itemTitle = Label::create();
-    m_itemTitle->textStyle()->setBase(SystemDefaults::TextStyles::bigText());
+    m_itemTitle->textStyle()->setBase(SystemDefaults::TextStyles::titleText());
     m_itemTitle->textStyle()->setColor(Color::Black);
 
     m_itemDescription = Label::create();

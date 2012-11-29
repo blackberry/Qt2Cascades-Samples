@@ -50,7 +50,7 @@
 using namespace ::bb::cascades;
 
 //! [main function]
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     /**
      * We have to call qRegisterMetaType() on our custom class if we want to use

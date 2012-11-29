@@ -54,7 +54,7 @@ using namespace bb::cascades;
  * The user can move around gaming pieces on a board and undo/redo the moves
  * by clicking the 'Undo' or 'Redo' button.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

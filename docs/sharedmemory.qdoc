@@ -27,7 +27,7 @@
 
 /*!
     \page sharedmemory
-    \example ipc/sharedmemory
+    \example sharedmemory
     \title Shared Memory Example
 
     \section1 Description
@@ -42,8 +42,8 @@
     In this example we'll learn how to communicate between multiple processes by writing/reading data
     to/from a shared memory and how to synchronize the access to the shared memory segment properly.
 
-    The example application is splitted in the two executables, \l {ipc/sharedmemory_loader}{sharedmemory_loader} and sharedmemory.
-    With the \l {ipc/sharedmemory_loader}{sharedmemory_loader} the user can load a file from the file system into a shared memory segment from
+    The example application is splitted in the two executables, \l {sharedmemory_loader}{sharedmemory_loader} and sharedmemory.
+    With the \l {sharedmemory_loader}{sharedmemory_loader} the user can load a file from the file system into a shared memory segment from
     where the sharedmemory application reads the content of the file and displays it in the UI.
 
     \section1 FileLoaderProxy
@@ -52,23 +52,23 @@
     the shared memory segment and provides a property to display the data in the UI.
     Whenever the user clicks on the 'Load file' button, the loadFile() slot is invoked:
 
-    \snippet ipc/sharedmemory/assets/main.qml 0
+    \snippet sharedmemory/assets/main.qml 0
 
     To visualize the loaded data in the UI, the 'fileContent' property of the exported FileLoaderProxy object
     is bound against the 'text' property of a TextArea control.
 
-    \snippet ipc/sharedmemory/assets/main.qml 1
+    \snippet sharedmemory/assets/main.qml 1
 
     The FileLoaderProxy class contains a member variable of type QSharedMemory which encapsulates the creation and access
     of the shared memory segment.
 
     Inside the constructor of the FileLoaderProxy the segment is created and initialized
 
-    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 1
+    \snippet sharedmemory/src/FileLoaderProxy.cpp 1
 
     For this the hard-coded key and size are used as defined previously in the file
 
-    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 0
+    \snippet sharedmemory/src/FileLoaderProxy.cpp 0
 
     Since m_sharedMemory is a member variable, it will be deleted as soon as the FileLoaderProxy object is deleted.
     At this point the destructor of QSharedMemory will delete the associated shared memory segment automatically.
@@ -76,12 +76,12 @@
     Whenever the user clicks the 'Load file' button, the loadFile() slot is invoked, which simply emits the
     change notification signal for the 'fileContent' property.
 
-    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 3
+    \snippet sharedmemory/src/FileLoaderProxy.cpp 3
 
     This signal emission will trigger the reevaluation of all property bindings where the 'fileContent' property is involved.
     To retrieve the new value for the 'fileContent' property, its getter method fileContent() is invoked:
 
-    \snippet ipc/sharedmemory/src/FileLoaderProxy.cpp 2
+    \snippet sharedmemory/src/FileLoaderProxy.cpp 2
 
     Inside this method we try to gain the exclusive access to the shared memory segment by calling \l {QSharedMemory::lock()}{lock()}.
     If another process holds the lock already, our process is blocked until the lock is released by the other process.

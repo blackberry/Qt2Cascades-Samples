@@ -54,7 +54,7 @@ using namespace bb::cascades;
  * a shared memory segment and waits for a second process (sharedmemory_loader)
  * to fill the shared memory with data.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

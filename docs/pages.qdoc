@@ -45,62 +45,67 @@
     \list
     \o \bold {Inter-Process Communication}
       \list
-      \o \l{ipc/sharedmemory}{Shared Memory}
-      \o \l{ipc/sharedmemory_loader}{Shared Memory Loader}
+      \o \l{sharedmemory}{Shared Memory}
+      \o \l{sharedmemory_loader}{Shared Memory Loader}
       \endlist
     \o \bold {Multithreading}
       \list
-      \o \l{threads/semaphores}{Semaphores}
-      \o \l{threads/waitconditions}{Wait Conditions}
-      \o \l{threads/queuedcustomtype}{Queued Custom Type}
+      \o \l{semaphores}{Semaphores}
+      \o \l{waitconditions}{Wait Conditions}
+      \o \l{queuedcustomtype}{Queued Custom Type}
       \endlist
     \o \bold {Network}
       \list
-      \o \l{network/broadcastreceiver}{Broadcast Receiver}
-      \o \l{network/broadcastsender}{Broadcast Sender}
-      \o \l{network/downloadmanager} {Network Download Manager}
-      \o \l{network/qftp}{FTP}
-      \o \l{network/googlesuggest}{Google Suggest}
-      \o \l{network/http}{HTTP}
-      \o \l{network/multicastreceiver}{Multicast Receiver}
-      \o \l{network/multicastsender}{Multicast Sender}
-      \o \l{network/securesocketclient}{Secure Socket Client}
+      \o \l{broadcastreceiver}{Broadcast Receiver}
+      \o \l{broadcastsender}{Broadcast Sender}
+      \o \l{downloadmanager} {Network Download Manager}
+      \o \l{qftp}{FTP}
+      \o \l{googlesuggest}{Google Suggest}
+      \o \l{http}{HTTP}
+      \o \l{multicastreceiver}{Multicast Receiver}
+      \o \l{multicastsender}{Multicast Sender}
+      \o \l{securesocketclient}{Secure Socket Client}
       \endlist
     \o \bold {Qt Concurrent (Advanced Multithreading Framework)}
       \list
-      \o \l{qtconcurrent/progressdialog}{Progress Dialog}
-      \o \l{qtconcurrent/wordcount}{Word Count}
+      \o \l{progressdialog}{Progress Dialog}
+      \o \l{wordcount}{Word Count}
       \endlist
     \o \bold {Qt Script}
       \list
-      \o \l{script/scriptgame}{Script Game}
+      \o \l{scriptgame}{Script Game}
       \endlist
     \o \bold {SQL}
       \list
-      \o \l{sql/sqlwidgetmapper}{SQL Widget Mapper}
+      \o \l{sqlwidgetmapper}{SQL Widget Mapper}
+      \endlist
+    \o \bold {Sensors}
+      \list
+      \o \l{gruedetector}{Grue Detector}
+      \o \l{sensorexplorer}{Sensor Explorer}
       \endlist
     \o \bold {State Machine}
       \list
-      \o \l{statemachine/factorial}{Factorial}
-      \o \l{statemachine/pingpong}{Ping Pong States}
-      \o \l{statemachine/trafficlight}{Traffic Light}
+      \o \l{factorial}{Factorial}
+      \o \l{pingpong}{Ping Pong States}
+      \o \l{trafficlight}{Traffic Light}
       \endlist
     \o \bold {Tools}
       \list
-      \o \l{tools/codecs}{Codecs}
-      \o \l{tools/contiguouscache}{Contiguous Cache}
-      \o \l{tools/i18n}{I18N}
-      \o \l{tools/regexp}{Regular Expressions}
-      \o \l{tools/undoframework}{Undo Framework}
+      \o \l{codecs}{Codecs}
+      \o \l{contiguouscache}{Contiguous Cache}
+      \o \l{i18n}{I18N}
+      \o \l{regexp}{Regular Expressions}
+      \o \l{undoframework}{Undo Framework}
       \endlist
     \o \bold {XML}
       \list
-      \o \l{xml/dombookmarks}{DOM Bookmarks}
-      \o \l{xml/saxbookmarks}{SAX Bookmarks}
-      \o \l{xml/streambookmarks}{QXmlStream Bookmarks}
-      \o \l{xml/rsslisting} {RSS-Listing}
-      \o \l{xml/htmlinfo} {XML HTML Info}
-      \o \l{xml/xmlstreamlint} {XML Stream Lint}
+      \o \l{dombookmarks}{DOM Bookmarks}
+      \o \l{saxbookmarks}{SAX Bookmarks}
+      \o \l{streambookmarks}{QXmlStream Bookmarks}
+      \o \l{rsslisting} {RSS-Listing}
+      \o \l{htmlinfo} {XML HTML Info}
+      \o \l{xmlstreamlint} {XML Stream Lint}
       \endlist
     \endlist
 */

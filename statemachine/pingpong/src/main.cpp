@@ -84,7 +84,7 @@ public Q_SLOTS:
     }
 
 private:
-    // The model that contains 
+    // The model that contains
     bb::cascades::QStringListDataModel* m_model;
 };
 
@@ -230,7 +230,7 @@ protected:
  * In this sample application a state machine is used to alternate between two actions (showing a 'Ping?' and 'Pong!' balloon in the UI).
  * To trigger the transitions between the two actions, custom events are used instead of signals.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

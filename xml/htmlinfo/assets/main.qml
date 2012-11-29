@@ -95,12 +95,12 @@ Page {
                     // Container grouping HTML parsed output only visible if there were no errors
                     visible: _htmlInfo.error == ""
 
-                    // A standard TextArea for displaying the HTML head title
-                    TextArea {
+                    // A standard Label for displaying the HTML head title
+                    Label {
                         preferredWidth: 700
-                        backgroundVisible: false
 
                         text: _htmlInfo.title
+                        multiline: true
 
                         // Defines text style
                         textStyle {

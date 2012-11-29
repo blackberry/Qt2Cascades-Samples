@@ -54,7 +54,7 @@ using namespace bb::cascades;
  * We show how to setup a state machine and how to map the business logic to the single states.
  * Furthermore it is shown how the state changes are reflected in the UI.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

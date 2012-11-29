@@ -27,7 +27,7 @@
 
 /*!
     \page broadcastreceiver
-    \example network/broadcastreceiver
+    \example broadcastreceiver
     \title Broadcast Receiver Example
 
     \section1 Description
@@ -41,22 +41,22 @@
     In this example we'll learn how to use the QUdpSocket class to send and receive broadcast messages
     on the network.
 
-    The example application is splitted in two executables, \l{network/broadcastsender}{broadcastsender} and broadcastreceiver.
-    While the \l{network/broadcastsender}{broadcastsender} allows the user to start the broadcasting of messages on the local network, the broadcastreceiver
+    The example application is splitted in two executables, \l{broadcastsender}{broadcastsender} and broadcastreceiver.
+    While the \l{broadcastsender}{broadcastsender} allows the user to start the broadcasting of messages on the local network, the broadcastreceiver
     will listen on the local network for these messages and display the received ones in the UI.
 
     \section1 Receiver
     The central class in broadcastreceiver is Receiver, which encapsulates the retrieval of the broadcasted messages
     and provides a property to display the content of the received datagrams in the UI.
 
-    \snippet network/broadcastreceiver/assets/main.qml 0
+    \snippet broadcastreceiver/assets/main.qml 0
 
     The 'status' property of the exported Receiver object is bound against the 'text' property of a Label control, so
     that whenever a new datagram arrives, the text is updated automatically on screen.
-    Like in the \l{network/broadcastsender}{broadcastsender}, the size of that label is animated here as well whenever
+    Like in the \l{broadcastsender}{broadcastsender}, the size of that label is animated here as well whenever
     its content changes.
 
-    \snippet network/broadcastreceiver/src/Receiver.cpp 0
+    \snippet broadcastreceiver/src/Receiver.cpp 0
 
     Inside the constructor of the Receiver class, we initialize the 'status' property and create the QUdpSocket object that
     encapsulates the low-level network communication.
@@ -64,7 +64,7 @@
     In the next step we connect the \l{QUdpSocket::readyRead()}{readyRead()} signal of the socket, which is emitted whenever
     a new datagram arrived, against our own slot processPendingDatagrams().
 
-    \snippet network/broadcastreceiver/src/Receiver.cpp 1
+    \snippet broadcastreceiver/src/Receiver.cpp 1
 
     In processPendingDatagrams() we check whether the socket still has pending datagrams and if that's the case, we read the next
     datagram from the socket and store its content in the 'status' property. By emitting the 'statusChanged()' signal, we trigger

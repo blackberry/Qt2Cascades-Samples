@@ -27,7 +27,7 @@
 
 /*!
     \page ftp
-    \example network/qftp
+    \example qftp
     \title FTP Example
 
     \section1 Description
@@ -70,13 +70,13 @@
     \l{QFtp::Command}{commands} we request are finished, the progress
     of current commands, and information about files on the server.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 0
+    \snippet qftp/src/FtpDownloader.cpp 0
 
     We will look at each slot when we examine the \c FtpDownloader
     implementation in the next section. We also make use of a few
     private variables:
 
-    \snippet network/qftp/src/FtpDownloader.cpp 1
+    \snippet qftp/src/FtpDownloader.cpp 1
 
     We use the QFile object to download files
     from the FTP server.
@@ -85,7 +85,7 @@
 
     We move on to the slots, starting with \c connectOrDisconnect().
 
-    \snippet network/qftp/src/FtpDownloader.cpp 0
+    \snippet qftp/src/FtpDownloader.cpp 0
 
     If \c m_ftp is already pointing to a QFtp object, we QFtp::Close its
     FTP connection and delete the object it points to. Note that we do
@@ -93,7 +93,7 @@
     to finish its abort operation.
 
     \dots
-    \snippet network/qftp/src/FtpDownloader.cpp 1
+    \snippet qftp/src/FtpDownloader.cpp 1
 
     If we get here, \c connectOrDisconnect() was called to establish a
     new FTP connection. We create a new QFtp for our new connection,
@@ -105,7 +105,7 @@
     is emitted repeatedly during an FTP file transfer, giving us
     progress reports.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 2
+    \snippet qftp/src/FtpDownloader.cpp 2
 
     The \c {m_url} contains the IP address or
     hostname of the server to which we want to connect. We first check
@@ -121,41 +121,41 @@
 
     We move on to the \c downloadFile() slot:
 
-    \snippet network/qftp/src/FtpDownloader.cpp 3
+    \snippet qftp/src/FtpDownloader.cpp 3
     \dots
-    \snippet network/qftp/src/FtpDownloader.cpp 4
+    \snippet qftp/src/FtpDownloader.cpp 4
 
     We first fetch the name of the file, which we find in the selected
     item pointed to by \c m_currentIndexPath. We then start the download by using
     QFtp::get(). QFtp will send progress signals during the download
     and a signal when the download is completed.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 5
+    \snippet qftp/src/FtpDownloader.cpp 5
 
     QFtp supports canceling the download of files. We make sure that
     any file that is currently being written to is closed and removed,
     and tidy up by deleting the file object.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 6
+    \snippet qftp/src/FtpDownloader.cpp 6
 
     The \c ftpCommandFinished() slot is called when QFtp has
     finished a QFtp::Command. If an error occurred during the
     command, QFtp will set \c error to one of the values in
     the QFtp::Error enum; otherwise, \c error is zero.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 7
+    \snippet qftp/src/FtpDownloader.cpp 7
 
     After login, the QFtp::list() function will list the top-level
     directory on the server. addToList() is connected to
     QFtp::listInfo(), and will be invoked for each entry in that
     directory.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 8
+    \snippet qftp/src/FtpDownloader.cpp 8
 
     When a \l{QFtp::}{Get} command is finished, a file has finished
     downloading (or an error occurred during the download).
 
-    \snippet network/qftp/src/FtpDownloader.cpp 9
+    \snippet qftp/src/FtpDownloader.cpp 9
 
     After a \l{QFtp::}{List} command is performed, we have to check if
     no entries were found (in which case our \c addToList() function
@@ -163,25 +163,25 @@
 
     Let's continue with the \c addToList() slot:
 
-    \snippet network/qftp/src/FtpDownloader.cpp 10
+    \snippet qftp/src/FtpDownloader.cpp 10
 
     When a new file has been resolved during a QFtp::List command,
     this slot is invoked with a QUrlInfo describing the file. We
     create a separate row for the file in \c m_model.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 11
+    \snippet qftp/src/FtpDownloader.cpp 11
 
     The \c processItem() slot is called when an item is touched
     in the list view. If the item represents a directory, we
     want to load the contents of that directory with QFtp::list().
 
-    \snippet network/qftp/src/FtpDownloader.cpp 12
+    \snippet qftp/src/FtpDownloader.cpp 12
 
     \c cdToParent() is invoked when the user requests to go to the
     parent directory of the one displayed in the file list. After
     changing the directory, we QFtp::List its contents.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 13
+    \snippet qftp/src/FtpDownloader.cpp 13
 
     The \c updateDataTransferProgress() slot is called regularly by
     QFtp::dataTransferProgress() when a file download is in progress.
@@ -189,7 +189,7 @@
     user. The progress dialog controller has properties that are bound to the UI elements' properties
     of the progress dialog in the QML file.
 
-    \snippet network/qftp/src/FtpDownloader.cpp 14
+    \snippet qftp/src/FtpDownloader.cpp 14
 
     The \c enableDownloadButton() is called whenever the selection
     in the list view changes. If the item represents a file, the \c

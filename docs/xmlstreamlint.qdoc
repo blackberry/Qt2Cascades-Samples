@@ -27,7 +27,7 @@
 
 /*!
     \page xmlstreamlint
-    \example xml/xmlstreamlint
+    \example xmlstreamlint
     \title XML Stream Lint Example
 
     \section1 Description
@@ -48,17 +48,17 @@
     operates on the input file object; writing is handled by an instance of
     QXmlStreamWriter operating on the output buffer object:
 
-    \snippet xml/xmlstreamlint/src/xmlstreamlint.cpp 0
+    \snippet xmlstreamlint/src/xmlstreamlint.cpp 0
 
     The work of parsing and rewriting the XML is done in a while loop, and is
     driven by input from the reader:
 
-    \snippet xml/xmlstreamlint/src/xmlstreamlint.cpp 1
+    \snippet xmlstreamlint/src/xmlstreamlint.cpp 1
 
     If more input is available, the next token from the input file is read
     and parsed. If an error occurred, information is signaled to the UI.
 
-    \snippet xml/xmlstreamlint/src/xmlstreamlint.cpp 2
+    \snippet xmlstreamlint/src/xmlstreamlint.cpp 2
 
     For valid input, the writer is fed the current token from the reader,
     and this is written to the output buffer that was specified when it was

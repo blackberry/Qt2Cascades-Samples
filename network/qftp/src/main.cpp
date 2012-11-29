@@ -55,7 +55,7 @@ using namespace bb::cascades;
  * It implements a simple browser to view the content of an FTP server and allows
  * the user to download files to the local disk.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

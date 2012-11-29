@@ -52,7 +52,7 @@
 
 using namespace bb::cascades;
 
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     qmlRegisterType<QTimer>("Utils", 1, 0, "Timer");
 
