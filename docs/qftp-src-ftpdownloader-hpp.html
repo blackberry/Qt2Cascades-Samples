@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Cascades : FtpDownloader.hpp Example File (qftp/src/FtpDownloader.hpp)</title>
+  <link rel="stylesheet" type="text/css" href="style/offline.css" />
+</head>
+<body>
+<div class="header" id="qtdocheader">
+  <div class="content"> 
+    <a href="index.html" class="qtref"><span>Qt with Cascades UI Examples Documentation</span></a>
+  </div>
+  <div class="breadcrumb toolblock">
+    <ul>
+      <li class="first"><a href="index.html">Home</a></li>
+      <!--  Breadcrumbs go here -->
+    </ul>
+  </div>
+</div>
+<div class="content mainContent">
+<h1 class="title">FtpDownloader.hpp Example File</h1>
+<span class="small-subtitle">qftp/src/FtpDownloader.hpp</span>
+<!-- $$$qftp/src/FtpDownloader.hpp-description -->
+<div class="descr"> <a name="details"></a>
+<pre class="cpp">    <span class="comment">/****************************************************************************
+     **
+     ** Portions Copyright (C) 2012 Research In Motion Limited.
+     ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+     ** All rights reserved.
+     ** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+     ** Contact: Nokia Corporation (qt-info@nokia.com)
+     **
+     ** This file is part of the examples of the BB10 Platform and is derived
+     ** from a similar file that is part of the Qt Toolkit.
+     **
+     ** You may use this file under the terms of the BSD license as follows:
+     **
+     ** &quot;Redistribution and use in source and binary forms, with or without
+     ** modification, are permitted provided that the following conditions are
+     ** met:
+     **   * Redistributions of source code must retain the above copyright
+     **     notice, this list of conditions and the following disclaimer.
+     **   * Redistributions in binary form must reproduce the above copyright
+     **     notice, this list of conditions and the following disclaimer in
+     **     the documentation and/or other materials provided with the
+     **     distribution.
+     **   * Neither the name of Research In Motion, nor the name of Nokia
+     **     Corporation and its Subsidiary(-ies), nor the names of its
+     **     contributors may be used to endorse or promote products
+     **     derived from this software without specific prior written
+     **     permission.
+     **
+     ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+     **
+     ****************************************************************************/</span>
+
+    <span class="preprocessor">#ifndef FTPDOWNLOADER_HPP</span>
+    <span class="preprocessor">#define FTPDOWNLOADER_HPP</span>
+
+    <span class="preprocessor">#include &quot;FtpItem.hpp&quot;</span>
+    <span class="preprocessor">#include &quot;MessageBoxController.hpp&quot;</span>
+    <span class="preprocessor">#include &quot;ProgressDialogController.hpp&quot;</span>
+
+    <span class="preprocessor">#include &lt;bb/cascades/QListDataModel&gt;</span>
+
+    <span class="preprocessor">#include &lt;QtCore/QObject&gt;</span>
+
+    <span class="keyword">namespace</span> bb
+    {
+    <span class="keyword">namespace</span> cascades
+    {
+    <span class="keyword">class</span> Control;
+    <span class="keyword">class</span> QmlDocument;
+    }
+    }
+
+    <span class="comment">/**
+     * The FtpDownloader contains all the business logic of this application.
+     * It is responsible for connecting to a FTP server, list the content of a directory
+     * on the server, navigate through the file system on the FTP server and download
+     * a file that has been selected by the user.
+     *
+     * The low-level FTP communication is done by QFtp and network session management by
+     * QNetworkConfigurationManager.
+     */</span>
+    <span class="keyword">class</span> FtpDownloader : <span class="keyword">public</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span>
+    {
+        Q_OBJECT
+
+        <span class="comment">// Makes the URL of the FTP server available to the UI</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> url READ url WRITE setUrl NOTIFY urlChanged)
+
+        <span class="comment">// Makes the status message available to the UI</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> statusText READ statusText NOTIFY statusTextChanged)
+
+        <span class="comment">// Makes the connect message available to the UI</span>
+        Q_PROPERTY(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> connectLabel READ connectLabel NOTIFY connectLabelChanged)
+
+        <span class="comment">/**
+         * The following properties tell the UI about the current state of the FtpDownloader.
+         * These information are used to enabled/disable certain controls in the UI.
+         */</span>
+        Q_PROPERTY(<span class="type">bool</span> parentDirectoryAvailable READ parentDirectoryAvailable NOTIFY parentDirectoryAvailableChanged)
+        Q_PROPERTY(<span class="type">bool</span> downloadPossible READ downloadPossible NOTIFY downloadPossibleChanged)
+        Q_PROPERTY(<span class="type">bool</span> connectPossible READ connectPossible NOTIFY connectPossibleChanged)
+        Q_PROPERTY(<span class="type">bool</span> selectionPossible READ selectionPossible NOTIFY selectionPossibleChanged)
+
+    <span class="keyword">public</span>:
+        <span class="keyword">explicit</span> FtpDownloader(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qobject.html">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+        <span class="operator">~</span>FtpDownloader();
+
+        <span class="comment">// Returns the model that contains the entries of a directory listing</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span> <span class="operator">*</span>model();
+
+        <span class="comment">// The accessor methods for the dialog controllers</span>
+        MessageBoxController <span class="operator">*</span>messageBoxController();
+        ProgressDialogController <span class="operator">*</span>progressDialogController();
+
+    <span class="keyword">public</span> Q_SLOTS:
+        <span class="comment">// This method is called from the UI to change to the parent directory when navigating on the FTP server</span>
+        <span class="type">void</span> cdToParent();
+
+        <span class="comment">// This method is called from the UI to start the download of a file from the FTP server</span>
+        <span class="type">void</span> downloadFile();
+
+        <span class="comment">// This method is called from the UI to establish or terminate a connection to an FTP server</span>
+        <span class="type">void</span> connectOrDisconnect();
+
+        <span class="comment">// This method is called whenever the user has selected an item in the directory listing ListView</span>
+        <span class="type">void</span> processItem(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span> <span class="operator">&amp;</span>indexPath);
+
+    Q_SIGNALS:
+        <span class="comment">// The change notification signals of the properties</span>
+        <span class="type">void</span> urlChanged();
+        <span class="type">void</span> statusTextChanged();
+        <span class="type">void</span> parentDirectoryAvailableChanged();
+        <span class="type">void</span> downloadPossibleChanged();
+        <span class="type">void</span> connectPossibleChanged();
+        <span class="type">void</span> connectLabelChanged();
+        <span class="type">void</span> selectionPossibleChanged();
+
+    <span class="keyword">private</span> Q_SLOTS:
+        <span class="comment">// This method is called when the user canceled the download in the progress dialog</span>
+        <span class="type">void</span> cancelDownload();
+
+        <span class="comment">// This method is called whenever a FTP command has been processed</span>
+        <span class="type">void</span> ftpCommandFinished(<span class="type">int</span> commandId<span class="operator">,</span> <span class="type">bool</span> error);
+
+        <span class="comment">// This method is called whenever a FTP directory listing returns new items</span>
+        <span class="type">void</span> addToList(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qurlinfo.html">QUrlInfo</a></span> <span class="operator">&amp;</span>urlInfo);
+
+        <span class="comment">// This method is called whenever the progress of an FTP download has changed</span>
+        <span class="type">void</span> updateDataTransferProgress(<span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span> readBytes<span class="operator">,</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qtglobal.html#qint64-typedef">qint64</a></span> totalBytes);
+
+        <span class="comment">// This method is called to signal that a download is possible</span>
+        <span class="type">void</span> enableDownloadButton();
+
+        <span class="comment">// This method is called to signal that connecting to a FTP server is possible</span>
+        <span class="type">void</span> enableConnectButton();
+
+    <span class="keyword">private</span>:
+        <span class="comment">// The accessor methods of the properties</span>
+        <span class="type">void</span> setUrl(<span class="keyword">const</span> <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> <span class="operator">&amp;</span>url);
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> url() <span class="keyword">const</span>;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> statusText() <span class="keyword">const</span>;
+        <span class="type">bool</span> parentDirectoryAvailable() <span class="keyword">const</span>;
+        <span class="type">bool</span> downloadPossible() <span class="keyword">const</span>;
+        <span class="type">bool</span> connectPossible() <span class="keyword">const</span>;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> connectLabel() <span class="keyword">const</span>;
+        <span class="type">bool</span> selectionPossible() <span class="keyword">const</span>;
+
+        <span class="comment">// Establishe the connection to the FTP server</span>
+        <span class="type">void</span> connectToFtp();
+
+        <span class="comment">// The data model that stores the items of a FTP directory listing</span>
+        bb<span class="operator">::</span>cascades<span class="operator">::</span><span class="type">QListDataModel</span><span class="operator">&lt;</span>FtpItem<span class="operator">&gt;</span> m_model;
+
+        <span class="comment">// The URL of the FTP server</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_url;
+
+        <span class="comment">// The current path we are navigating to on the FTP server</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_currentPath;
+
+        <span class="comment">// The FTP client object</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qftp.html">QFtp</a></span> <span class="operator">*</span>m_ftp;
+
+        <span class="comment">// The file to download the data to</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qfile.html">QFile</a></span> <span class="operator">*</span>m_file;
+
+        <span class="comment">// The name of the file to download data to</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_downloadFileName;
+
+        <span class="comment">// A textual description of the status</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_statusText;
+
+        <span class="comment">// A flag for whether a parent directory is available on the FTP server</span>
+        <span class="type">bool</span> m_parentDirectoryAvailable;
+
+        <span class="comment">// A flag for whether we can currently start a new download</span>
+        <span class="type">bool</span> m_downloadPossible;
+
+        <span class="comment">// A flag for whether we can connect to an FTP server</span>
+        <span class="type">bool</span> m_connectPossible;
+
+        <span class="comment">// A textual description of the connection status</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qstring.html">QString</a></span> m_connectLabel;
+
+        <span class="comment">// A flag for whether we can select a file in the directory listing ListView</span>
+        <span class="type">bool</span> m_selectionPossible;
+
+        <span class="comment">// The index of the currently selected item in the directory listing ListView</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qvariant.html#QVariantList-typedef">QVariantList</a></span> m_currentIndexPath;
+
+        <span class="comment">// The helper objects to handle network connectivity status</span>
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworksession.html">QNetworkSession</a></span> <span class="operator">*</span>m_networkSession;
+        <span class="type"><a href="http://qt.nokia.com/doc/4.7/qnetworkconfigurationmanager.html">QNetworkConfigurationManager</a></span> m_manager;
+
+        <span class="comment">// The dialog controllers</span>
+        MessageBoxController m_messageBoxController;
+        ProgressDialogController m_progressDialogController;
+    };
+
+    <span class="preprocessor">#endif</span></pre>
+</div>
+<!-- @@@qftp/src/FtpDownloader.hpp -->
+  <div class="ft">
+    <span></span>
+  </div>
+</div> 
+<div class="footer">
+  <p>
+     Portions Copyright 2012 Research In Motion Limited.
+     <acronym title="Copyright">&copy;</acronym> 2008-2011 Nokia Corporation and/or its
+     subsidiaries. Nokia, Qt and their respective logos are trademarks of Nokia Corporation 
+     in Finland and/or other countries worldwide.</p>
+  <p>
+     All other trademarks are property of their respective owners. <a title="Privacy Policy"
+     href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a></p>
+  <br />
+  <p>
+    Licensees holding valid Qt Commercial licenses may use this document in accordance with the    Qt Commercial License Agreement provided with the Software or, alternatively, in accordance    with the terms contained in a written agreement between you and Nokia.</p>
+  <p>
+    Alternatively, this document may be used under the terms of the <a href="http://www.gnu.org/licenses/fdl.html">GNU
+    Free Documentation License version 1.3</a>
+    as published by the Free Software Foundation.</p>
+</div>
+</body>
+</html>
