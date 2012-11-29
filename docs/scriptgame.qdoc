@@ -27,7 +27,7 @@
 
 /*!
     \page scriptgame
-    \example script/scriptgame
+    \example scriptgame
     \title Script Game Example
 
     \section1 Description
@@ -61,16 +61,16 @@
 
     The main.qml contains the \c Maze object (implemented in Maze.qml)
 
-    \snippet script/scriptgame/assets/main.qml 0
+    \snippet scriptgame/assets/main.qml 0
 
     and the \c TextField and \c Button to enter and run the script.
 
-    \snippet script/scriptgame/assets/main.qml 1
+    \snippet scriptgame/assets/main.qml 1
 
     Whenever the user clicks the 'Run Script' button, the \c run() slot of the GameController object is invoked
     with the content of the \c TextField as parameter.
 
-    \snippet script/scriptgame/assets/Maze.qml 0
+    \snippet scriptgame/assets/Maze.qml 0
 
     The Maze.qml contains a \c Container with the 'objectName' property set, so that it can be looked up
     from within C++. The player and the walls will be placed inside this container.
@@ -79,7 +79,7 @@
     The \c Player class encapsulates the business logic of a player on the maze board.
     It provides methods to change direction and position of the player.
 
-    \snippet script/scriptgame/src/Player.hpp 0
+    \snippet scriptgame/src/Player.hpp 0
 
     The \c Player class also stores a reference to the UI object (\c ImageView) that represents the player
     on the screen.
@@ -87,23 +87,23 @@
     Inside the constructor we create the \c ImageView, load the player image and add it to the \c Container
     that acts as board.
 
-    \snippet script/scriptgame/src/Player.cpp 0
+    \snippet scriptgame/src/Player.cpp 0
 
     If the \c turnLeft() method is invoked, we rotate the \c ImageView to the left by 90 degree and update the
     direction variable depending on the current direction.
 
-    \snippet script/scriptgame/src/Player.cpp 1
+    \snippet scriptgame/src/Player.cpp 1
 
     If the \c turnLeft() method is invoked, we rotate the \c ImageView to the right by 90 degree and update the
     direction variable depending on the current direction.
 
-    \snippet script/scriptgame/src/Player.cpp 2
+    \snippet scriptgame/src/Player.cpp 2
 
     If the \c go() method is invoked, calculate the new position depending on our current position and the current
     direction. If the \c canMoveTo() method of the \c Board object returns \c true (that means there is no wall)
     for the new position, we update our position and also adapt the position of the \c ImageView on screen.
 
-    \snippet script/scriptgame/src/Player.cpp 3
+    \snippet scriptgame/src/Player.cpp 3
 
     \section1 Board
     The \c Board class contains all the business logic for handling the maze board.
@@ -111,22 +111,22 @@
     the staticBlockDistribution property) and it also generates the tiles (ImageViews) that are displayed
     in the UI.
 
-    \snippet script/scriptgame/src/Board.hpp 0
+    \snippet scriptgame/src/Board.hpp 0
 
     Inside the constructor we fill the board representation (a QVector<QVector<bool>>) with \c false to mark
     the complete board as empty. Later on we'll change the values to \c true at the positions where a wall is located.
 
-    \snippet script/scriptgame/src/Board.cpp 0
+    \snippet scriptgame/src/Board.cpp 0
 
     The \c canMoveTo() method returns whether there is no wall at the requested position and therefor we can move
     the player there.
 
-    \snippet script/scriptgame/src/Board.cpp 1
+    \snippet scriptgame/src/Board.cpp 1
 
     The \c reset() method rebuilds the layout of the maze. Depending on the 'staticBlockDistribution' property it
     places a couple of walls at fixed or random positions.
 
-    \snippet script/scriptgame/src/Board.cpp 2
+    \snippet scriptgame/src/Board.cpp 2
 
     \section1 GameController
     The \c GameController is the central class of this application.
@@ -134,7 +134,7 @@
     and also the QScriptEngine, which is responsible for changing the properties of
     the \c Board and \c Player objects according to the JavaScript input.
 
-    \snippet script/scriptgame/src/GameController.cpp 1
+    \snippet scriptgame/src/GameController.cpp 1
 
     The \c reset() method is the one that sets up the scripting environment. For that it recreates
     a QScriptEngine object, which will do all the JavaScript parsing and execution.
@@ -148,11 +148,11 @@
     This is done by wrapping the \c constructNewPlayer() function inside a QScriptValue and register it to the
     scripting environment under the name 'Player'.
 
-    \snippet script/scriptgame/src/GameController.cpp 0
+    \snippet scriptgame/src/GameController.cpp 0
 
     The \c run() method of the GameController object is invoked whenever the user clicks on the 'Run Script' button.
 
-    \snippet script/scriptgame/src/GameController.cpp 2
+    \snippet scriptgame/src/GameController.cpp 2
 
     Inside this method we call the \l{QScriptEngine::}{evaluate()} method of the QScriptEngine object to execute
     the JavaScript code that we got passed in as parameter.

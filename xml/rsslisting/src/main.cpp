@@ -56,7 +56,7 @@ using namespace ::bb::cascades;
  * The user can define a feed URL in the UI and after clicking 'Fetch' button, the list of
  * articles will be shown.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

@@ -226,7 +226,7 @@ void TextBuffer::appendText(const QString &text)
  * This sample application shows how to solve the producer-consumer problem (http://en.wikipedia.org/wiki/Producer-consumer_problem)
  * with wait conditions under Qt.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 //! [5] //! [6]
 {
     Application app(argc, argv);

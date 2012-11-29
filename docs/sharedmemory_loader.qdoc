@@ -27,7 +27,7 @@
 
 /*!
     \page sharedmemory_loader
-    \example ipc/sharedmemory_loader
+    \example sharedmemory_loader
     \title Shared Memory Loader Example
 
     \section1 Description
@@ -42,9 +42,9 @@
     In this example we'll learn how to communicate between multiple processes by writing/reading data
     to/from a shared memory and how to synchronize the access to the shared memory segment properly.
 
-    The example application is splitted in the two executables, sharedmemory_loader and \l {ipc/sharedmemory}{sharedmemory}.
+    The example application is splitted in the two executables, sharedmemory_loader and \l {sharedmemory}{sharedmemory}.
     With the sharedmemory_loader the user can load a file from the file system into a shared memory segment from
-    where the \l {ipc/sharedmemory}{sharedmemory} application reads the content of the file and displays it in the UI.
+    where the \l {sharedmemory}{sharedmemory} application reads the content of the file and displays it in the UI.
 
     \section1 FileLoader
 
@@ -52,21 +52,21 @@
     been selected by the user, into the shared memory segment. Whenever the user selects a file from the DropDown
     control inside the UI, the loadFile() slot of the FileLoader is invoked:
 
-    \snippet ipc/sharedmemory_loader/assets/main.qml 0
+    \snippet sharedmemory_loader/assets/main.qml 0
 
     Inside this slot we first try to read the complete content of the file whose file name has been passed:
 
-    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 1
+    \snippet sharedmemory_loader/src/FileLoader.cpp 1
 
     If this was successful, we try to attach to the shared memory segment that has been created by the sharedmemory
     application. For this we need the key of the shared memory segment which is hard-coded in this example:
 
-    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 0
+    \snippet sharedmemory_loader/src/FileLoader.cpp 0
 
     After instantiating a QSharedMemory object with the proper key, we try to attach to that segment, which might fail
     if it doesn't exist (e.g. the sharedmemory application has not created it yet), or we don't have the needed access rights.
 
-    \snippet ipc/sharedmemory_loader/src/FileLoader.cpp 2
+    \snippet sharedmemory_loader/src/FileLoader.cpp 2
 
     However if the \l {QSharedMemory::attach()}{attach()} call was successful, we call \l {QSharedMemory::lock()}{lock()} to gain
     exclusive access to this shared memory segment. If another process holds the lock already, our process is blocked until the lock

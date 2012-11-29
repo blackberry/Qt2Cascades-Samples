@@ -27,7 +27,7 @@
 
 /*!
     \page progressdialog
-    \example qtconcurrent/progressdialog
+    \example progressdialog
     \title Progress Dialog Example
 
     \section1 Description
@@ -50,17 +50,17 @@
     The business logic of the application is encapsulated in the class ProgressDialog, which is
     exported to the UI as '_progressDialog'.
 
-    \snippet qtconcurrent/progressdialog/assets/main.qml 0
+    \snippet progressdialog/assets/main.qml 0
 
     The text of the label contains a placeholder, which gets substituted with the number of cores as reported
     by the ProgressDialog object.
 
-    \snippet qtconcurrent/progressdialog/assets/main.qml 1
+    \snippet progressdialog/assets/main.qml 1
 
     When the user clicks the 'Start' or 'Cancel' button, the startComputation() and cancelComputation() slots of the ProgressDialog
     object are invoked. Additionally the state of the buttons changes depending on whether a calculation is running or not.
 
-    \snippet qtconcurrent/progressdialog/assets/main.qml 2
+    \snippet progressdialog/assets/main.qml 2
 
     The progress properties of the progress bar (provided by Cascades' ProgressIndicator class) are bound against the progress properties
     of the ProgressDialog app object, so that they get updated automatically.
@@ -74,18 +74,18 @@
     of a QFuture instance. For this the signals of the future watcher are connected against private slots inside the
     constructor of ProgressDialog.
 
-    \snippet qtconcurrent/progressdialog/src/ProgressDialog.cpp 1
+    \snippet progressdialog/src/ProgressDialog.cpp 1
 
     When the user clicks the 'Start' button in the UI, the startCalculation() slot is invoked
 
-    \snippet qtconcurrent/progressdialog/src/ProgressDialog.cpp 3
+    \snippet progressdialog/src/ProgressDialog.cpp 3
 
     Inside this slot, a vector is filled with some dummy value that act as input values for the calculation.
     Then the actual calculation is started by calling \l{QtConcurrent::map()}{QtConcurrent::map()}.
     This method from the QtConcurrent module takes a container and a function as parameters and executes the function
     once for each entry in the container in a separated thread. The function we use in this example just burns some CPU cycles:
 
-    \snippet qtconcurrent/progressdialog/src/ProgressDialog.cpp 0
+    \snippet progressdialog/src/ProgressDialog.cpp 0
 
     However the call to \l{QtConcurrent::map()}{QtConcurrent::map()} does not block until the calculation has finished but returns
     a QFuture object instead, which acts as a handle to monitor the progress and state of the calculation.
@@ -97,12 +97,12 @@
     which calls \l{QFutureWatcher::cancel()}{cancel()} on the QFutureWatcher object. This will cause the running calculation (and the used threads)
     to terminate.
 
-    \snippet qtconcurrent/progressdialog/src/ProgressDialog.cpp 4
+    \snippet progressdialog/src/ProgressDialog.cpp 4
 
     Internally the QtConcurrent module uses the QThreadPool class for distributing the calculation over multiple threads.
     The thread pool uses as many threads in parallel as returned by \l{QThread::idealThreadCount()}{QThread::idealThreadCount()},
     which by default is the number of cores of the device the application is running on.
     The 'numberOfCores' property uses the same value:
 
-    \snippet qtconcurrent/progressdialog/src/ProgressDialog.cpp 2
+    \snippet progressdialog/src/ProgressDialog.cpp 2
 */

@@ -27,7 +27,7 @@
 
 /*!
     \page semaphores
-    \example threads/semaphores
+    \example semaphores
     \title Semaphores Example
 
     \section1 Description
@@ -57,14 +57,14 @@
 
     An alternative to using QSemaphore to solve the producer-consumer
     problem is to use QWaitCondition and QMutex. This is what the
-    \l{threads/waitconditions}{Wait Conditions} example does.
+    \l{waitconditions}{Wait Conditions} example does.
 
     \section1 Global Variables
 
     Let's start by reviewing the circular buffer and the associated
     semaphores:
 
-    \snippet threads/semaphores/src/main.cpp 0
+    \snippet semaphores/src/main.cpp 0
 
     \c DataSize is the amout of data that the producer will generate.
     To keep the example as simple as possible, we make it a constant.
@@ -92,8 +92,8 @@
 
     Let's review the code for the \c Producer class:
 
-    \snippet threads/semaphores/src/main.cpp 1
-    \snippet threads/semaphores/src/main.cpp 2
+    \snippet semaphores/src/main.cpp 1
+    \snippet semaphores/src/main.cpp 2
 
     The producer generates \c DataSize bytes of data. Before it
     writes a byte to the circular buffer, it must acquire a "free"
@@ -109,8 +109,8 @@
 
     Let's now turn to the \c Consumer class:
 
-    \snippet threads/semaphores/src/main.cpp 3
-    \snippet threads/semaphores/src/main.cpp 4
+    \snippet semaphores/src/main.cpp 3
+    \snippet semaphores/src/main.cpp 4
 
     The code is very similar to the producer, except that this time
     we acquire a "used" byte and release a "free" byte, instead of
@@ -118,8 +118,8 @@
 
     \section1 The main() Function
 
-    \snippet threads/semaphores/src/main.cpp 5
-    \snippet threads/semaphores/src/main.cpp 6
+    \snippet semaphores/src/main.cpp 5
+    \snippet semaphores/src/main.cpp 6
 
     So what happens when we run the program? Initially, the producer
     thread is the only one that can do anything; the consumer is

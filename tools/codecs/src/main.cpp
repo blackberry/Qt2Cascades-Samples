@@ -54,7 +54,7 @@ using namespace bb::cascades;
  * In the UI the user can select a file and a codec and the application will try
  * to decode the file content with the chosen codec and displays the result on screen.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

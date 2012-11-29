@@ -55,7 +55,7 @@ using namespace bb::cascades;
  * allows the user to fill this segment with the content of a file, which the sharedmemory
  * application will show on screen then after a reload.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

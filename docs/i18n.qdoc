@@ -27,7 +27,7 @@
 
 /*!
     \page i18n
-    \example tools/i18n
+    \example i18n
     \title I18N Example
 
     \section1 Description
@@ -48,17 +48,17 @@
     a language, and a couple of text-containing controls at the top which adapt the
     translation of their text according to the selected language.
 
-    \snippet tools/i18n/assets/main.qml 0
+    \snippet i18n/assets/main.qml 0
 
     The ListView uses a data model '_model' that is exported from C++ to the UI and whenever the
     user selects a language, the setCurrentLanguage() slot of the application object is invoked.
 
-    \snippet tools/i18n/assets/main.qml 1
+    \snippet i18n/assets/main.qml 1
 
     The upper part of the UI is encapsulated in the MainView.qml file, which is instantiated inside
     main.qml.
 
-    \snippet tools/i18n/assets/MainView.qml 0
+    \snippet i18n/assets/MainView.qml 0
 
     MainView.qml contains a top-level function that translates all user visible texts from its source
     language (normally english) to their target language by using the \l{qdeclarativei18n.html}{qsTr()} function.
@@ -69,7 +69,7 @@
     The App class contains all the business logic of the application and is also responsible for initializing
     the UI.
 
-    \snippet tools/i18n/src/app.cpp 1
+    \snippet i18n/src/app.cpp 1
 
     Inside the constructor we load the 'main.qml' file to initialize the UI and we export the data model that contains
     the languages and the 'App' object to the UI, so that these two objects are accessible from within the 'main.qml' file.
@@ -78,7 +78,7 @@
 
     The model itself setup inside the setupLanguageModel() method:
 
-    \snippet tools/i18n/src/app.cpp 3
+    \snippet i18n/src/app.cpp 3
 
     We first retrieve the list of all qm files (the translation catalogs, one for each language) that are shipped with this
     sample application and then we insert them into a map with the language name as key and the path to the qm file as value.
@@ -87,7 +87,7 @@
     Now the application is initialized and the user can start to switch the languages.
     Whenever the selection of the ListView changes, the setCurrentLanguage() slot of the application object is invoked:
 
-    \snippet tools/i18n/src/app.cpp 2
+    \snippet i18n/src/app.cpp 2
 
     With the passed index path we can retrieve the language, the user has selected, from the model. Befor we load the translation
     catalog for the new language, we remove any previous loaded catalog and delete its associated QTranslator object.
@@ -105,7 +105,7 @@
 
     It is also possible to translate text that can not be wrapped with qsTr(), for example if the texts are part of a table structure:
 
-    \snippet tools/i18n/src/app.cpp 0
+    \snippet i18n/src/app.cpp 0
 
     In this case the QT_TRANSLATE_NOOP() macro can be used to mark text as a candidate for translation.
     The actual translation is then done by calling \l{QCoreApplication::translate()}{translate()} on the global application object like

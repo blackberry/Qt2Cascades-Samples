@@ -1,0 +1,77 @@
+/****************************************************************************
+**
+** Copyright (C) 2012 Research In Motion Limited.
+** All rights reserved.
+** Contact: Research In Motion Ltd. (http://www.rim.com/company/contact/)
+**
+** This file is part of the examples of the BB10 Platform.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file.
+**
+** Other Usage
+** Alternatively, this file may be used in accordance with the terms
+** and conditions contained in a signed written agreement between you
+** and Research In Motion Limited.
+**
+****************************************************************************/
+
+/*!
+    \page gruedetector
+    \example gruedetector
+    \title Grue Detector Example
+
+    \section1 Description
+
+    The Grue Detector example demonstrates how to use sensors from the QtSensors module to
+    warn you about the chance of being eaten by a Grue.
+
+    \image gruedetector-example.png
+
+    \section1 Overview
+    In this example we'll learn how to use the QLightSensor, QLightFilter and QLightReading
+    classes to retrieve the current LUX value from the light sensor of the device. If we are
+    below a given threshold, we'll start a timer and increase the chance of being eaten every second.
+
+    \section1 The UI
+    The UI of this sample application consists of an \c ImageView that shows the grue and
+    a \c Label that shows a status message.
+
+    The business logic of the application is encapsulated in the GrueDetector class which is made available
+    to the UI under the name '_detector'.
+
+    \snippet gruedetector/assets/main.qml 0
+
+    The UI of the Grue (the eyes and the mouth) are put into a separated file Grue.qml, which we use in main.qml.
+    Depending on the chance of being eaten, we scale up/down the Grue component.
+    If the chance is low, the grue is small, if the chance is high, the grue is large.
+
+    \snippet gruedetector/assets/main.qml 1
+
+    The status label shows the current numeric chance value or a warning message if the chance is too high.
+
+    \section1 GrueDetector
+
+    The \c GrueDetector class encapsulates the business logic of the application. It contains a QLightSensor object, which does
+    the low-level communication with the light sensor of the device, and provides a property 'chance' to make the
+    calculated chance value available to the UI.
+    It inherits from QCompassFilter and reimplements the 'bool filter(QLightReading*)' method to retrieve the sensor
+    data from the QLightSensor object.
+
+    \snippet gruedetector/src/GrueDetector.hpp 0
+
+    Inside the constructor we try to connect the QLightSensor object to the hardware backend. If that's successful, we register
+    the GrueDetector class as filter for the QLightSensor object and start the sensor to gather data.
+
+    \snippet gruedetector/src/GrueDetector.cpp 0
+
+    The 'bool filter(QLightReading*)' method is called whenever the QLightSensor object retrieved new data from the hardware sensor.
+    Inside this method we check whether the current LUX value is smaller than 10. In this case it's dark around us, so we start
+    a timer that increases the chance value every second by 10%.
+    If the LUX value is larger than 10, we reset the chance value back to 0%.
+
+    \snippet gruedetector/src/GrueDetector.cpp 1
+*/

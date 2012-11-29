@@ -27,7 +27,7 @@
 
 /*!
     \page multicastsender
-    \example network/multicastsender
+    \example multicastsender
     \title Multicast Sender Example
 
     \section1 Description
@@ -41,8 +41,8 @@
     In this example we'll learn how to use the QUdpSocket class to send and receive multicast messages
     on the network.
 
-    The example application is splitted in two executables, multicastsender and \l{network/multicastreceiver}{multicastreceiver}.
-    While the multicastsender allows the user to start the multicasting of messages on the local network, the \l{network/multicastreceiver}{multicastreceiver}
+    The example application is splitted in two executables, multicastsender and \l{multicastreceiver}{multicastreceiver}.
+    While the multicastsender allows the user to start the multicasting of messages on the local network, the \l{multicastreceiver}{multicastreceiver}
     will listen on the local network for these messages and display the received ones in the UI.
 
     \section1 Sender
@@ -52,29 +52,29 @@
 
     Whenever the user clicks the 'Start' button in the UI, the startSending() slot of the exported Sender object is invoked:
 
-    \snippet network/multicastsender/assets/main.qml 2
+    \snippet multicastsender/assets/main.qml 2
 
     The 'status' property of the Sender object is bound against a Label control to visualize the current progress and status information
     of the sender.
 
-    \snippet network/multicastsender/assets/main.qml 0
+    \snippet multicastsender/assets/main.qml 0
 
     Additionally the the 'ttl' property of the Sender object is bound against a TextField control and is updated whenever the
     text of the TextField is changed by the user.
 
-    \snippet network/multicastsender/assets/main.qml 1
+    \snippet multicastsender/assets/main.qml 1
 
     Inside the constructor of Sender we initialize the 'status' property, the counter for the number of sent messages
     and a timer object. This timer object is used to trigger the multicasting of the messages in an interval of 1 second.
     Additionally the QUdpSocket object is created, which encapsulates the low-level network access.
-    The address of the multicast group is hard-coded to 239.255.43.21 here and will be used by the \l{network/multicastreceiver}{multicastreceiver} as well.
+    The address of the multicast group is hard-coded to 239.255.43.21 here and will be used by the \l{multicastreceiver}{multicastreceiver} as well.
 
-    \snippet network/multicastsender/src/Sender.cpp 0
+    \snippet multicastsender/src/Sender.cpp 0
 
     The startSending() method, which is called when the user clicks on the 'Start' button, starts the timer, which will invoke
     the sendDatagram() slot whenever it times out.
 
-    \snippet network/multicastsender/src/Sender.cpp 1
+    \snippet multicastsender/src/Sender.cpp 1
 
     Inside sendDatagram() the actual work is done. At first the 'status' property is updated with the progress information and
     its change notification signal is emitted to let the UI update all property bindings where 'status' is involved in.
@@ -82,11 +82,11 @@
     on the QUdpSocket object. Additionally to the datagram content and size we also pass the address of the multicast group and the port number, which is
     hard-coded to 45454 in this example.
 
-    \snippet network/multicastsender/src/Sender.cpp 2
+    \snippet multicastsender/src/Sender.cpp 2
 
     If the user changes the content of the TTL (time-to-live) field in the UI, setTtl() will be called with the content of the TextField
     as parameter. If the entered value is really a number and it differs from the current TTL we update the TTL property of the QUdpSocket object
     and signal that the 'ttl' property has changed.
 
-    \snippet network/multicastsender/src/Sender.cpp 3
+    \snippet multicastsender/src/Sender.cpp 3
 */

@@ -27,7 +27,7 @@
 
 /*!
     \page contiguouscache
-    \example tools/contiguouscache
+    \example contiguouscache
     \title Contiguous Cache Example
 
     \section1 Description
@@ -47,9 +47,9 @@
     a view requests an item at row N it is also likely to ask for items at rows near
     to N.
 
-    \snippet tools/contiguouscache/src/ImageModel.cpp 0
+    \snippet contiguouscache/src/ImageModel.cpp 0
 
-    \snippet tools/contiguouscache/src/ImageModel.cpp 1
+    \snippet contiguouscache/src/ImageModel.cpp 1
 
     After getting the row, the class determines if the row is in the bounds
     of the contiguous cache's current range.  It would have been equally valid to
@@ -80,5 +80,5 @@
     And thats it.  A perfectly reasonable cache, using minimal memory for a very large
     list.
 
-    \snippet tools/contiguouscache/src/ImageModel.cpp 2
+    \snippet contiguouscache/src/ImageModel.cpp 2
 */

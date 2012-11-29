@@ -54,7 +54,7 @@ using namespace bb::cascades;
  * The user can specify an URL and start the download. The progress of the download is
  * visualized with a progress bar.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

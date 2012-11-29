@@ -27,7 +27,7 @@
 
 /*!
     \page rsslisting
-    \example xml/rsslisting
+    \example rsslisting
     \title RSS-Listing Example
 
     \section1 Description
@@ -49,19 +49,19 @@
     All the business logic is encapsulated in the C++ class RSSListing which has been exported to
     the UI under the name '_rssListing'.
 
-    \snippet xml/rsslisting/assets/main.qml 1
+    \snippet rsslisting/assets/main.qml 1
 
     The TextField, where the user can enter the URL of the RSS news feed, binds against the 'url' property of the
     RSSListing object and updates this property whenever the user changes the text.
     The field will be disabled while a download operation is running and the 'active' property of the RSSListing object
     is true.
 
-    \snippet xml/rsslisting/assets/main.qml 2
+    \snippet rsslisting/assets/main.qml 2
 
     The 'Fetch' button will invoke the fetch() slot of the RSSListing object when the user clicks it.
     Like the URL input field, the button will be disabled while a download operation is running.
 
-    \snippet xml/rsslisting/assets/main.qml 0
+    \snippet rsslisting/assets/main.qml 0
 
     The TextArea binds the 'feeds' property of the RSSListing object against its 'text' property to show
     the listing of extracted titles and URLs.
@@ -72,7 +72,7 @@
     It contains a QNetworkAccessManager and a QXmlStreamParser as member variables which will do the low-level
     network communication and parsing.
 
-    \snippet xml/rsslisting/src/rsslisting.cpp 0
+    \snippet rsslisting/src/rsslisting.cpp 0
 
     In the constructor we connect the \l{QNetworkAccessManager::finished()}{finished()} signal of the QNetworkAccessManager
     against the finished() slot of the RSSListing object, so that we can start the parsing of the XML data when the download
@@ -80,7 +80,7 @@
 
     When the user clicks the 'Fetch' button, the fetch() slot will be invoked which calls get() internally:
 
-    \snippet xml/rsslisting/src/rsslisting.cpp 1
+    \snippet rsslisting/src/rsslisting.cpp 1
 
     Inside this method a new download request is passed to the \l{QNetworkAccessManager::get()}{get()} method of the QNetworkAccessManager
     with the URL as parameter that the user entered in the TextField in the UI.
@@ -89,11 +89,11 @@
     We connect the \l{QNetworkReply::readyRead()}{readyRead()} signal of the QNetworkReply against our own slot to be informed whenever
     new data are available from the network
 
-    \snippet xml/rsslisting/src/rsslisting.cpp 2
+    \snippet rsslisting/src/rsslisting.cpp 2
 
     Whenever readyRead() is invoked, we read all available data from the network and pass them to the QXmlStreamReader instance.
 
-    \snippet xml/rsslisting/src/rsslisting.cpp 3
+    \snippet rsslisting/src/rsslisting.cpp 3
 
     After the download operation has finished, the parseXml() method is called. This one parses the downloaded XML data and extracts
     the title and URL information and makes them available to the UI via the 'feeds' property.
