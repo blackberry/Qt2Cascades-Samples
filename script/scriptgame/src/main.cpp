@@ -57,7 +57,7 @@ using namespace bb::cascades;
  * C++, however the single commands (turn left / turn right / go forward) come from
  * a JS script that the user can modify in the UI.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

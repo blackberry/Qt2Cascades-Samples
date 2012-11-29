@@ -55,7 +55,7 @@ using namespace bb::cascades;
  * 10000 images, however the QContiguousCache will ensure that at maximum only 50 images
  * are kept in memory.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

@@ -27,7 +27,7 @@
 
 /*!
     \page trafficlight
-    \example statemachine/trafficlight
+    \example trafficlight
     \title Traffic Light Example
 
     \section1 Description
@@ -62,18 +62,18 @@
     If the user clicks the 'Pause' button, the \c pause() slot of the TrafficLightController object is invoked
     and if the user clicks on the 'Quit' button, the \c quit() slot of the Application object is invoked.
 
-    \snippet statemachine/trafficlight/assets/main.qml 1
+    \snippet trafficlight/assets/main.qml 1
 
     The traffic light is implemented in TrafficLight.qml and instantiated inside main.qml
 
-    \snippet statemachine/trafficlight/assets/main.qml 0
+    \snippet trafficlight/assets/main.qml 0
 
     The TrafficLight object has a custom property 'controller' which points to the TrafficLightController object.
     All three colors of the TrafficLight are implemented as \c ImageViews that show different images depending on
     their state (on/off). The background image contains the colors that represent the 'off' state and the 'on' state
     is represented by overlay images
 
-    \snippet statemachine/trafficlight/assets/TrafficLight.qml 0
+    \snippet trafficlight/assets/TrafficLight.qml 0
 
     To switch a color on or off we simple change the opacity of the overlay image. In this example the opacity properties
     are bound against the appropriated properties of the TrafficLightController object.
@@ -82,23 +82,23 @@
     The \c TrafficLightController is the central class of this application. It contains the QStateMachine instance that drives
     the business logic and provides the properties that represent the state of the single traffic light colors
 
-    \snippet statemachine/trafficlight/src/TrafficLightController.hpp 0
+    \snippet trafficlight/src/TrafficLightController.hpp 0
 
     Inside the constructor of \c TrafficLightController we initialize the properties with their default values, set up the state machine
     and start the timer that is used to trigger the transitions between the traffic light phases.
 
-    \snippet statemachine/trafficlight/src/TrafficLightController.cpp 0
+    \snippet trafficlight/src/TrafficLightController.cpp 0
 
     Inside \c setupStateMachine() we create the QStateMachine object and all the QState objects.
 
-    \snippet statemachine/trafficlight/src/TrafficLightController.cpp 3
+    \snippet trafficlight/src/TrafficLightController.cpp 3
 
     The \l{QState::}{assignProperty()} calls on the QState objects ensure that whenever the state is entered, the given value will be assigned
     to the named property on the passed object. So whenever the 'driveState' is entered, the 'greenOn' property of the TrafficLightController object
     will be set to \c true, in all other states to \c false.
     When the 'greenOn' property is changed, the properties setter method \c setGreenOn() will be invoked.
 
-    \snippet statemachine/trafficlight/src/TrafficLightController.cpp 1
+    \snippet trafficlight/src/TrafficLightController.cpp 1
 
     Inside this method we check whether the state has changed, and only if that's the case we update the internal state and emit the change notification
     signal.
@@ -107,5 +107,5 @@
     the \l{QTimer::}{timeout()} signal of the QTimer object is used. For the transitions between 'runningState' and 'pausedState' the \c pauseRequested()
     signal of the \c TrafficLightController object is used, which is emitted whenever the user clicks on the 'Pause' button
 
-    \snippet statemachine/trafficlight/src/TrafficLightController.cpp 2
+    \snippet trafficlight/src/TrafficLightController.cpp 2
 */

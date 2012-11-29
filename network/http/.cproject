@@ -26,7 +26,8 @@
 							<tool id="com.qnx.qcc.tool.compiler.1654260502" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.includePath.1103017886" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include/QtCore"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/c"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/embedded"/>
@@ -70,7 +71,8 @@
 							<tool id="com.qnx.qcc.tool.compiler.1339174941" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.includePath.652087986" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include/QtCore"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/c"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/embedded"/>
@@ -114,7 +116,8 @@
 							<tool id="com.qnx.qcc.tool.compiler.1024607386" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.includePath.1402052652" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include/QtCore"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/c"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/embedded"/>
@@ -158,7 +161,8 @@
 							<tool id="com.qnx.qcc.tool.compiler.357138108" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.includePath.2008933925" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include/QtCore"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/qt4/QtCore"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/c"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/cpp/embedded"/>

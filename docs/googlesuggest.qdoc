@@ -27,7 +27,7 @@
 
 /*!
     \page googlesuggest
-    \example network/googlesuggest
+    \example googlesuggest
     \title Google Suggest Example
 
     \section1 Description
@@ -51,13 +51,13 @@
     This class implements slots for various signals and a number of functions to display
     the search results and to determent when and how to perform the search.
 
-    \snippet network/googlesuggest/src/googlesuggest.hpp 1
+    \snippet googlesuggest/src/googlesuggest.hpp 1
 
     The class connects to a TextField and uses a ListView to display the
     results. Both are defined in the QML. A QTimer controls the start of the
     network requests that are executed using a QNetworkAccessManager.
 
-    \snippet network/googlesuggest/assets/main.qml 1
+    \snippet googlesuggest/assets/main.qml 1
 
     \section1 GoogleSuggest Class Implementation
 
@@ -65,7 +65,7 @@
     queries. This is the basis for the query. The letters typed into the search
     box will be added to the query to perform the search itself.
 
-    \snippet network/googlesuggest/src/googlesuggest.cpp 1
+    \snippet googlesuggest/src/googlesuggest.cpp 1
 
     A single-shot QTimer is used to start the request when the user has stopped
     typing for 500 ms.
@@ -73,20 +73,20 @@
     Finally, we connect the networkManagers \c finished() signal with the \c
     handleNetworkData() slot to handle the incoming data.
 
-    \snippet network/googlesuggest/src/googlesuggest.cpp 2
+    \snippet googlesuggest/src/googlesuggest.cpp 2
 
     The \c showCompletion() function updates the data model connected to our
     ListView. It takes two QStringLists, one with the suggested
     search terms and the other with the corresponding number of hits.
 
-    \snippet network/googlesuggest/src/googlesuggest.cpp 3
+    \snippet googlesuggest/src/googlesuggest.cpp 3
 
     The \c autoSuggest() slot is called when the timer times out, and uses the
     text in the TextField to build the complete search query. The query is then
     passed to the QNetworkAccessManager's \c get() function to start the
     request.
 
-    \snippet network/googlesuggest/src/googlesuggest.cpp 4
+    \snippet googlesuggest/src/googlesuggest.cpp 4
 
     To extract the data from the reply we use the \c readAll() function, which
     is inherited from QIODevice and returns a QByteArray. Since this data is
@@ -97,5 +97,5 @@
     Finally, we schedule the QNetworkReply object for deletion using the \c
     deleteLater function.
 
-    \snippet network/googlesuggest/src/googlesuggest.cpp 5
+    \snippet googlesuggest/src/googlesuggest.cpp 5
 */

@@ -27,7 +27,7 @@
 
 /*!
     \page undoframework
-    \example tools/undoframework
+    \example undoframework
     \title Undo Framework Example
 
     \section1 Description
@@ -63,23 +63,23 @@
 
     Inside the main.qml the game board is instantiated (the implementation is located in Board.qml)
 
-    \snippet tools/undoframework/assets/main.qml 0
+    \snippet undoframework/assets/main.qml 0
 
     and the two buttons
 
-    \snippet tools/undoframework/assets/main.qml 1
+    \snippet undoframework/assets/main.qml 1
 
     Whenever the user clicks the 'Undo' or 'Redo' button, the undo() and redo() slots of the UndoManager object are invoked.
     The state of the buttons depends on the 'canUndo' and 'canRedo' properties of the UndoManager, which reflect whether there
     are undo commands located on the internal QUndoStack.
     The text of the buttons is adapted to the title of the undo command that is currently located on the internal QUndoStack.
 
-    \snippet tools/undoframework/assets/Board.qml 0
+    \snippet undoframework/assets/Board.qml 0
 
     The Board.qml contains a Container with four Stone elements (implemented inside Stone.qml) inside an AbsoluteLayout.
     The Stone object provides a signal moved() which is emitted whenever the user moves the Stone object on the screen.
 
-    \snippet tools/undoframework/assets/Stone.qml 0
+    \snippet undoframework/assets/Stone.qml 0
 
     We implement a signal handler here that invokes the createMoveCommand() slot of the UndoManager object and passes the
     five parameters
@@ -97,42 +97,42 @@
     the virtual methods \l{QUndoCommand::undo()}{undo()} and \l{QUndoCommand::redo()}{redo()}.
     Additionally it stores the Stone object that should be moved, the title of this action and the source and target position.
 
-    \snippet tools/undoframework/src/MoveCommand.hpp 0
+    \snippet undoframework/src/MoveCommand.hpp 0
 
     Inside the constructor of MoveCommand we retrieve the title property of the associated Stone object and set it
     as the description text for this command.
 
-    \snippet tools/undoframework/src/MoveCommand.cpp 0
+    \snippet undoframework/src/MoveCommand.cpp 0
 
     The implementation of the \l{QUndoCommand::undo()}{undo()} method just changes the x and y coordinates of the Stone object
     back to the source position.
 
-    \snippet tools/undoframework/src/MoveCommand.cpp 2
+    \snippet undoframework/src/MoveCommand.cpp 2
 
     The implementation of the \l{QUndoCommand::redo()}{redo()} method changes the x and y coordinates of the Stone object
     back to the target position.
 
-    \snippet tools/undoframework/src/MoveCommand.cpp 1
+    \snippet undoframework/src/MoveCommand.cpp 1
 
     \section1 UndoManager
     The UndoManager is a thin wrapper around the QUndoStack class. It provides a convenience method to push a new MoveCommand
     on the stack and it makes all the state information of the stack available to the UI via properties.
 
-    \snippet tools/undoframework/src/UndoManager.cpp 0
+    \snippet undoframework/src/UndoManager.cpp 0
 
     Inside the constructor of UndoManager, the internal QUndoStack object is allocated and the state change notification signals
     of the stack are forwarded to the change notification signals of the UndoManager's properties.
 
-    \snippet tools/undoframework/src/UndoManager.cpp 1
+    \snippet undoframework/src/UndoManager.cpp 1
 
     The accessor methods of UndoManager's properties just forward the calls to the appropriated methods of QUndoStack
 
-    \snippet tools/undoframework/src/UndoManager.cpp 2
+    \snippet undoframework/src/UndoManager.cpp 2
 
     The undo() and redo() slots of the UndoManager object also just call the \l{QUndoStack::undo()}{undo()} and \l{QUndoStack::redo()}{redo()}
     methods of the QUndoStack.
 
-    \snippet tools/undoframework/src/UndoManager.cpp 3
+    \snippet undoframework/src/UndoManager.cpp 3
 
     The createMoveCommand() method of the UndoManager creates a new MoveCommand object, passes in the parameters it received from the call
     in the QML file, and pushes the object onto the QUndoStack.

@@ -27,7 +27,7 @@
 
 /*!
     \page sqlwidgetmapper
-    \example sql/sqlwidgetmapper
+    \example sqlwidgetmapper
     \title SQL Widget Mapper Example
 
     \section1 Description
@@ -55,17 +55,17 @@
 
     The text fields in the QML file have all the 'objectName' property set, so that they can be referenced from within C++.
 
-    \snippet sql/sqlwidgetmapper/assets/main.qml 0
+    \snippet sqlwidgetmapper/assets/main.qml 0
 
     Whenever the user clicks the 'Previous' button, the toPrevious() slot of the DataControlMapper object is invoked.
     The button is only enabled if the current row is not the first one.
 
-    \snippet sql/sqlwidgetmapper/assets/main.qml 2
+    \snippet sqlwidgetmapper/assets/main.qml 2
 
     Whenever the user clicks the 'Next' button, the toNext() slot of the DataControlMapper object is invoked.
     The button is only enabled if the current row is not the last one.
 
-    \snippet sql/sqlwidgetmapper/assets/main.qml 1
+    \snippet sqlwidgetmapper/assets/main.qml 1
 
     The text of the status label is assembled from the 'currentIndex' and 'count' properties of the DataControlMapper.
 
@@ -81,7 +81,7 @@
 
     For this purpose the ControlDataMapper contains a list of mapping objects that have the following structure:
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 0
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 0
 
     The 'control' is a pointer to the Cascades control that is associated with this mapping, the 'section' is the field name in the
     current row that should be mapped, and the 'propertyName' is the name of the property in 'control' that should be set.
@@ -92,21 +92,21 @@
     In the next step the mappings between the Cascades controls and the section names (in this case the column names of the SQL table) can
     be configured.
 
-    \snippet sql/sqlwidgetmapper/src/main.cpp 0
+    \snippet sqlwidgetmapper/src/main.cpp 0
 
     The addMapping() call will determine the type of the Cascades control and call an overloaded addMapping() method with the default
     property names for the specific control type.
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 3
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 3
 
     The overloaded addMapping() method will check whether a mapping for the given control exists already and updates the mapping information,
     otherwise it adds a new mapping to the internal list.
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 4
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 4
 
     Whenever the mapping has changed or the current index (cursor) has been changed, the update() method is called.
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 2
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 2
 
     This method retrieves the data of the current index from the data model. The returned value is expected to be a QVariantMap where
     the keys are the same names as used for the 'section' property in the mappings. For the SQL model that will be the column names of
@@ -114,11 +114,11 @@
     Now the update() method iterates over all available mappings, extracts the value for the mapped section from the data model and sets
     the value of the specified property on the Cascades control.
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 7
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 7
 
     The navigation methods (e.g. toFirst()) just call the setCurrentIndex() method with the appropriated new index.
 
-    \snippet sql/sqlwidgetmapper/src/datacontrolmapper.cpp 6
+    \snippet sqlwidgetmapper/src/datacontrolmapper.cpp 6
 
     Inside setCurrentIndex() we only do some sanity checks to avoid an out-of-range access, update the member variable that
     contains the current index with the new value and call update() again to update the content of the mapped Cascades controls.

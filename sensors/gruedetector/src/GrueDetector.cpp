@@ -69,7 +69,7 @@ GrueDetector::GrueDetector(QObject *parent)
 //! [1]
 bool GrueDetector::filter(QLightReading *reading)
 {
-    if (reading->lux() < 100) { // Dark enough for meeting a Grue
+    if (reading->lux() < 10) { // Dark enough for meeting a Grue
         if (!m_darkTimer->isActive())
             m_darkTimer->start(1000);
     } else { // everything is fine...

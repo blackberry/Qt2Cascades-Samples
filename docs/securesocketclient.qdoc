@@ -27,7 +27,7 @@
 
 /*!
     \page securesocketclient
-    \example network/securesocketclient
+    \example securesocketclient
     \title Secure Socket Client Example
 
     \section1 Description
@@ -65,7 +65,7 @@
     The business logic of the application is encapsulated in the class SslClient, which is
     exported to the UI as '_sslClient'.
 
-    \snippet network/securesocketclient/assets/main.qml 0
+    \snippet securesocketclient/assets/main.qml 0
 
     The main.qml contains a container with a \c DockLayout where the main view, error dialog and certificate info dialog are stacked on
     top of each other. The two dialogs are hidden by default and will only be visible if the bound 'visible' property of their controllers
@@ -73,11 +73,11 @@
 
     Whenever the user types in a host name, the 'hostName' property of the \c SslClient object is updated.
 
-    \snippet network/securesocketclient/assets/MainView.qml 0
+    \snippet securesocketclient/assets/MainView.qml 0
 
     If the user clicks the 'Connect to host' button, the \c secureConnect() slot of the \c SslClient object is invoked.
 
-    \snippet network/securesocketclient/assets/MainView.qml 1
+    \snippet securesocketclient/assets/MainView.qml 1
 
     \section1 SslClient
     The SslClient encapsulates the business logic of this application.
@@ -87,11 +87,11 @@
     In the constructor we create a \c SslErrorControl object, which controls the state of the error dialog, and connect its signals against
     the private slots of \c SslClient to be informed about user input from the error dialog.
 
-    \snippet network/securesocketclient/src/SslClient.cpp 0
+    \snippet securesocketclient/src/SslClient.cpp 0
 
     Whenever the user clicks the 'Connect to host' button, the \c secureConnect() slot of the \c SslClient object is invoked.
 
-    \snippet network/securesocketclient/src/SslClient.cpp 1
+    \snippet securesocketclient/src/SslClient.cpp 1
 
     Inside this method we create a QSslSocket object (if it doesn't exists yet) and connect against its signals to be informed
     about state changes (e.g. connection established or peer closed connection), when the SSL-handshake has finished and when new
@@ -99,12 +99,12 @@
 
     The call to \l{QSslSocket::}{connectToHostEncrypted()} on the QSslSocket object starts the actual SSL-handshake.
 
-    \snippet network/securesocketclient/src/SslClient.cpp 2
+    \snippet securesocketclient/src/SslClient.cpp 2
 
     The \c socketStateChanged() slot is invoked whenever the QSslSocket notifies a state change. Inside this slot we update the
     connection state properties (done inside \c updateEnabledState()) and if the peer disconnected, we clean up the QSslSocket object.
 
-    \snippet network/securesocketclient/src/SslClient.cpp 3
+    \snippet securesocketclient/src/SslClient.cpp 3
 
     The \c socketEncrypted() slot is invoked after the SSL-handshake has succeeded. Inside this slot we retrieve the information about
     what \l{QSslCipher}{cipher} is used for the secured connection and we make the \l{QSslCertificate}{certificate} information available
@@ -115,7 +115,7 @@
     It manages the 'visible' property of the dialog and provides a Cascades \c DataModel with the certificate information that can be plugged into
     a \c ListView in the UI.
 
-    \snippet network/securesocketclient/src/CertificateInfoControl.cpp 0
+    \snippet securesocketclient/src/CertificateInfoControl.cpp 0
 
     The \c setCertificateChain() method is invoked after the SSL-handshake succeeded. The passed list of QSslCertificate objects represents the
     certificate chain that is used to secure this connection.

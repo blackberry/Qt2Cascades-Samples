@@ -57,7 +57,7 @@ using namespace bb::cascades;
  * connection. If the connection has been established successfully, the user can send commands
  * and receive responses.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

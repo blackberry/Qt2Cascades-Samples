@@ -55,7 +55,7 @@ using namespace ::bb::cascades;
  * Additionally the user can define a TTL (time-to-live) that is used for all
  * datagrams.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

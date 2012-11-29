@@ -27,7 +27,7 @@
 
 /*!
     \page streambookmarks
-    \example xml/streambookmarks
+    \example streambookmarks
     \title QXmlStream Bookmarks Example
 
     \section1 Description
@@ -60,30 +60,30 @@
     It provides a custom property 'tagName' and a property 'title' that is aliased to the 'text' property
     of the \c titleField label. So whenever the 'title' property is changed, the 'text' property will be updated.
 
-    \snippet xml/streambookmarks/assets/FolderItem.qml 0
+    \snippet streambookmarks/assets/FolderItem.qml 0
 
     The bookmarks are visualized by a \c Container with a star icon, a title label and a \c TextField that
     contains the bookmark URL (BookmarkItem.qml). The \c TextField is invisible by default and will be faded in
     when the user clicks on the title label.
 
-    \snippet xml/streambookmarks/assets/BookmarkItem.qml 0
+    \snippet streambookmarks/assets/BookmarkItem.qml 0
 
     A separator is an image of a horizontal line (SeparatorItem.qml).
 
-    \snippet xml/streambookmarks/assets/SeparatorItem.qml 0
+    \snippet streambookmarks/assets/SeparatorItem.qml 0
 
     The business logic of the application is encapsulated in the class App, which is
     exported to the UI as '_app'.
 
-    \snippet xml/streambookmarks/assets/main.qml 0
+    \snippet streambookmarks/assets/main.qml 0
 
     Whenever the user clicks one of the load buttons, the \c load() method of the App object is invoked.
 
-    \snippet xml/streambookmarks/assets/main.qml 1
+    \snippet streambookmarks/assets/main.qml 1
 
     If the user clicks the 'Save' button, the \c save() method of the App object is invoked.
 
-    \snippet xml/streambookmarks/assets/main.qml 2
+    \snippet streambookmarks/assets/main.qml 2
 
     The container has the 'objectName' property set, so that it can be looked up from within C++.
 
@@ -93,19 +93,19 @@
     the root node of the QML document. With the \l{QObject::}{findChild()} method we look up the \c Container
     object where we have assigned 'treeContainer' to the 'objectName' property.
 
-    \snippet xml/streambookmarks/src/app.cpp 0
+    \snippet streambookmarks/src/app.cpp 0
 
     Whenever the user clicks one of the load buttons, the \c load() method of the App object is invoked with
     the file name passed as parameter.
 
-    \snippet xml/streambookmarks/src/app.cpp 1
+    \snippet streambookmarks/src/app.cpp 1
 
     Inside \c load() we first remove all previously created controls from the \c treeContainer and then
     use the \c XbelReader class to parse the XML document and generate new controls inside the \c treeContainer.
 
     If the user clicks the 'Save' button, the \c save() method of the App object is invoked.
 
-    \snippet xml/streambookmarks/src/app.cpp 2
+    \snippet streambookmarks/src/app.cpp 2
 
     Inside \c save() we try to open the file 'streambookmarks.xbel' inside the applications temp directory and
     then we use the \c XbelWriter class to iterate over the \c treeContainer, generate the XML document and
@@ -118,7 +118,7 @@
     has a reference to the Container instance where the bookmark hierarchy
     is stored.
 
-    \snippet xml/streambookmarks/src/xbelwriter.hpp 0
+    \snippet streambookmarks/src/xbelwriter.hpp 0
 
     \section1 XbelWriter Class Implementation
 
@@ -128,20 +128,20 @@
     sections between elements, increasing readability as the data is split into
     several lines.
 
-    \snippet xml/streambookmarks/src/xbelwriter.cpp 0
+    \snippet streambookmarks/src/xbelwriter.cpp 0
 
     The \c writeFile() function accepts a QIODevice object and sets it using
     \c setDevice(). This function then writes the document type
     definition(DTD), the start element, the version, and \c{treeContainer}'s
     top-level items.
 
-    \snippet xml/streambookmarks/src/xbelwriter.cpp 1
+    \snippet streambookmarks/src/xbelwriter.cpp 1
 
     The \c writeItem() function accepts a Control object and writes it
     to the stream, depending on its \c tagName, which can either be a "folder",
     "bookmark", or "separator".
 
-    \snippet xml/streambookmarks/src/xbelwriter.cpp 2
+    \snippet streambookmarks/src/xbelwriter.cpp 2
 
     \section1 XbelReader Class Definition
 
@@ -150,14 +150,14 @@
     reference to the Container that is used to group the bookmarks according
     to their hierarchy.
 
-    \snippet xml/streambookmarks/src/xbelreader.hpp 0
+    \snippet streambookmarks/src/xbelreader.hpp 0
 
     \section1 XbelReader Class Implementation
 
     The \c XbelReader constructor accepts a Container to initialize the
     \c treeContainer within its definition.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 0
+    \snippet streambookmarks/src/xbelreader.cpp 0
 
     The \c read() function accepts a QIODevice and sets it using
     \l{QXmlStreamReader::}{setDevice()}. The actual process of reading only
@@ -168,13 +168,13 @@
     it makes extensive use of the \l{QXmlStreamReader::}{readNextStartElement()}
     convenience function.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 1
+    \snippet streambookmarks/src/xbelreader.cpp 1
 
     The \c errorString() function is used if an error occurred, in order to
     obtain a description of the error complete with line and column number
     information.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 2
+    \snippet streambookmarks/src/xbelreader.cpp 2
 
     The \c readXBEL() function reads the name of a startElement and calls
     the appropriate function to read it, depending on whether if its a
@@ -182,16 +182,16 @@
     \l{QXmlStreamReader::}{skipCurrentElement()}. The Q_ASSERT() macro is used
     to provide a pre-condition for the function.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 3
+    \snippet streambookmarks/src/xbelreader.cpp 3
 
     The \c readTitle() function reads the bookmark's title.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 4
+    \snippet streambookmarks/src/xbelreader.cpp 4
 
     The \c readSeparator() function creates a separator. The element
     is then skipped using \l{QXmlStreamReader::}{skipCurrentElement()}.
 
-    \snippet xml/streambookmarks/src/xbelreader.cpp 5
+    \snippet streambookmarks/src/xbelreader.cpp 5
 
     See the \l{http://pyxml.sourceforge.net/topics/xbel/}
     {XML Bookmark Exchange Language Resource Page} for more information

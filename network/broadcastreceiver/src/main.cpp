@@ -53,7 +53,7 @@ using namespace ::bb::cascades;
  * It listens on a predefined port for datagrams sent by a process of the
  * broadcastsender example and shows the content of the received datagrams in the UI.
  */
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 

@@ -27,7 +27,7 @@
 
 /*!
     \page codecs
-    \example tools/codecs
+    \example codecs
     \title Codecs Example
 
     \section1 Description
@@ -48,19 +48,19 @@
     All the business logic is encapsulated in the C++ class CodecController which has been exported to
     the UI under the name '_codecController'.
 
-    \snippet tools/codecs/assets/main.qml 1
+    \snippet codecs/assets/main.qml 1
 
     Whenever the user selects a file or a codec from the DropDown controls, the updateFileContent() slot of
     the CodecController is invoked to update the content of the TextArea.
 
-    \snippet tools/codecs/assets/main.qml 0
+    \snippet codecs/assets/main.qml 0
 
     Since the CodecController is also responsible for filling the DropDown controls with the list of available
     files and codecs, we have to set the 'fileList' and 'codecList' properties of the CodecController.
     This is done inside the signal handler for the creationCompleted() signal, which is emitted after the top-level
     control in main.qml has been created and initialized.
 
-    \snippet tools/codecs/assets/main.qml 2
+    \snippet codecs/assets/main.qml 2
 
     The CodecController also provides the property 'fileContent' which contains the content of the currently
     selected file decoded with the currently selected codec or an empty string if no file has been selected.
@@ -71,13 +71,13 @@
     the fillFileList() method is called which fills the provided DropDown with the entries for all available files.
     As the text of the entries we use the base name of the files and as value the relative path.
 
-    \snippet tools/codecs/src/CodecController.cpp 1
+    \snippet codecs/src/CodecController.cpp 1
 
     This list is hard-coded to the list of files that are located in the assets/encodedfiles/ directory in the project folder.
 
     When the codec selection DropDown is assigned to the 'codecList' property, the fillCodecList() method is called.
 
-    \snippet tools/codecs/src/CodecController.cpp 2
+    \snippet codecs/src/CodecController.cpp 2
 
     Here we iterate over the list of available codecs that are provided by Qt on this system and add one entry to the
     DropDown for each codec.
@@ -86,7 +86,7 @@
 
     When the user selects a file or codec from the DropDown controls, the updateFileContent() slot will be invoked:
 
-    \snippet tools/codecs/src/CodecController.cpp 0
+    \snippet codecs/src/CodecController.cpp 0
 
     In this method we first check which file and codec the user has selected in the DropDown controls and extract the file path
     and the QTextCodec object from the Option objects.

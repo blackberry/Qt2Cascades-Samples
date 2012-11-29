@@ -87,7 +87,7 @@ Page {
                 text: _detector.chance > 90 ? qsTr ("Time to run!")
                                             : qsTr ("Chance to be eaten at %1%").arg(_detector.chance)
                 textStyle {
-                    base: SystemDefaults.TextStyles.BigText
+                    base: SystemDefaults.TextStyles.TitleText
                     color: Color.White
                 }
             }
