@@ -64,7 +64,7 @@ Page {
             rightPadding: 30
             bottomPadding: 30
 
-//! [0]
+            //! [0]
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
 
@@ -74,7 +74,7 @@ Page {
                     base: SystemDefaults.TextStyles.TitleText
                 }
             }
-//! [0]
+            //! [0]
 
             Container {
                 horizontalAlignment: HorizontalAlignment.Center
@@ -84,7 +84,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [1]
+                //! [1]
                 Button {
                     text: qsTr ("Start")
                     enabled: !_progressDialog.active
@@ -96,10 +96,10 @@ Page {
                     enabled: _progressDialog.active
                     onClicked: _progressDialog.cancelComputation()
                 }
-//! [1]
+                //! [1]
             }
 
-//! [2]
+            //! [2]
             ProgressIndicator {
                 horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
@@ -111,7 +111,7 @@ Page {
                 toValue: _progressDialog.progressMaximum
                 value: _progressDialog.progressValue
             }
-//! [2]
+            //! [2]
         }
     }
 }

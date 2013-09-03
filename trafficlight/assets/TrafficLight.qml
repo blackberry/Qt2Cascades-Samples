@@ -56,7 +56,7 @@ Container {
         imageSource: "asset:///images/traffic_light_frame.png"
     }
 
-//! [0]
+    //! [0]
     // The red light.
     ImageView {
         id: redLight
@@ -89,5 +89,5 @@ Container {
         imageSource: "asset:///images/green_light.png"
         opacity: root.controller.greenOn ? 1.0 : 0.0
     }
-//! [0]
+    //! [0]
 }

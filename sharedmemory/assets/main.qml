@@ -74,11 +74,11 @@ Page {
 
                 text: qsTr ("Load file")
 
-//! [0]
+                //! [0]
                 onClicked: {
                     _fileLoaderProxy.loadFile()
                 }
-//! [0]
+                //! [0]
             }
 
             // Shows the file content
@@ -89,9 +89,9 @@ Page {
                     spaceQuota: 1
                 }
 
-//! [1]
+                //! [1]
                 text: _fileLoaderProxy.fileContent
-//! [1]
+                //! [1]
                 hintText: ""
             }
         }

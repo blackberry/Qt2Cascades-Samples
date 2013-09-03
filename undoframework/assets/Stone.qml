@@ -55,10 +55,10 @@ ImageView {
     property int offsetX
     property int offsetY
 
-//! [0]
+    //! [0]
     // This signal is emitted after each move operation
     signal moved(int sourceX, int sourceY, int targetX, int targetY)
-//! [0]
+    //! [0]
 
     imageSource: "asset:///images/" + color + "_stone.png"
 

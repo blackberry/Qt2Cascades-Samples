@@ -62,7 +62,7 @@ Page {
 
             preferredWidth: 900
 
-//! [0]
+            //! [0]
             // A standard Label
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
@@ -76,7 +76,7 @@ Page {
                     textAlign: TextAlign.Center
                 }
             }
-//! [0]
+            //! [0]
 
             // A standard Button
             Button {

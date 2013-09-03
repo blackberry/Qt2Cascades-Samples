@@ -46,7 +46,7 @@ import bb.cascades 1.0
 // This Page shows the grouping of different visual nodes and the
 // transitions between visible/non-visible nodes.
 Page {
-//![0]
+    //![0]
     // A container is used to gather visual items together.
     Container {
         layout: DockLayout {}
@@ -87,5 +87,5 @@ Page {
             visible: false
         }
     }
-//![0]
+    //![0]
 }

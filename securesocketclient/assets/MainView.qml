@@ -68,7 +68,7 @@ Container {
             orientation: LayoutOrientation.LeftToRight
         }
 
-//! [0]
+        //! [0]
         // A standard TextField
         TextField {
             verticalAlignment: VerticalAlignment.Center
@@ -87,7 +87,7 @@ Container {
             // Save url on input
             onTextChanging: _sslClient.hostName = text
         }
-//! [0]
+        //! [0]
 
         // A standard ImageView
         ImageView {
@@ -118,7 +118,7 @@ Container {
         onTextChanging: _sslClient.port = text
     }
 
-//! [1]
+    //! [1]
     // A standard Button
     Button {
         horizontalAlignment: HorizontalAlignment.Fill
@@ -131,7 +131,7 @@ Container {
         // Connect to url on click
         onClicked: _sslClient.secureConnect ()
     }
-//! [1]
+    //! [1]
 
     // Groups the nodes for displaying connection details and connection communication controls.
     Container {

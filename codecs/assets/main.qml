@@ -46,13 +46,13 @@ Page {
     Container {
         layout: DockLayout {}
 
-//! [0]
+        //! [0]
         onCreationCompleted: {
             // Tell the CodecController which DropDowns will handle the file and codec list
             _codecController.fileList = fileList
             _codecController.codecList = codecList
         }
-//! [0]
+        //! [0]
 
         // The background image
         ImageView {
@@ -84,7 +84,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [1]
+                //! [1]
                 DropDown {
                     id: fileList
                     title: qsTr ("File")
@@ -104,10 +104,10 @@ Page {
                         _codecController.updateFileContent()
                     }
                 }
-//! [1]
+                //! [1]
             }
 
-//! [2]
+            //! [2]
             // Shows the decoded file content
             TextArea {
                 horizontalAlignment: HorizontalAlignment.Fill
@@ -119,7 +119,7 @@ Page {
                 text: _codecController.fileContent
                 hintText: ""
             }
-//! [2]
+            //! [2]
         }
     }
 }

@@ -192,7 +192,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [0]
+                //! [0]
                 // A standard Button
                 Button {
                     verticalAlignment: VerticalAlignment.Center
@@ -209,9 +209,9 @@ Page {
                     // Enable Button if there is previous data
                     enabled: _dataMapper.currentIndex != 0
                 }
-//! [0]
+                //! [0]
 
-//! [1]
+                //! [1]
                 // A standard Label
                 Label {
                     verticalAlignment: VerticalAlignment.Center
@@ -229,9 +229,9 @@ Page {
                         textAlign: TextAlign.Center
                     }
                 }
-//! [1]
+                //! [1]
 
-//! [2]
+                //! [2]
                 // A standard Button
                 Button {
                     verticalAlignment: VerticalAlignment.Center
@@ -248,7 +248,7 @@ Page {
                     // Enable Button only if there is more data
                     enabled: (_dataMapper.currentIndex < (_dataMapper.count - 1))
                 }
-//! [2]
+                //! [2]
             }
         }
     }

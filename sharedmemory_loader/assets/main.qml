@@ -97,11 +97,11 @@ Page {
                     value: "youtube_com.html"
                 }
 
-//! [0]
+                //! [0]
                 onSelectedIndexChanged: {
                     _fileLoader.loadFile(fileSelection.at(selectedIndex).value)
                 }
-//! [0]
+                //! [0]
             }
 
             // Shows the status

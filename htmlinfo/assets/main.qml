@@ -224,6 +224,8 @@ Page {
                                 base: SystemDefaults.TextStyles.SmallText
                                 color: Color.Gray
                             }
+
+                            content.flags: TextContentFlag.ActiveTextOff
                         }
                     }
                 }
