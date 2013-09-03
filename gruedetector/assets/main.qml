@@ -69,7 +69,7 @@ Page {
                 }
             }
 
-//! [0]
+            //! [0]
             Grue {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
@@ -78,9 +78,9 @@ Page {
 
                 chance: _detector.chance
             }
-//! [0]
+            //! [0]
 
-//! [1]
+            //! [1]
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Bottom
@@ -91,7 +91,7 @@ Page {
                     color: Color.White
                 }
             }
-//! [1]
+            //! [1]
         }
     }
 }

@@ -66,7 +66,7 @@ NavigationPane {
                 }
             }
 
-//! [0]
+            //! [0]
             ListView {
                 horizontalAlignment: HorizontalAlignment.Fill
                 layoutProperties: StackLayoutProperties {
@@ -94,7 +94,7 @@ NavigationPane {
                     }
                 ]
             }
-//! [0]
+            //! [0]
         }
     }
 }

@@ -73,7 +73,7 @@ Page {
                 }
             }
 
-//! [0]
+            //! [0]
             // The board
             Board {
                 horizontalAlignment: HorizontalAlignment.Center
@@ -82,7 +82,7 @@ Page {
                     spaceQuota: 1
                 }
             }
-//! [0]
+            //! [0]
 
             // The buttons container
             Container {
@@ -92,7 +92,7 @@ Page {
                     spaceQuota: 1
                 }
 
-//! [1]
+                //! [1]
                 Button {
                     preferredWidth: 500
                     text: _undoManager.undoText == "" ? qsTr ("Undo") : qsTr ("Undo '%1'").arg(_undoManager.undoText)
@@ -106,7 +106,7 @@ Page {
                     enabled: _undoManager.canRedo
                     onClicked: _undoManager.redo()
                 }
-//! [1]
+                //! [1]
             }
         }
     }

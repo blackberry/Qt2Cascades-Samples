@@ -61,20 +61,21 @@ Page {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
 
-//! [1]
+            //! [1]
             // Container contents transformed by selection
             MainView {
                 minHeight: 960
                 maxHeight: 960
             }
-//! [1]
+            //! [1]
 
             Container {
                 minHeight: 320
                 maxHeight: 320
 
                 layout: DockLayout {}
-//! [0]
+
+                //! [0]
                 // A standard ListView listing the various language selections
                 ListView {
                     id: languageSelector
@@ -98,7 +99,7 @@ Page {
                         _app.setCurrentLanguage (indexPath)
                     }
                 }
-//! [0]
+                //! [0]
             }
 
         }

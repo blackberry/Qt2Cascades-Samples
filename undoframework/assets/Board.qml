@@ -64,7 +64,7 @@ Container {
 
         layout: AbsoluteLayout {}
 
-//! [0]
+        //! [0]
         Stone {
             id: firstStone
             layoutProperties: AbsoluteLayoutProperties {
@@ -77,7 +77,7 @@ Container {
 
             onMoved: _undoManager.createMoveCommand(firstStone, sourceX, sourceY, targetX, targetY)
         }
-//! [0]
+        //! [0]
 
         Stone {
             id: secondStone

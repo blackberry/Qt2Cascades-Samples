@@ -85,7 +85,7 @@ Page {
                     }
                 }
 
-//! [0]
+                //! [0]
                 // A standard Label, displays sending data
                 Label {
                     horizontalAlignment: HorizontalAlignment.Center
@@ -118,7 +118,7 @@ Page {
                     onTextChanged: animTextSize.play ()
                 }
             }
-//! [0]
+            //! [0]
 
             // The control Container, contains the buttons to start and quit application.
             Container {
@@ -131,7 +131,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [1]
+                //! [1]
                 // A standard button
                 Button {
                     text: qsTr ("Start")
@@ -143,7 +143,7 @@ Page {
                         _sender.startBroadcasting ()
                     }
                 }
-//! [1]
+                //! [1]
 
                 // A standard button
                 Button {

@@ -106,6 +106,8 @@ Page {
                         base: SystemDefaults.TextStyles.SmallText
                         color: Color.White
                     }
+
+                    content.flags: TextContentFlag.ActiveTextOff
                 }
             }
         }

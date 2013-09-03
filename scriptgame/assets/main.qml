@@ -74,13 +74,13 @@ Page {
 
                 layout: DockLayout {}
 
-//! [0]
+                //! [0]
                 // The maze board
                 Maze {
                     horizontalAlignment: HorizontalAlignment.Center
                     verticalAlignment: verticalAlignment.Center
                 }
-//! [0]
+                //! [0]
 
                 // The script error overlay text
                 TextArea {
@@ -173,7 +173,7 @@ Page {
                     }
                 }
 
-//! [1]
+                //! [1]
                 TextArea {
                     id: scriptContent
 
@@ -192,7 +192,7 @@ Page {
                     text: qsTr ("Run Script")
                     onClicked: _gameController.run(scriptContent.text)
                 }
-//! [1]
+                //! [1]
             }
         }
     }

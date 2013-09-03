@@ -61,7 +61,7 @@ Page {
 
             topPadding: 140
 
-//! [0]
+            //! [0]
             // A standard TextArea for displaying items
             TextArea {
                 editable: false
@@ -72,7 +72,7 @@ Page {
                     color: Color.Black
                 }
             }
-//! [0]
+            //! [0]
         }
 
         ImageView {
@@ -96,7 +96,7 @@ Page {
                 orientation: LayoutOrientation.LeftToRight
             }
 
-//! [1]
+            //! [1]
             // A standard TextField for the RSS url
             TextField {
                 verticalAlignment: VerticalAlignment.Center
@@ -112,9 +112,9 @@ Page {
                 // Save url on input
                 onTextChanging: _rssListing.url = text
             }
-//! [1]
+            //! [1]
 
-//! [2]
+            //! [2]
             // A standard Button
             Button {
                 verticalAlignment: VerticalAlignment.Center
@@ -131,7 +131,7 @@ Page {
                 // Fetch news items on click
                 onClicked: _rssListing.fetch ()
             }
-//! [2]
+            //! [2]
         }
     }
 }

@@ -67,7 +67,7 @@ Page {
 
             // A Container to group the url TextField with its download Button
             Container {
-//! [0]
+                //! [0]
                 // A standard TextField for the url address
                 TextField {
                     id: urlField
@@ -82,9 +82,9 @@ Page {
                         downloadButton.enabled = (text != "")
                     }
                 }
-//! [0]
+                //! [0]
 
-//! [1]
+                //! [1]
                 // A standard button
                 Button {
                     id: downloadButton
@@ -97,10 +97,10 @@ Page {
                     // Start download from url on click
                     onClicked: _manager.downloadUrl (urlField.text)
                 }
-//! [1]
+                //! [1]
             }
 
-//! [2]
+            //! [2]
             // Custom Container for displaying download progress as a bar
             ProgressBar {
                 topMargin: 10
@@ -110,9 +110,9 @@ Page {
                 value: _manager.progressValue
                 message: _manager.progressMessage
             }
-//! [2]
+            //! [2]
 
-//! [3]
+            //! [3]
             // A standard Label
             Label {
                 topMargin: 10
@@ -122,7 +122,7 @@ Page {
                 textStyle.base: SystemDefaults.TextStyles.BodyText
                 textStyle.color: Color.Black
             }
-//! [3]
+            //! [3]
 
             // A standard Label
             Label {
@@ -134,7 +134,7 @@ Page {
                 textStyle.color: Color.Black
             }
 
-//! [4]
+            //! [4]
             // A standard TextArea for the download status output
             TextArea {
                 preferredWidth: 900
@@ -151,7 +151,7 @@ Page {
                     color: Color.create("#ff509d4c")
                 }
             }
-//! [4]
+            //! [4]
 
             // A standard Label
             Label {
@@ -162,7 +162,7 @@ Page {
                 textStyle.color: Color.Black
             }
 
-//! [5]
+            //! [5]
             // A standard TextArea for displaying error output
             TextArea {
                 leftMargin: 10
@@ -180,7 +180,7 @@ Page {
                     color: Color.create("#ffbc3434")
                 }
             }
-//! [5]
+            //! [5]
         }
     }
 }

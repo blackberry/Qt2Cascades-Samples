@@ -68,21 +68,21 @@
     </initialWindow>
 
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <configuration id="com.qnx.qcc.toolChain.1074566253" name="Default">
+    <configuration name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1189583552" name="Device-Debug">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
        <entryPointType>Qnx/Elf</entryPointType>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.271981768" name="Device-Release">
+    <configuration name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/libgooglesuggest.so.1.0.0" entry="true" type="Qnx/Elf">googlesuggest.so</asset>
        <entryPointType>Qnx/Cascades</entryPointType>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1950858345" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
     </configuration>
