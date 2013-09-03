@@ -67,7 +67,7 @@ Page {
 
                 layout: DockLayout {}
 
-//! [0]
+                //! [0]
                 TrafficLight {
                     id: trafficLight
 
@@ -76,7 +76,7 @@ Page {
 
                     controller: _trafficLightController
                 }
-//! [0]
+                //! [0]
 
                 Label {
                     horizontalAlignment: HorizontalAlignment.Center
@@ -109,7 +109,7 @@ Page {
                         orientation: LayoutOrientation.LeftToRight
                     }
 
-//! [1]
+                    //! [1]
                     Button {
                         text: qsTr ("Pause")
 
@@ -125,7 +125,7 @@ Page {
                             _app.quit();
                         }
                     }
-//! [1]
+                    //! [1]
                 }
             }
         }

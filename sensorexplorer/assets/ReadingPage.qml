@@ -60,7 +60,7 @@ Page {
             }
         }
 
-//! [0]
+        //! [0]
         ListView {
             horizontalAlignment: HorizontalAlignment.Fill
             layoutProperties: StackLayoutProperties {
@@ -80,6 +80,6 @@ Page {
                  }
              ]
         }
-//! [0]
+        //! [0]
     }
 }

@@ -127,7 +127,7 @@ Page {
                         }
                     }
 
-//! [0]
+                    //! [0]
                     // A standard TextField for the regular expression pattern
                     TextField {
                         leftMargin: 10
@@ -139,7 +139,7 @@ Page {
                             base: tsd.style
                         }
                     }
-//! [0]
+                    //! [0]
 
 
                     // A standard Label
@@ -152,7 +152,7 @@ Page {
                         }
                     }
 
-//! [1]
+                    //! [1]
                     // A standard Label
                     Label {
 
@@ -162,7 +162,7 @@ Page {
                             base: tsd.style
                         }
                     }
-//! [1]
+                    //! [1]
 
                     // Drop down for selecting various pattern syntax
                     DropDown {

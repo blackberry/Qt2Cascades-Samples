@@ -66,21 +66,21 @@
 
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.toolChain.1584660281" name="Default">
+    <configuration name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/downloadmanager" entry="true" type="Qnx/Elf">downloadmanager</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1077744510" name="Device-Debug">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/downloadmanager" entry="true" type="Qnx/Elf">downloadmanager</asset>
        <entryPointType>Qnx/Elf</entryPointType>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1948145938" name="Device-Release">
+    <configuration name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/libdownloadmanager.so.1.0.0" entry="true" type="Qnx/Elf">downloadmanager.so</asset>
        <entryPointType>Qnx/Cascades</entryPointType>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.345958299" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/downloadmanager" entry="true" type="Qnx/Elf">downloadmanager</asset>
     </configuration>

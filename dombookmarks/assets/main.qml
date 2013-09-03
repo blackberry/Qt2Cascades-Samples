@@ -77,7 +77,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [0]
+                //! [0]
                 // A standard Button
                 Button {
                     id: frank
@@ -95,7 +95,7 @@ Page {
                         _app.load ("frank.xbel");
                     }
                 }
-//! [0]
+                //! [0]
 
                 // A standard Button
                 Button {
@@ -115,7 +115,7 @@ Page {
                     }
                 }
 
-//! [1]
+                //! [1]
                 // A standard Button
                 Button {
                     id: save
@@ -134,7 +134,7 @@ Page {
                         _app.save ();
                     }
                 }
-//! [1]
+                //! [1]
             }
 
             Container {
@@ -167,7 +167,7 @@ Page {
                 }
             }
 
-//! [2]
+            //! [2]
             // Container for displaying the loaded XBEL output
             ScrollView {
                 topMargin: 10
@@ -185,7 +185,7 @@ Page {
                     bottomPadding: 10
                 }
             }
-//! [2]
+            //! [2]
         }
     }
 }

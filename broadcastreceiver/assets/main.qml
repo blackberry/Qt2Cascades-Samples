@@ -81,7 +81,7 @@ Page {
                 textStyle.base: SystemDefaults.TextStyles.TitleText
             }
 
-//! [0]
+            //! [0]
             // A standard Label
             Label {
                 id: message
@@ -113,7 +113,7 @@ Page {
                 // Play animation on changing text
                 onTextChanged: animTextSize.play()
             }
-//! [0]
+            //! [0]
 
             // A standard Button
             Button {

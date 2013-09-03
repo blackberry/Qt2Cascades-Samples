@@ -60,7 +60,7 @@ Page {
             }
         }
 
-//! [0]
+        //! [0]
         ListView {
             horizontalAlignment: HorizontalAlignment.Fill
             layoutProperties: StackLayoutProperties {
@@ -80,7 +80,7 @@ Page {
                 }
             ]
         }
-//! [0]
+        //! [0]
 
         Container {
             horizontalAlignment: HorizontalAlignment.Center
@@ -88,7 +88,7 @@ Page {
                 orientation: LayoutOrientation.LeftToRight
             }
 
-//! [1]
+            //! [1]
             Button {
                 text: _sensorExplorer.sensorActive ? qsTr ("Stop") : qsTr ("Start")
                 onClicked: _sensorExplorer.sensorActive = !_sensorExplorer.sensorActive
@@ -107,7 +107,7 @@ Page {
                     }
                 ]
             }
-//! [1]
+            //! [1]
         }
     }
 }

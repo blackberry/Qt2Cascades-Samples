@@ -49,7 +49,7 @@ Container {
     rightPadding: 30
     topPadding: 30
 
-//! [0]
+    //! [0]
     // Function tasked with the setting and translation of the Label's text
     function retranslate () {
         headerLabel.text = qsTr ("Language: %1").arg (qsTr ("English"));
@@ -60,7 +60,7 @@ Container {
     }
 
     onCreationCompleted: _app.retranslate.connect(retranslate)
-//! [0]
+    //! [0]
 
     // A standard Label defining the language header
     Label {

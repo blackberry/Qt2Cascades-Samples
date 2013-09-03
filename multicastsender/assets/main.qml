@@ -64,7 +64,7 @@ Page {
 
             preferredWidth: 1000
 
-//! [0]
+            //! [0]
             // A standard Label
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
@@ -75,9 +75,12 @@ Page {
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.White
+                    textAlign: TextAlign.Center
                 }
+
+                multiline: true
             }
-//! [0]
+            //! [0]
 
             // A Container for grouping the Label and TextField pair in a different Layout
             Container {
@@ -99,7 +102,7 @@ Page {
                     }
                 }
 
-//! [1]
+                //! [1]
                 // A standard TextField
                 TextField {
                     leftMargin: 10
@@ -109,7 +112,7 @@ Page {
                     // On text input store the text
                     onTextChanging: _sender.ttl = text
                 }
-//! [1]
+                //! [1]
             }
 
             // A Container for grouping the control Buttons
@@ -123,7 +126,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [2]
+                //! [2]
                 // A standard Button
                 Button {
                     text: qsTr ("Start")
@@ -134,7 +137,7 @@ Page {
                         _sender.startSending ()
                     }
                 }
-//! [2]
+                //! [2]
 
                 // A standard Button
                 Button {

@@ -64,7 +64,7 @@ Page {
             rightPadding: 30
             bottomPadding: 30
 
-//! [0]
+            //! [0]
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
 
@@ -72,7 +72,7 @@ Page {
                 textStyle.color: Color.White
                 textStyle.base: SystemDefaults.TextStyles.BigText
             }
-//! [0]
+            //! [0]
 
             Container {
                 horizontalAlignment: HorizontalAlignment.Center
@@ -82,7 +82,7 @@ Page {
                     orientation: LayoutOrientation.LeftToRight
                 }
 
-//! [1]
+                //! [1]
                 Button {
                     text: qsTr ("Single Threaded")
                     enabled: !_wordCount.active
@@ -94,10 +94,10 @@ Page {
                     enabled: !_wordCount.active
                     onClicked: _wordCount.countMultiThreaded()
                 }
-//! [1]
+                //! [1]
             }
 
-//! [2]
+            //! [2]
             Label {
                 horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 40
@@ -106,7 +106,7 @@ Page {
                 textStyle.color: Color.White
                 textStyle.base: SystemDefaults.TextStyles.BigText
             }
-//! [2]
+            //! [2]
         }
     }
 }
