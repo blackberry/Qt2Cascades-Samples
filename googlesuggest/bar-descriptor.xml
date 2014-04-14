@@ -86,7 +86,7 @@
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
     </configuration>
-
+   
     <!--  The icon for the application, which should be 86x86. -->
 
     <asset path="assets">assets</asset>
