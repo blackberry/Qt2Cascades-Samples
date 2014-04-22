@@ -49,13 +49,13 @@
 
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration name="Default">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
     </configuration>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
+       <asset path="arm-p/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
        <entryPointType>Qnx/Elf</entryPointType>
     </configuration>
     <configuration name="Device-Release">
@@ -67,7 +67,6 @@
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
     </configuration>
-    
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
         <image>icon.png</image>

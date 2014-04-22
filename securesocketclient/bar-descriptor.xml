@@ -66,9 +66,9 @@
 
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration name="Default">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/securesocketclient" entry="true" type="Qnx/Elf">securesocketclient</asset>
+       <asset path="arm-p/o.le-v7-g/securesocketclient" entry="true" type="Qnx/Elf">securesocketclient</asset>
     </configuration>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
@@ -84,7 +84,6 @@
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/securesocketclient" entry="true" type="Qnx/Elf">securesocketclient</asset>
     </configuration>
-   
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
         <image>icon.png</image>

@@ -68,9 +68,9 @@
     </initialWindow>
 
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <configuration name="Default">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
+       <asset path="arm-p/o.le-v7-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
     </configuration>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
@@ -86,7 +86,6 @@
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/googlesuggest" entry="true" type="Qnx/Elf">googlesuggest</asset>
     </configuration>
-   
     <!--  The icon for the application, which should be 86x86. -->
 
     <asset path="assets">assets</asset>
