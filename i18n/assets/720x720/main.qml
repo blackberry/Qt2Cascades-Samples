@@ -40,66 +40,66 @@
  **
  ****************************************************************************/
 
-#ifndef GOOGLESUGGEST_HPP
-#define GOOGLESUGGEST_HPP
 
-#include <bb/cascades/QListDataModel>
+import bb.cascades 1.0
 
-#include <QtCore/QObject>
-#include <QtNetwork/QNetworkAccessManager>
+// Page divides the page into two compartments, one for the ListView and the other
+// as the canvas for displaying the selection
 
-class QNetworkReply;
+Page {
+    Container {
+        layout: DockLayout {}
 
-//! [1]
-class GoogleSuggest: public QObject
-{
-    Q_OBJECT
+        ImageView {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-    // This property is used to set the input text from the UI
-    Q_PROPERTY(QString input READ input WRITE setInput NOTIFY inputChanged)
+            imageSource: "asset:///images/background.png"
+        }
 
-    // This property makes the model that contains the results available to the UI
-    Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
+        Container {
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
 
-public:
-    GoogleSuggest();
+            //! [1]
+            // Container contents transformed by selection
+            MainView {
+                minHeight: 548
+                maxHeight: 548
+            }
+            //! [1]
 
-    // The accessor methods for the properties
-    QString input() const;
-    void setInput(const QString &input);
+            Container {
 
-    bb::cascades::DataModel* model() const;
+                layout: DockLayout {}
 
-Q_SIGNALS:
-    // The change notification signal of the property
-    void inputChanged();
+                //! [0]
+                // A standard ListView listing the various language selections
+                ListView {
+                    id: languageSelector
 
-    // This signal is emitted to trigger the ListView to clear its selection
-    void clearSelection();
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Bottom
 
-private Q_SLOTS:
-    // This method starts the actual query to the Google web service
-    void autoSuggest();
+                    dataModel: _model
 
-    // This method is called when the query provides new data
-    void handleNetworkData(QNetworkReply *reply);
+                    listItemComponents: ListItemComponent {
+                        StandardListItem {
+                            description: ListItem.data
+                            imageSpaceReserved: false
+                        }
+                    }
 
-    // This method adds the parsed choices/hits information to the data model
-    void showCompletions(const QStringList &choices);
+                    onTriggered: {
+                        clearSelection();
+                        select(indexPath);
 
-private:
-    // The data model that contains the choices/hits information
-    mutable bb::cascades::QMapListDataModel m_model;
+                        _app.setCurrentLanguage (indexPath)
+                    }
+                }
+                //! [0]
+            }
 
-    // The network manager that handles the communication with the web service
-    QNetworkAccessManager m_networkManager;
-
-    // The time object to delay the start of the query
-    QTimer m_timer;
-
-    // The data the user has typed in
-    QString m_input;
-};
-//! [1]
-
-#endif
+        }
+    }
+}

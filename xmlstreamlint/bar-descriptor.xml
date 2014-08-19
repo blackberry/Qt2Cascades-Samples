@@ -51,11 +51,11 @@
     <category>core.games</category>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
+       <asset path="arm-p/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
     </configuration>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm-p/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
+       <asset path="arm/o.le-v7-g/xmlstreamlint" entry="true" type="Qnx/Elf">xmlstreamlint</asset>
        <entryPointType>Qnx/Elf</entryPointType>
     </configuration>
     <configuration name="Device-Release">

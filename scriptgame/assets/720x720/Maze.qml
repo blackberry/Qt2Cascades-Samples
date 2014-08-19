@@ -40,66 +40,39 @@
  **
  ****************************************************************************/
 
-#ifndef GOOGLESUGGEST_HPP
-#define GOOGLESUGGEST_HPP
+import bb.cascades 1.0
 
-#include <bb/cascades/QListDataModel>
+Container {
+    // The size is defined by the background image
+    preferredWidth: 550
+    preferredHeight: 550
 
-#include <QtCore/QObject>
-#include <QtNetwork/QNetworkAccessManager>
+    layout: AbsoluteLayout {}
 
-class QNetworkReply;
+    // The background image of the maze
+    ImageView {
+        layoutProperties: AbsoluteLayoutProperties {
+            positionX: 0
+            positionY: 0
+        }
 
-//! [1]
-class GoogleSuggest: public QObject
-{
-    Q_OBJECT
+        imageSource: "asset:///images/maze_background.png"
+    }
 
-    // This property is used to set the input text from the UI
-    Q_PROPERTY(QString input READ input WRITE setInput NOTIFY inputChanged)
+    //! [0]
+    // The board where the player object can be moved
+    Container {
+        objectName: "board"
 
-    // This property makes the model that contains the results available to the UI
-    Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
+        layoutProperties: AbsoluteLayoutProperties {
+            positionX: 50
+            positionY: 50
+        }
 
-public:
-    GoogleSuggest();
+        layout: AbsoluteLayout {}
 
-    // The accessor methods for the properties
-    QString input() const;
-    void setInput(const QString &input);
-
-    bb::cascades::DataModel* model() const;
-
-Q_SIGNALS:
-    // The change notification signal of the property
-    void inputChanged();
-
-    // This signal is emitted to trigger the ListView to clear its selection
-    void clearSelection();
-
-private Q_SLOTS:
-    // This method starts the actual query to the Google web service
-    void autoSuggest();
-
-    // This method is called when the query provides new data
-    void handleNetworkData(QNetworkReply *reply);
-
-    // This method adds the parsed choices/hits information to the data model
-    void showCompletions(const QStringList &choices);
-
-private:
-    // The data model that contains the choices/hits information
-    mutable bb::cascades::QMapListDataModel m_model;
-
-    // The network manager that handles the communication with the web service
-    QNetworkAccessManager m_networkManager;
-
-    // The time object to delay the start of the query
-    QTimer m_timer;
-
-    // The data the user has typed in
-    QString m_input;
-};
-//! [1]
-
-#endif
+        preferredWidth: 450
+        preferredHeight: 250
+    }
+    //! [0]
+}

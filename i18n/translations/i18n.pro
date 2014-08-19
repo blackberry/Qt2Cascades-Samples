@@ -1,1 +1,1 @@
-include (../NewBuild.pro)
+include (../i18n.pro)

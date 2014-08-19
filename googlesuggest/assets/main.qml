@@ -84,7 +84,6 @@ Page {
                         type: ""
                         StandardListItem {
                             title: ListItemData.suggestion
-                            status: ListItemData.hits
                             imageSpaceReserved: false
                         }
                     }

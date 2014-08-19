@@ -155,7 +155,7 @@ QStringList App::findQmFiles() const
      * system (that means the files are embedded inside the executable), therefor the
      * directory name is prefixed with ':/'.
      */
-    const QDir dir(":/translations");
+    const QDir dir("app/native/qm");
 
     // Retrieve all files ending with '.qm' sorted by name
     QStringList fileNames = dir.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
