@@ -88,20 +88,19 @@ bb::cascades::DataModel* GoogleSuggest::model() const
 }
 
 //! [3]
-void GoogleSuggest::showCompletions(const QStringList &choices, const QStringList &hits)
+void GoogleSuggest::showCompletions(const QStringList &choices)
 {
     emit clearSelection();
 
     m_model.clear();
 
-    if (choices.isEmpty() || (choices.count() != hits.count()))
+    if (choices.isEmpty())
         return;
 
     for (int i = 0; i < choices.count(); ++i) {
         QVariantMap item;
 
         item["suggestion"] = QString(choices[i]);
-        item["hits"] = QString(hits[i]);
         m_model.append(item);
     }
 }
@@ -126,7 +125,6 @@ void GoogleSuggest::handleNetworkData(QNetworkReply *networkReply)
 {
     if (!networkReply->error()) {
         QStringList choices;
-        QStringList hits;
 
         const QByteArray response(networkReply->readAll());
         QXmlStreamReader xml(response);
@@ -135,13 +133,11 @@ void GoogleSuggest::handleNetworkData(QNetworkReply *networkReply)
             if (xml.tokenType() == QXmlStreamReader::StartElement) {
                 if (xml.name() == "suggestion") {
                     choices << xml.attributes().value("data").toString();
-                } else if (xml.name() == "num_queries") {
-                    hits << xml.attributes().value("int").toString();
                 }
             }
         }
 
-        showCompletions(choices, hits);
+        showCompletions(choices);
     }
 
     networkReply->deleteLater();
